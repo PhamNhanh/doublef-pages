@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game Online (WS Test) - doublef-pages</title>
+  <style>
+    :root{
+      --bg:#0b1020; --text:#e9edff; --muted:#aab3d6; --line:rgba(255,255,255,.12);
+      --card:rgba(255,255,255,.08);
+      --good:rgba(61,220,151,.22); --warn:rgba(255,209,102,.22); --bad:rgba(255,107,107,.22);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(1000px 700px at 15% 10%, rgba(120,170,255,.18), transparent 55%),
+        radial-gradient(900px 700px at 85% 90%, rgba(61,220,151,.14), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:16px;display:grid;gap:14px}
+    .panel{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+    header{
+      padding:12px 14px; border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    header h1{margin:0;font-size:14px;letter-spacing:.2px}
+    header .sub{font-size:12px;color:var(--muted)}
+    .content{padding:14px}
+    label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+    input{
+      width:100%; padding:10px 12px; border-radius:12px;
+      border:1px solid var(--line); background:rgba(0,0,0,.18); color:var(--text);
+      outline:none;
+    }
+    input:focus{border-color:rgba(120,170,255,.35); box-shadow:0 0 0 4px rgba(120,170,255,.12)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    button.primary{border-color:rgba(120,170,255,.35); background:rgba(120,170,255,.14)}
+    button.good{border-color:rgba(61,220,151,.35); background:rgba(61,220,151,.14)}
+    button.warn{border-color:rgba(255,209,102,.35); background:rgba(255,209,102,.14)}
+    button.danger{border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.14)}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .row{display:grid;grid-template-columns: 1fr; gap:14px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px; border:1px solid var(--line);
+      background:rgba(0,0,0,.14); font-size:12px; color:var(--muted);
+    }
+    .status{display:flex;gap:10px;flex-wrap:wrap}
+    pre{
+      margin:0;
+      white-space:pre-wrap;
+      word-break:break-word;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:12px;
+      min-height:240px;
+      line-height:1.35;
+      color:#fff;
+    }
+    .help{font-size:12px;color:var(--muted);line-height:1.45}
+    .toast{
+      position:fixed; right:16px; bottom:16px; max-width:min(440px,92vw);
+      background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.18);
+      padding:10px 12px; border-radius:14px; color:var(--text);
+      backdrop-filter: blur(8px);
+      display:none;
+    }
+    code{color:#fff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <header>
+        <div>
+          <h1>Game Online (WebSocket) — Test kết nối Pages → Durable Object</h1>
+          <div class="sub">Endpoint: <code>wss://{domain}/ws?room=...&name=...</code></div>
+        </div>
+        <div class="status" id="pills"></div>
+      </header>
+
+      <div class="content row">
+        <div class="panel" style="border-radius:14px">
+          <header>
+            <div>
+              <h1>Kết nối</h1>
+              <div class="sub">Mở 2 tab cùng Room để test broadcast</div>
+            </div>
+            <div class="pill" id="connState">DISCONNECTED</div>
+          </header>
+          <div class="content">
+            <div class="grid">
+              <div>
+                <label>Room (mã phòng)</label>
+                <input id="room" value="abc123" maxlength="24" />
+              </div>
+              <div>
+                <label>Name (tên)</label>
+                <input id="name" value="Test" maxlength="18" />
+              </div>
+            </div>
+
+            <div class="btns">
+              <button class="good" id="connect">Connect</button>
+              <button class="danger" id="disconnect" disabled>Disconnect</button>
+              <button class="primary" id="send" disabled>Send ping</button>
+              <button class="warn" id="clear">Clear log</button>
+            </div>
+
+            <div class="help" style="margin-top:10px">
+              <b>Lưu ý:</b> bạn cần tạo file <code>functions/ws.js</code> và bind Durable Object vào Pages.
+              Nếu bấm Connect mà bị <b>426</b> hoặc <b>500</b>, thường là chưa bind đúng <code>MY_DURABLE_OBJECT</code>.
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="border-radius:14px">
+          <header>
+            <div>
+              <h1>Log</h1>
+              <div class="sub">Sẽ hiển thị message realtime từ server</div>
+            </div>
+            <div class="pill" id="wsUrlPill">URL: -</div>
+          </header>
+          <div class="content">
+            <pre id="log"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const logEl = $("log");
+    const pills = $("pills");
+    const connState = $("connState");
+    const wsUrlPill = $("wsUrlPill");
+    const toastEl = $("toast");
+
+    let ws = null;
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(toast._t);
+      toast._t = setTimeout(()=>toastEl.style.display="none", 2000);
+    }
+
+    function log(msg){
+      const t = new Date().toLocaleTimeString();
+      logEl.textContent += `[${t}] ${msg}\n`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function setConnected(on){
+      $("connect").disabled = on;
+      $("disconnect").disabled = !on;
+      $("send").disabled = !on;
+      connState.textContent = on ? "CONNECTED" : "DISCONNECTED";
+      connState.style.borderColor = on ? "rgba(61,220,151,.35)" : "rgba(255,255,255,.12)";
+      connState.style.background = on ? "rgba(61,220,151,.14)" : "rgba(0,0,0,.14)";
+    }
+
+    function renderPills(){
+      pills.innerHTML = "";
+      const mk = (t) => {
+        const d = document.createElement("div");
+        d.className = "pill";
+        d.textContent = t;
+        return d;
+      };
+      pills.appendChild(mk("Domain: " + location.host));
+      pills.appendChild(mk("Protocol: " + location.protocol));
+      pills.appendChild(mk("WS path: /ws"));
+    }
+
+    renderPills();
+    setConnected(false);
+
+    function wsUrl(){
+      const room = ($("room").value.trim() || "lobby");
+      const name = ($("name").value.trim() || "Player");
+      const proto = location.protocol === "https:" ? "wss" : "ws";
+      return `${proto}://${location.host}/ws?room=${encodeURIComponent(room)}&name=${encodeURIComponent(name)}`;
+    }
+
+    function connect(){
+      const url = wsUrl();
+      wsUrlPill.textContent = "URL: " + url;
+      log("Connecting: " + url);
+
+      ws = new WebSocket(url);
+
+      ws.onopen = () => {
+        setConnected(true);
+        toast("WS connected");
+        log("open");
+      };
+
+      ws.onmessage = (e) => {
+        log("msg: " + e.data);
+      };
+
+      ws.onclose = () => {
+        setConnected(false);
+        log("close");
+      };
+
+      ws.onerror = () => {
+        log("error");
+      };
+    }
+
+    function disconnect(){
+      if (ws) {
+        ws.close();
+        ws = null;
+      }
+    }
+
+    $("connect").addEventListener("click", connect);
+    $("disconnect").addEventListener("click", disconnect);
+
+    $("send").addEventListener("click", () => {
+      if (!ws || ws.readyState !== 1) return toast("WS chưa sẵn sàng");
+      const payload = { type: "ping", t: Date.now(), note: "hello from pages" };
+      ws.send(JSON.stringify(payload));
+      log("sent: " + JSON.stringify(payload));
+    });
+
+    $("clear").addEventListener("click", () => {
+      logEl.textContent = "";
+    });
+  </script>
+</body>
+</html>

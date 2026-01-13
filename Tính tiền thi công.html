@@ -65,16 +65,28 @@
       z-index: 9999;
     }
     .modal.show{display:flex}
+
+    /* ✅ FIX: modal-card dùng flex column + giới hạn chiều cao theo viewport */
     .modal-card{
       width:min(980px, 100%);
+      height:min(92vh, 980px);
       background:#ffffff;
       color:#111;
       border-radius:14px;
       overflow:hidden;
       box-shadow: 0 18px 60px rgba(0,0,0,.45);
       border:1px solid rgba(0,0,0,.08);
+
+      display:flex;
+      flex-direction:column;
     }
+
+    /* ✅ FIX: thanh nút sticky ở trên */
     .modal-hd{
+      position:sticky;
+      top:0;
+      z-index:5;
+
       display:flex; justify-content:space-between; align-items:center; gap:10px;
       padding:10px 12px; background:#f5f6f8; border-bottom:1px solid rgba(0,0,0,.10);
       color:#111;
@@ -83,7 +95,34 @@
     .modal-hd .right{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
     .btn-light{border:1px solid rgba(0,0,0,.15); background:#fff; color:#111}
     .btn-light:hover{background:#f1f1f1}
-    .invoice-wrap{padding:18px 18px 14px}
+
+    /* ✅ FIX: phần nội dung cuộn riêng, không làm mất header */
+    .invoice-wrap{
+      padding:18px 18px 14px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      flex:1;
+    }
+
+    /* ✅ FIX: thanh nút sticky ở dưới cho mobile (luôn bấm được) */
+    .modal-actions{
+      position:sticky;
+      bottom:0;
+      z-index:6;
+
+      display:none;
+      gap:8px;
+      padding:10px 12px;
+      background:rgba(245,246,248,.95);
+      border-top:1px solid rgba(0,0,0,.10);
+      backdrop-filter: blur(8px);
+    }
+    .modal-actions button{flex:1; padding:10px 12px}
+    @media(max-width:720px){
+      .modal-actions{display:flex}
+      .modal-hd .right{display:none} /* mobile dùng thanh dưới cho dễ bấm */
+    }
+
     .inv-top{
       display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
       margin-bottom:8px;
@@ -149,10 +188,10 @@
     /* Print invoice only */
     @media print{
       body{background:#fff}
-      header, main, .modal-hd, .project-toolbar{display:none !important}
+      header, main, .modal-hd, .project-toolbar, .modal-actions{display:none !important}
       .modal{position:static; inset:auto; background:transparent; padding:0; display:block !important}
-      .modal-card{box-shadow:none; border:none; border-radius:0}
-      .invoice-wrap{padding:0}
+      .modal-card{box-shadow:none; border:none; border-radius:0; height:auto}
+      .invoice-wrap{padding:0; overflow:visible}
       .print-note{display:none}
     }
   </style>
@@ -304,7 +343,15 @@
         <button class="btn-light" id="closeInvoice">Đóng</button>
       </div>
     </div>
+
     <div class="invoice-wrap" id="invoiceContent"></div>
+
+    <!-- ✅ Thanh nút luôn bấm được trên điện thoại -->
+    <div class="modal-actions">
+      <button class="btn-light" id="copyImgBtn2">Copy ảnh</button>
+      <button class="btn-light" id="printBtn2">In / PDF</button>
+      <button class="btn-light" id="closeInvoice2">Đóng</button>
+    </div>
   </div>
 </div>
 
@@ -679,9 +726,6 @@
   function buildProjectFileBaseName(){
     const date = yyyymmddFromInvDate();
 
-    // Quy ước với UI hiện tại:
-    // invCustomer: "Khách hàng / Công trình" -> dùng như TÊN CÔNG TRÌNH
-    // invContact: "Liên hệ" -> dùng như TÊN KHÁCH HÀNG (nếu muốn gắn vào tên file)
     let projectName = sanitizeFilePart(document.getElementById('invCustomer')?.value || '');
     let customerName = sanitizeFilePart(document.getElementById('invContact')?.value || '');
 
@@ -970,18 +1014,28 @@
     `;
   }
 
+  function lockBodyScroll(lock){
+    document.body.style.overflow = lock ? 'hidden' : '';
+    document.body.style.touchAction = lock ? 'none' : '';
+  }
+
   function openInvoice(){
     const modal = document.getElementById('invoiceModal');
     const content = document.getElementById('invoiceContent');
     content.innerHTML = buildInvoiceHTML();
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
+    lockBodyScroll(true);
+
+    // cuộn nội dung về đầu cho gọn
+    content.scrollTop = 0;
   }
 
   function closeInvoice(){
     const modal = document.getElementById('invoiceModal');
     modal.classList.remove('show');
     modal.setAttribute('aria-hidden', 'true');
+    lockBodyScroll(false);
   }
 
   async function copyInvoiceAsImage(){
@@ -1134,9 +1188,9 @@
     }
 
     if (t.id === 'invoiceBtn') { openInvoice(); return; }
-    if (t.id === 'copyImgBtn') { copyInvoiceAsImage(); return; }
-    if (t.id === 'closeInvoice') { closeInvoice(); return; }
-    if (t.id === 'printBtn') { window.print(); return; }
+    if (t.id === 'copyImgBtn' || t.id === 'copyImgBtn2') { copyInvoiceAsImage(); return; }
+    if (t.id === 'closeInvoice' || t.id === 'closeInvoice2') { closeInvoice(); return; }
+    if (t.id === 'printBtn' || t.id === 'printBtn2') { window.print(); return; }
   });
 
   document.getElementById('invoiceModal').addEventListener('click', (e) => {

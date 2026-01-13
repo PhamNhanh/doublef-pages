@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>doublef.io.vn</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    body { margin:0; background:#0b1020; color:#e9edff; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 28px 16px; }
+    .card { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+            border-radius:16px; padding:18px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { margin: 8px 0; line-height: 1.5; color: rgba(233,237,255,.85); }
+    .row { display:flex; gap:12px; flex-wrap: wrap; margin-top: 12px; }
+    input, button, textarea {
+      border-radius: 12px; border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.25); color:#e9edff; padding:10px 12px; font-size: 15px;
+      outline: none;
+    }
+    input, textarea { flex: 1 1 260px; }
+    button { cursor:pointer; background: rgba(0, 194, 255, .18); }
+    button:hover { background: rgba(0, 194, 255, .28); }
+    .small { font-size: 13px; color: rgba(233,237,255,.7); }
+    .ok { color: #7CFFB2; }
+    .warn { color: #FFB86B; }
+    .list { margin-top: 14px; }
+    .item { padding:10px 12px; border-radius: 12px; background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.10); margin-top: 8px; }
+    .footer { margin-top: 16px; opacity: .75; }
+    a { color: #8be9ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>doublef.io.vn</h1>
+      <p>Trang demo HTML thuần. Ai truy cập cũng dùng được (không cần đăng nhập). Dữ liệu bên dưới được lưu trên trình duyệt của người dùng bằng <b>LocalStorage</b>.</p>
+
+      <div class="row">
+        <input id="name" placeholder="Tên của bạn" />
+        <input id="topic" placeholder="Bạn muốn làm gì hôm nay?" />
+        <button id="addBtn">Thêm</button>
+      </div>
+
+      <div class="row">
+        <textarea id="note" rows="3" placeholder="Ghi chú (tuỳ chọn)"></textarea>
+      </div>
+
+      <div class="row">
+        <button id="exportBtn">Xuất JSON</button>
+        <button id="clearBtn">Xoá dữ liệu trên máy này</button>
+        <span id="status" class="small"></span>
+      </div>
+
+      <div class="list" id="list"></div>
+
+      <p class="footer small">
+        Gợi ý nâng cấp: nếu bạn muốn dữ liệu “ai cũng thấy chung”, bạn cần backend (API + database) hoặc dịch vụ như Firebase/Supabase.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const KEY = "doublef_items_v1";
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
+      catch { return []; }
+    }
+    function save(items) {
+      localStorage.setItem(KEY, JSON.stringify(items));
+      render();
+    }
+    function setStatus(msg, cls="") {
+      const el = $("status");
+      el.className = "small " + cls;
+      el.textContent = msg;
+      setTimeout(() => { el.textContent = ""; el.className="small"; }, 2500);
+    }
+
+    function render() {
+      const items = load();
+      const list = $("list");
+      list.innerHTML = "";
+
+      if (!items.length) {
+        list.innerHTML = `<div class="item small warn">Chưa có mục nào. Nhập rồi bấm “Thêm”.</div>`;
+        return;
+      }
+
+      items.slice().reverse().forEach((it, idxRev) => {
+        const idx = items.length - 1 - idxRev;
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <div><b>${escapeHtml(it.name || "Ẩn danh")}</b> — ${escapeHtml(it.topic || "(không có nội dung)")}</div>
+          <div class="small">${new Date(it.ts).toLocaleString("vi-VN")}</div>
+          ${it.note ? `<div style="margin-top:6px">${escapeHtml(it.note)}</div>` : ""}
+          <div class="row" style="margin-top:10px">
+            <button data-del="${idx}">Xoá</button>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+
+      list.querySelectorAll("button[data-del]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = Number(btn.getAttribute("data-del"));
+          const items2 = load();
+          items2.splice(i, 1);
+          save(items2);
+          setStatus("Đã xoá 1 mục", "ok");
+        });
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    $("addBtn").addEventListener("click", () => {
+      const name = $("name").value.trim();
+      const topic = $("topic").value.trim();
+      const note = $("note").value.trim();
+
+      if (!topic) return setStatus("Nhập nội dung trước đã 🙂", "warn");
+
+      const items = load();
+      items.push({ name, topic, note, ts: Date.now() });
+      save(items);
+
+      $("topic").value = "";
+      $("note").value = "";
+      setStatus("Đã thêm!", "ok");
+    });
+
+    $("exportBtn").addEventListener("click", () => {
+      const data = JSON.stringify(load(), null, 2);
+      const blob = new Blob([data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "doublef-data.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      setStatus("Đã xuất file JSON", "ok");
+    });
+
+    $("clearBtn").addEventListener("click", () => {
+      localStorage.removeItem(KEY);
+      render();
+      setStatus("Đã xoá dữ liệu trên trình duyệt này", "ok");
+    });
+
+    render();
+  </script>
+</body>
+</html>

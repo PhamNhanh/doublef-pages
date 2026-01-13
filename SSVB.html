@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>So sánh 2 file Word (.doc/.docx) - Tô đỏ nội dung sửa (xuất Word)</title>
+  <style>
+    :root { --bg:#0b1020; --card:#121a33; --text:#e9ecf5; --muted:#aab2d5; --line:#22305c; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:18px 20px; border-bottom:1px solid var(--line); }
+    header h1 { margin:0; font-size:18px; }
+    header p { margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.4; }
+    main { padding:20px; display:grid; gap:14px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+    .field { display:flex; flex-direction:column; gap:6px; min-width:260px; flex:1; }
+    label { font-size:13px; color:var(--muted); }
+    input[type=file], select {
+      padding:10px; border:1px dashed #2b3a6e; border-radius:10px; background:#0f1630; color:var(--text);
+    }
+    button {
+      padding:10px 14px; border:1px solid #2b3a6e; border-radius:12px;
+      background:#1a2550; color:var(--text); cursor:pointer; font-weight:600;
+    }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    .status { margin-top:10px; font-size:12px; color:var(--muted); }
+    .toolbar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+    .toolbar input[type=checkbox]{ transform: translateY(1px); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+    table { width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid #2b3a6e; }
+    thead th { text-align:left; font-size:12px; color:var(--muted); background:#0f1630; border-bottom:1px solid #2b3a6e; padding:10px; }
+    tbody td { vertical-align:top; padding:10px; border-bottom:1px solid #1e2a55; background:#0c132b; }
+    tbody tr:last-child td { border-bottom:none; }
+
+    .col-idx { width:70px; color:var(--muted); font-size:12px; }
+    .col-status { width:120px; font-size:12px; }
+    .badge { display:inline-block; padding:4px 8px; border-radius:999px; border:1px solid #2b3a6e; background:#0f1630; color:var(--muted); }
+    .b-add { border-color: rgba(35,196,131,.45); color: rgba(35,196,131,.95); }
+    .b-del { border-color: rgba(245,75,75,.45); color: rgba(245,75,75,.95); }
+    .b-chg { border-color: rgba(255,200,87,.55); color: rgba(255,200,87,.95); }
+    .b-same { opacity:.7; }
+
+    .cell {
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height:1.55;
+      background:#0f1630;
+      border:1px solid #2b3a6e;
+      border-radius:10px;
+      padding:10px;
+      max-height: 220px;
+      overflow:auto;
+      font-size: 13px;
+    }
+
+    .ins { background: rgba(35, 196, 131, .18); outline: 1px solid rgba(35,196,131,.35); border-radius: 6px; padding: 0 2px; }
+    .del { background: rgba(245, 75, 75, .18); outline: 1px solid rgba(245,75,75,.35); border-radius: 6px; padding: 0 2px; text-decoration: line-through; }
+    details { margin-top:8px; }
+    summary { cursor:pointer; color: var(--muted); font-size:12px; }
+
+    .sep { width:1px; height:28px; background:#2b3a6e; opacity:.7; }
+    .hint { font-size:12px; color:var(--muted); }
+  </style>
+
+  <!-- JSZip: mở docx -->
+  <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+  <!-- jsdiff: diff theo mảng dòng -->
+  <script src="https://unpkg.com/diff@5.2.0/dist/diff.min.js"></script>
+  <!-- diff-match-patch: inline diff -->
+  <script src="https://unpkg.com/diff-match-patch@1.0.5/index.js"></script>
+
+  <!-- Export Word (.docx) only -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+</head>
+
+<body>
+<header>
+  <h1>So sánh 2 file Word (.doc/.docx) — tô đỏ nội dung sửa khi xuất Word</h1>
+  <p>
+    Ưu tiên đọc trực tiếp <span class="mono">word/document.xml</span> trong .docx. Với file .doc (97–2003),
+    trình duyệt không parse ổn định nếu không chuyển đổi → hệ thống sẽ yêu cầu bạn đổi sang .docx.
+  </p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="row">
+      <div class="field">
+        <label for="fileOld">File Cũ (.doc/.docx)</label>
+        <input id="fileOld" type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+      </div>
+      <div class="field">
+        <label for="fileNew">File Mới (.doc/.docx)</label>
+        <input id="fileNew" type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+      </div>
+      <div class="field" style="min-width:220px; flex:0;">
+        <label>&nbsp;</label>
+        <button id="btnCompare" disabled>So sánh</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <label class="mono" style="font-size:12px;color:var(--muted);">
+        <input type="checkbox" id="onlyChanges" />
+        Chỉ hiện thay đổi
+      </label>
+      <label class="mono" style="font-size:12px;color:var(--muted);">
+        Gộp “XÓA + THÊM” thành “SỬA”
+        <input type="checkbox" id="mergeEdits" checked />
+      </label>
+
+      <span class="sep"></span>
+
+      <div class="field" style="min-width:260px; flex:0;">
+        <label for="exportMode">Chế độ xuất Word</label>
+        <select id="exportMode">
+          <option value="changes">Hiện thay đổi (ADD/DEL/CHG)</option>
+          <option value="all">Hiện tất cả (kể cả GIỐNG)</option>
+        </select>
+      </div>
+
+      <div class="field" style="min-width:160px; flex:0;">
+        <label>&nbsp;</label>
+        <button id="btnWord" disabled>Xuất Word (tô đỏ)</button>
+      </div>
+    </div>
+
+    <div class="status mono" id="status">Chọn 2 file .doc hoặc .docx để bắt đầu.</div>
+    <div class="hint mono" style="margin-top:6px;">
+      Trong file Word xuất ra: phần thay đổi = <span style="color:#f54b4b;font-weight:700">đỏ + đậm</span>, phần bị xoá = <span style="color:#f54b4b;font-weight:700;text-decoration:line-through;">đỏ + gạch</span>.
+    </div>
+  </section>
+
+  <section class="card">
+    <div style="overflow:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-idx">Dòng #</th>
+            <th class="col-status">Trạng thái</th>
+            <th>Trong Cũ</th>
+            <th>Trong Mới</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+  const fileOld = document.getElementById("fileOld");
+  const fileNew = document.getElementById("fileNew");
+  const btnCompare = document.getElementById("btnCompare");
+  const statusEl = document.getElementById("status");
+  const tbody = document.getElementById("tbody");
+  const onlyChanges = document.getElementById("onlyChanges");
+  const mergeEdits = document.getElementById("mergeEdits");
+
+  const exportMode = document.getElementById("exportMode");
+  const btnWord = document.getElementById("btnWord");
+
+  let lastRows = [];
+
+  function canCompare() {
+    return fileOld.files?.length && fileNew.files?.length;
+  }
+  function hasResult() {
+    return Array.isArray(lastRows) && lastRows.length > 0;
+  }
+  function syncButtons() {
+    btnCompare.disabled = !canCompare();
+    btnWord.disabled = !hasResult();
+  }
+
+  fileOld.addEventListener("change", syncButtons);
+  fileNew.addEventListener("change", syncButtons);
+  onlyChanges.addEventListener("change", () => renderRows(lastRows));
+  mergeEdits.addEventListener("change", () => renderRows(lastRows));
+  exportMode.addEventListener("change", () => {/* no-op */});
+
+  function escapeHtml(s) {
+    return (s ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  function statusLabel(st) {
+    if (st==="ADD") return "THÊM";
+    if (st==="DEL") return "XÓA";
+    if (st==="CHG") return "SỬA";
+    return "GIỐNG";
+  }
+
+  function badge(status) {
+    if (status==="ADD") return `<span class="badge b-add">THÊM</span>`;
+    if (status==="DEL") return `<span class="badge b-del">XÓA</span>`;
+    if (status==="CHG") return `<span class="badge b-chg">SỬA</span>`;
+    return `<span class="badge b-same">GIỐNG</span>`;
+  }
+
+  function isDocxLike(file) {
+    const n = (file.name || "").toLowerCase();
+    return n.endsWith(".docx");
+  }
+  function isDocLike(file) {
+    const n = (file.name || "").toLowerCase();
+    return n.endsWith(".doc") && !n.endsWith(".docx");
+  }
+
+  async function tryReadDocxXmlFromAny(file, innerPath) {
+    // ✅ Thử mở như ZIP (docx). Nếu file là docx nhưng đuôi .doc, vẫn đọc được.
+    const ab = await file.arrayBuffer();
+    try {
+      const zip = await JSZip.loadAsync(ab);
+      const entry = zip.file(innerPath);
+      if (!entry) throw new Error(`Không thấy ${innerPath}`);
+      return await entry.async("string");
+    } catch (e) {
+      // Không phải zip => có thể là .doc thật
+      throw new Error("NOT_ZIP_DOCX");
+    }
+  }
+
+  // NOTE: .doc thật (Word 97–2003) cần chuyển đổi sang .docx để đọc document.xml.
+  // Nếu bạn có API chuyển đổi, hãy implement hàm này để trả về Blob/ArrayBuffer docx.
+  async function convertDocToDocx(/* file */) {
+    // Ví dụ (pseudo):
+    // const form = new FormData(); form.append("file", file);
+    // const res = await fetch("/api/convert/doc-to-docx", { method:"POST", body: form });
+    // if (!res.ok) throw new Error("Convert failed");
+    // return await res.arrayBuffer(); // docx bytes
+    throw new Error("DOC_NEEDS_CONVERSION");
+  }
+
+  async function getDocxXml(file) {
+    try {
+      return await tryReadDocxXmlFromAny(file, "word/document.xml");
+    } catch (e) {
+      if (String(e.message) === "NOT_ZIP_DOCX") {
+        // file là .doc thật hoặc file lạ
+        if (isDocLike(file)) {
+          // Nếu muốn hỗ trợ .doc thật: gọi API convert ở đây rồi đọc lại như docx
+          const docxBytes = await convertDocToDocx(file); // hiện đang throw theo mặc định
+          const zip = await JSZip.loadAsync(docxBytes);
+          const entry = zip.file("word/document.xml");
+          if (!entry) throw new Error("Không thấy word/document.xml sau khi chuyển đổi");
+          return await entry.async("string");
+        }
+        throw new Error("UNSUPPORTED_FORMAT");
+      }
+      throw e;
+    }
+  }
+
+  // Trích “dòng nội dung” từ document.xml:
+  function extractLinesFromDocumentXml(xmlText) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, "application/xml");
+
+    const body = xml.getElementsByTagName("w:body")[0];
+    if (!body) return [];
+
+    const lines = [];
+    const children = Array.from(body.childNodes).filter(n => n.nodeType === 1);
+
+    for (const node of children) {
+      const tag = node.tagName;
+
+      if (tag === "w:p") {
+        const text = collectTextInParagraph(node).trim();
+        if (text) lines.push(normalizeLine(text));
+      }
+      else if (tag === "w:tbl") {
+        const rows = Array.from(node.getElementsByTagName("w:tr"));
+        for (const r of rows) {
+          const cells = Array.from(r.getElementsByTagName("w:tc")).map(tc => {
+            const ps = Array.from(tc.getElementsByTagName("w:p"));
+            const cellText = ps.map(p => collectTextInParagraph(p)).join("\n").trim();
+            return normalizeLine(cellText);
+          });
+          const rowText = cells.join(" | ").trim();
+          if (rowText) lines.push(rowText);
+        }
+      }
+    }
+    return lines.filter(Boolean);
+  }
+
+  function collectTextInParagraph(pNode) {
+    let out = "";
+    const walker = document.createTreeWalker(pNode, NodeFilter.SHOW_ELEMENT, null);
+    let cur = walker.currentNode;
+    while (cur) {
+      if (cur.tagName === "w:t") out += cur.textContent || "";
+      else if (cur.tagName === "w:tab") out += "\t";
+      else if (cur.tagName === "w:br") out += "\n";
+      cur = walker.nextNode();
+    }
+    return out;
+  }
+
+  function normalizeLine(s) {
+    return s
+      .replace(/\r/g, "")
+      .replace(/[ \t]+/g, " ")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+
+  function inlineDiffHtml(a, b) {
+    const dmp = new diff_match_patch();
+    const diffs = dmp.diff_main(a || "", b || "");
+    dmp.diff_cleanupSemantic(diffs);
+
+    let htmlOld = "", htmlNew = "";
+    for (const [op, data] of diffs) {
+      const esc = escapeHtml(data);
+      if (op === DIFF_EQUAL) {
+        htmlOld += esc; htmlNew += esc;
+      } else if (op === DIFF_DELETE) {
+        htmlOld += `<span class="del">${esc}</span>`;
+      } else if (op === DIFF_INSERT) {
+        htmlNew += `<span class="ins">${esc}</span>`;
+      }
+    }
+    return { htmlOld, htmlNew };
+  }
+
+  // ✅ Segments cho xuất Word: phần thay đổi => đỏ+đậm, phần xoá => đỏ+đậm+gạch
+  function diffSegments(a, b) {
+    const dmp = new diff_match_patch();
+    const diffs = dmp.diff_main(a || "", b || "");
+    dmp.diff_cleanupSemantic(diffs);
+
+    const oldSegs = [];
+    const newSegs = [];
+
+    for (const [op, data] of diffs) {
+      if (!data) continue;
+
+      if (op === DIFF_EQUAL) {
+        oldSegs.push({ t: data, chg: false, del: false });
+        newSegs.push({ t: data, chg: false, del: false });
+      } else if (op === DIFF_DELETE) {
+        oldSegs.push({ t: data, chg: true, del: true });
+      } else if (op === DIFF_INSERT) {
+        newSegs.push({ t: data, chg: true, del: false });
+      }
+    }
+    return { oldSegs, newSegs };
+  }
+
+  function buildRowsFromArrayDiff(diffParts) {
+    const rows = [];
+    let idx = 1;
+
+    for (let i = 0; i < diffParts.length; i++) {
+      const part = diffParts[i];
+      const isAdd = part.added;
+      const isDel = part.removed;
+      const values = part.value || [];
+
+      if (mergeEdits.checked && isDel) {
+        const next = diffParts[i + 1];
+        if (next && next.added) {
+          const delLines = values;
+          const addLines = next.value || [];
+          const max = Math.max(delLines.length, addLines.length);
+          for (let k = 0; k < max; k++) {
+            rows.push({ idx: idx++, status: "CHG", old: delLines[k] ?? "", neu: addLines[k] ?? "" });
+          }
+          i++;
+          continue;
+        }
+      }
+
+      if (isAdd) {
+        for (const v of values) rows.push({ idx: idx++, status: "ADD", old: "", neu: v });
+      } else if (isDel) {
+        for (const v of values) rows.push({ idx: idx++, status: "DEL", old: v, neu: "" });
+      } else {
+        for (const v of values) rows.push({ idx: idx++, status: "SAME", old: v, neu: v });
+      }
+    }
+
+    return rows;
+  }
+
+  function renderRows(rows) {
+    const only = onlyChanges.checked;
+    tbody.innerHTML = "";
+
+    for (const r of rows) {
+      if (only && r.status === "SAME") continue;
+
+      let detail = "";
+      if (r.status === "CHG") {
+        const d = inlineDiffHtml(r.old, r.neu);
+        detail = `
+          <details>
+            <summary>Xem highlight chi tiết trong dòng</summary>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+              <div>
+                <div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:6px;">Cũ</div>
+                <div class="cell">${d.htmlOld || "(trống)"}</div>
+              </div>
+              <div>
+                <div class="mono" style="font-size:12px;color:var(--muted);margin-bottom:6px;">Mới</div>
+                <div class="cell">${d.htmlNew || "(trống)"}</div>
+              </div>
+            </div>
+          </details>
+        `;
+      }
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="col-idx mono">${r.idx}</td>
+        <td class="col-status">${badge(r.status)}</td>
+        <td><div class="cell">${escapeHtml(r.old) || "(trống)"}</div></td>
+        <td>
+          <div class="cell">${escapeHtml(r.neu) || "(trống)"}</div>
+          ${detail}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  function getRowsForExport() {
+    const mode = exportMode.value; // "changes" | "all"
+    if (mode === "all") return lastRows.slice();
+    return lastRows.filter(r => r.status !== "SAME");
+  }
+
+  function baseName() {
+    const oldName = (fileOld.files?.[0]?.name || "Cu").replace(/\.[^/.]+$/, "");
+    const newName = (fileNew.files?.[0]?.name || "Moi").replace(/\.[^/.]+$/, "");
+    const mode = exportMode.value === "all" ? "HienTatCa" : "HienThayDoi";
+    const merged = mergeEdits.checked ? "MergeSua" : "NoMerge";
+    return `SoSanh_${oldName}_vs_${newName}_${mode}_${merged}`;
+  }
+
+  btnCompare.addEventListener("click", async () => {
+    tbody.innerHTML = "";
+    lastRows = [];
+    syncButtons();
+
+    const fOld = fileOld.files[0];
+    const fNew = fileNew.files[0];
+    if (!fOld || !fNew) return;
+
+    statusEl.textContent = "Đang đọc nội dung từ 2 file…";
+
+    try {
+      const [xmlOld, xmlNew] = await Promise.all([
+        getDocxXml(fOld),
+        getDocxXml(fNew),
+      ]);
+
+      statusEl.textContent = "Đang trích xuất dòng nội dung (đoạn + bảng)…";
+      const linesOld = extractLinesFromDocumentXml(xmlOld);
+      const linesNew = extractLinesFromDocumentXml(xmlNew);
+
+      statusEl.textContent = `Đang so sánh (Cũ:${linesOld.length} dòng, Mới:${linesNew.length} dòng)…`;
+
+      const diffParts = Diff.diffArrays(linesOld, linesNew);
+      const rows = buildRowsFromArrayDiff(diffParts);
+
+      lastRows = rows;
+      renderRows(rows);
+
+      statusEl.textContent = "Hoàn tất.";
+      syncButtons();
+    } catch (e) {
+      console.error(e);
+
+      if (String(e.message) === "DOC_NEEDS_CONVERSION") {
+        statusEl.textContent =
+          "File .doc (Word 97–2003) cần chuyển sang .docx để so sánh trong trình duyệt. " +
+          "Hãy Save As .docx rồi thử lại (hoặc tích hợp API chuyển đổi .doc→.docx).";
+      } else if (String(e.message) === "UNSUPPORTED_FORMAT") {
+        statusEl.textContent = "Không đọc được file. Nếu là .doc thật, hãy chuyển sang .docx rồi thử lại.";
+      } else {
+        statusEl.textContent = "Lỗi khi đọc/so sánh. File có thể bị mã hoá, hỏng, hoặc không phải Word hợp lệ.";
+      }
+
+      syncButtons();
+    }
+  });
+
+  // =========================
+  // EXPORT WORD: tô đỏ nội dung sửa
+  // =========================
+  btnWord.addEventListener("click", async () => {
+    const rows = getRowsForExport();
+    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType } = window.docx;
+
+    function runsFromSegs(segs) {
+      return segs.map(p => new TextRun({
+        text: p.t || "",
+        color: p.chg ? "C00000" : "000000",
+        bold: !!p.chg,
+        strike: !!p.del,
+      }));
+    }
+
+    const title = new Paragraph({
+      children: [new TextRun({ text: "BÁO CÁO SO SÁNH FILE WORD", bold: true })],
+      spacing: { after: 250 }
+    });
+
+    const meta = new Paragraph({
+      children: [
+        new TextRun({ text: `File Cũ: ${fileOld.files?.[0]?.name || ""}\n` }),
+        new TextRun({ text: `File Mới: ${fileNew.files?.[0]?.name || ""}\n` }),
+        new TextRun({ text: `Chế độ xuất: ${exportMode.value === "all" ? "Hiện tất cả" : "Hiện thay đổi"}\n` }),
+        new TextRun({ text: `Gộp SỬA: ${mergeEdits.checked ? "Có" : "Không"}` }),
+      ],
+      spacing: { after: 250 }
+    });
+
+    const headerRow = new TableRow({
+      children: ["Dòng #", "Trạng thái", "Trong Cũ", "Trong Mới"].map(h =>
+        new TableCell({
+          children: [new Paragraph({ children: [new TextRun({ text: h, bold: true })] })]
+        })
+      )
+    });
+
+    const bodyRows = rows.map(r => {
+      let oldPara, newPara;
+
+      if (r.status === "CHG") {
+        const { oldSegs, newSegs } = diffSegments(r.old, r.neu);
+        oldPara = new Paragraph({ children: runsFromSegs(oldSegs) });
+        newPara = new Paragraph({ children: runsFromSegs(newSegs) });
+      } else {
+        oldPara = new Paragraph(r.old || "");
+        newPara = new Paragraph(r.neu || "");
+      }
+
+      return new TableRow({
+        children: [
+          new TableCell({ children: [new Paragraph(String(r.idx))] }),
+          new TableCell({ children: [new Paragraph(statusLabel(r.status))] }),
+          new TableCell({ children: [oldPara] }),
+          new TableCell({ children: [newPara] }),
+        ]
+      });
+    });
+
+    const table = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [headerRow, ...bodyRows],
+    });
+
+    const doc = new Document({
+      sections: [{ children: [title, meta, table] }]
+    });
+
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `${baseName()}.docx`);
+  });
+
+  syncButtons();
+</script>
+</body>
+</html>

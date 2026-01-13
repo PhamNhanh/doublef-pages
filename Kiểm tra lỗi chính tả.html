@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell</title>
+  <style>
+    :root { --bg:#0b1020; --card:#121a33; --text:#e9ecf5; --muted:#aab2d5; --line:#22305c; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:18px 20px; border-bottom:1px solid var(--line); }
+    header h1 { margin:0; font-size:18px; }
+    header p { margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.4; }
+    main { padding:20px; display:grid; gap:14px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+    .field { display:flex; flex-direction:column; gap:6px; min-width:240px; flex:1; }
+    label { font-size:13px; color:var(--muted); }
+    input[type=file], textarea {
+      padding:10px; border:1px solid #2b3a6e; border-radius:10px; background:#0f1630; color:var(--text);
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    button {
+      padding:10px 14px; border:1px solid #2b3a6e; border-radius:12px;
+      background:#1a2550; color:var(--text); cursor:pointer; font-weight:600;
+    }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    .status { margin-top:10px; font-size:12px; color:var(--muted); }
+    .pill { display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid #2b3a6e; background:#0f1630; color:var(--muted); font-size:12px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+    .para { background:#0f1630; border:1px solid #2b3a6e; border-radius:12px; padding:12px; margin:10px 0; }
+    .para-head { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px; }
+    .para-idx { color:var(--muted); font-size:12px; }
+    .para-text { white-space:pre-wrap; word-break:break-word; line-height:1.55; font-size:14px; }
+
+    .misspell {
+      background: rgba(245, 75, 75, .18);
+      outline: 1px solid rgba(245,75,75,.35);
+      border-radius: 6px;
+      padding: 0 2px;
+      cursor: help;
+    }
+    .suggest { margin-top:8px; font-size:12px; color:var(--muted); line-height:1.4; }
+    .suggest code { color: var(--text); background:#0b1020; padding:2px 6px; border-radius:8px; border:1px solid #22305c; }
+
+    /* ✅ thêm: ẩn đoạn không lỗi khi bật toggle */
+    .hidden { display:none !important; }
+    .btn-ghost { background:#0f1630; }
+    .btn-on { border-color:#7aa2ff; }
+  </style>
+
+  <!-- đọc docx -->
+  <script src="https://unpkg.com/mammoth@1.7.1/mammoth.browser.min.js"></script>
+</head>
+
+<body>
+<header>
+  <h1>Kiểm tra lỗi chính tả tiếng Việt trong file Word (.docx)</h1>
+  <p>Dùng nspell (Hunspell JS) + bộ từ điển vi (index.aff/index.dic). Tô đỏ từ nghi lỗi và gợi ý sửa.</p>
+</header>
+
+<main>
+  <section class="card">
+    <div class="row">
+      <div class="field">
+        <label for="fileDocx">Chọn file Word (.docx)</label>
+        <input id="fileDocx" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+      </div>
+      <div class="field">
+        <label for="personalWords">Từ điển cá nhân (mỗi dòng 1 từ, ví dụ: QTCC, Khánh_Hòa…)</label>
+        <textarea id="personalWords" placeholder="QTCC&#10;Khánh Hòa&#10;FPT IS"></textarea>
+      </div>
+
+      <!-- ✅ sửa: thêm 1 nút toggle -->
+      <div class="field" style="min-width:240px; flex:0;">
+        <label>&nbsp;</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button id="btnCheck" disabled>Kiểm tra chính tả</button>
+          <button id="btnToggleHideOk" class="btn-ghost" disabled title="Ẩn/hiện các đoạn không có lỗi">
+            Chỉ hiện đoạn có lỗi: Tắt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+      <span class="pill">Tổng lỗi: <span id="totalErr">0</span></span>
+      <span class="pill">Số đoạn có lỗi: <span id="paraErr">0</span></span>
+    </div>
+
+    <div class="status mono" id="status">Chọn file .docx để bắt đầu.</div>
+  </section>
+
+  <section class="card">
+    <div id="result"></div>
+  </section>
+</main>
+
+<script type="module">
+  import nspell from "https://esm.sh/nspell@2";
+
+  const fileDocx = document.getElementById("fileDocx");
+  const btnCheck = document.getElementById("btnCheck");
+  const btnToggleHideOk = document.getElementById("btnToggleHideOk"); // ✅ thêm
+  const statusEl = document.getElementById("status");
+  const resultEl = document.getElementById("result");
+  const totalErrEl = document.getElementById("totalErr");
+  const paraErrEl = document.getElementById("paraErr");
+  const personalWordsEl = document.getElementById("personalWords");
+
+  // ✅ trạng thái toggle
+  let hideOkParas = false;
+
+  fileDocx.addEventListener("change", () => {
+    const hasFile = !!(fileDocx.files?.length);
+    btnCheck.disabled = !hasFile;
+    // chỉ cho bấm toggle sau khi đã check xong, nên disable ở đây:
+    btnToggleHideOk.disabled = true;
+    hideOkParas = false;
+    btnToggleHideOk.classList.remove("btn-on");
+    btnToggleHideOk.textContent = "Chỉ hiện đoạn có lỗi: Tắt";
+  });
+
+  // ✅ áp dụng ẩn/hiện theo toggle
+  function applyHideOkParas() {
+    const paras = resultEl.querySelectorAll(".para[data-err]");
+    for (const el of paras) {
+      const err = Number(el.getAttribute("data-err") || "0");
+      const shouldHide = hideOkParas && err === 0;
+      el.classList.toggle("hidden", shouldHide);
+    }
+  }
+
+  // ✅ xử lý nút toggle
+  btnToggleHideOk.addEventListener("click", () => {
+    hideOkParas = !hideOkParas;
+    btnToggleHideOk.textContent = `Chỉ hiện đoạn có lỗi: ${hideOkParas ? "Bật" : "Tắt"}`;
+    btnToggleHideOk.classList.toggle("btn-on", hideOkParas);
+    applyHideOkParas();
+  });
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  async function readDocxParagraphs(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const res = await mammoth.convertToHtml({ arrayBuffer });
+    const div = document.createElement("div");
+    div.innerHTML = res.value || "";
+
+    const blocks = Array.from(div.querySelectorAll("p, li, h1, h2, h3, h4, h5, h6"));
+    const paras = [];
+    if (blocks.length) {
+      for (const el of blocks) {
+        const t = (el.textContent || "").replace(/\r/g,"").replace(/[ \t]+/g," ").trim();
+        if (t) paras.push(t);
+      }
+    } else {
+      const text = (div.textContent || "")
+        .replace(/\r/g, "")
+        .replace(/[ \t]+\n/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+      paras.push(...text.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean));
+    }
+    return { paras, warnings: res.messages || [] };
+  }
+
+  const WORD_RE = /[0-9A-Za-zÀ-ỹĐđ]+(?:[-'][0-9A-Za-zÀ-ỹĐđ]+)*/g;
+
+  function isProbablyNameOrCode(w) {
+    if (/\d/.test(w)) return true;
+    if (w.length >= 4 && w === w.toUpperCase()) return true;
+    if (/^[A-Za-z]{1,3}\d+[A-Za-z]*$/.test(w)) return true;
+    return false;
+  }
+
+  async function loadVietnameseHunspell() {
+    const base = "https://cdn.jsdelivr.net/gh/wooorm/dictionaries@main/dictionaries/vi/";
+    const [aff, dic] = await Promise.all([
+      fetch(base + "index.aff").then(r => r.text()),
+      fetch(base + "index.dic").then(r => r.text()),
+    ]);
+    return { aff, dic };
+  }
+
+  function buildSpell(aff, dic, personalWordsText) {
+    const spell = nspell(aff, dic);
+
+    const personal = (personalWordsText || "")
+      .split(/\r?\n/)
+      .map(s => s.trim())
+      .filter(Boolean)
+      .join("\n");
+
+    if (personal) {
+      spell.personal(personal);
+    }
+    return spell;
+  }
+
+  function checkParagraph(spell, text) {
+    const errs = [];
+    const words = [...text.matchAll(WORD_RE)];
+    for (const m of words) {
+      const w = m[0];
+      const start = m.index;
+      const end = start + w.length;
+
+      if (w.length <= 1) continue;
+      if (isProbablyNameOrCode(w)) continue;
+
+      let ok = spell.correct(w);
+      if (!ok && w !== w.toLowerCase()) ok = spell.correct(w.toLowerCase());
+
+      if (!ok) {
+        const sugg = spell.suggest(w).slice(0, 5);
+        errs.push({ word: w, start, end, suggestions: sugg });
+      }
+    }
+    return errs;
+  }
+
+  function renderParagraphWithErrors(text, errs) {
+    if (!errs.length) return escapeHtml(text);
+
+    let out = "";
+    let cursor = 0;
+    for (const e of errs) {
+      out += escapeHtml(text.slice(cursor, e.start));
+      const raw = text.slice(e.start, e.end);
+      const title = e.suggestions?.length ? `Gợi ý: ${e.suggestions.join(", ")}` : "Không có gợi ý";
+      out += `<span class="misspell" title="${escapeHtml(title)}">${escapeHtml(raw)}</span>`;
+      cursor = e.end;
+    }
+    out += escapeHtml(text.slice(cursor));
+    return out;
+  }
+
+  btnCheck.addEventListener("click", async () => {
+    resultEl.innerHTML = "";
+    totalErrEl.textContent = "0";
+    paraErrEl.textContent = "0";
+    btnToggleHideOk.disabled = true; // ✅ reset
+    hideOkParas = false;
+    btnToggleHideOk.classList.remove("btn-on");
+    btnToggleHideOk.textContent = "Chỉ hiện đoạn có lỗi: Tắt";
+
+    const f = fileDocx.files[0];
+    if (!f) return;
+    if (f.name.toLowerCase().endsWith(".doc")) {
+      statusEl.textContent = "Lỗi: file .doc không hỗ trợ. Hãy lưu lại thành .docx rồi thử lại.";
+      return;
+    }
+
+    statusEl.textContent = "Đang tải bộ từ điển tiếng Việt (Hunspell)…";
+
+    try {
+      const { aff, dic } = await loadVietnameseHunspell();
+      const spell = buildSpell(aff, dic, personalWordsEl.value);
+
+      statusEl.textContent = "Đang đọc file .docx và tách đoạn…";
+      const { paras, warnings } = await readDocxParagraphs(f);
+
+      statusEl.textContent = `Đang kiểm tra chính tả (${paras.length} đoạn)…`;
+
+      let totalErr = 0;
+      let paraWithErr = 0;
+
+      const frag = document.createDocumentFragment();
+
+      paras.forEach((p, idx) => {
+        const errs = checkParagraph(spell, p);
+        totalErr += errs.length;
+        if (errs.length) paraWithErr++;
+
+        const wrap = document.createElement("div");
+        wrap.className = "para";
+        wrap.setAttribute("data-err", String(errs.length)); // ✅ thêm: lưu số lỗi để lọc
+        wrap.innerHTML = `
+          <div class="para-head">
+            <span class="para-idx mono">Đoạn #${idx + 1}</span>
+            <span class="para-idx mono">Lỗi: ${errs.length}</span>
+          </div>
+          <div class="para-text">${renderParagraphWithErrors(p, errs)}</div>
+        `;
+
+        if (errs.length) {
+          const sugg = document.createElement("div");
+          sugg.className = "suggest";
+          sugg.innerHTML = errs.slice(0, 12).map(e => {
+            const s = e.suggestions?.length
+              ? e.suggestions.map(x => `<code>${escapeHtml(x)}</code>`).join(" ")
+              : "<code>(không có)</code>";
+            return `• <code>${escapeHtml(e.word)}</code> → ${s}`;
+          }).join("<br/>") + (errs.length > 12 ? "<br/>… (còn nữa)" : "");
+          wrap.appendChild(sugg);
+        }
+
+        frag.appendChild(wrap);
+      });
+
+      resultEl.appendChild(frag);
+
+      totalErrEl.textContent = totalErr.toLocaleString("vi-VN");
+      paraErrEl.textContent = paraWithErr.toLocaleString("vi-VN");
+
+      const warnCount = warnings?.length || 0;
+      statusEl.textContent = warnCount
+        ? `Hoàn tất. Có ${warnCount} cảnh báo chuyển đổi (một số định dạng có thể bị bỏ qua).`
+        : "Hoàn tất.";
+
+      // ✅ bật nút lọc sau khi đã có kết quả
+      btnToggleHideOk.disabled = false;
+      applyHideOkParas(); // (hiện tại hideOkParas=false nên không ẩn gì)
+
+    } catch (e) {
+      console.error(e);
+      statusEl.textContent =
+        "Lỗi khi tải từ điển hoặc xử lý file. Kiểm tra kết nối mạng/CDN hoặc thử lại.";
+    }
+  });
+</script>
+</body>
+</html>

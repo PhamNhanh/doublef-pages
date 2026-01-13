@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bảng tính tiền thạch cao (nhiều nhóm - xuất bảng thanh toán)</title>
+  <style>
+    :root{
+      --bg:#0b1020;--text:#e9edff;--muted:#aab3d6;--good:#3ddc97;--bad:#ff6b6b;--warn:#ffd166;
+      --line:rgba(255,255,255,.10);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header,main{max-width:1200px;margin:0 auto;padding:16px}
+    h1{margin:0 0 6px;font-size:20px}
+    .sub{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
+
+    .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:12px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
+
+    .card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);margin-top:12px}
+    .hd{padding:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .title{font-weight:800;font-size:14px}
+
+    button,input,select,textarea{font:inherit;color:inherit}
+    button{
+      border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);
+      padding:8px 10px;border-radius:10px;cursor:pointer
+    }
+    button:hover{background:rgba(255,255,255,.10)}
+    .primary{border-color:rgba(61,220,151,.45);background:rgba(61,220,151,.12)}
+    .danger{border-color:rgba(255,107,107,.45);background:rgba(255,107,107,.10)}
+
+    .field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+    .field input,.field textarea,.cell{
+      width:100%;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);padding:9px;border-radius:10px;outline:none
+    }
+    .field textarea{min-height:84px;resize:vertical}
+
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.20);color:var(--muted);font-size:13px}
+    .pill b{color:var(--text)}
+    .note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(255,255,255,.10);color:var(--muted)}
+    .hr{height:1px;background:rgba(255,255,255,.10);margin:10px 0}
+
+    .group{border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;margin-bottom:10px}
+    .group-hd{padding:10px;border-bottom:1px solid rgba(255,255,255,.10);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.03)}
+    .group-hd .left,.group-hd .right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{border-top:1px solid rgba(255,255,255,.08);padding:8px;font-size:13px;vertical-align:middle}
+    th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px;background:rgba(255,255,255,.02)}
+    .num{text-align:right}
+    .center{text-align:center}
+    .mini{width:180px}
+    .mini2{width:140px}
+    .mini3{width:120px}
+    .ok{color:var(--good)} .bad{color:var(--bad)}
+
+    /* ===== Invoice Modal ===== */
+    .modal{
+      position:fixed; inset:0; background:rgba(0,0,0,.55);
+      display:none; align-items:center; justify-content:center; padding:18px;
+      z-index: 9999;
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      width:min(980px, 100%);
+      background:#ffffff;
+      color:#111;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .modal-hd{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding:10px 12px; background:#f5f6f8; border-bottom:1px solid rgba(0,0,0,.10);
+      color:#111;
+    }
+    .modal-hd .left{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .modal-hd .right{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    .btn-light{border:1px solid rgba(0,0,0,.15); background:#fff; color:#111}
+    .btn-light:hover{background:#f1f1f1}
+    .invoice-wrap{padding:18px 18px 14px}
+    .inv-top{
+      display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .inv-meta{font-size:12px; color:#444}
+    .inv-title{
+      text-align:center; margin:6px 0 10px;
+      font-weight:900; font-size:18px; letter-spacing:.3px;
+    }
+    .inv-sub{
+      text-align:center; font-size:12px; color:#444; margin-top:-6px;
+    }
+    .inv-box{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+      border:1px solid rgba(0,0,0,.12); border-radius:10px; padding:10px;
+      font-size:12px; margin:12px 0;
+    }
+    @media(max-width:720px){ .inv-box{grid-template-columns:1fr} }
+    .inv-box b{color:#111}
+    .inv-table{
+      width:100%; border-collapse:collapse; font-size:12px;
+      border:1px solid rgba(0,0,0,.12); border-radius:10px; overflow:hidden;
+    }
+    .inv-table th, .inv-table td{border-top:1px solid rgba(0,0,0,.10); padding:8px; vertical-align:top}
+    .inv-table th{
+      background:#f5f6f8; color:#111; text-transform:uppercase; letter-spacing:.6px; font-size:11px;
+      border-top:none;
+    }
+    .inv-muted{color:#666}
+    .inv-right{text-align:right}
+    .inv-center{text-align:center}
+    .inv-total{
+      margin-top:12px;
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:10px;
+      overflow:hidden;
+    }
+    .inv-total .row{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:10px 12px; font-size:12px; border-top:1px solid rgba(0,0,0,.10);
+    }
+    .inv-total .row:first-child{border-top:none}
+    .inv-total .row b{font-size:13px}
+    .inv-total .grand{background:#f5f6f8}
+    .print-note{font-size:11px;color:#666;margin-top:8px;text-align:center}
+
+    /* ===== OVERRIDE CUỐI CÙNG: ÉP HÓA ĐƠN ĐEN RÕ, SỐ ÂM ĐỎ ===== */
+    #invoiceContent,
+    #invoiceContent *{
+      color:#000 !important;
+      opacity:1 !important;
+      -webkit-text-fill-color:#000 !important;
+      text-shadow:none !important;
+      filter:none !important;
+    }
+    #invoiceContent .neg,
+    #invoiceContent .neg *{
+      color:#d10000 !important;
+      -webkit-text-fill-color:#d10000 !important;
+      font-weight:800 !important;
+    }
+
+    /* Print invoice only */
+    @media print{
+      body{background:#fff}
+      header, main, .modal-hd, .project-toolbar{display:none !important}
+      .modal{position:static; inset:auto; background:transparent; padding:0; display:block !important}
+      .modal-card{box-shadow:none; border:none; border-radius:0}
+      .invoice-wrap{padding:0}
+      .print-note{display:none}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>Bảng tính tiền thạch cao</h1>
+  <p class="sub">
+    Nhiều nhóm (Trần/Vách/Mặt dựng...). Nhập theo <b>Dài × Rộng × Hệ số</b>.
+    Tổng phải trả = <b>Tổng tiền các nhóm − Tạm ứng</b>. Có <b>Xuất bảng thanh toán</b> để in/PDF và <b>Copy ảnh</b>.
+    <br />
+    <span class="tag">Chốt</span> Đọc ảnh dễ sai → dùng <b>Xuất/Mở file dự án</b> để khôi phục chuẩn 100%.
+  </p>
+</header>
+
+<!-- ===== TOOLBAR: MỞ/XUẤT FILE DỰ ÁN ===== -->
+<div class="project-toolbar" style="max-width:1200px;margin:0 auto;padding:0 16px 10px">
+  <div class="card" style="margin-top:0">
+    <div class="hd">
+      <div class="title">Thanh công cụ dự án</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="primary" id="btnExportProject">Xuất file dự án</button>
+        <button id="btnImportProject">Mở file dự án</button>
+        <button id="btnExportBackup">Xuất backup</button>
+        <button id="btnPickSaveFolder">Chọn nơi lưu mặc định</button>
+        <span class="pill" id="saveFolderHint">Nơi lưu: <b>Download</b></span>
+        <button class="danger" id="btnNewProject">Tạo dự án mới</button>
+        <input id="projectFileInput" type="file" accept=".json,application/json" style="display:none" />
+      </div>
+    </div>
+    <div class="bd" style="padding:12px">
+      <div class="note" style="margin-top:0">
+        File dự án là <b>.tcproj.json</b>. Nếu trình duyệt hỗ trợ (Chrome/Edge + HTTPS/localhost) bạn có thể chọn thư mục lưu mặc định.
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="grid">
+  <!-- LEFT -->
+  <div class="card">
+    <div class="hd">
+      <div class="title">Các nhóm thi công</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="primary" id="addGroup">+ Thêm nhóm</button>
+        <button id="saveBtn">Lưu</button>
+        <button id="loadBtn">Tải</button>
+        <button class="danger" id="clearBtn">Xóa tất cả</button>
+      </div>
+    </div>
+
+    <div class="bd" style="padding:12px">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="pill">Số nhóm: <b id="groupCount">0</b></span>
+        <span class="pill">Công thức: <b>Tổng nhóm − Tạm ứng</b></span>
+        <span class="pill">Nhập số: <b>3,22</b> hoặc <b>3.22</b></span>
+      </div>
+
+      <div id="groups"></div>
+
+      <div class="note">
+        <span class="tag">Gợi ý</span> Nếu nhóm không phải <b>m²</b> (cái/lỗ/tấm…), hệ thống coi cột <b>Dài</b> là <b>Số lượng</b>, bỏ qua <b>Rộng</b>.
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="card">
+    <div class="hd">
+      <div class="title">Tổng hợp & xuất bảng thanh toán</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="primary" id="invoiceBtn">Xuất bảng thanh toán</button>
+      </div>
+    </div>
+
+    <div class="bd" style="padding:12px">
+      <div class="field">
+        <label>Tạm ứng (VNĐ)</label>
+        <input id="advance" inputmode="numeric" placeholder="VD: 20000000" />
+      </div>
+
+      <div class="field" style="margin-top:10px">
+        <label>Thông tin công trình</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <input class="cell" id="invDate" placeholder="Ngày (tự lấy hôm nay)" />
+          <input class="cell" id="invCustomer" placeholder="Khách hàng / Công trình" />
+          <input class="cell" id="invAddress" placeholder="Địa chỉ công trình" />
+          <input class="cell" id="invContact" placeholder="Liên hệ (tuỳ chọn)" />
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:10px">
+        <label>Thông tin ngân hàng (hiển thị trên bảng thanh toán)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <input class="cell" id="bankName" placeholder="Tên ngân hàng (VD: Vietcombank)" />
+          <input class="cell" id="bankBranch" placeholder="Chi nhánh (tuỳ chọn)" />
+          <input class="cell" id="bankAccountName" placeholder="Chủ tài khoản" />
+          <input class="cell" id="bankAccountNo" placeholder="Số tài khoản" inputmode="numeric" />
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:10px">
+        <label>Ghi chú chung (hiển thị trên bảng thanh toán)</label>
+        <textarea id="globalNote" placeholder="VD: Đơn giá đã bao gồm vật tư... / Thanh toán sau nghiệm thu..."></textarea>
+      </div>
+
+      <div class="hr"></div>
+
+      <div style="display:grid;gap:10px">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div style="color:var(--muted);font-size:13px">Tổng tiền các nhóm</div>
+          <div style="font-weight:900" id="sumTotal">0</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div style="color:var(--muted);font-size:13px">Tạm ứng</div>
+          <div style="font-weight:900" id="sumAdvance">0</div>
+        </div>
+        <div class="hr"></div>
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div style="font-weight:800">Còn lại phải thanh toán</div>
+          <div style="font-weight:900;font-size:18px" id="sumRemain">0</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div style="color:var(--muted);font-size:13px">Trạng thái</div>
+          <div style="font-weight:800" id="status">—</div>
+        </div>
+      </div>
+
+      <div class="note">
+        Bấm <b>Xuất bảng thanh toán</b> để ra mẫu gần giống hóa đơn, có bảng chi tiết + tổng tiền.
+        Trong cửa sổ bảng thanh toán có nút <b>Copy ảnh</b>. In/PDF: bấm <b>In / Lưu PDF</b>.
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Invoice Modal -->
+<div class="modal" id="invoiceModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-hd">
+      <div class="left">
+        <b>Xem bảng thanh toán</b>
+        <span class="inv-meta" id="invMetaSmall"></span>
+      </div>
+      <div class="right">
+        <button class="btn-light" id="copyImgBtn">Copy ảnh</button>
+        <button class="btn-light" id="printBtn">In / Lưu PDF</button>
+        <button class="btn-light" id="closeInvoice">Đóng</button>
+      </div>
+    </div>
+    <div class="invoice-wrap" id="invoiceContent"></div>
+  </div>
+</div>
+
+<!-- Cách B: CDN (cần mạng/HTTPS) -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+  const STORAGE_KEY = 'thachcao_payment_full_v13_filename_rule';
+
+  const fmtVND = (n) => (isFinite(n)?n:0).toLocaleString('vi-VN') + ' ₫';
+
+  const parseNumber = (val) => {
+    if (val === null || val === undefined) return 0;
+    let s = String(val).trim();
+    if (!s) return 0;
+    s = s.replace(/[^\d.,-]/g, '');
+    const hasComma = s.includes(','), hasDot = s.includes('.');
+    if (hasComma && hasDot) s = s.replace(/\./g,'').replace(',', '.');
+    else if (hasComma && !hasDot) s = s.replace(',', '.');
+    else s = s.replace(/\.(?=\d{3}(\D|$))/g,'');
+    const n = Number(s);
+    return isFinite(n) ? n : 0;
+  };
+
+  const escapeHtml = (str) => String(str ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'","&#039;");
+
+  const unitOptions = (selected) => {
+    const units = ['m²','m','cái','lỗ','tấm','người','chuyến','lần','đơn','hoá đơn'];
+    return units.map(u => `<option value="${u}" ${u===selected?'selected':''}>${u}</option>`).join('');
+  };
+
+  function todayVN(){
+    const d = new Date();
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yy = d.getFullYear();
+    return `${dd}/${mm}/${yy}`;
+  }
+
+  // ===== IME FIX: tránh render khi đang gõ tiếng Việt =====
+  let isComposing = false;
+  let renderTimer = null;
+
+  function scheduleRender(){
+    if (isComposing) return;
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(() => render(), 60);
+  }
+
+  document.addEventListener('compositionstart', (e) => {
+    const t = e.target;
+    if (t && (t.matches('input') || t.matches('textarea'))) isComposing = true;
+  });
+  document.addEventListener('compositionend', (e) => {
+    const t = e.target;
+    if (t && (t.matches('input') || t.matches('textarea'))) {
+      isComposing = false;
+      render();
+    }
+  });
+
+  let groups = [];
+  const defaultGroup = () => ({
+    name: 'Trần',
+    unit: 'm²',
+    unitPrice: '',
+    groupNote: '',
+    lines: [{ len:'', wid:'', factor: 1, note:'' }]
+  });
+
+  const groupQty = (g) => {
+    const isArea = (g.unit === 'm²');
+    return (g.lines || []).reduce((sum, L) => {
+      const len = parseNumber(L.len);
+      const wid = parseNumber(L.wid);
+      const fac = parseNumber(L.factor) || 1;
+      return sum + (isArea ? (len*wid*fac) : (len*fac));
+    }, 0);
+  };
+  const groupAmount = (g) => groupQty(g) * parseNumber(g.unitPrice);
+
+  function getFocusKey() {
+    const a = document.activeElement;
+    if (!a) return null;
+
+    if (a.matches('[data-gi][data-gk]')) {
+      return { type:'group', gi:a.dataset.gi, gk:a.dataset.gk, s:a.selectionStart ?? null, e:a.selectionEnd ?? null };
+    }
+    if (a.matches('[data-gi][data-li][data-lk]')) {
+      return { type:'line', gi:a.dataset.gi, li:a.dataset.li, lk:a.dataset.lk, s:a.selectionStart ?? null, e:a.selectionEnd ?? null };
+    }
+    if (a.id && ['advance','invDate','invCustomer','invAddress','invContact','globalNote','bankName','bankBranch','bankAccountName','bankAccountNo'].includes(a.id)) {
+      return { type:'right', id:a.id, s:a.selectionStart ?? null, e:a.selectionEnd ?? null };
+    }
+    return null;
+  }
+  function restoreFocus(key) {
+    if (!key) return;
+    let el = null;
+    if (key.type === 'group') el = document.querySelector(`[data-gi="${key.gi}"][data-gk="${key.gk}"]`);
+    if (key.type === 'line')  el = document.querySelector(`[data-gi="${key.gi}"][data-li="${key.li}"][data-lk="${key.lk}"]`);
+    if (key.type === 'right') el = document.getElementById(key.id);
+    if (!el) return;
+    el.focus({preventScroll:true});
+    if (key.s !== null && key.e !== null && typeof el.setSelectionRange === 'function') {
+      try { el.setSelectionRange(key.s, key.e); } catch {}
+    }
+  }
+
+  function render(){
+    const focusKey = getFocusKey();
+
+    const wrap = document.getElementById('groups');
+    wrap.innerHTML = '';
+    document.getElementById('groupCount').textContent = groups.length;
+
+    groups.forEach((g, gi) => {
+      const qty = groupQty(g);
+      const amount = groupAmount(g);
+      const isArea = (g.unit === 'm²');
+
+      const div = document.createElement('div');
+      div.className = 'group';
+
+      div.innerHTML = `
+        <div class="group-hd">
+          <div class="left">
+            <input class="cell mini" data-gi="${gi}" data-gk="name"
+              value="${escapeHtml(g.name)}" placeholder="Tên nhóm (VD: Trần)" />
+            <select class="cell mini3" data-gi="${gi}" data-gk="unit">${unitOptions(g.unit)}</select>
+            <input class="cell mini2" style="text-align:right" data-gi="${gi}" data-gk="unitPrice"
+              value="${escapeHtml(g.unitPrice)}" placeholder="Đơn giá" />
+          </div>
+          <div class="right">
+            <span class="pill">Khối lượng: <b>${qty.toLocaleString('vi-VN',{maximumFractionDigits:3})} ${escapeHtml(g.unit)}</b></span>
+            <span class="pill">Tiền nhóm: <b>${fmtVND(amount)}</b></span>
+            <button class="primary" data-act="addLine" data-gi="${gi}">+ Dòng</button>
+            <button class="danger" data-act="delGroup" data-gi="${gi}">Xóa nhóm</button>
+          </div>
+        </div>
+
+        <div style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">
+          <div class="field" style="margin:0">
+            <label>Ghi chú nhóm (hiển thị trên bảng thanh toán)</label>
+            <input class="cell" data-gi="${gi}" data-gk="groupNote"
+              value="${escapeHtml(g.groupNote)}" placeholder="VD: Trần phòng khách + bếp..." />
+          </div>
+        </div>
+
+        <div style="overflow:auto">
+          <table>
+            <thead>
+              <tr>
+                <th class="center" style="width:56px">#</th>
+                <th class="num" style="width:120px">${isArea?'Dài':'Số lượng'}</th>
+                <th class="num" style="width:120px">${isArea?'Rộng':'—'}</th>
+                <th class="num" style="width:90px">Hệ số</th>
+                <th style="min-width:220px">Ghi chú từng dòng</th>
+                <th class="num" style="width:140px">KQ dòng</th>
+                <th class="center" style="width:90px">Xóa</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(g.lines || []).map((L, li) => {
+                const len = parseNumber(L.len), wid = parseNumber(L.wid);
+                const fac = parseNumber(L.factor) || 1;
+                const res = isArea ? (len*wid*fac) : (len*fac);
+                return `
+                  <tr>
+                    <td class="center">${li+1}</td>
+                    <td class="num">
+                      <input class="cell" style="text-align:right" data-gi="${gi}" data-li="${li}" data-lk="len"
+                        value="${escapeHtml(L.len)}" placeholder="${isArea?'VD: 3,22':'VD: 8'}" />
+                    </td>
+                    <td class="num">
+                      <input class="cell" style="text-align:right" data-gi="${gi}" data-li="${li}" data-lk="wid"
+                        value="${escapeHtml(L.wid)}" placeholder="${isArea?'VD: 4,3':'—'}" ${isArea?'':'disabled'} />
+                    </td>
+                    <td class="num">
+                      <input class="cell" style="text-align:right" data-gi="${gi}" data-li="${li}" data-lk="factor"
+                        value="${escapeHtml((L.factor ?? 1))}" placeholder="1" />
+                    </td>
+                    <td>
+                      <input class="cell" data-gi="${gi}" data-li="${li}" data-lk="note"
+                        value="${escapeHtml((L.note ?? '').toString())}"
+                        placeholder="VD: Khu A / Phòng khách..." />
+                    </td>
+                    <td class="num"><b>${res.toLocaleString('vi-VN',{maximumFractionDigits:3})} ${escapeHtml(g.unit)}</b></td>
+                    <td class="center">
+                      <button class="danger" data-act="delLine" data-gi="${gi}" data-li="${li}">Xóa</button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      wrap.appendChild(div);
+    });
+
+    recalc();
+    autoSave();
+    restoreFocus(focusKey);
+  }
+
+  function recalc(){
+    const total = groups.reduce((s,g)=> s + groupAmount(g), 0);
+    const adv = parseNumber(document.getElementById('advance').value);
+    const remain = total - adv;
+
+    document.getElementById('sumTotal').textContent = fmtVND(total);
+    document.getElementById('sumAdvance').textContent = fmtVND(adv);
+    document.getElementById('sumRemain').textContent = fmtVND(remain);
+
+    const st = document.getElementById('status');
+    if (groups.length === 0) st.innerHTML = '<span style="color:var(--muted)">Chưa có dữ liệu</span>';
+    else if (remain > 0) st.innerHTML = `<span class="bad">Còn phải trả</span>`;
+    else if (remain === 0) st.innerHTML = `<span class="ok">Đã thanh toán đủ</span>`;
+    else st.innerHTML = `<span style="color:var(--warn)">Trả dư</span>`;
+  }
+
+  function save(){
+    const payload = {
+      groups,
+      advance: document.getElementById('advance').value ?? '',
+      invDate: document.getElementById('invDate').value ?? '',
+      invCustomer: document.getElementById('invCustomer').value ?? '',
+      invAddress: document.getElementById('invAddress').value ?? '',
+      invContact: document.getElementById('invContact').value ?? '',
+      bankName: document.getElementById('bankName').value ?? '',
+      bankBranch: document.getElementById('bankBranch').value ?? '',
+      bankAccountName: document.getElementById('bankAccountName').value ?? '',
+      bankAccountNo: document.getElementById('bankAccountNo').value ?? '',
+      globalNote: document.getElementById('globalNote').value ?? '',
+      ts: Date.now()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  }
+  function autoSave(){ save(); }
+
+  function load(){
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    try{
+      const p = JSON.parse(raw);
+      groups = Array.isArray(p.groups) ? p.groups : [];
+      document.getElementById('advance').value = p.advance ?? '';
+      document.getElementById('invDate').value = p.invDate ?? '';
+      document.getElementById('invCustomer').value = p.invCustomer ?? '';
+      document.getElementById('invAddress').value = p.invAddress ?? '';
+      document.getElementById('invContact').value = p.invContact ?? '';
+      document.getElementById('bankName').value = p.bankName ?? '';
+      document.getElementById('bankBranch').value = p.bankBranch ?? '';
+      document.getElementById('bankAccountName').value = p.bankAccountName ?? '';
+      document.getElementById('bankAccountNo').value = p.bankAccountNo ?? '';
+      document.getElementById('globalNote').value = p.globalNote ?? '';
+      return true;
+    }catch(e){ console.error(e); return false; }
+  }
+
+  function normalizeGroups(gs){
+    return (gs || []).map(g => ({
+      name: (g.name ?? 'Nhóm').toString(),
+      unit: (g.unit ?? 'm²').toString().replace('m2','m²'),
+      unitPrice: (g.unitPrice ?? '').toString(),
+      groupNote: (g.groupNote ?? '').toString(),
+      lines: (g.lines && g.lines.length ? g.lines : [{len:'',wid:'',factor:1,note:''}]).map(L => ({
+        len: (L.len ?? '').toString(),
+        wid: (L.wid ?? '').toString(),
+        factor: (L.factor ?? 1),
+        note: (L.note ?? '').toString()
+      }))
+    }));
+  }
+
+  // ===== PROJECT FILE EXPORT/IMPORT =====
+  const PROJECT_EXT = '.tcproj.json';
+
+  function collectProjectPayload() {
+    return {
+      format: 'thachcao_project',
+      version: 1,
+      savedAt: new Date().toISOString(),
+      data: {
+        groups,
+        advance: document.getElementById('advance').value ?? '',
+        invDate: document.getElementById('invDate').value ?? '',
+        invCustomer: document.getElementById('invCustomer').value ?? '',
+        invAddress: document.getElementById('invAddress').value ?? '',
+        invContact: document.getElementById('invContact').value ?? '',
+        bankName: document.getElementById('bankName').value ?? '',
+        bankBranch: document.getElementById('bankBranch').value ?? '',
+        bankAccountName: document.getElementById('bankAccountName').value ?? '',
+        bankAccountNo: document.getElementById('bankAccountNo').value ?? '',
+        globalNote: document.getElementById('globalNote').value ?? '',
+        ts: Date.now()
+      }
+    };
+  }
+
+  function applyProjectPayload(projectObj) {
+    if (!projectObj || projectObj.format !== 'thachcao_project' || !projectObj.data) {
+      throw new Error('File không đúng định dạng dự án thạch cao.');
+    }
+    const d = projectObj.data;
+
+    document.getElementById('advance').value = d.advance ?? '';
+    document.getElementById('invDate').value = d.invDate ?? '';
+    document.getElementById('invCustomer').value = d.invCustomer ?? '';
+    document.getElementById('invAddress').value = d.invAddress ?? '';
+    document.getElementById('invContact').value = d.invContact ?? '';
+    document.getElementById('bankName').value = d.bankName ?? '';
+    document.getElementById('bankBranch').value = d.bankBranch ?? '';
+    document.getElementById('bankAccountName').value = d.bankAccountName ?? '';
+    document.getElementById('bankAccountNo').value = d.bankAccountNo ?? '';
+    document.getElementById('globalNote').value = d.globalNote ?? '';
+
+    groups = normalizeGroups(Array.isArray(d.groups) ? d.groups : []);
+    render();
+    save();
+  }
+
+  function downloadTextFile(filename, text) {
+    const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // ===== NEW FILENAME RULE =====
+  function yyyymmddFromInvDate(){
+    const raw = (document.getElementById('invDate')?.value || '').trim();
+    const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m){
+      const dd = String(m[1]).padStart(2,'0');
+      const mm = String(m[2]).padStart(2,'0');
+      const yy = String(m[3]);
+      return `${yy}${mm}${dd}`;
+    }
+    const d = new Date();
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yy = d.getFullYear();
+    return `${yy}${mm}${dd}`;
+  }
+
+  function sanitizeFilePart(s){
+    return String(s ?? '')
+      .replace(/[\\\/:*?"<>|]/g, '-')
+      .replace(/[\u0000-\u001F]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function nextProjectIndexForDate(dateYYYYMMDD){
+    const key = `tc_project_seq_${dateYYYYMMDD}`;
+    const cur = Number(localStorage.getItem(key) || '0');
+    const next = cur + 1;
+    localStorage.setItem(key, String(next));
+    return next;
+  }
+
+  function buildProjectFileBaseName(){
+    const date = yyyymmddFromInvDate();
+
+    // Quy ước với UI hiện tại:
+    // invCustomer: "Khách hàng / Công trình" -> dùng như TÊN CÔNG TRÌNH
+    // invContact: "Liên hệ" -> dùng như TÊN KHÁCH HÀNG (nếu muốn gắn vào tên file)
+    let projectName = sanitizeFilePart(document.getElementById('invCustomer')?.value || '');
+    let customerName = sanitizeFilePart(document.getElementById('invContact')?.value || '');
+
+    if (!projectName){
+      const idx = nextProjectIndexForDate(date);
+      projectName = `Công trình${idx}`;
+    }
+
+    return customerName
+      ? `${date}_${projectName}_${customerName}`
+      : `${date}_${projectName}`;
+  }
+
+  // ===== DEFAULT SAVE FOLDER (Chrome/Edge + HTTPS/localhost) =====
+  let dirHandle = null;
+
+  function fsSupported(){
+    return !!(window.showDirectoryPicker && window.FileSystemHandle);
+  }
+
+  function idbOpen(){
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('tc_project_db', 1);
+      req.onupgradeneeded = () => req.result.createObjectStore('kv');
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function idbSet(key, val){
+    const db = await idbOpen();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('kv','readwrite');
+      tx.objectStore('kv').put(val, key);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+  async function idbGet(key){
+    const db = await idbOpen();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction('kv','readonly');
+      const req = tx.objectStore('kv').get(key);
+      req.onsuccess = () => resolve(req.result ?? null);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function restoreDefaultFolder(){
+    if (!fsSupported()) { updateSaveFolderHint(); return; }
+    try{
+      const h = await idbGet('default_dir');
+      if (h) dirHandle = h;
+    }catch{}
+    updateSaveFolderHint();
+  }
+
+  function updateSaveFolderHint(){
+    const el = document.getElementById('saveFolderHint');
+    if (!el) return;
+    if (dirHandle) el.innerHTML = `Nơi lưu: <b>Đã chọn</b>`;
+    else el.innerHTML = `Nơi lưu: <b>Download</b>`;
+  }
+
+  async function pickDefaultFolder(){
+    if (!fsSupported()){
+      alert('Trình duyệt không hỗ trợ chọn thư mục lưu mặc định. Dùng Chrome/Edge và chạy HTTPS hoặc localhost.');
+      return;
+    }
+    try{
+      dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+      await idbSet('default_dir', dirHandle);
+      updateSaveFolderHint();
+      alert('Đã chọn nơi lưu mặc định.');
+    }catch(err){
+      console.error(err);
+    }
+  }
+
+  async function saveTextToDefaultFolder(filename, text){
+    if (!dirHandle) return false;
+    try{
+      const perm = await dirHandle.requestPermission({ mode:'readwrite' });
+      if (perm !== 'granted') return false;
+
+      const fileHandle = await dirHandle.getFileHandle(filename, { create:true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(new Blob([text], {type:'application/json;charset=utf-8'}));
+      await writable.close();
+      return true;
+    }catch(err){
+      console.error(err);
+      return false;
+    }
+  }
+
+  async function exportProjectFile(withTimestamp=false) {
+    const payload = collectProjectPayload();
+    const json = JSON.stringify(payload, null, 2);
+
+    const base = buildProjectFileBaseName();
+    const ts = withTimestamp ? `-${Date.now()}` : '';
+    const filename = `${base}${ts}${PROJECT_EXT}`;
+
+    const saved = await saveTextToDefaultFolder(filename, json);
+    if (saved){
+      alert('Đã xuất file dự án vào nơi lưu mặc định.');
+      return;
+    }
+    downloadTextFile(filename, json);
+  }
+
+  async function importProjectFromFile(file) {
+    const text = await file.text();
+    let obj;
+    try { obj = JSON.parse(text); }
+    catch { throw new Error('File không phải JSON hợp lệ.'); }
+    applyProjectPayload(obj);
+  }
+
+  // ===== Invoice HTML =====
+  function buildInvoiceHTML(){
+    const invDate = document.getElementById('invDate').value.trim();
+    const invCustomer = document.getElementById('invCustomer').value.trim();
+    const invAddress = document.getElementById('invAddress').value.trim();
+    const invContact = document.getElementById('invContact').value.trim();
+
+    const bankName = document.getElementById('bankName').value.trim();
+    const bankBranch = document.getElementById('bankBranch').value.trim();
+    const bankAccountName = document.getElementById('bankAccountName').value.trim();
+    const bankAccountNo = document.getElementById('bankAccountNo').value.trim();
+
+    const globalNote = document.getElementById('globalNote').value ?? '';
+
+    const total = groups.reduce((s,g)=> s + groupAmount(g), 0);
+    const adv = parseNumber(document.getElementById('advance').value);
+    const remain = total - adv;
+
+    const fmtVNDHtml = (n) => {
+      const v = Number(n) || 0;
+      const cls = v < 0 ? 'neg' : '';
+      return `<span class="${cls}">${fmtVND(v)}</span>`;
+    };
+
+    let groupIndex = 0;
+    const detailRows = groups.flatMap((g) => {
+      const isArea = (g.unit === 'm²');
+      const rows = [];
+
+      groupIndex++;
+      rows.push({
+        stt: String(groupIndex),
+        item: g.name || '(Chưa đặt tên nhóm)',
+        detail: (g.groupNote || ''),
+        qty: groupQty(g),
+        unit: g.unit,
+        unitPrice: parseNumber(g.unitPrice),
+        amount: groupAmount(g),
+        isGroupHeader: true
+      });
+
+      let subIndex = 0;
+      (g.lines || []).forEach((L) => {
+        const len = parseNumber(L.len), wid = parseNumber(L.wid);
+        const fac = parseNumber(L.factor) || 1;
+        const lineQty = isArea ? (len*wid*fac) : (len*fac);
+
+        const note = (L.note ?? '').toString().trim();
+        const hasAny = lineQty !== 0 || note.length > 0;
+        if (!hasAny) return;
+
+        subIndex++;
+        const sttLine = `${groupIndex}.${subIndex}`;
+
+        const formula = isArea
+          ? `${L.len || 0} × ${L.wid || 0} × ${fac}`
+          : `${L.len || 0} × ${fac}`;
+
+        rows.push({
+          stt: sttLine,
+          item: `↳ Dòng ${subIndex}`,
+          detail: `${formula}${note ? ' | Ghi chú: ' + note : ''}`,
+          qty: lineQty,
+          unit: g.unit,
+          unitPrice: '',
+          amount: ''
+        });
+      });
+
+      return rows;
+    });
+
+    const detailHTML = detailRows.map(r => {
+      const fmtNum = (x, opt) => Number(x).toLocaleString('vi-VN', opt);
+      const numHtml = (x, opt) => {
+        const v = Number(x);
+        const cls = (isFinite(v) && v < 0) ? 'neg' : '';
+        return `<span class="${cls}">${fmtNum(v, opt)}</span>`;
+      };
+
+      const qtyStr = (r.qty === '' || r.qty === null || r.qty === undefined)
+        ? ''
+        : numHtml(r.qty, { maximumFractionDigits: 3 });
+
+      const upStr = (r.unitPrice === '' || r.unitPrice === null || r.unitPrice === undefined)
+        ? ''
+        : numHtml(r.unitPrice, { maximumFractionDigits: 0 });
+
+      const amtStr = (r.amount === '' || r.amount === null || r.amount === undefined)
+        ? ''
+        : numHtml(r.amount, { maximumFractionDigits: 0 });
+
+      const rowStyle = r.isGroupHeader ? 'style="font-weight:800;background:#fbfbfc"' : '';
+      const detail = escapeHtml(r.detail || '');
+
+      return `
+        <tr ${rowStyle}>
+          <td class="inv-center">${escapeHtml(r.stt)}</td>
+          <td>${escapeHtml(r.item)}</td>
+          <td class="inv-muted">${detail}</td>
+          <td class="inv-right">${qtyStr}</td>
+          <td class="inv-center">${escapeHtml(r.unit || '')}</td>
+          <td class="inv-right">${upStr}</td>
+          <td class="inv-right">${amtStr}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const statusText = remain > 0 ? 'Còn phải thanh toán' : (remain === 0 ? 'Đã thanh toán đủ' : 'Đã trả dư');
+
+    document.getElementById('invMetaSmall').textContent =
+      `• Tổng: ${fmtVND(total)} • Tạm ứng: ${fmtVND(adv)} • Còn lại: ${fmtVND(remain)}`;
+
+    const bankHtml = (bankName || bankAccountNo || bankAccountName || bankBranch) ? `
+      <div class="inv-box" style="margin-top:10px">
+        <div><b>Ngân hàng:</b> ${escapeHtml(bankName || '—')}</div>
+        <div><b>Chi nhánh:</b> ${escapeHtml(bankBranch || '—')}</div>
+        <div><b>Chủ tài khoản:</b> ${escapeHtml(bankAccountName || '—')}</div>
+        <div><b>Số tài khoản:</b> ${escapeHtml(bankAccountNo || '—')}</div>
+      </div>
+    ` : '';
+
+    return `
+      <div class="inv-top">
+        <div class="inv-meta">
+          <div><b>Ngày:</b> ${escapeHtml(invDate || '—')}</div>
+        </div>
+      </div>
+
+      <div class="inv-title">BẢNG THANH TOÁN</div>
+      <div class="inv-sub">Tổng hợp khối lượng & giá trị</div>
+
+      <div class="inv-box">
+        <div><b>Khách hàng / Công trình:</b> ${escapeHtml(invCustomer || '—')}</div>
+        <div><b>Địa chỉ công trình:</b> ${escapeHtml(invAddress || '—')}</div>
+        <div><b>Liên hệ:</b> ${escapeHtml(invContact || '—')}</div>
+        <div><b>Ghi chú chung:</b> ${escapeHtml((globalNote || '').trim() || '—')}</div>
+      </div>
+
+      ${bankHtml}
+
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th style="width:56px" class="inv-center">STT</th>
+            <th style="width:170px">Hạng mục</th>
+            <th>Chi tiết / Ghi chú</th>
+            <th style="width:110px" class="inv-right">Khối lượng</th>
+            <th style="width:70px" class="inv-center">ĐVT</th>
+            <th style="width:120px" class="inv-right">Đơn giá</th>
+            <th style="width:130px" class="inv-right">Thành tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${detailHTML || `<tr><td colspan="7" class="inv-center">Chưa có dữ liệu</td></tr>`}
+        </tbody>
+      </table>
+
+      <div class="inv-total">
+        <div class="row"><span>Tổng cộng</span><b>${fmtVNDHtml(total)}</b></div>
+        <div class="row"><span>Tạm ứng</span><b>${fmtVNDHtml(adv)}</b></div>
+        <div class="row grand"><span><b>Còn lại phải thanh toán</b></span><b>${fmtVNDHtml(remain)}</b></div>
+        <div class="row"><span>Trạng thái</span><b>${escapeHtml(statusText)}</b></div>
+      </div>
+
+      <div class="print-note">In/PDF: Ctrl+P (Chrome/Edge) → Destination: Save as PDF</div>
+    `;
+  }
+
+  function openInvoice(){
+    const modal = document.getElementById('invoiceModal');
+    const content = document.getElementById('invoiceContent');
+    content.innerHTML = buildInvoiceHTML();
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeInvoice(){
+    const modal = document.getElementById('invoiceModal');
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  async function copyInvoiceAsImage(){
+    const target = document.getElementById('invoiceContent');
+    if (!target) return alert('Không tìm thấy nội dung bảng thanh toán.');
+
+    const scale = Math.min(2.5, (window.devicePixelRatio || 1) * 2);
+
+    try{
+      if (!window.html2canvas) throw new Error('Chưa tải được html2canvas (CDN).');
+
+      const canvas = await html2canvas(target, {
+        backgroundColor: '#ffffff',
+        scale,
+        useCORS: true
+      });
+
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 1));
+      if (!blob) throw new Error('Không tạo được ảnh.');
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        alert('Đã copy ảnh bảng thanh toán (PNG) vào clipboard.');
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bang-thanh-toan-${Date.now()}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      alert('Thiết bị không hỗ trợ copy ảnh trực tiếp. Mình đã tải ảnh PNG về máy.');
+    }catch(err){
+      console.error(err);
+      alert('Không copy được ảnh. Lưu ý: cần HTTPS và phải tải được thư viện CDN html2canvas.');
+    }
+  }
+
+  document.addEventListener('input', (e) => {
+    const t = e.target;
+
+    if (t.matches('[data-gi][data-gk]')) {
+      const gi = Number(t.dataset.gi);
+      const gk = t.dataset.gk;
+      if (!groups[gi]) return;
+      groups[gi][gk] = t.value;
+      scheduleRender();
+      return;
+    }
+
+    if (t.matches('[data-gi][data-li][data-lk]')) {
+      const gi = Number(t.dataset.gi);
+      const li = Number(t.dataset.li);
+      const lk = t.dataset.lk;
+      if (!groups[gi] || !groups[gi].lines[li]) return;
+      groups[gi].lines[li][lk] = t.value;
+      scheduleRender();
+      return;
+    }
+
+    if (t.id === 'advance' || t.id === 'invDate' || t.id === 'invCustomer' || t.id === 'invAddress' ||
+        t.id === 'invContact' || t.id === 'globalNote' ||
+        t.id === 'bankName' || t.id === 'bankBranch' || t.id === 'bankAccountName' || t.id === 'bankAccountNo') {
+      recalc();
+      autoSave();
+    }
+  });
+
+  document.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.matches('select[data-gi][data-gk="unit"]')) {
+      const gi = Number(t.dataset.gi);
+      if (!groups[gi]) return;
+      groups[gi].unit = t.value;
+      render();
+    }
+
+    if (t.id === 'projectFileInput') {
+      const file = t.files && t.files[0];
+      if (!file) return;
+      importProjectFromFile(file)
+        .then(() => alert('Đã mở file dự án.'))
+        .catch(err => alert('Không mở được file: ' + (err.message || err)));
+      t.value = '';
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const t = e.target;
+
+    if (t.id === 'addGroup') { groups.push(defaultGroup()); render(); return; }
+    if (t.id === 'saveBtn') { save(); alert('Đã lưu.'); return; }
+    if (t.id === 'loadBtn') { load(); groups = normalizeGroups(groups); render(); alert('Đã tải.'); return; }
+    if (t.id === 'clearBtn') {
+      if (!confirm('Xóa tất cả nhóm?')) return;
+      groups = [];
+      document.getElementById('advance').value = '';
+      render();
+      return;
+    }
+
+    if (t.id === 'btnExportProject') { exportProjectFile(false); return; }
+    if (t.id === 'btnExportBackup') { exportProjectFile(true); return; }
+    if (t.id === 'btnImportProject') { document.getElementById('projectFileInput').click(); return; }
+    if (t.id === 'btnPickSaveFolder') { pickDefaultFolder(); return; }
+
+    if (t.id === 'btnNewProject') {
+      if (!confirm('Tạo dự án mới? (Nên Xuất file trước khi xóa)')) return;
+      groups = [];
+      document.getElementById('advance').value = '';
+      document.getElementById('invDate').value = todayVN();
+      document.getElementById('invCustomer').value = '';
+      document.getElementById('invAddress').value = '';
+      document.getElementById('invContact').value = '';
+      document.getElementById('bankName').value = '';
+      document.getElementById('bankBranch').value = '';
+      document.getElementById('bankAccountName').value = '';
+      document.getElementById('bankAccountNo').value = '';
+      document.getElementById('globalNote').value = '';
+      render();
+      save();
+      alert('Đã tạo dự án mới.');
+      return;
+    }
+
+    if (t.dataset.act === 'addLine') {
+      const gi = Number(t.dataset.gi);
+      if (!groups[gi]) return;
+      groups[gi].lines.push({len:'',wid:'',factor:1,note:''});
+      render();
+      return;
+    }
+    if (t.dataset.act === 'delGroup') {
+      const gi = Number(t.dataset.gi);
+      groups.splice(gi, 1);
+      render();
+      return;
+    }
+    if (t.dataset.act === 'delLine') {
+      const gi = Number(t.dataset.gi);
+      const li = Number(t.dataset.li);
+      if (!groups[gi]) return;
+      groups[gi].lines.splice(li, 1);
+      if (groups[gi].lines.length === 0) groups[gi].lines.push({len:'',wid:'',factor:1,note:''});
+      render();
+      return;
+    }
+
+    if (t.id === 'invoiceBtn') { openInvoice(); return; }
+    if (t.id === 'copyImgBtn') { copyInvoiceAsImage(); return; }
+    if (t.id === 'closeInvoice') { closeInvoice(); return; }
+    if (t.id === 'printBtn') { window.print(); return; }
+  });
+
+  document.getElementById('invoiceModal').addEventListener('click', (e) => {
+    if (e.target.id === 'invoiceModal') closeInvoice();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeInvoice();
+  });
+
+  (function init(){
+    const ok = load();
+    if (!ok || groups.length === 0){
+      groups = [
+        { name:'Trần', unit:'m²', unitPrice:'40000', groupNote:'Trần phòng khách + bếp', lines:[
+          {len:'3,22', wid:'4,3', factor:1, note:'Khu A'},
+          {len:'6,7',  wid:'4,2', factor:1, note:'Khu B'},
+        ]},
+        { name:'Vách', unit:'m²', unitPrice:'70000', groupNote:'Vách 2 mặt', lines:[
+          {len:'5', wid:'1,4', factor:2, note:'2 vách hông'},
+        ]},
+        { name:'Lỗ thông trần', unit:'lỗ', unitPrice:'50000', groupNote:'Khoan lỗ + xử lý viền', lines:[
+          {len:'2', wid:'', factor:1, note:'2 lỗ'},
+        ]},
+      ];
+    }
+
+    if (!document.getElementById('invDate').value.trim()) {
+      document.getElementById('invDate').value = todayVN();
+    }
+
+    groups = normalizeGroups(groups);
+    restoreDefaultFolder();
+    render();
+  })();
+</script>
+
+</body>
+</html>

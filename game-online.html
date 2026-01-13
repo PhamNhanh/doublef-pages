@@ -3,256 +3,1117 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Game Online (WS Test) - doublef-pages</title>
+  <title>Game Thẻ Bài 1–10 (Online Room)</title>
   <style>
     :root{
-      --bg:#0b1020; --text:#e9edff; --muted:#aab3d6; --line:rgba(255,255,255,.12);
-      --card:rgba(255,255,255,.08);
-      --good:rgba(61,220,151,.22); --warn:rgba(255,209,102,.22); --bad:rgba(255,107,107,.22);
+      --bg:#0b1020; --text:#e9edff; --muted:#aab3d6;
+      --line:rgba(255,255,255,.12); --card:rgba(255,255,255,.08);
+      --good:rgba(61,220,151,.18); --warn:rgba(255,209,102,.18); --bad:rgba(255,107,107,.18);
       --radius:18px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      margin:0; color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
       background:
         radial-gradient(1000px 700px at 15% 10%, rgba(120,170,255,.18), transparent 55%),
         radial-gradient(900px 700px at 85% 90%, rgba(61,220,151,.14), transparent 55%),
         var(--bg);
-      color:var(--text);
       min-height:100vh;
     }
-    .wrap{max-width:980px;margin:0 auto;padding:16px;display:grid;gap:14px}
-    .panel{
-      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-      backdrop-filter: blur(10px);
-      overflow:hidden;
-    }
-    header{
-      padding:12px 14px; border-bottom:1px solid var(--line);
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    }
+    .wrap{max-width:1200px;margin:0 auto;padding:14px;display:grid;gap:14px}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);backdrop-filter:blur(10px);overflow:hidden}
+    header{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
     header h1{margin:0;font-size:14px;letter-spacing:.2px}
     header .sub{font-size:12px;color:var(--muted)}
     .content{padding:14px}
-    label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
-    input{
-      width:100%; padding:10px 12px; border-radius:12px;
-      border:1px solid var(--line); background:rgba(0,0,0,.18); color:var(--text);
-      outline:none;
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    label{font-size:12px;color:var(--muted);display:block;margin:0 0 6px}
+    input, select{
+      padding:10px 12px;border-radius:12px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);color:var(--text);outline:none;
     }
-    input:focus{border-color:rgba(120,170,255,.35); box-shadow:0 0 0 4px rgba(120,170,255,.12)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    input:focus, select:focus{border-color:rgba(120,170,255,.35);box-shadow:0 0 0 4px rgba(120,170,255,.12)}
     button{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:12px;
-      font-weight:800;
-      cursor:pointer;
+      border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);
+      padding:10px 12px;border-radius:12px;font-weight:800;cursor:pointer;
     }
-    button.primary{border-color:rgba(120,170,255,.35); background:rgba(120,170,255,.14)}
-    button.good{border-color:rgba(61,220,151,.35); background:rgba(61,220,151,.14)}
-    button.warn{border-color:rgba(255,209,102,.35); background:rgba(255,209,102,.14)}
-    button.danger{border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.14)}
     button:disabled{opacity:.55;cursor:not-allowed}
-    .row{display:grid;grid-template-columns: 1fr; gap:14px}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px; border:1px solid var(--line);
-      background:rgba(0,0,0,.14); font-size:12px; color:var(--muted);
+    .primary{border-color:rgba(120,170,255,.35);background:rgba(120,170,255,.14)}
+    .good{border-color:rgba(61,220,151,.35);background:rgba(61,220,151,.14)}
+    .warn{border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.14)}
+    .danger{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.14)}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.18);font-size:12px;color:var(--muted)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:700px){ .split{grid-template-columns:1fr} }
+
+    /* Players */
+    .players{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    @media (max-width: 820px){ .players{grid-template-columns:1fr} }
+    .p{
+      border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.18);padding:10px;display:grid;gap:6px
     }
-    .status{display:flex;gap:10px;flex-wrap:wrap}
-    pre{
-      margin:0;
-      white-space:pre-wrap;
-      word-break:break-word;
-      background:rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:14px;
-      padding:12px;
-      min-height:240px;
-      line-height:1.35;
-      color:#fff;
+    .pTop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .pName{font-weight:900}
+    .pMeta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+    .tag{font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--muted)}
+    .tag.host{border-color:rgba(120,170,255,.35);background:rgba(120,170,255,.14);color:var(--text)}
+    .tag.turn{border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.14);color:var(--text)}
+    .tag.fold{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.14);color:var(--text)}
+    .tag.bot{border-color:rgba(61,220,151,.35);background:rgba(61,220,151,.14);color:var(--text)}
+
+    /* Cards */
+    .hand{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}
+    @media (max-width: 980px){ .hand{grid-template-columns:repeat(5,minmax(0,1fr))} }
+    .card{
+      user-select:none; cursor:pointer;
+      border:1px solid var(--line); border-radius:14px;
+      background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(0,0,0,.10));
+      padding:10px; min-height:56px; display:grid; place-items:center;
+      position:relative; overflow:hidden;
     }
-    .help{font-size:12px;color:var(--muted);line-height:1.45}
-    .toast{
-      position:fixed; right:16px; bottom:16px; max-width:min(440px,92vw);
-      background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.18);
-      padding:10px 12px; border-radius:14px; color:var(--text);
-      backdrop-filter: blur(8px);
-      display:none;
-    }
-    code{color:#fff}
+    .card .v{font-weight:1000;font-size:18px}
+    .card .s{position:absolute;left:10px;top:8px;font-size:11px;color:var(--muted)}
+    .card.back .v{opacity:.55}
+    .card.sel{outline:3px solid rgba(120,170,255,.35)}
+    .card.done{opacity:.35;cursor:not-allowed}
+    .pickInfo{font-size:12px;color:var(--muted);line-height:1.4}
+
+    /* Log */
+    pre{margin:0;white-space:pre-wrap;word-break:break-word;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px;min-height:180px;line-height:1.35}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="panel">
-      <header>
+<div class="wrap">
+
+  <div class="panel">
+    <header>
+      <div>
+        <h1>Game thẻ bài 1–10 (Online Room) — Host authoritative</h1>
+        <div class="sub">Vào phòng bằng mã • tối đa 10 người • có bot • cược Theo/Bỏ/Cược thêm • 1 file HTML</div>
+      </div>
+      <div class="row">
+        <span class="pill">Domain: <span class="mono" id="dom"></span></span>
+        <span class="pill">WS: <span class="mono" id="wsurl"></span></span>
+        <span class="pill" id="connPill">DISCONNECTED</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="split">
         <div>
-          <h1>Game Online (WebSocket) — Test kết nối Pages → Durable Object</h1>
-          <div class="sub">Endpoint: <code>wss://{domain}/ws?room=...&name=...</code></div>
+          <label>Mã phòng (room)</label>
+          <input id="room" value="abc123" maxlength="24">
         </div>
-        <div class="status" id="pills"></div>
-      </header>
-
-      <div class="content row">
-        <div class="panel" style="border-radius:14px">
-          <header>
-            <div>
-              <h1>Kết nối</h1>
-              <div class="sub">Mở 2 tab cùng Room để test broadcast</div>
-            </div>
-            <div class="pill" id="connState">DISCONNECTED</div>
-          </header>
-          <div class="content">
-            <div class="grid">
-              <div>
-                <label>Room (mã phòng)</label>
-                <input id="room" value="abc123" maxlength="24" />
-              </div>
-              <div>
-                <label>Name (tên)</label>
-                <input id="name" value="Test" maxlength="18" />
-              </div>
-            </div>
-
-            <div class="btns">
-              <button class="good" id="connect">Connect</button>
-              <button class="danger" id="disconnect" disabled>Disconnect</button>
-              <button class="primary" id="send" disabled>Send ping</button>
-              <button class="warn" id="clear">Clear log</button>
-            </div>
-
-            <div class="help" style="margin-top:10px">
-              <b>Lưu ý:</b> bạn cần tạo file <code>functions/ws.js</code> và bind Durable Object vào Pages.
-              Nếu bấm Connect mà bị <b>426</b> hoặc <b>500</b>, thường là chưa bind đúng <code>MY_DURABLE_OBJECT</code>.
-            </div>
-          </div>
+        <div>
+          <label>Tên của bạn</label>
+          <input id="name" value="Nhanh" maxlength="18">
         </div>
+      </div>
 
-        <div class="panel" style="border-radius:14px">
-          <header>
-            <div>
-              <h1>Log</h1>
-              <div class="sub">Sẽ hiển thị message realtime từ server</div>
-            </div>
-            <div class="pill" id="wsUrlPill">URL: -</div>
-          </header>
-          <div class="content">
-            <pre id="log"></pre>
-          </div>
+      <div class="split" style="margin-top:10px">
+        <div>
+          <label>Số tiền ban đầu (lưu local)</label>
+          <input id="money" type="number" value="1000" min="0" step="50">
         </div>
+        <div>
+          <label>Chế độ</label>
+          <select id="mode">
+            <option value="online">Online (WS)</option>
+            <option value="solo">Chơi với máy (offline)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:12px">
+        <button class="good" id="connect">Connect</button>
+        <button class="danger" id="disconnect" disabled>Disconnect</button>
+        <button class="warn" id="copyLink">Copy link phòng</button>
+        <span class="pill">Bạn là: <span class="mono" id="meId">-</span></span>
+        <span class="pill">Chủ phòng: <span class="mono" id="hostId">-</span></span>
+      </div>
+
+      <div class="pickInfo" style="margin-top:10px">
+        Quy tắc chọn 2 lá: Bạn chọn 2 lá úp trên bàn → chọn “Lá mình biết (Bí mật)” và “Lá người khác biết (Công khai)”.
+        Lá công khai: mọi người thấy số, riêng bạn thấy “??”. Lá bí mật: bạn thấy số, mọi người không thấy.
       </div>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div class="grid">
+    <!-- LEFT: Table -->
+    <div class="panel">
+      <header>
+        <div>
+          <h1>Bàn chơi</h1>
+          <div class="sub" id="phaseSub">Trạng thái: -</div>
+        </div>
+        <div class="row">
+          <span class="pill">Pot: <span class="mono" id="pot">0</span></span>
+          <span class="pill">Cược hiện tại: <span class="mono" id="curBet">0</span></span>
+          <span class="pill">Vòng: <span class="mono" id="round">0</span>/5</span>
+        </div>
+      </header>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const logEl = $("log");
-    const pills = $("pills");
-    const connState = $("connState");
-    const wsUrlPill = $("wsUrlPill");
-    const toastEl = $("toast");
+      <div class="content">
+        <div class="row" style="justify-content:space-between">
+          <div class="row">
+            <button class="primary" id="startBtn" disabled>START</button>
+            <button class="warn" id="resetGameBtn" disabled>Reset game</button>
+          </div>
 
-    let ws = null;
+          <div class="row" id="hostControls" style="display:none">
+            <span class="pill">Host settings</span>
+            <label style="margin:0;color:var(--muted);font-size:12px">Max</label>
+            <select id="maxPlayers">
+              <option>2</option><option>3</option><option>4</option><option>5</option>
+              <option>6</option><option>7</option><option>8</option><option>9</option>
+              <option selected>10</option>
+            </select>
+            <label style="margin:0;color:var(--muted);font-size:12px">Bots</label>
+            <select id="botCount">
+              <option selected>0</option><option>1</option><option>2</option><option>3</option>
+              <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option>
+            </select>
+            <button class="good" id="applyHost">Áp dụng</button>
+          </div>
+        </div>
 
-    function toast(msg){
-      toastEl.textContent = msg;
-      toastEl.style.display = "block";
-      clearTimeout(toast._t);
-      toast._t = setTimeout(()=>toastEl.style.display="none", 2000);
+        <div style="height:12px"></div>
+
+        <div class="players" id="players"></div>
+
+        <div style="height:12px"></div>
+
+        <div class="panel" style="border-radius:14px">
+          <header>
+            <div>
+              <h1>Lá của bạn (10 lá úp)</h1>
+              <div class="sub">Mỗi ván có 5 vòng (mỗi vòng bạn chọn 2 lá). Hết 10 lá → lật hết tính điểm.</div>
+            </div>
+            <div class="row">
+              <span class="pill">Điểm tạm: <span class="mono" id="myScore">0</span></span>
+              <span class="pill">Còn lại: <span class="mono" id="myLeft">10</span></span>
+            </div>
+          </header>
+          <div class="content">
+            <div class="hand" id="hand"></div>
+            <div style="height:10px"></div>
+
+            <div class="row">
+              <span class="pill">Đã chọn: <span class="mono" id="selInfo">0/2</span></span>
+
+              <label style="margin:0;color:var(--muted);font-size:12px">Trong 2 lá, lá nào là “Bí mật”?</label>
+              <select id="secretWhich">
+                <option value="0">Lá chọn #1</option>
+                <option value="1">Lá chọn #2</option>
+              </select>
+
+              <button class="good" id="confirmPick" disabled>Xác nhận chọn 2 lá</button>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <div class="row">
+              <button class="good" id="callBtn" disabled>THEO</button>
+              <button class="danger" id="foldBtn" disabled>BỎ</button>
+
+              <input id="raiseAmt" type="number" value="50" min="1" step="10" style="width:140px">
+              <button class="warn" id="raiseBtn" disabled>CƯỢC THÊM</button>
+            </div>
+
+            <div class="pickInfo" id="hintBox" style="margin-top:10px"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: Log -->
+    <div class="panel">
+      <header>
+        <div>
+          <h1>Log</h1>
+          <div class="sub">Bạn có thể mở 2 tab cùng room để test</div>
+        </div>
+        <div class="row">
+          <button class="warn" id="clearLog">Clear</button>
+          <button id="sendPing" disabled>Send ping</button>
+        </div>
+      </header>
+      <div class="content">
+        <pre id="log"></pre>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(() => {
+  // ============ Helpers ============
+  const $ = (id)=>document.getElementById(id);
+  const logEl = $("log");
+  const log = (m)=>{ const t=new Date().toLocaleTimeString(); logEl.textContent += `[${t}] ${m}\n`; logEl.scrollTop=logEl.scrollHeight; };
+
+  const proto = location.protocol === "https:" ? "wss" : "ws";
+  $("dom").textContent = location.host;
+
+  const qs = new URLSearchParams(location.search);
+  if (qs.get("room")) $("room").value = qs.get("room");
+  if (qs.get("name")) $("name").value = qs.get("name");
+
+  function wsUrl(room,name){
+    return `${proto}://${location.host}/ws?room=${encodeURIComponent(room)}&name=${encodeURIComponent(name)}`;
+  }
+
+  function uid(){ return (crypto?.randomUUID?.() || (Date.now()+"-"+Math.random())).toString(); }
+
+  // ============ Game rules (working interpretation) ============
+  // Mỗi người có 10 lá (giá trị 1..10 nhưng có lặp để tạo điểm khác nhau).
+  // 5 vòng, mỗi vòng chọn 2 lá (remove khỏi bài).
+  // Điểm = tổng tất cả lá đã “lật” (bí mật + công khai) qua 5 vòng.
+  // Khi betting kết thúc -> lật hết (reveal) và so điểm.
+  function randCard(){ return 1 + Math.floor(Math.random()*10); }
+
+  // ============ State (client) ============
+  let ws = null;
+  let mode = "online";
+
+  const ME = {
+    id: uid(),
+    name: "",
+    money: 1000,
+    isBot:false
+  };
+
+  // Host-authoritative state snapshot structure
+  // Only host generates & broadcasts STATE; others render it.
+  let state = null; // last received
+  let isHost = false;
+
+  // local selection (client UI)
+  let selected = []; // indices of remaining cards (0..9)
+  let localHand = Array(10).fill(null).map(()=>({ v: null, used:false })); // my local view (host sends masked)
+
+  // ============ Message protocol ============
+  // {type:'join', id,name,money,isBot}
+  // {type:'host_set', maxPlayers, botCount}
+  // {type:'start'}
+  // {type:'pick', id, picks:[a,b], secretWhich:0|1}
+  // {type:'bet', id, action:'call'|'fold'|'raise', amount?}
+  // {type:'state', state}
+  // {type:'ping', t}
+  function send(obj){
+    if (mode==="solo") return onLocalMessage(obj); // offline simulation
+    if (!ws || ws.readyState!==1) return;
+    ws.send(JSON.stringify(obj));
+  }
+
+  // ============ UI Elements ============
+  const connPill = $("connPill");
+  const connectBtn = $("connect");
+  const disconnectBtn = $("disconnect");
+  const sendPingBtn = $("sendPing");
+  const copyLinkBtn = $("copyLink");
+
+  const startBtn = $("startBtn");
+  const resetGameBtn = $("resetGameBtn");
+  const hostControls = $("hostControls");
+  const applyHostBtn = $("applyHost");
+  const maxPlayersSel = $("maxPlayers");
+  const botCountSel = $("botCount");
+
+  const playersEl = $("players");
+  const handEl = $("hand");
+  const confirmPickBtn = $("confirmPick");
+  const secretWhichSel = $("secretWhich");
+  const selInfo = $("selInfo");
+  const hintBox = $("hintBox");
+
+  const callBtn = $("callBtn");
+  const foldBtn = $("foldBtn");
+  const raiseAmt = $("raiseAmt");
+  const raiseBtn = $("raiseBtn");
+
+  // top stats
+  const hostIdEl = $("hostId");
+  const meIdEl = $("meId");
+  const phaseSub = $("phaseSub");
+  const potEl = $("pot");
+  const curBetEl = $("curBet");
+  const roundEl = $("round");
+  const myScoreEl = $("myScore");
+  const myLeftEl = $("myLeft");
+
+  $("clearLog").onclick = ()=> logEl.textContent="";
+  sendPingBtn.onclick = ()=> send({type:"ping", t:Date.now()});
+
+  copyLinkBtn.onclick = async ()=>{
+    const room = $("room").value.trim()||"lobby";
+    const name = $("name").value.trim()||"Player";
+    const u = new URL(location.href);
+    u.searchParams.set("room", room);
+    u.searchParams.set("name", name);
+    try{
+      await navigator.clipboard.writeText(u.toString());
+      log("Copied link phòng.");
+    }catch{
+      prompt("Copy link:", u.toString());
+    }
+  };
+
+  $("mode").onchange = ()=>{
+    mode = $("mode").value;
+    log("Mode = " + mode);
+  };
+
+  // ============ Connection ============
+  function setConn(on){
+    connPill.textContent = on ? "CONNECTED" : "DISCONNECTED";
+    connPill.style.borderColor = on ? "rgba(61,220,151,.35)" : "rgba(255,255,255,.12)";
+    connPill.style.background = on ? "rgba(61,220,151,.14)" : "rgba(0,0,0,.18)";
+    connectBtn.disabled = on;
+    disconnectBtn.disabled = !on;
+    sendPingBtn.disabled = !on;
+  }
+
+  function connect(){
+    mode = $("mode").value;
+    ME.name = ($("name").value.trim() || "Player").slice(0,18);
+    ME.money = Math.max(0, parseInt($("money").value||"1000",10) || 1000);
+    localStorage.setItem("doublef_money", String(ME.money));
+    localStorage.setItem("doublef_name", ME.name);
+
+    meIdEl.textContent = ME.id;
+
+    const room = ($("room").value.trim()||"lobby").toLowerCase();
+    const url = wsUrl(room, ME.name);
+    $("wsurl").textContent = url;
+
+    if (mode==="solo"){
+      setConn(true);
+      setupSoloRoom(room);
+      send({type:"join", id:ME.id, name:ME.name, money:ME.money, isBot:false});
+      return;
     }
 
-    function log(msg){
-      const t = new Date().toLocaleTimeString();
-      logEl.textContent += `[${t}] ${msg}\n`;
-      logEl.scrollTop = logEl.scrollHeight;
-    }
-
-    function setConnected(on){
-      $("connect").disabled = on;
-      $("disconnect").disabled = !on;
-      $("send").disabled = !on;
-      connState.textContent = on ? "CONNECTED" : "DISCONNECTED";
-      connState.style.borderColor = on ? "rgba(61,220,151,.35)" : "rgba(255,255,255,.12)";
-      connState.style.background = on ? "rgba(61,220,151,.14)" : "rgba(0,0,0,.14)";
-    }
-
-    function renderPills(){
-      pills.innerHTML = "";
-      const mk = (t) => {
-        const d = document.createElement("div");
-        d.className = "pill";
-        d.textContent = t;
-        return d;
-      };
-      pills.appendChild(mk("Domain: " + location.host));
-      pills.appendChild(mk("Protocol: " + location.protocol));
-      pills.appendChild(mk("WS path: /ws"));
-    }
-
-    renderPills();
-    setConnected(false);
-
-    function wsUrl(){
-      const room = ($("room").value.trim() || "lobby");
-      const name = ($("name").value.trim() || "Player");
-      const proto = location.protocol === "https:" ? "wss" : "ws";
-      return `${proto}://${location.host}/ws?room=${encodeURIComponent(room)}&name=${encodeURIComponent(name)}`;
-    }
-
-    function connect(){
-      const url = wsUrl();
-      wsUrlPill.textContent = "URL: " + url;
-      log("Connecting: " + url);
-
-      ws = new WebSocket(url);
-
-      ws.onopen = () => {
-        setConnected(true);
-        toast("WS connected");
-        log("open");
-      };
-
-      ws.onmessage = (e) => {
-        log("msg: " + e.data);
-      };
-
-      ws.onclose = () => {
-        setConnected(false);
-        log("close");
-      };
-
-      ws.onerror = () => {
-        log("error");
-      };
-    }
-
-    function disconnect(){
-      if (ws) {
-        ws.close();
-        ws = null;
+    ws = new WebSocket(url);
+    ws.onopen = ()=>{
+      setConn(true);
+      log("WS open");
+      // join
+      send({type:"join", id:ME.id, name:ME.name, money:ME.money, isBot:false});
+    };
+    ws.onmessage = (e)=>{
+      try{
+        const msg = JSON.parse(e.data);
+        onMessage(msg);
+      }catch{
+        log("msg(raw): " + e.data);
       }
+    };
+    ws.onclose = ()=>{
+      setConn(false);
+      log("WS close");
+      ws = null;
+      state = null;
+      isHost = false;
+      renderAll();
+    };
+    ws.onerror = ()=> log("WS error");
+  }
+
+  function disconnect(){
+    if (mode==="solo"){
+      setConn(false);
+      state = null;
+      isHost = false;
+      renderAll();
+      return;
+    }
+    ws?.close();
+  }
+
+  connectBtn.onclick = connect;
+  disconnectBtn.onclick = disconnect;
+
+  // restore local data
+  const savedName = localStorage.getItem("doublef_name");
+  const savedMoney = localStorage.getItem("doublef_money");
+  if (savedName) $("name").value = savedName;
+  if (savedMoney) $("money").value = savedMoney;
+
+  // ============ Host-authoritative game core (runs on host only) ============
+  function makeEmptyState(room){
+    return {
+      v: 1,
+      room,
+      hostId: null,
+      maxPlayers: 10,
+      botCount: 0,
+      phase: "lobby", // lobby | picking | betting | showdown
+      round: 0,
+      pot: 0,
+      currentBet: 0,
+      turnIndex: 0,
+      players: {}, // id -> player
+      order: [], // ids in seat order
+      // per-round meta
+      picksDone: {}, // id -> true
+      bet: {}, // id -> committed total this betting round
+      folded: {}, // id -> true
+      allRevealed: false,
+      lastAction: ""
+    };
+  }
+
+  function addPlayerToState(st, p){
+    if (st.players[p.id]) return;
+    st.players[p.id] = {
+      id: p.id,
+      name: p.name,
+      money: p.money,
+      isBot: !!p.isBot,
+      // game data
+      hand: Array(10).fill(null).map(()=>({v: randCard(), used:false})),
+      // per-round reveals
+      reveals: [], // list of {secretV, publicV} (for scoring)
+      publicSeenByOthers: null, // last public card value (others see)
+      secretKnownBySelf: null,   // last secret card value (self sees)
+      score: 0
+    };
+    st.order.push(p.id);
+  }
+
+  function removePlayerFromState(st, id){
+    if (!st.players[id]) return;
+    delete st.players[id];
+    st.order = st.order.filter(x=>x!==id);
+  }
+
+  function ensureHost(st){
+    if (st.hostId && st.players[st.hostId]) return;
+    st.hostId = st.order[0] || null;
+  }
+
+  function broadcastState(){
+    if (!isHost) return;
+    // produce a masked snapshot depending on receiver is handled client-side (we send full state but with masked rules in render)
+    send({type:"state", state});
+  }
+
+  function hostSet(st, maxPlayers, botCount){
+    st.maxPlayers = Math.max(2, Math.min(10, maxPlayers|0));
+    st.botCount = Math.max(0, Math.min(10, botCount|0));
+  }
+
+  function maybeFillBots(st){
+    const humans = st.order.filter(id=>!st.players[id].isBot).length;
+    const desiredTotal = Math.min(st.maxPlayers, humans + st.botCount);
+    const currentTotal = st.order.length;
+    const need = Math.max(0, desiredTotal - currentTotal);
+    for (let i=0;i<need;i++){
+      const bid = "BOT-"+uid().slice(0,8);
+      addPlayerToState(st, {id:bid, name:"Bot"+(i+1), money: 1000, isBot:true});
+    }
+    ensureHost(st);
+  }
+
+  function startGame(st){
+    st.phase = "picking";
+    st.round = 1;
+    st.pot = 0;
+    st.currentBet = 0;
+    st.turnIndex = 0;
+    st.picksDone = {};
+    st.bet = {};
+    st.folded = {};
+    st.allRevealed = false;
+    st.lastAction = "Game started";
+    // reset hands/reveals/scores
+    for (const id of st.order){
+      const pl = st.players[id];
+      pl.hand = Array(10).fill(null).map(()=>({v: randCard(), used:false}));
+      pl.reveals = [];
+      pl.publicSeenByOthers = null;
+      pl.secretKnownBySelf = null;
+      pl.score = 0;
+    }
+  }
+
+  function nextTurn(st){
+    // advance to next active player in betting phase
+    const n = st.order.length;
+    for (let k=1;k<=n;k++){
+      const idx = (st.turnIndex + k) % n;
+      const id = st.order[idx];
+      if (!st.folded[id]) { st.turnIndex = idx; return; }
+    }
+  }
+
+  function allPicked(st){
+    // all non-folded players must pick for current round
+    for (const id of st.order){
+      if (st.folded[id]) continue;
+      if (!st.picksDone[id]) return false;
+    }
+    return true;
+  }
+
+  function beginBetting(st){
+    st.phase = "betting";
+    st.currentBet = 0;
+    st.bet = {};
+    st.folded = {};
+    st.turnIndex = 0; // start from first seat
+    st.lastAction = "Betting started";
+  }
+
+  function allBetsSettled(st){
+    // settled when everyone not folded has bet == currentBet
+    for (const id of st.order){
+      if (st.folded[id]) continue;
+      const b = st.bet[id] || 0;
+      if (b !== st.currentBet) return false;
+    }
+    return true;
+  }
+
+  function showdown(st){
+    st.phase = "showdown";
+    st.lastAction = "Showdown!";
+    // compute winner among not-folded
+    let best = -1, winners=[];
+    for (const id of st.order){
+      if (st.folded[id]) continue;
+      const sc = st.players[id].score;
+      if (sc > best){ best = sc; winners = [id]; }
+      else if (sc === best){ winners.push(id); }
+    }
+    if (winners.length === 0){
+      st.lastAction = "No winner (all folded)";
+      return;
+    }
+    // split pot if tie
+    const share = Math.floor(st.pot / winners.length);
+    for (const id of winners){
+      st.players[id].money += share;
+    }
+    st.pot = 0;
+    st.currentBet = 0;
+
+    // Next round or end
+    if (st.round >= 5){
+      st.lastAction = winners.length===1
+        ? `${st.players[winners[0]].name} WIN (final)`
+        : `TIE: ${winners.map(id=>st.players[id].name).join(", ")} (final)`;
+      st.phase = "lobby"; // return to lobby-style end screen
+      // keep hands/reveals for viewing; host can start again
+      return;
     }
 
-    $("connect").addEventListener("click", connect);
-    $("disconnect").addEventListener("click", disconnect);
+    st.round += 1;
+    // reset round meta
+    st.phase = "picking";
+    st.picksDone = {};
+    st.bet = {};
+    st.folded = {};
+    st.turnIndex = 0;
+    st.lastAction = winners.length===1
+      ? `${st.players[winners[0]].name} ăn pot, sang vòng ${st.round}`
+      : `Hòa chia pot, sang vòng ${st.round}`;
+  }
 
-    $("send").addEventListener("click", () => {
-      if (!ws || ws.readyState !== 1) return toast("WS chưa sẵn sàng");
-      const payload = { type: "ping", t: Date.now(), note: "hello from pages" };
-      ws.send(JSON.stringify(payload));
-      log("sent: " + JSON.stringify(payload));
-    });
+  function handlePick(st, id, picks, secretWhich){
+    const pl = st.players[id];
+    if (!pl) return;
+    if (st.phase !== "picking") return;
+    if (st.picksDone[id]) return;
 
-    $("clear").addEventListener("click", () => {
-      logEl.textContent = "";
-    });
-  </script>
+    // validate picks are distinct and available
+    if (!Array.isArray(picks) || picks.length!==2) return;
+    const a = picks[0]|0, b = picks[1]|0;
+    if (a===b) return;
+    const ha = pl.hand[a], hb = pl.hand[b];
+    if (!ha || !hb || ha.used || hb.used) return;
+
+    // mark used
+    ha.used = true; hb.used = true;
+
+    const secretIdx = secretWhich===1 ? b : a;
+    const publicIdx = secretWhich===1 ? a : b;
+
+    const secretV = pl.hand[secretIdx].v;
+    const publicV = pl.hand[publicIdx].v;
+
+    // scoring: add both to player's score
+    pl.reveals.push({ secretV, publicV });
+    pl.score = pl.reveals.reduce((s,r)=>s + r.secretV + r.publicV, 0);
+
+    // store last round info (used for “who sees what” rendering)
+    pl.secretKnownBySelf = secretV;
+    pl.publicSeenByOthers = publicV;
+
+    st.picksDone[id] = true;
+    st.lastAction = `${pl.name} picked 2 cards`;
+
+    if (allPicked(st)){
+      beginBetting(st);
+    }
+  }
+
+  function handleBet(st, id, action, amount){
+    if (st.phase !== "betting") return;
+    const pl = st.players[id];
+    if (!pl) return;
+    if (st.folded[id]) return;
+
+    // enforce turn order (host authoritative)
+    const turnId = st.order[st.turnIndex];
+    if (turnId !== id) return;
+
+    const myBet = st.bet[id] || 0;
+
+    if (action === "fold"){
+      st.folded[id] = true;
+      st.lastAction = `${pl.name} FOLD`;
+      // if everyone folded except one, resolve immediately
+      const active = st.order.filter(pid=>!st.folded[pid]);
+      if (active.length === 1){
+        const winner = st.players[active[0]];
+        winner.money += st.pot;
+        st.pot = 0;
+        st.lastAction = `${winner.name} WIN (all others folded)`;
+        // proceed
+        if (st.round >= 5) st.phase="lobby";
+        else { st.round += 1; st.phase="picking"; st.picksDone={}; st.bet={}; st.folded={}; st.turnIndex=0; }
+        return;
+      }
+      nextTurn(st);
+      return;
+    }
+
+    if (action === "call"){
+      // pay difference to match currentBet
+      const need = Math.max(0, st.currentBet - myBet);
+      const pay = Math.min(need, pl.money);
+      pl.money -= pay;
+      st.bet[id] = myBet + pay;
+      st.pot += pay;
+      st.lastAction = `${pl.name} CALL (+${pay})`;
+      nextTurn(st);
+      if (allBetsSettled(st)) showdown(st);
+      return;
+    }
+
+    if (action === "raise"){
+      const raiseBy = Math.max(1, (amount|0));
+      // first match current bet then add raiseBy
+      const needToCall = Math.max(0, st.currentBet - myBet);
+      const totalNeed = needToCall + raiseBy;
+      const pay = Math.min(totalNeed, pl.money);
+      // if can't cover totalNeed, treat as all-in raise to new bet
+      pl.money -= pay;
+      const newBet = myBet + pay;
+      st.bet[id] = newBet;
+      st.pot += pay;
+      if (newBet > st.currentBet) st.currentBet = newBet;
+      st.lastAction = `${pl.name} RAISE (+${pay})`;
+      nextTurn(st);
+      return;
+    }
+  }
+
+  // bots: simple heuristics
+  function botActIfNeeded(st){
+    if (st.phase !== "betting") return;
+    const turnId = st.order[st.turnIndex];
+    const pl = st.players[turnId];
+    if (!pl || !pl.isBot || st.folded[turnId]) return;
+
+    const myBet = st.bet[turnId] || 0;
+    const need = Math.max(0, st.currentBet - myBet);
+
+    // if need too big vs money -> fold sometimes
+    if (need > pl.money * 0.6 && Math.random() < 0.5){
+      handleBet(st, turnId, "fold");
+    } else if (Math.random() < 0.22 && pl.money > need + 30){
+      handleBet(st, turnId, "raise", 30 + Math.floor(Math.random()*50));
+    } else {
+      handleBet(st, turnId, "call");
+    }
+  }
+
+  // ============ Message handling ============
+  function onMessage(msg){
+    // ignore server hello/sys
+    if (msg.type === "hello") { $("wsurl").textContent = $("wsurl").textContent || "(connected)"; return; }
+    if (msg.type === "sys") { log("SYS: " + msg.msg); return; }
+
+    if (msg.type === "state"){
+      state = msg.state;
+      // host detection
+      isHost = state?.hostId === ME.id;
+      renderAll();
+      return;
+    }
+
+    // Host runs full game logic by processing actions then broadcasting state
+    if (!state){
+      // if first message is join and i'm host? create state on host side
+      // We'll lazily init on join processing for host.
+    }
+
+    if (msg.type === "join"){
+      if (!state){
+        // first one to see join (including self) creates local state,
+        // but only the first player (lowest seat) becomes host.
+        state = makeEmptyState(($("room").value.trim()||"lobby").toLowerCase());
+      }
+
+      // if room is full, ignore join (host will enforce)
+      if (isHostOrWouldBeHost()){
+        // host (or first client) manages seats
+        ensureHost(state);
+        // set host to first ever
+        if (!state.hostId) state.hostId = msg.id;
+
+        // enforce maxPlayers
+        if (state.order.length >= state.maxPlayers) {
+          state.lastAction = "Room full, join rejected";
+        } else {
+          addPlayerToState(state, {id:msg.id, name:msg.name, money:msg.money, isBot:!!msg.isBot});
+          ensureHost(state);
+        }
+
+        isHost = (state.hostId === ME.id);
+        if (isHost){
+          maybeFillBots(state);
+          broadcastState();
+        } else {
+          // non-host just waits for host's state broadcast
+        }
+      }
+      return;
+    }
+
+    if (!state) return;
+
+    // Host-only action processing
+    if (!isHost) return;
+
+    if (msg.type === "host_set"){
+      hostSet(state, msg.maxPlayers, msg.botCount);
+      maybeFillBots(state);
+      state.lastAction = `Host set max=${state.maxPlayers}, bots=${state.botCount}`;
+      broadcastState();
+      return;
+    }
+
+    if (msg.type === "start"){
+      ensureHost(state);
+      maybeFillBots(state);
+      startGame(state);
+      broadcastState();
+      return;
+    }
+
+    if (msg.type === "pick"){
+      handlePick(state, msg.id, msg.picks, msg.secretWhich);
+      botActIfNeeded(state);
+      broadcastState();
+      // if after pick, we entered betting and bots might be on turn, chain bot actions a bit
+      pumpBots();
+      return;
+    }
+
+    if (msg.type === "bet"){
+      handleBet(state, msg.id, msg.action, msg.amount);
+      botActIfNeeded(state);
+      broadcastState();
+      pumpBots();
+      return;
+    }
+
+    if (msg.type === "ping"){
+      // nothing
+      return;
+    }
+  }
+
+  function isHostOrWouldBeHost(){
+    // before state.hostId established, treat "first client" as host candidate
+    if (!state) return true;
+    if (!state.hostId) return true;
+    return state.hostId === ME.id;
+  }
+
+  function pumpBots(){
+    // let bots make a few steps to avoid "stuck turn"
+    let guard = 20;
+    while (guard-- > 0){
+      const before = state.lastAction;
+      botActIfNeeded(state);
+      // if no change, stop
+      if (state.lastAction === before) break;
+      // if showdown ended and phase changes, keep going maybe
+      if (state.phase !== "betting") break;
+    }
+  }
+
+  // ============ Offline solo simulation ============
+  let soloRoom = null;
+  function setupSoloRoom(room){
+    soloRoom = room;
+    // create local state and make ME host
+    state = makeEmptyState(room);
+    state.hostId = ME.id;
+    isHost = true;
+    renderAll();
+    broadcastState(); // goes to local handler only
+  }
+
+  function onLocalMessage(msg){
+    // offline: simply call onMessage as if broadcast
+    onMessage(msg);
+  }
+
+  // ============ UI Actions ============
+  applyHostBtn.onclick = ()=>{
+    const maxPlayers = parseInt(maxPlayersSel.value,10)||10;
+    const botCount = parseInt(botCountSel.value,10)||0;
+    send({type:"host_set", maxPlayers, botCount});
+  };
+
+  startBtn.onclick = ()=> send({type:"start"});
+  resetGameBtn.onclick = ()=>{
+    if (!isHost || !state) return;
+    state.phase = "lobby";
+    state.round = 0;
+    state.pot = 0;
+    state.currentBet = 0;
+    state.picksDone = {};
+    state.bet = {};
+    state.folded = {};
+    state.lastAction = "Reset by host";
+    // keep players but re-deal on next start
+    broadcastState();
+  };
+
+  // Picks UI
+  function onCardClick(i){
+    if (!state) return;
+    if (state.phase !== "picking") return;
+    // must be your turn to pick? Spec says mỗi lượt mỗi người chọn 2 con; không nói theo turn => cho phép đồng thời.
+    // We'll allow each player pick once per round anytime.
+    const me = state.players[ME.id];
+    if (!me) return;
+    if (state.picksDone?.[ME.id]) return;
+    if (me.hand[i]?.used) return;
+
+    if (selected.includes(i)) selected = selected.filter(x=>x!==i);
+    else {
+      if (selected.length >= 2) return;
+      selected.push(i);
+    }
+    renderHand();
+  }
+
+  confirmPickBtn.onclick = ()=>{
+    if (selected.length !== 2) return;
+    const secretWhich = parseInt(secretWhichSel.value,10) || 0;
+    send({type:"pick", id:ME.id, picks:[selected[0], selected[1]], secretWhich});
+    selected = [];
+    renderHand();
+  };
+
+  // Betting UI
+  callBtn.onclick = ()=> send({type:"bet", id:ME.id, action:"call"});
+  foldBtn.onclick = ()=> send({type:"bet", id:ME.id, action:"fold"});
+  raiseBtn.onclick = ()=>{
+    const amt = Math.max(1, parseInt(raiseAmt.value||"1",10) || 1);
+    send({type:"bet", id:ME.id, action:"raise", amount: amt});
+  };
+
+  // ============ Rendering ============
+  function renderAll(){
+    // host UI
+    hostIdEl.textContent = state?.hostId || "-";
+    isHost = !!state && state.hostId === ME.id;
+    hostControls.style.display = isHost ? "" : "none";
+    startBtn.disabled = !isHost || !state || state.order.length < 2;
+    resetGameBtn.disabled = !isHost || !state;
+
+    phaseSub.textContent = state ? `Trạng thái: ${state.phase} • ${state.lastAction||""}` : "Trạng thái: -";
+    potEl.textContent = state ? String(state.pot) : "0";
+    curBetEl.textContent = state ? String(state.currentBet) : "0";
+    roundEl.textContent = state ? String(state.round||0) : "0";
+
+    renderPlayers();
+    renderHand();
+    renderControls();
+  }
+
+  function renderPlayers(){
+    playersEl.innerHTML = "";
+    if (!state){ playersEl.innerHTML = `<div class="pill">Chưa có state. Hãy Connect.</div>`; return; }
+
+    // For rendering "who sees what", we show each player's last public card (others see),
+    // and for self we hide public card.
+    for (const id of state.order){
+      const pl = state.players[id];
+      if (!pl) continue;
+
+      const me = (id === ME.id);
+      const tags = [];
+      if (id === state.hostId) tags.push(`<span class="tag host">HOST</span>`);
+      if (pl.isBot) tags.push(`<span class="tag bot">BOT</span>`);
+      if (state.phase==="betting" && state.order[state.turnIndex]===id && !state.folded[id]) tags.push(`<span class="tag turn">TURN</span>`);
+      if (state.folded[id]) tags.push(`<span class="tag fold">FOLDED</span>`);
+
+      // Public seen:
+      let publicSeen;
+      if (state.phase==="lobby") publicSeen = "-";
+      else if (me){
+        // you should NOT know your public card
+        publicSeen = pl.publicSeenByOthers==null ? "-" : "??";
+      } else {
+        publicSeen = pl.publicSeenByOthers==null ? "-" : String(pl.publicSeenByOthers);
+      }
+
+      // Secret known:
+      let secretKnown;
+      if (state.phase==="lobby") secretKnown = "-";
+      else if (me){
+        secretKnown = pl.secretKnownBySelf==null ? "-" : String(pl.secretKnownBySelf);
+      } else {
+        secretKnown = pl.secretKnownBySelf==null ? "-" : "🔒";
+      }
+
+      const b = state.bet?.[id] || 0;
+
+      const div = document.createElement("div");
+      div.className = "p";
+      div.innerHTML = `
+        <div class="pTop">
+          <div class="pName">${escapeHtml(pl.name)} ${me?'<span class="tag">YOU</span>':''}</div>
+          <div class="row" style="gap:6px">${tags.join("")}</div>
+        </div>
+        <div class="pMeta">
+          <span>💰 <b class="mono">${pl.money}</b></span>
+          <span>🎯 Score <b class="mono">${pl.score||0}</b></span>
+          <span>🧾 Bet <b class="mono">${b}</b></span>
+          <span>👁️ Public <b class="mono">${publicSeen}</b></span>
+          <span>🤫 Secret <b class="mono">${secretKnown}</b></span>
+        </div>
+      `;
+      playersEl.appendChild(div);
+    }
+  }
+
+  function renderHand(){
+    handEl.innerHTML = "";
+    selected = selected.filter(i => state?.players?.[ME.id]?.hand?.[i] && !state.players[ME.id].hand[i].used);
+
+    const pl = state?.players?.[ME.id];
+    if (!state || !pl){
+      handEl.innerHTML = `<div class="pill">Chưa vào phòng / chưa có bài.</div>`;
+      selInfo.textContent = "0/2";
+      confirmPickBtn.disabled = true;
+      myScoreEl.textContent = "0";
+      myLeftEl.textContent = "10";
+      return;
+    }
+
+    const left = pl.hand.filter(c=>!c.used).length;
+    myLeftEl.textContent = String(left);
+    myScoreEl.textContent = String(pl.score||0);
+
+    const pickingAllowed = (state.phase === "picking") && !state.picksDone?.[ME.id];
+    for (let i=0;i<pl.hand.length;i++){
+      const c = pl.hand[i];
+      const div = document.createElement("div");
+      div.className = "card back";
+      if (c.used) div.classList.add("done");
+      if (selected.includes(i)) div.classList.add("sel");
+
+      const canClick = pickingAllowed && !c.used;
+      div.style.cursor = canClick ? "pointer" : "not-allowed";
+      div.onclick = ()=> { if (canClick) onCardClick(i); };
+
+      // NOTE: in host-authoritative mode, host actually knows everyone's hand.
+      // In a secure server model, only server would know; client would only know what it's allowed.
+      // For now: the client sees its hand values only after showdown? Spec says cards are face-down;
+      // We'll keep them face-down (no value shown) until they become "secretKnownBySelf" after pick.
+      let showV = "🂠";
+      // If this card was selected and confirmed as secret, host will set secretKnownBySelf
+      // But we don't know which exact card; we only show last secret value in player panel.
+      div.innerHTML = `<div class="s">#${i+1}</div><div class="v">${showV}</div>`;
+      handEl.appendChild(div);
+    }
+
+    selInfo.textContent = `${selected.length}/2`;
+    confirmPickBtn.disabled = !(state.phase==="picking" && selected.length===2 && !state.picksDone?.[ME.id]);
+  }
+
+  function renderControls(){
+    hintBox.textContent = "";
+
+    const pl = state?.players?.[ME.id];
+    const myTurn = !!state && state.phase==="betting" && state.order[state.turnIndex]===ME.id && !state.folded?.[ME.id];
+    const canBet = !!pl && myTurn;
+
+    callBtn.disabled = !canBet;
+    foldBtn.disabled = !canBet;
+    raiseBtn.disabled = !canBet;
+
+    if (!state) return;
+
+    if (state.phase === "lobby"){
+      hintBox.textContent = "Đang ở lobby. Host chỉnh Max/Bots rồi bấm START.";
+      return;
+    }
+
+    if (state.phase === "picking"){
+      if (state.picksDone?.[ME.id]){
+        hintBox.textContent = "Bạn đã chọn 2 lá vòng này. Chờ người khác chọn...";
+      } else {
+        hintBox.textContent = "Chọn 2 lá bất kỳ rồi bấm “Xác nhận chọn 2 lá”.";
+      }
+      return;
+    }
+
+    if (state.phase === "betting"){
+      const myBet = state.bet?.[ME.id] || 0;
+      const need = Math.max(0, state.currentBet - myBet);
+      hintBox.textContent = myTurn
+        ? `Đến lượt bạn. Cần theo thêm: ${need}. Bạn có thể THEO / BỎ / CƯỢC THÊM.`
+        : `Đang cược. Chờ lượt...`;
+      return;
+    }
+
+    if (state.phase === "showdown"){
+      hintBox.textContent = "Đang lật bài và tính điểm...";
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // initial
+  setConn(false);
+  $("wsurl").textContent = "-";
+})();
+</script>
 </body>
 </html>

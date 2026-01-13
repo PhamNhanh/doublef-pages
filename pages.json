@@ -3,5 +3,20 @@
     "title": "Menu — doublef.io.vn",
     "path": "index.html",
     "icon": "🏠"
+  },
+  {
+    "title": "Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell",
+    "path": "Kiểm tra lỗi chính tả.html",
+    "icon": "🔗"
+  },
+  {
+    "title": "So sánh 2 file Word (.doc/.docx) - Tô đỏ nội dung sửa (xuất Word)",
+    "path": "SSVB.html",
+    "icon": "🔗"
+  },
+  {
+    "title": "Bảng tính tiền thạch cao (nhiều nhóm - xuất bảng thanh toán)",
+    "path": "Tính tiền thi công.html",
+    "icon": "🔗"
   }
 ]

@@ -1,0 +1,94 @@
+name: Generate pages.json
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-pages-json
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate pages.json
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+
+          function walk(dir) {
+            const out = [];
+            for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+              if (ent.name === 'node_modules') continue;
+              if (ent.name.startsWith('.git')) continue;
+              const p = path.join(dir, ent.name);
+              if (ent.isDirectory()) {
+                if (ent.name.startsWith('.')) continue;
+                out.push(...walk(p));
+              } else if (ent.isFile() && ent.name.toLowerCase().endsWith('.html')) {
+                out.push(p);
+              }
+            }
+            return out;
+          }
+
+          function readTitle(html) {
+            const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+            if (!m) return null;
+            return m[1].replace(/\s+/g, ' ').trim();
+          }
+
+          const repoRoot = process.cwd();
+          const files = walk(repoRoot);
+
+          let pages = files
+            .map(f => path.relative(repoRoot, f).replace(/\\/g, '/'))
+            .filter(rel => !rel.startsWith('.github/'))
+            .filter(rel => rel.toLowerCase() !== 'pages.json')
+            .map(rel => {
+              const html = fs.readFileSync(path.join(repoRoot, rel), 'utf8');
+              const title = readTitle(html) || rel.split('/').pop();
+              return {
+                title,
+                path: rel,
+                icon:
+                  rel.toLowerCase().includes('index') ? '🏠' :
+                  rel.toLowerCase().includes('menu') ? '🧭' :
+                  rel.toLowerCase().includes('bmi') ? '📊' : '🔗'
+              };
+            });
+
+          pages.sort((a,b) => {
+            const rank = p => p.path === 'index.html' ? 0 : (p.path === 'menu.html' ? 1 : 2);
+            const ra = rank(a), rb = rank(b);
+            if (ra !== rb) return ra - rb;
+            return a.path.localeCompare(b.path, 'vi');
+          });
+
+          fs.writeFileSync(
+            path.join(repoRoot, 'pages.json'),
+            JSON.stringify(pages, null, 2) + '\n',
+            'utf8'
+          );
+          NODE
+
+      - name: Commit pages.json if changed
+        run: |
+          if git status --porcelain | grep -q "pages.json"; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add pages.json
+            git commit -m "chore: auto-generate pages.json"
+            git push
+          else
+            echo "No changes to pages.json"
+          fi

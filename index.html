@@ -3,145 +3,707 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Menu — doublef.io.vn</title>
+  <title>doublef.io.vn — Galaxy Menu</title>
+
   <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
-    body { margin:0; background:#0b1020; color:#e9edff; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 24px 14px; }
-    .card{
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    :root{
+      --bg0:#060712;
+      --bg1:#0b1020;
+      --card: rgba(255,255,255,.07);
+      --card2: rgba(255,255,255,.10);
+      --line: rgba(255,255,255,.14);
+      --text:#e9edff;
+      --muted: rgba(233,237,255,.72);
+      --muted2: rgba(233,237,255,.55);
+      --cyan: rgba(0,194,255,1);
+      --violet: rgba(153,102,255,1);
+      --pink: rgba(255,80,180,1);
+      --good:#7cffb2;
+      --warn:#ffb86b;
+      --bad:#ff6b6b;
+      --shadow: 0 18px 60px rgba(0,0,0,.38);
+      --shadow2: 0 10px 30px rgba(0,0,0,.28);
+      --r: 18px;
+      --r2: 22px;
+      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
-    h1 { margin: 0 0 10px; font-size: 22px; }
-    .small { font-size: 13px; color: rgba(233,237,255,.7); }
-    .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin-top: 12px; }
-    .btn {
-      grid-column: span 6;
-      display:flex; align-items:center; gap: 10px;
-      padding: 14px 14px;
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1100px 700px at 15% 18%, rgba(0,194,255,.18), transparent 60%),
+        radial-gradient(900px 600px at 85% 25%, rgba(255,80,180,.18), transparent 62%),
+        radial-gradient(900px 700px at 55% 88%, rgba(153,102,255,.18), transparent 62%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x: hidden;
+    }
+
+    /* Animated galaxy haze */
+    .haze{
+      position: fixed; inset: -40vh -40vw;
+      pointer-events: none;
+      background:
+        radial-gradient(closest-side at 20% 25%, rgba(0,194,255,.10), transparent 60%),
+        radial-gradient(closest-side at 70% 30%, rgba(255,80,180,.09), transparent 62%),
+        radial-gradient(closest-side at 60% 80%, rgba(153,102,255,.10), transparent 62%);
+      filter: blur(28px);
+      opacity: .9;
+      animation: drift 18s ease-in-out infinite alternate;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes drift{
+      from{ transform: translate(-2%, -1%) scale(1.02); }
+      to  { transform: translate(2%, 1%) scale(1.05); }
+    }
+
+    /* Starfield (CSS only) */
+    .stars{
+      position: fixed; inset:0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.8), transparent 50%),
+        radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,.75), transparent 50%),
+        radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,.7), transparent 50%),
+        radial-gradient(1px 1px at 85% 70%, rgba(255,255,255,.6), transparent 50%),
+        radial-gradient(1px 1px at 50% 55%, rgba(255,255,255,.65), transparent 50%),
+        radial-gradient(1px 1px at 20% 60%, rgba(255,255,255,.55), transparent 50%),
+        radial-gradient(1px 1px at 75% 15%, rgba(255,255,255,.6), transparent 50%),
+        radial-gradient(1px 1px at 92% 40%, rgba(255,255,255,.55), transparent 50%),
+        radial-gradient(1px 1px at 42% 10%, rgba(255,255,255,.5), transparent 50%),
+        radial-gradient(1px 1px at 12% 92%, rgba(255,255,255,.5), transparent 50%);
+      opacity: .65;
+      animation: twinkle 5.5s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle{
+      from{ opacity:.50; }
+      to{ opacity:.75; }
+    }
+
+    .wrap{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 26px 16px 50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Header */
+    .hero{
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border: 1px solid var(--line);
+      border-radius: var(--r2);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    .panel::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(800px 200px at 20% 10%, rgba(0,194,255,.18), transparent 60%),
+        radial-gradient(700px 220px at 80% 0%, rgba(255,80,180,.14), transparent 65%),
+        radial-gradient(700px 250px at 50% 100%, rgba(153,102,255,.14), transparent 65%);
+      filter: blur(18px);
+      opacity: .8;
+      pointer-events:none;
+    }
+
+    .panel-inner{
+      position: relative;
+      padding: 18px 18px 16px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+    }
+
+    .logo{
+      width: 44px; height: 44px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.22);
-      color:#e9edff;
-      text-decoration: none;
-      box-shadow: 0 8px 24px rgba(0,0,0,.18);
-      transition: transform .06s ease, background .12s ease, border-color .12s ease;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.8), transparent 60%),
+        conic-gradient(from 90deg, rgba(0,194,255,.95), rgba(153,102,255,.95), rgba(255,80,180,.95), rgba(0,194,255,.95));
+      box-shadow: 0 10px 30px rgba(0,194,255,.12), 0 10px 30px rgba(255,80,180,.08);
+      border: 1px solid rgba(255,255,255,.22);
+      position: relative;
+      overflow: hidden;
+    }
+    .logo::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      transform: rotate(25deg);
+      animation: shine 2.8s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%{ transform: translateX(-35%) rotate(25deg); opacity: .0; }
+      30%{ opacity: .55; }
+      100%{ transform: translateX(35%) rotate(25deg); opacity: .0; }
+    }
+
+    h1{
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: .2px;
+    }
+    .subtitle{
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: flex-end;
+    }
+
+    .btn{
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.24);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      user-select: none;
     }
     .btn:hover{
       transform: translateY(-1px);
-      background: rgba(0, 194, 255, .12);
-      border-color: rgba(0, 194, 255, .35);
+      background: rgba(255,255,255,.07);
+      border-color: rgba(0,194,255,.42);
     }
-    .icon { font-size: 20px; width: 28px; text-align:center; }
-    .title { font-weight: 650; }
-    .path { font-size: 12px; opacity: .75; }
-    @media (max-width: 860px){
-      .btn { grid-column: span 12; }
+    .btn.primary{
+      background: rgba(0,194,255,.16);
+      border-color: rgba(0,194,255,.35);
     }
-    .row { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; align-items:center; }
-    button{
-      border-radius: 12px;
+    .btn.primary:hover{
+      background: rgba(0,194,255,.22);
+    }
+
+    .status{
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: 6px;
+      white-space: nowrap;
+    }
+    .ok{ color: var(--good); }
+    .warn{ color: var(--warn); }
+    .bad{ color: var(--bad); }
+
+    /* Right panel: Clock + Earth */
+    .right{
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      position: relative;
+    }
+
+    .mini{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--r2);
+      box-shadow: var(--shadow2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mini::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(500px 180px at 30% 0%, rgba(0,194,255,.16), transparent 62%),
+                  radial-gradient(500px 180px at 80% 25%, rgba(255,80,180,.12), transparent 65%);
+      filter: blur(16px);
+      opacity: .9;
+      pointer-events: none;
+    }
+
+    .mini-inner{
+      position: relative;
+      padding: 14px 14px 12px;
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .clock{
+      display:flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .time{
+      font-size: 26px;
+      font-weight: 750;
+      letter-spacing: .6px;
+      line-height: 1;
+      text-shadow: 0 0 18px rgba(0,194,255,.10);
+    }
+    .date{
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .rings{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+
+    .ring{
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: conic-gradient(rgba(0,194,255,.85) 0deg, rgba(0,194,255,.10) 0deg);
       border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.25);
-      color:#e9edff;
-      padding: 10px 12px;
-      font-size: 14px;
-      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      position: relative;
     }
-    button:hover{ background: rgba(255,255,255,.08); }
-    .warn{ color:#FFB86B; }
-    .ok{ color:#7CFFB2; }
-    code{ background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 8px; }
+    .ring::after{
+      content:"";
+      position:absolute; inset: 6px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .ring span{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 12px;
+      color: rgba(233,237,255,.85);
+      z-index: 2;
+      font-weight: 650;
+    }
+
+    .earthBox{
+      padding: 0;
+    }
+    .earthHead{
+      padding: 12px 14px 0;
+      position: relative;
+      z-index: 2;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .earthTitle{
+      font-size: 14px;
+      color: rgba(233,237,255,.82);
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .earthHint{
+      font-size: 12px;
+      color: var(--muted2);
+    }
+    #earthCanvas{
+      width: 100%;
+      height: 240px;
+      display:block;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Menu grid */
+    .menu{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .tile{
+      grid-column: span 6;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      padding: 16px;
+      border-radius: 18px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
+      transition: transform .10s ease, border-color .15s ease, background .15s ease;
+    }
+    .tile::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(480px 160px at 15% 10%, rgba(0,194,255,.14), transparent 60%),
+        radial-gradient(480px 160px at 90% 30%, rgba(255,80,180,.10), transparent 65%);
+      filter: blur(18px);
+      opacity: .85;
+      pointer-events:none;
+      transform: translateZ(0);
+    }
+    .tile:hover{
+      transform: translateY(-3px);
+      border-color: rgba(0,194,255,.45);
+      background: rgba(0, 194, 255, .10);
+    }
+    .tile:active{
+      transform: translateY(-1px);
+    }
+
+    .tIcon{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 22px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      position: relative;
+      z-index: 2;
+    }
+
+    .tText{
+      position: relative;
+      z-index: 2;
+      min-width: 0;
+    }
+    .tTitle{
+      font-size: 16px;
+      font-weight: 750;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .tPath{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    @media (max-width: 920px){
+      .tile{ grid-column: span 12; }
+    }
+
+    /* Search */
+    .searchRow{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .search{
+      flex: 1 1 280px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
+    }
+    .search::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(500px 160px at 20% 0%, rgba(0,194,255,.12), transparent 62%),
+                  radial-gradient(500px 160px at 90% 40%, rgba(153,102,255,.10), transparent 66%);
+      filter: blur(18px);
+      opacity: .9;
+      pointer-events:none;
+    }
+    .search input{
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(233,237,255,.85);
+      font-size: 13px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, border-color .12s ease, background .12s ease;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      background: rgba(0,194,255,.10);
+      border-color: rgba(0,194,255,.38);
+    }
+
+    footer{
+      margin-top: 16px;
+      color: var(--muted2);
+      font-size: 12px;
+      text-align: center;
+      padding: 10px 0 0;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .haze, .stars, .logo::after{ animation: none !important; }
+      .tile, .btn{ transition: none !important; }
+    }
   </style>
 </head>
+
 <body>
+  <div class="haze"></div>
+  <div class="stars"></div>
+
   <div class="wrap">
-    <div class="card">
-      <h1>Menu công cụ — doublef.io.vn</h1>
-      <div class="small">Menu này đọc danh sách trang từ <code>pages.json</code> (tự sinh bởi GitHub Actions) và tự tạo nút.</div>
+    <div class="hero">
+      <!-- Left: Title + controls -->
+      <section class="panel">
+        <div class="panel-inner">
+          <div class="title">
+            <div class="brand">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <h1>doublef.io.vn — Galaxy Menu</h1>
+                <div class="subtitle">
+                  Menu tự động đọc <b>pages.json</b>, bấm là mở trang trong <b>tab mới</b>.
+                  Thêm file <code>.html</code> → commit → Actions tự cập nhật danh sách.
+                </div>
+              </div>
+            </div>
 
-      <div class="row">
-        <button id="reloadBtn">Tải lại danh sách</button>
-        <span id="status" class="small"></span>
-      </div>
+            <div class="actions">
+              <button class="btn primary" id="reloadBtn">🔄 Tải lại menu</button>
+              <button class="btn" id="openJsonBtn">📄 Mở pages.json</button>
+              <span class="status" id="status"></span>
+            </div>
+          </div>
 
-      <div id="grid" class="grid"></div>
+          <div class="searchRow">
+            <div class="search" title="Tìm theo tên hoặc đường dẫn">
+              <span style="position:relative; z-index:2; opacity:.85;">🔎</span>
+              <input id="q" type="text" placeholder="Tìm trang... (ví dụ: bmi, tool, report)" />
+            </div>
 
-      <div class="small" style="margin-top:14px;">
-        Mẹo: Nếu bạn muốn menu là trang mặc định khi vào domain, hãy đổi <b>index.html</b> thành trang chuyển hướng sang <b>menu.html</b> (hướng dẫn ở dưới).
-      </div>
+            <div class="chip" id="chipAll">🌌 Tất cả</div>
+            <div class="chip" id="chipTools">🧰 Tools</div>
+            <div class="chip" id="chipHealth">📊 Sức khỏe</div>
+          </div>
+
+          <div class="menu" id="menuGrid"></div>
+        </div>
+      </section>
+
+      <!-- Right: Clock + Earth -->
+      <aside class="panel right">
+        <!-- Clock -->
+        <div class="mini">
+          <div class="mini-inner">
+            <div class="clock">
+              <div>
+                <div class="time" id="time">--:--:--</div>
+                <div class="date" id="date">--</div>
+              </div>
+              <div class="rings" aria-label="vòng tiến trình">
+                <div class="ring" id="ringH"><span id="hTxt">--</span></div>
+                <div class="ring" id="ringM"><span id="mTxt">--</span></div>
+                <div class="ring" id="ringS"><span id="sTxt">--</span></div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" id="toggle24">🕒 24h</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earth -->
+        <div class="mini earthBox">
+          <div class="earthHead">
+            <div class="earthTitle">🌍 Trái đất 3D</div>
+            <div class="earthHint">Kéo để xoay • Lăn chuột để zoom</div>
+          </div>
+          <canvas id="earthCanvas"></canvas>
+        </div>
+
+        <footer>
+          “The cosmos is under no obligation to make sense to us.” — nhưng menu thì có.
+        </footer>
+      </aside>
     </div>
   </div>
 
+  <!-- Three.js (CDN) -->
+  <script src="https://unpkg.com/three@0.160.1/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.1/examples/js/controls/OrbitControls.js"></script>
+
   <script>
-    const grid = document.getElementById("grid");
-    const status = document.getElementById("status");
+    // ====== Menu logic (pages.json -> buttons, open new tab) ======
+    const menuGrid = document.getElementById("menuGrid");
+    const statusEl = document.getElementById("status");
+    const qEl = document.getElementById("q");
+
+    let allPages = [];
+    let filterMode = "all"; // all | tools | health
 
     function setStatus(msg, cls="") {
-      status.className = "small " + cls;
-      status.textContent = msg;
+      statusEl.className = "status " + cls;
+      statusEl.textContent = msg;
       clearTimeout(setStatus._t);
-      setStatus._t = setTimeout(() => status.textContent = "", 2500);
+      setStatus._t = setTimeout(() => { statusEl.textContent = ""; statusEl.className = "status"; }, 3200);
     }
 
-    function esc(s){
+    function esc(s) {
       return String(s).replace(/[&<>"']/g, m => ({
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[m]));
     }
 
-    async function loadPages() {
-      grid.innerHTML = "";
-      setStatus("Đang tải pages.json...");
-      try {
-        // cache bust để tránh bị cache cũ sau deploy
+    function normalize(s){
+      return String(s || "").toLowerCase();
+    }
+
+    function pickGroup(p){
+      const t = normalize(p.title);
+      const path = normalize(p.path);
+
+      // Health bucket: bmi/health/weight
+      if (path.includes("bmi") || t.includes("bmi") || t.includes("sức khỏe") || t.includes("suc khoe") || t.includes("can nang") || path.includes("health")) {
+        return "health";
+      }
+      // Tools bucket: tool/tools/convert/calc
+      if (path.includes("tool") || t.includes("tool") || t.includes("công cụ") || t.includes("cong cu") || t.includes("convert") || t.includes("chuyển") || t.includes("tính")) {
+        return "tools";
+      }
+      return "all";
+    }
+
+    function renderMenu(){
+      menuGrid.innerHTML = "";
+
+      const query = normalize(qEl.value).trim();
+      const pages = allPages.filter(p => {
+        if (!p || !p.path) return false;
+        if (normalize(p.path) === "index.html") return false; // hide self
+        if (query) {
+          const hay = normalize(p.title) + " " + normalize(p.path);
+          if (!hay.includes(query)) return false;
+        }
+        if (filterMode === "health") return pickGroup(p) === "health";
+        if (filterMode === "tools") return pickGroup(p) === "tools";
+        return true;
+      });
+
+      if (!pages.length){
+        menuGrid.innerHTML = `
+          <div style="grid-column: span 12; padding: 14px; color: rgba(233,237,255,.7); border: 1px dashed rgba(255,255,255,.18); border-radius: 18px;">
+            Không tìm thấy trang phù hợp. Thử đổi từ khóa hoặc chọn lại bộ lọc.
+          </div>
+        `;
+        return;
+      }
+
+      for (const p of pages){
+        const title = p.title || p.path || "Không tên";
+        const path  = p.path;
+        const icon  = p.icon || "🔗";
+
+        const a = document.createElement("a");
+        a.className = "tile";
+        a.href = path;
+
+        // Open new tab as requested
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+
+        a.innerHTML = `
+          <div class="tIcon">${esc(icon)}</div>
+          <div class="tText">
+            <div class="tTitle">${esc(title)}</div>
+            <div class="tPath">${esc(path)}</div>
+          </div>
+        `;
+        menuGrid.appendChild(a);
+      }
+    }
+
+    async function loadPages(){
+      setStatus("Đang tải pages.json…");
+      try{
         const res = await fetch("pages.json?v=" + Date.now(), { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
-        const pages = await res.json();
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error("pages.json không phải mảng JSON");
 
-        if (!Array.isArray(pages) || pages.length === 0) {
-          grid.innerHTML = `<div class="small warn">pages.json rỗng hoặc sai định dạng.</div>`;
-          setStatus("Không có trang nào.", "warn");
-          return;
-        }
-
-        const seen = new Set();
-        for (const p of pages) {
-          const title = p.title || p.path || "Không tên";
-          const path = p.path || "#";
-          const icon = p.icon || "🔗";
-
-          // bỏ trùng
-          if (seen.has(path)) continue;
-          seen.add(path);
-
-          // bỏ chính menu (nếu bạn không muốn hiện nút menu)
-          // if (path.toLowerCase() === "menu.html") continue;
-
-          const a = document.createElement("a");
-          a.className = "btn";
-          a.href = path;
-          a.innerHTML = `
-            <div class="icon">${esc(icon)}</div>
-            <div>
-              <div class="title">${esc(title)}</div>
-              <div class="path">${esc(path)}</div>
-            </div>
-          `;
-          grid.appendChild(a);
-        }
-
-        setStatus("Đã tải menu.", "ok");
-      } catch (e) {
+        allPages = data;
+        renderMenu();
+        setStatus("Menu đã sẵn sàng ✅", "ok");
+      }catch(e){
         console.error(e);
-        grid.innerHTML = `
-          <div class="small warn">
-            Không đọc được <b>pages.json</b>. Kiểm tra:
-            <br>• File <b>pages.json</b> đã xuất hiện ở root repo chưa?
-            <br>• Workflow Actions đã chạy xong chưa?
+        allPages = [];
+        menuGrid.innerHTML = `
+          <div style="grid-column: span 12; padding: 14px; color: rgba(255,184,107,.92); border: 1px solid rgba(255,184,107,.25); background: rgba(255,184,107,.08); border-radius: 18px;">
+            Không đọc được <b>pages.json</b>. Kiểm tra GitHub Actions đã chạy xong chưa, và file pages.json đã xuất hiện ở root repo.
           </div>
         `;
         setStatus("Lỗi tải pages.json", "warn");
@@ -149,6 +711,165 @@
     }
 
     document.getElementById("reloadBtn").addEventListener("click", loadPages);
+    document.getElementById("openJsonBtn").addEventListener("click", () => {
+      window.open("pages.json", "_blank", "noopener,noreferrer");
+    });
+
+    qEl.addEventListener("input", () => renderMenu());
+
+    document.getElementById("chipAll").addEventListener("click", () => { filterMode = "all"; renderMenu(); });
+    document.getElementById("chipTools").addEventListener("click", () => { filterMode = "tools"; renderMenu(); });
+    document.getElementById("chipHealth").addEventListener("click", () => { filterMode = "health"; renderMenu(); });
+
+    // ====== Clock ======
+    const timeEl = document.getElementById("time");
+    const dateEl = document.getElementById("date");
+    const ringH = document.getElementById("ringH");
+    const ringM = document.getElementById("ringM");
+    const ringS = document.getElementById("ringS");
+    const hTxt = document.getElementById("hTxt");
+    const mTxt = document.getElementById("mTxt");
+    const sTxt = document.getElementById("sTxt");
+    const toggle24Btn = document.getElementById("toggle24");
+
+    let use24 = true;
+
+    function pad2(n){ return String(n).padStart(2,"0"); }
+    function setRing(el, ratio){
+      const deg = Math.max(0, Math.min(1, ratio)) * 360;
+      el.style.background = `conic-gradient(rgba(0,194,255,.88) ${deg}deg, rgba(0,194,255,.10) 0deg)`;
+    }
+
+    function tick(){
+      const now = new Date();
+      const h24 = now.getHours();
+      const h = use24 ? h24 : ((h24 % 12) || 12);
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+
+      timeEl.textContent = `${pad2(h)}:${pad2(m)}:${pad2(s)}` + (use24 ? "" : (h24 >= 12 ? " PM" : " AM"));
+
+      const dd = now.toLocaleDateString("vi-VN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+      dateEl.textContent = dd;
+
+      hTxt.textContent = pad2(h24);
+      mTxt.textContent = pad2(m);
+      sTxt.textContent = pad2(s);
+
+      setRing(ringS, s/60);
+      setRing(ringM, (m + s/60)/60);
+      setRing(ringH, ((h24%24) + m/60)/24);
+    }
+
+    toggle24Btn.addEventListener("click", () => {
+      use24 = !use24;
+      toggle24Btn.textContent = use24 ? "🕒 24h" : "🕒 12h";
+      tick();
+    });
+
+    setInterval(tick, 250);
+    tick();
+
+    // ====== 3D Earth (Three.js) ======
+    function initEarth(){
+      const canvas = document.getElementById("earthCanvas");
+      const box = canvas.parentElement;
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.set(0, 0, 3.2);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+      controls.enablePan = false;
+      controls.minDistance = 2.2;
+      controls.maxDistance = 6.0;
+
+      // Lights
+      const key = new THREE.DirectionalLight(0xffffff, 1.2);
+      key.position.set(4, 2, 6);
+      scene.add(key);
+
+      const fill = new THREE.AmbientLight(0x88aaff, 0.55);
+      scene.add(fill);
+
+      // Globe
+      const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+      const loader = new THREE.TextureLoader();
+      const texColor = loader.load("https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg");
+      const texNormal = loader.load("https://threejs.org/examples/textures/planets/earth_normal_2048.jpg");
+      const texSpec = loader.load("https://threejs.org/examples/textures/planets/earth_specular_2048.jpg");
+
+      const material = new THREE.MeshStandardMaterial({
+        map: texColor,
+        normalMap: texNormal,
+        metalness: 0.15,
+        roughness: 0.85,
+        emissive: new THREE.Color(0x00111a),
+        emissiveIntensity: 0.25
+      });
+
+      // specular via roughness/metalness is fine, but add a subtle highlight
+      material.metalnessMap = texSpec;
+
+      const earth = new THREE.Mesh(geometry, material);
+      scene.add(earth);
+
+      // Atmosphere glow (simple)
+      const glowGeo = new THREE.SphereGeometry(1.03, 64, 64);
+      const glowMat = new THREE.MeshBasicMaterial({
+        color: 0x37d5ff,
+        transparent: true,
+        opacity: 0.12
+      });
+      const glow = new THREE.Mesh(glowGeo, glowMat);
+      scene.add(glow);
+
+      // Resize
+      function resize(){
+        const w = box.clientWidth;
+        const h = 240; // fixed visual height (matches CSS expectation)
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      // Animate
+      let last = performance.now();
+      function animate(t){
+        const dt = (t - last) / 1000; last = t;
+
+        // auto-rotate (gentle) when user not dragging
+        earth.rotation.y += dt * 0.18;
+        glow.rotation.y += dt * 0.10;
+
+        controls.update();
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    }
+
+    // Some browsers may block WebGL; fail gracefully
+    try{
+      if (window.THREE && THREE.WebGLRenderer){
+        initEarth();
+      } else {
+        setStatus("Không tải được 3D (CDN). Menu vẫn hoạt động.", "warn");
+      }
+    }catch(e){
+      console.warn(e);
+      setStatus("WebGL không khả dụng. Menu vẫn hoạt động.", "warn");
+    }
+
+    // Start menu
     loadPages();
   </script>
 </body>

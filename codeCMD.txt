@@ -1,0 +1,5 @@
+cd C:\QTCC\CODE DÙNG 1 LẦN\doublef-game-backend\doublef-game-worker
+wrangler dev
+wrangler deploy
+
+  

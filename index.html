@@ -3,161 +3,410 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>doublef.io.vn</title>
+  <title>doublef.io.vn — Thống kê sức khỏe (BMI)</title>
   <style>
     :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
     body { margin:0; background:#0b1020; color:#e9edff; }
-    .wrap { max-width: 920px; margin: 0 auto; padding: 28px 16px; }
-    .card { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-            border-radius:16px; padding:18px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
-    h1 { margin: 0 0 8px; font-size: 28px; }
-    p { margin: 8px 0; line-height: 1.5; color: rgba(233,237,255,.85); }
-    .row { display:flex; gap:12px; flex-wrap: wrap; margin-top: 12px; }
-    input, button, textarea {
-      border-radius: 12px; border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.25); color:#e9edff; padding:10px 12px; font-size: 15px;
-      outline: none;
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px 14px; }
+    .card{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
     }
-    input, textarea { flex: 1 1 260px; }
-    button { cursor:pointer; background: rgba(0, 194, 255, .18); }
-    button:hover { background: rgba(0, 194, 255, .28); }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    p { margin: 8px 0; line-height: 1.5; color: rgba(233,237,255,.85); }
+    .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin-top: 12px; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+    @media (max-width: 860px){
+      .col-6,.col-4,.col-8 { grid-column: span 12; }
+    }
+    label { display:block; font-size: 13px; color: rgba(233,237,255,.75); margin-bottom: 6px; }
+    input, select, button{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.25);
+      color:#e9edff;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    button{
+      cursor:pointer;
+      background: rgba(0, 194, 255, .18);
+    }
+    button:hover{ background: rgba(0, 194, 255, .28); }
+    .row { display:flex; gap: 10px; flex-wrap: wrap; }
+    .row button{ width:auto; }
     .small { font-size: 13px; color: rgba(233,237,255,.7); }
     .ok { color: #7CFFB2; }
     .warn { color: #FFB86B; }
-    .list { margin-top: 14px; }
-    .item { padding:10px 12px; border-radius: 12px; background: rgba(255,255,255,.05);
-            border: 1px solid rgba(255,255,255,.10); margin-top: 8px; }
-    .footer { margin-top: 16px; opacity: .75; }
-    a { color: #8be9ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    .err { color: #FF6B6B; }
+    .pill{
+      display:inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      font-size: 13px;
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+    .box{
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 12px;
+    }
+    table{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    th, td{
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      vertical-align: top;
+    }
+    th{ color: rgba(233,237,255,.8); font-weight: 600; }
+    .muted{ color: rgba(233,237,255,.65); }
+    code{ background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 8px; }
+    a{ color:#8be9ff; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>doublef.io.vn</h1>
-      <p>Trang demo HTML thuần. Ai truy cập cũng dùng được (không cần đăng nhập). Dữ liệu bên dưới được lưu trên trình duyệt của người dùng bằng <b>LocalStorage</b>.</p>
+<div class="wrap">
+  <div class="card">
+    <h1>Thống kê sức khỏe theo chiều cao & cân nặng (BMI)</h1>
+    <p class="small">
+      Công cụ này tính <b>BMI</b> và phân loại tình trạng cơ thể. Kết quả chỉ mang tính tham khảo, không thay thế tư vấn y khoa.
+      Dữ liệu được lưu trên trình duyệt (LocalStorage).
+    </p>
 
-      <div class="row">
-        <input id="name" placeholder="Tên của bạn" />
-        <input id="topic" placeholder="Bạn muốn làm gì hôm nay?" />
-        <button id="addBtn">Thêm</button>
+    <div class="grid">
+      <div class="col-4">
+        <label>Chiều cao</label>
+        <div class="row" style="gap:8px">
+          <input id="height" type="number" inputmode="decimal" min="50" max="250" placeholder="Ví dụ 170" />
+          <select id="heightUnit" style="width: 140px;">
+            <option value="cm" selected>cm</option>
+            <option value="m">m</option>
+          </select>
+        </div>
+        <div class="small muted" style="margin-top:6px;">Khoảng hợp lý: 50–250 cm</div>
       </div>
 
-      <div class="row">
-        <textarea id="note" rows="3" placeholder="Ghi chú (tuỳ chọn)"></textarea>
+      <div class="col-4">
+        <label>Cân nặng (kg)</label>
+        <input id="weight" type="number" inputmode="decimal" min="10" max="500" placeholder="Ví dụ 65" />
+        <div class="small muted" style="margin-top:6px;">Khoảng hợp lý: 10–500 kg</div>
       </div>
 
-      <div class="row">
-        <button id="exportBtn">Xuất JSON</button>
-        <button id="clearBtn">Xoá dữ liệu trên máy này</button>
-        <span id="status" class="small"></span>
+      <div class="col-4">
+        <label>Tuỳ chọn chuẩn phân loại</label>
+        <select id="standard">
+          <option value="who" selected>WHO (toàn cầu)</option>
+          <option value="asian">Châu Á (ngưỡng thấp hơn)</option>
+        </select>
+        <div class="small muted" style="margin-top:6px;">Châu Á thường dùng ngưỡng thừa cân/béo phì thấp hơn.</div>
       </div>
 
-      <div class="list" id="list"></div>
+      <div class="col-12">
+        <div class="row">
+          <button id="calcBtn">Tính BMI</button>
+          <button id="saveBtn">Lưu vào lịch sử</button>
+          <button id="exportBtn">Xuất CSV</button>
+          <button id="clearBtn">Xoá lịch sử</button>
+          <span id="status" class="small"></span>
+        </div>
+      </div>
 
-      <p class="footer small">
-        Gợi ý nâng cấp: nếu bạn muốn dữ liệu “ai cũng thấy chung”, bạn cần backend (API + database) hoặc dịch vụ như Firebase/Supabase.
-      </p>
-    </div>
-  </div>
-
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const KEY = "doublef_items_v1";
-
-    function load() {
-      try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
-      catch { return []; }
-    }
-    function save(items) {
-      localStorage.setItem(KEY, JSON.stringify(items));
-      render();
-    }
-    function setStatus(msg, cls="") {
-      const el = $("status");
-      el.className = "small " + cls;
-      el.textContent = msg;
-      setTimeout(() => { el.textContent = ""; el.className="small"; }, 2500);
-    }
-
-    function render() {
-      const items = load();
-      const list = $("list");
-      list.innerHTML = "";
-
-      if (!items.length) {
-        list.innerHTML = `<div class="item small warn">Chưa có mục nào. Nhập rồi bấm “Thêm”.</div>`;
-        return;
-      }
-
-      items.slice().reverse().forEach((it, idxRev) => {
-        const idx = items.length - 1 - idxRev;
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `
-          <div><b>${escapeHtml(it.name || "Ẩn danh")}</b> — ${escapeHtml(it.topic || "(không có nội dung)")}</div>
-          <div class="small">${new Date(it.ts).toLocaleString("vi-VN")}</div>
-          ${it.note ? `<div style="margin-top:6px">${escapeHtml(it.note)}</div>` : ""}
-          <div class="row" style="margin-top:10px">
-            <button data-del="${idx}">Xoá</button>
+      <div class="col-6">
+        <div class="box">
+          <div class="small muted">KẾT QUẢ</div>
+          <div id="result" style="margin-top:8px;">
+            <div class="small muted">Nhập số liệu rồi bấm <b>Tính BMI</b>.</div>
           </div>
-        `;
-        list.appendChild(div);
-      });
+        </div>
+      </div>
 
-      list.querySelectorAll("button[data-del]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const i = Number(btn.getAttribute("data-del"));
-          const items2 = load();
-          items2.splice(i, 1);
-          save(items2);
-          setStatus("Đã xoá 1 mục", "ok");
-        });
-      });
+      <div class="col-6">
+        <div class="box">
+          <div class="small muted">GỢI Ý MỤC TIÊU (tham khảo)</div>
+          <div id="target" style="margin-top:8px;">
+            <div class="small muted">Sẽ hiện dải cân nặng “bình thường” và mục tiêu gần nhất.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="box">
+          <div class="small muted">LỊCH SỬ ĐO</div>
+          <div id="history"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="small">
+      Công thức: <code>BMI = cân nặng (kg) / (chiều cao (m))²</code>.
+      Nếu muốn thêm % mỡ, BMR, TDEE, hoặc biểu đồ theo thời gian, mình thêm luôn trong 1 file.
+    </p>
+  </div>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const KEY = "doublef_bmi_history_v1";
+
+  function setStatus(msg, cls="") {
+    const el = $("status");
+    el.className = "small " + cls;
+    el.textContent = msg;
+    clearTimeout(setStatus._t);
+    setStatus._t = setTimeout(() => { el.textContent=""; el.className="small"; }, 3000);
+  }
+
+  function toMeters(height, unit){
+    const h = Number(height);
+    if (!isFinite(h) || h <= 0) return NaN;
+    return unit === "m" ? h : h / 100;
+  }
+
+  function round2(x){ return Math.round(x * 100) / 100; }
+  function round1(x){ return Math.round(x * 10) / 10; }
+
+  function classifyBMI(bmi, standard){
+    // WHO global:
+    // <18.5 underweight, 18.5-24.9 normal, 25-29.9 overweight, >=30 obese
+    // Asia (commonly used cut-offs):
+    // <18.5 underweight, 18.5-22.9 normal, 23-24.9 overweight (at risk), 25-29.9 obese I, >=30 obese II
+    if (standard === "asian") {
+      if (bmi < 18.5) return { label: "Gầy", note: "Có thể thiếu năng lượng/dinh dưỡng.", level: "warn" };
+      if (bmi < 23)   return { label: "Bình thường", note: "Nguy cơ chuyển hoá thấp hơn.", level: "ok" };
+      if (bmi < 25)   return { label: "Thừa cân (nguy cơ)", note: "Bắt đầu tăng nguy cơ tim mạch/đái tháo đường.", level: "warn" };
+      if (bmi < 30)   return { label: "Béo phì độ I", note: "Nên điều chỉnh ăn uống & vận động.", level: "warn" };
+      return            { label: "Béo phì độ II", note: "Nguy cơ cao, nên theo dõi y khoa.", level: "err" };
+    } else {
+      if (bmi < 18.5) return { label: "Gầy", note: "Có thể thiếu năng lượng/dinh dưỡng.", level: "warn" };
+      if (bmi < 25)   return { label: "Bình thường", note: "Nguy cơ chuyển hoá thấp hơn.", level: "ok" };
+      if (bmi < 30)   return { label: "Thừa cân", note: "Nên kiểm soát để giảm nguy cơ bệnh mạn.", level: "warn" };
+      if (bmi < 35)   return { label: "Béo phì độ I", note: "Nguy cơ tăng rõ, nên hành động sớm.", level: "warn" };
+      if (bmi < 40)   return { label: "Béo phì độ II", note: "Nguy cơ cao, cân nhắc tư vấn chuyên môn.", level: "err" };
+      return            { label: "Béo phì độ III", note: "Nguy cơ rất cao, nên theo dõi y khoa.", level: "err" };
+    }
+  }
+
+  function normalRange(standard){
+    // returns [minBMI, maxBMI] for "normal"
+    return standard === "asian" ? [18.5, 22.9] : [18.5, 24.9];
+  }
+
+  function kgForBMI(bmi, heightM){
+    return bmi * heightM * heightM;
+  }
+
+  function fmtDate(ts){
+    return new Date(ts).toLocaleString("vi-VN");
+  }
+
+  function loadHistory(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
+    catch { return []; }
+  }
+
+  function saveHistory(list){
+    localStorage.setItem(KEY, JSON.stringify(list));
+    renderHistory();
+  }
+
+  function compute(){
+    const hVal = $("height").value;
+    const unit = $("heightUnit").value;
+    const wVal = $("weight").value;
+    const standard = $("standard").value;
+
+    const h = toMeters(hVal, unit);
+    const w = Number(wVal);
+
+    if (!isFinite(h) || h < 0.5 || h > 2.5) {
+      setStatus("Chiều cao không hợp lệ.", "warn");
+      return null;
+    }
+    if (!isFinite(w) || w < 10 || w > 500) {
+      setStatus("Cân nặng không hợp lệ.", "warn");
+      return null;
     }
 
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
+    const bmi = w / (h*h);
+    const bmiR = round1(bmi);
+    const cls = classifyBMI(bmi, standard);
+    const [bmin, bmax] = normalRange(standard);
+    const wMin = round1(kgForBMI(bmin, h));
+    const wMax = round1(kgForBMI(bmax, h));
+
+    // nearest target within normal range:
+    let targetKg = w;
+    if (w < wMin) targetKg = wMin;
+    else if (w > wMax) targetKg = wMax;
+    targetKg = round1(targetKg);
+
+    const delta = round1(targetKg - w);
+
+    return { h, w, bmi: bmiR, cls, standard, wMin, wMax, targetKg, delta };
+  }
+
+  function renderResult(data){
+    if (!data) return;
+
+    $("result").innerHTML = `
+      <div class="pill">BMI: <b>${data.bmi}</b></div>
+      <div class="pill">Phân loại: <b class="${data.cls.level}">${data.cls.label}</b></div>
+      <div class="pill">Chuẩn: <b>${data.standard === "asian" ? "Châu Á" : "WHO"}</b></div>
+      <div style="margin-top:10px" class="small">
+        <b>Ghi chú:</b> ${escapeHtml(data.cls.note)}
+      </div>
+    `;
+
+    const sign = data.delta > 0 ? "+" : "";
+    const deltaText = data.delta === 0
+      ? "Bạn đang nằm trong dải “bình thường”."
+      : `Mục tiêu gần nhất: <b>${data.targetKg} kg</b> (${sign}${data.delta} kg).`;
+
+    $("target").innerHTML = `
+      <div class="small">
+        Dải cân nặng “bình thường” (theo chuẩn đã chọn):<br>
+        <b>${data.wMin} – ${data.wMax} kg</b>
+      </div>
+      <div style="margin-top:10px" class="small">
+        ${deltaText}
+      </div>
+      <div style="margin-top:10px" class="small muted">
+        Gợi ý thực tế: kiểm soát xu hướng theo tuần/tháng quan trọng hơn 1 lần đo.
+      </div>
+    `;
+  }
+
+  function renderHistory(){
+    const list = loadHistory();
+    const box = $("history");
+    if (!list.length) {
+      box.innerHTML = `<div class="small muted" style="margin-top:8px;">Chưa có bản ghi nào.</div>`;
+      return;
     }
+    const rows = list.slice().reverse().map(r => `
+      <tr>
+        <td>${fmtDate(r.ts)}</td>
+        <td>${r.heightM} m</td>
+        <td>${r.weightKg} kg</td>
+        <td><b>${r.bmi}</b></td>
+        <td>${escapeHtml(r.standard)}</td>
+        <td><span class="${r.level}"><b>${escapeHtml(r.label)}</b></span></td>
+      </tr>
+    `).join("");
 
-    $("addBtn").addEventListener("click", () => {
-      const name = $("name").value.trim();
-      const topic = $("topic").value.trim();
-      const note = $("note").value.trim();
+    box.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Thời gian</th>
+            <th>Chiều cao</th>
+            <th>Cân nặng</th>
+            <th>BMI</th>
+            <th>Chuẩn</th>
+            <th>Kết luận</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
 
-      if (!topic) return setStatus("Nhập nội dung trước đã 🙂", "warn");
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
 
-      const items = load();
-      items.push({ name, topic, note, ts: Date.now() });
-      save(items);
+  function exportCsv(){
+    const list = loadHistory();
+    if (!list.length) {
+      setStatus("Chưa có lịch sử để xuất CSV.", "warn");
+      return;
+    }
+    const header = ["ThoiGian","ChieuCao_m","CanNang_kg","BMI","Chuan","PhanLoai"];
+    const lines = [header.join(",")];
+    for (const r of list) {
+      const row = [
+        `"${new Date(r.ts).toISOString()}"`,
+        r.heightM,
+        r.weightKg,
+        r.bmi,
+        `"${r.standard}"`,
+        `"${r.label}"`
+      ];
+      lines.push(row.join(","));
+    }
+    const csv = lines.join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const d = new Date();
+    const ymd = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+    a.href = url;
+    a.download = `${ymd}_bmi_history.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatus("Đã xuất CSV.", "ok");
+  }
 
-      $("topic").value = "";
-      $("note").value = "";
-      setStatus("Đã thêm!", "ok");
-    });
+  $("calcBtn").addEventListener("click", () => {
+    const data = compute();
+    if (!data) return;
+    renderResult(data);
+    setStatus("Đã tính BMI.", "ok");
+  });
 
-    $("exportBtn").addEventListener("click", () => {
-      const data = JSON.stringify(load(), null, 2);
-      const blob = new Blob([data], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "doublef-data.json";
-      a.click();
-      URL.revokeObjectURL(url);
-      setStatus("Đã xuất file JSON", "ok");
-    });
+  $("saveBtn").addEventListener("click", () => {
+    const data = compute();
+    if (!data) return;
+    renderResult(data);
 
-    $("clearBtn").addEventListener("click", () => {
-      localStorage.removeItem(KEY);
-      render();
-      setStatus("Đã xoá dữ liệu trên trình duyệt này", "ok");
-    });
+    const standardName = data.standard === "asian" ? "ChauA" : "WHO";
+    const record = {
+      ts: Date.now(),
+      heightM: round2(data.h),
+      weightKg: round1(data.w),
+      bmi: data.bmi,
+      standard: standardName,
+      label: data.cls.label,
+      level: data.cls.level
+    };
+    const list = loadHistory();
+    list.push(record);
+    saveHistory(list);
+    setStatus("Đã lưu vào lịch sử.", "ok");
+  });
 
-    render();
-  </script>
+  $("exportBtn").addEventListener("click", exportCsv);
+
+  $("clearBtn").addEventListener("click", () => {
+    localStorage.removeItem(KEY);
+    renderHistory();
+    $("result").innerHTML = `<div class="small muted">Nhập số liệu rồi bấm <b>Tính BMI</b>.</div>`;
+    $("target").innerHTML = `<div class="small muted">Sẽ hiện dải cân nặng “bình thường” và mục tiêu gần nhất.</div>`;
+    setStatus("Đã xoá lịch sử.", "ok");
+  });
+
+  renderHistory();
+</script>
 </body>
 </html>

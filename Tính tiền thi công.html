@@ -66,7 +66,7 @@
     }
     .modal.show{display:flex}
 
-    /* ✅ FIX: modal-card dùng flex column + giới hạn chiều cao theo viewport */
+    /* modal-card dùng flex column + giới hạn chiều cao theo viewport */
     .modal-card{
       width:min(980px, 100%);
       height:min(92vh, 980px);
@@ -81,7 +81,7 @@
       flex-direction:column;
     }
 
-    /* ✅ FIX: thanh nút sticky ở trên */
+    /* thanh nút sticky ở trên */
     .modal-hd{
       position:sticky;
       top:0;
@@ -96,7 +96,7 @@
     .btn-light{border:1px solid rgba(0,0,0,.15); background:#fff; color:#111}
     .btn-light:hover{background:#f1f1f1}
 
-    /* ✅ FIX: phần nội dung cuộn riêng, không làm mất header */
+    /* phần nội dung cuộn riêng */
     .invoice-wrap{
       padding:18px 18px 14px;
       overflow:auto;
@@ -104,7 +104,7 @@
       flex:1;
     }
 
-    /* ✅ FIX: thanh nút sticky ở dưới cho mobile (luôn bấm được) */
+    /* thanh nút sticky ở dưới cho mobile */
     .modal-actions{
       position:sticky;
       bottom:0;
@@ -120,7 +120,13 @@
     .modal-actions button{flex:1; padding:10px 12px}
     @media(max-width:720px){
       .modal-actions{display:flex}
-      .modal-hd .right{display:none} /* mobile dùng thanh dưới cho dễ bấm */
+      .modal-hd .right{display:none}
+    }
+
+    /* Chỉ hiện nút "Copy (điện thoại)" trên mobile */
+    #copyMobileBtn, #copyMobileBtn2 { display:none; }
+    @media(max-width:720px){
+      #copyMobileBtn, #copyMobileBtn2 { display:inline-block; }
     }
 
     .inv-top{
@@ -169,7 +175,7 @@
     .inv-total .grand{background:#f5f6f8}
     .print-note{font-size:11px;color:#666;margin-top:8px;text-align:center}
 
-    /* ===== OVERRIDE CUỐI CÙNG: ÉP HÓA ĐƠN ĐEN RÕ, SỐ ÂM ĐỎ ===== */
+    /* ÉP HÓA ĐƠN ĐEN RÕ, SỐ ÂM ĐỎ */
     #invoiceContent,
     #invoiceContent *{
       color:#000 !important;
@@ -323,7 +329,7 @@
 
       <div class="note">
         Bấm <b>Xuất bảng thanh toán</b> để ra mẫu gần giống hóa đơn, có bảng chi tiết + tổng tiền.
-        Trong cửa sổ bảng thanh toán có nút <b>Copy ảnh</b>. In/PDF: bấm <b>In / Lưu PDF</b>.
+        Trong cửa sổ bảng thanh toán có nút <b>Copy ảnh</b> và nút <b>Copy (điện thoại)</b>. In/PDF: bấm <b>In / Lưu PDF</b>.
       </div>
     </div>
   </div>
@@ -339,6 +345,7 @@
       </div>
       <div class="right">
         <button class="btn-light" id="copyImgBtn">Copy ảnh</button>
+        <button class="btn-light" id="copyMobileBtn">Copy (điện thoại)</button>
         <button class="btn-light" id="printBtn">In / Lưu PDF</button>
         <button class="btn-light" id="closeInvoice">Đóng</button>
       </div>
@@ -346,9 +353,10 @@
 
     <div class="invoice-wrap" id="invoiceContent"></div>
 
-    <!-- ✅ Thanh nút luôn bấm được trên điện thoại -->
+    <!-- Thanh nút luôn bấm được trên điện thoại -->
     <div class="modal-actions">
       <button class="btn-light" id="copyImgBtn2">Copy ảnh</button>
+      <button class="btn-light" id="copyMobileBtn2">Copy (điện thoại)</button>
       <button class="btn-light" id="printBtn2">In / PDF</button>
       <button class="btn-light" id="closeInvoice2">Đóng</button>
     </div>
@@ -769,7 +777,7 @@
       const tx = db.transaction('kv','readonly');
       const req = tx.objectStore('kv').get(key);
       req.onsuccess = () => resolve(req.result ?? null);
-      req.onerror = () => reject(req.error);
+      req.onerror = () => reject(tx.error);
     });
   }
 
@@ -1026,8 +1034,6 @@
     modal.classList.add('show');
     modal.setAttribute('aria-hidden', 'false');
     lockBodyScroll(true);
-
-    // cuộn nội dung về đầu cho gọn
     content.scrollTop = 0;
   }
 
@@ -1074,6 +1080,58 @@
     }catch(err){
       console.error(err);
       alert('Không copy được ảnh. Lưu ý: cần HTTPS và phải tải được thư viện CDN html2canvas.');
+    }
+  }
+
+  async function copyInvoiceForMobile(){
+    const target = document.getElementById('invoiceContent');
+    if (!target) return alert('Không tìm thấy nội dung bảng thanh toán.');
+
+    const scale = Math.min(2.5, (window.devicePixelRatio || 1) * 2);
+
+    try{
+      if (!window.html2canvas) throw new Error('Chưa tải được html2canvas (CDN).');
+
+      const canvas = await html2canvas(target, {
+        backgroundColor: '#ffffff',
+        scale,
+        useCORS: true,
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.clientWidth,
+      });
+
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 1));
+      if (!blob) throw new Error('Không tạo được ảnh.');
+
+      // Mobile: ưu tiên Share trước
+      const file = new File([blob], `bang-thanh-toan-${Date.now()}.png`, { type: 'image/png' });
+
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: 'Bảng thanh toán',
+          text: 'Ảnh bảng thanh toán',
+          files: [file],
+        });
+        return;
+      }
+
+      // Fallback chắc chắn: mở ảnh ra tab mới để lưu
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      alert('Đã mở ảnh ở tab mới. Bạn giữ ảnh và chọn “Lưu hình ảnh”.');
+      setTimeout(() => URL.revokeObjectURL(url), 15000);
+
+    }catch(err){
+      console.error(err);
+      alert('Không tạo/copy được ảnh. Lưu ý: cần HTTPS và phải tải được thư viện html2canvas (CDN) hoặc nhúng html2canvas local.');
     }
   }
 
@@ -1189,6 +1247,7 @@
 
     if (t.id === 'invoiceBtn') { openInvoice(); return; }
     if (t.id === 'copyImgBtn' || t.id === 'copyImgBtn2') { copyInvoiceAsImage(); return; }
+    if (t.id === 'copyMobileBtn' || t.id === 'copyMobileBtn2') { copyInvoiceForMobile(); return; }
     if (t.id === 'closeInvoice' || t.id === 'closeInvoice2') { closeInvoice(); return; }
     if (t.id === 'printBtn' || t.id === 'printBtn2') { window.print(); return; }
   });

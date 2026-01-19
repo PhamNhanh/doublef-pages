@@ -3,26 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>doublef.io.vn — Galaxy Menu</title>
+  <title>doublef.io.vn — Dashboard Menu</title>
 
   <style>
     :root{
-      --bg0:#060712;
-      --bg1:#0b1020;
-      --card: rgba(255,255,255,.07);
-      --card2: rgba(255,255,255,.10);
-      --line: rgba(255,255,255,.14);
-      --text:#e9edff;
-      --muted: rgba(233,237,255,.72);
-      --muted2: rgba(233,237,255,.55);
-      --cyan: rgba(0,194,255,1);
-      --violet: rgba(153,102,255,1);
-      --pink: rgba(255,80,180,1);
+      /* ===== Modern dashboard theme (NO galaxy) ===== */
+      --bg0:#0b1020;
+      --bg1:#0f1733;
+
+      --surface: rgba(255,255,255,.08);
+      --surface2: rgba(255,255,255,.12);
+      --stroke: rgba(255,255,255,.14);
+
+      --text:#eef2ff;
+      --muted: rgba(238,242,255,.72);
+      --muted2: rgba(238,242,255,.55);
+
+      --accent: #6aa8ff;     /* primary */
+      --accent2:#8b5cf6;     /* secondary */
       --good:#7cffb2;
       --warn:#ffb86b;
       --bad:#ff6b6b;
-      --shadow: 0 18px 60px rgba(0,0,0,.38);
-      --shadow2: 0 10px 30px rgba(0,0,0,.28);
+
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --shadow2: 0 10px 30px rgba(0,0,0,.22);
+
       --r: 18px;
       --r2: 22px;
       --font: system-ui, -apple-system, Segoe UI, Roboto, Arial;
@@ -35,92 +40,84 @@
       margin:0;
       font-family: var(--font);
       color: var(--text);
-      background:
-        radial-gradient(1100px 700px at 15% 18%, rgba(0,194,255,.18), transparent 60%),
-        radial-gradient(900px 600px at 85% 25%, rgba(255,80,180,.18), transparent 62%),
-        radial-gradient(900px 700px at 55% 88%, rgba(153,102,255,.18), transparent 62%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x: hidden;
+
+      /* Clean, professional gradient background */
+      background:
+        radial-gradient(900px 520px at 12% 18%, rgba(106,168,255,.22), transparent 62%),
+        radial-gradient(900px 520px at 88% 24%, rgba(139,92,246,.18), transparent 62%),
+        radial-gradient(900px 520px at 50% 92%, rgba(124,252,178,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
-    /* Animated galaxy haze */
-    .haze{
-      position: fixed; inset: -40vh -40vw;
+    /* Subtle geometric texture layer (not stars) */
+    .texture{
+      position: fixed; inset: 0;
+      pointer-events:none;
+      opacity: .35;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(closest-side at 50% 40%, rgba(0,0,0,1), transparent 70%);
+      filter: blur(.2px);
+    }
+
+    /* Soft blobs */
+    .blobs{
+      position: fixed; inset: -20vh -10vw;
       pointer-events: none;
       background:
-        radial-gradient(closest-side at 20% 25%, rgba(0,194,255,.10), transparent 60%),
-        radial-gradient(closest-side at 70% 30%, rgba(255,80,180,.09), transparent 62%),
-        radial-gradient(closest-side at 60% 80%, rgba(153,102,255,.10), transparent 62%);
-      filter: blur(28px);
+        radial-gradient(closest-side at 18% 22%, rgba(106,168,255,.16), transparent 60%),
+        radial-gradient(closest-side at 82% 28%, rgba(139,92,246,.14), transparent 62%),
+        radial-gradient(closest-side at 55% 78%, rgba(124,252,178,.08), transparent 62%);
+      filter: blur(26px);
       opacity: .9;
-      animation: drift 18s ease-in-out infinite alternate;
       transform: translate3d(0,0,0);
+      animation: floaty 18s ease-in-out infinite alternate;
     }
-    @keyframes drift{
-      from{ transform: translate(-2%, -1%) scale(1.02); }
-      to  { transform: translate(2%, 1%) scale(1.05); }
-    }
-
-    /* Starfield (CSS only) */
-    .stars{
-      position: fixed; inset:0;
-      pointer-events: none;
-      background-image:
-        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.8), transparent 50%),
-        radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,.75), transparent 50%),
-        radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,.7), transparent 50%),
-        radial-gradient(1px 1px at 85% 70%, rgba(255,255,255,.6), transparent 50%),
-        radial-gradient(1px 1px at 50% 55%, rgba(255,255,255,.65), transparent 50%),
-        radial-gradient(1px 1px at 20% 60%, rgba(255,255,255,.55), transparent 50%),
-        radial-gradient(1px 1px at 75% 15%, rgba(255,255,255,.6), transparent 50%),
-        radial-gradient(1px 1px at 92% 40%, rgba(255,255,255,.55), transparent 50%),
-        radial-gradient(1px 1px at 42% 10%, rgba(255,255,255,.5), transparent 50%),
-        radial-gradient(1px 1px at 12% 92%, rgba(255,255,255,.5), transparent 50%);
-      opacity: .65;
-      animation: twinkle 5.5s ease-in-out infinite alternate;
-    }
-    @keyframes twinkle{
-      from{ opacity:.50; }
-      to{ opacity:.75; }
+    @keyframes floaty{
+      from{ transform: translate(-1.5%, -1%) scale(1.02); }
+      to  { transform: translate(1.5%, 1%) scale(1.05); }
     }
 
     .wrap{
       max-width: 1120px;
       margin: 0 auto;
-      padding: 26px 16px 50px;
+      padding: 22px 16px 48px;
       position: relative;
       z-index: 2;
     }
 
-    /* Header */
+    /* ===== Layout ===== */
     .hero{
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.25fr .75fr;
       gap: 14px;
       align-items: stretch;
-      margin-bottom: 14px;
     }
     @media (max-width: 980px){
       .hero{ grid-template-columns: 1fr; }
     }
 
     .panel{
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border: 1px solid var(--stroke);
       border-radius: var(--r2);
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
     }
+
+    /* Elegant top highlight */
     .panel::before{
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(800px 200px at 20% 10%, rgba(0,194,255,.18), transparent 60%),
-        radial-gradient(700px 220px at 80% 0%, rgba(255,80,180,.14), transparent 65%),
-        radial-gradient(700px 250px at 50% 100%, rgba(153,102,255,.14), transparent 65%);
+        radial-gradient(900px 240px at 20% 0%, rgba(106,168,255,.18), transparent 62%),
+        radial-gradient(900px 240px at 80% 0%, rgba(139,92,246,.14), transparent 66%);
       filter: blur(18px);
-      opacity: .8;
+      opacity: .85;
       pointer-events:none;
     }
 
@@ -129,9 +126,10 @@
       padding: 18px 18px 16px;
       display:flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
+    /* ===== Header ===== */
     .title{
       display:flex;
       align-items:center;
@@ -144,42 +142,51 @@
       display:flex;
       align-items:center;
       gap: 12px;
+      min-width: 0;
     }
 
     .logo{
       width: 44px; height: 44px;
       border-radius: 14px;
       background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.8), transparent 60%),
-        conic-gradient(from 90deg, rgba(0,194,255,.95), rgba(153,102,255,.95), rgba(255,80,180,.95), rgba(0,194,255,.95));
-      box-shadow: 0 10px 30px rgba(0,194,255,.12), 0 10px 30px rgba(255,80,180,.08);
+        linear-gradient(135deg, rgba(106,168,255,.95), rgba(139,92,246,.95));
+      box-shadow:
+        0 14px 34px rgba(106,168,255,.14),
+        0 14px 34px rgba(139,92,246,.10);
       border: 1px solid rgba(255,255,255,.22);
       position: relative;
       overflow: hidden;
+      flex: 0 0 auto;
     }
     .logo::after{
       content:"";
-      position:absolute; inset:-40%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      position:absolute; inset:-60%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
       transform: rotate(25deg);
       animation: shine 2.8s ease-in-out infinite;
     }
     @keyframes shine{
       0%{ transform: translateX(-35%) rotate(25deg); opacity: .0; }
-      30%{ opacity: .55; }
+      30%{ opacity: .6; }
       100%{ transform: translateX(35%) rotate(25deg); opacity: .0; }
     }
 
     h1{
       margin: 0;
-      font-size: 24px;
+      font-size: 22px;
       letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
+
     .subtitle{
-      margin: 2px 0 0;
+      margin: 4px 0 0;
       font-size: 13px;
       color: var(--muted);
       line-height: 1.5;
+      max-width: 820px;
     }
 
     .actions{
@@ -192,29 +199,31 @@
 
     .btn{
       border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.24);
+      background: rgba(0,0,0,.18);
       color: var(--text);
       padding: 10px 12px;
       border-radius: 14px;
       cursor: pointer;
       font-size: 14px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
       display:inline-flex;
       align-items:center;
       gap: 8px;
       user-select: none;
+      box-shadow: var(--shadow2);
     }
     .btn:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,.07);
-      border-color: rgba(0,194,255,.42);
+      border-color: rgba(106,168,255,.45);
     }
     .btn.primary{
-      background: rgba(0,194,255,.16);
-      border-color: rgba(0,194,255,.35);
+      background: rgba(106,168,255,.16);
+      border-color: rgba(106,168,255,.35);
     }
     .btn.primary:hover{
-      background: rgba(0,194,255,.22);
+      background: rgba(106,168,255,.22);
+      box-shadow: 0 14px 36px rgba(106,168,255,.10);
     }
 
     .status{
@@ -227,7 +236,164 @@
     .warn{ color: var(--warn); }
     .bad{ color: var(--bad); }
 
-    /* Right panel: Clock + Earth */
+    /* ===== Search & chips ===== */
+    .searchRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .search{
+      flex: 1 1 280px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
+    }
+    .search::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 180px at 20% 0%, rgba(106,168,255,.14), transparent 62%),
+                  radial-gradient(700px 180px at 90% 40%, rgba(139,92,246,.10), transparent 66%);
+      filter: blur(18px);
+      opacity: .9;
+      pointer-events:none;
+    }
+    .search input{
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .chips{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.88);
+      font-size: 13px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+      box-shadow: var(--shadow2);
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      background: rgba(106,168,255,.12);
+      border-color: rgba(106,168,255,.42);
+    }
+    .chip.active{
+      background: rgba(106,168,255,.18);
+      border-color: rgba(106,168,255,.55);
+      box-shadow: 0 16px 40px rgba(106,168,255,.08), var(--shadow2);
+    }
+
+    /* ===== Menu grid ===== */
+    .menu{
+      margin-top: 2px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .tile{
+      grid-column: span 6;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      padding: 16px;
+      border-radius: 18px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(0,0,0,.16);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
+      transition: transform .10s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+    .tile::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 180px at 10% 10%, rgba(106,168,255,.12), transparent 60%),
+        radial-gradient(600px 180px at 90% 30%, rgba(139,92,246,.10), transparent 65%);
+      filter: blur(18px);
+      opacity: .9;
+      pointer-events:none;
+      transform: translateZ(0);
+    }
+    .tile:hover{
+      transform: translateY(-3px);
+      border-color: rgba(106,168,255,.55);
+      background: rgba(106,168,255,.10);
+      box-shadow: 0 18px 55px rgba(0,0,0,.30);
+    }
+    .tile:active{ transform: translateY(-1px); }
+
+    .tIcon{
+      width: 46px; height: 46px;
+      border-radius: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 22px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,.20);
+      position: relative;
+      z-index: 2;
+      flex: 0 0 auto;
+    }
+
+    .tText{
+      position: relative;
+      z-index: 2;
+      min-width: 0;
+    }
+    .tTitle{
+      font-size: 16px;
+      font-weight: 760;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .tPath{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    @media (max-width: 920px){
+      .tile{ grid-column: span 12; }
+    }
+
+    /* ===== Right column widgets ===== */
     .right{
       display:flex;
       flex-direction: column;
@@ -237,7 +403,7 @@
     }
 
     .mini{
-      background: rgba(0,0,0,.18);
+      background: rgba(0,0,0,.16);
       border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--r2);
       box-shadow: var(--shadow2);
@@ -248,8 +414,8 @@
     .mini::before{
       content:"";
       position:absolute; inset:-2px;
-      background: radial-gradient(500px 180px at 30% 0%, rgba(0,194,255,.16), transparent 62%),
-                  radial-gradient(500px 180px at 80% 25%, rgba(255,80,180,.12), transparent 65%);
+      background: radial-gradient(700px 220px at 30% 0%, rgba(106,168,255,.14), transparent 62%),
+                  radial-gradient(700px 220px at 80% 25%, rgba(139,92,246,.10), transparent 65%);
       filter: blur(16px);
       opacity: .9;
       pointer-events: none;
@@ -274,10 +440,10 @@
 
     .time{
       font-size: 26px;
-      font-weight: 750;
+      font-weight: 780;
       letter-spacing: .6px;
       line-height: 1;
-      text-shadow: 0 0 18px rgba(0,194,255,.10);
+      text-shadow: 0 0 18px rgba(106,168,255,.12);
     }
     .date{
       font-size: 13px;
@@ -294,16 +460,16 @@
     .ring{
       width: 46px; height: 46px;
       border-radius: 50%;
-      background: conic-gradient(rgba(0,194,255,.85) 0deg, rgba(0,194,255,.10) 0deg);
+      background: conic-gradient(rgba(106,168,255,.88) 0deg, rgba(106,168,255,.10) 0deg);
       border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
       position: relative;
     }
     .ring::after{
       content:"";
       position:absolute; inset: 6px;
       border-radius: 50%;
-      background: rgba(0,0,0,.35);
+      background: rgba(0,0,0,.30);
       border: 1px solid rgba(255,255,255,.10);
     }
     .ring span{
@@ -313,14 +479,12 @@
       align-items:center;
       justify-content:center;
       font-size: 12px;
-      color: rgba(233,237,255,.85);
+      color: rgba(238,242,255,.88);
       z-index: 2;
-      font-weight: 650;
+      font-weight: 680;
     }
 
-    .earthBox{
-      padding: 0;
-    }
+    .earthBox{ padding: 0; }
     .earthHead{
       padding: 12px 14px 0;
       position: relative;
@@ -333,7 +497,7 @@
     }
     .earthTitle{
       font-size: 14px;
-      color: rgba(233,237,255,.82);
+      color: rgba(238,242,255,.84);
       display:flex;
       align-items:center;
       gap: 8px;
@@ -350,153 +514,8 @@
       z-index: 2;
     }
 
-    /* Menu grid */
-    .menu{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-    }
-    .tile{
-      grid-column: span 6;
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      padding: 16px;
-      border-radius: 18px;
-      text-decoration: none;
-      color: var(--text);
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: var(--shadow2);
-      position: relative;
-      overflow: hidden;
-      transition: transform .10s ease, border-color .15s ease, background .15s ease;
-    }
-    .tile::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(480px 160px at 15% 10%, rgba(0,194,255,.14), transparent 60%),
-        radial-gradient(480px 160px at 90% 30%, rgba(255,80,180,.10), transparent 65%);
-      filter: blur(18px);
-      opacity: .85;
-      pointer-events:none;
-      transform: translateZ(0);
-    }
-    .tile:hover{
-      transform: translateY(-3px);
-      border-color: rgba(0,194,255,.45);
-      background: rgba(0, 194, 255, .10);
-    }
-    .tile:active{
-      transform: translateY(-1px);
-    }
-
-    .tIcon{
-      width: 46px; height: 46px;
-      border-radius: 16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 22px;
-      border: 1px solid rgba(255,255,255,.20);
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      position: relative;
-      z-index: 2;
-    }
-
-    .tText{
-      position: relative;
-      z-index: 2;
-      min-width: 0;
-    }
-    .tTitle{
-      font-size: 16px;
-      font-weight: 750;
-      letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-    .tPath{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-
-    @media (max-width: 920px){
-      .tile{ grid-column: span 12; }
-    }
-
-    /* Search */
-    .searchRow{
-      margin-top: 10px;
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-    }
-    .search{
-      flex: 1 1 280px;
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.20);
-      box-shadow: var(--shadow2);
-      position: relative;
-      overflow: hidden;
-    }
-    .search::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(500px 160px at 20% 0%, rgba(0,194,255,.12), transparent 62%),
-                  radial-gradient(500px 160px at 90% 40%, rgba(153,102,255,.10), transparent 66%);
-      filter: blur(18px);
-      opacity: .9;
-      pointer-events:none;
-    }
-    .search input{
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      border: 0;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 14px;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(233,237,255,.85);
-      font-size: 13px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .08s ease, border-color .12s ease, background .12s ease;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      background: rgba(0,194,255,.10);
-      border-color: rgba(0,194,255,.38);
-    }
-
     footer{
-      margin-top: 16px;
+      margin-top: 2px;
       color: var(--muted2);
       font-size: 12px;
       text-align: center;
@@ -505,15 +524,15 @@
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .haze, .stars, .logo::after{ animation: none !important; }
-      .tile, .btn{ transition: none !important; }
+      .blobs, .logo::after{ animation: none !important; }
+      .tile, .btn, .chip{ transition: none !important; }
     }
   </style>
 </head>
 
 <body>
-  <div class="haze"></div>
-  <div class="stars"></div>
+  <div class="blobs"></div>
+  <div class="texture"></div>
 
   <div class="wrap">
     <div class="hero">
@@ -523,18 +542,18 @@
           <div class="title">
             <div class="brand">
               <div class="logo" aria-hidden="true"></div>
-              <div>
-                <h1>doublef.io.vn — Galaxy Menu</h1>
+              <div style="min-width:0;">
+                <h1>doublef.io.vn — Dashboard Menu</h1>
                 <div class="subtitle">
                   Menu tự động đọc <b>pages.json</b>, bấm là mở trang trong <b>tab mới</b>.
-                  Thêm file <code>.html</code> → commit → Actions tự cập nhật danh sách.
+                  Thêm file <code>.html</code> → commit → GitHub Actions tự cập nhật danh sách.
                 </div>
               </div>
             </div>
 
             <div class="actions">
-              <button class="btn primary" id="reloadBtn">🔄 Tải lại menu</button>
-              <button class="btn" id="openJsonBtn">📄 Mở pages.json</button>
+              <button class="btn primary" id="reloadBtn">🔄 Tải lại</button>
+              <button class="btn" id="openJsonBtn">📄 pages.json</button>
               <span class="status" id="status"></span>
             </div>
           </div>
@@ -545,9 +564,11 @@
               <input id="q" type="text" placeholder="Tìm trang... (ví dụ: bmi, tool, report)" />
             </div>
 
-            <div class="chip" id="chipAll">🌌 Tất cả</div>
-            <div class="chip" id="chipTools">🧰 Tools</div>
-            <div class="chip" id="chipHealth">📊 Sức khỏe</div>
+            <div class="chips">
+              <div class="chip active" id="chipAll">📚 Tất cả</div>
+              <div class="chip" id="chipTools">🧰 Tools</div>
+              <div class="chip" id="chipHealth">📊 Sức khỏe</div>
+            </div>
           </div>
 
           <div class="menu" id="menuGrid"></div>
@@ -587,7 +608,7 @@
         </div>
 
         <footer>
-          “The cosmos is under no obligation to make sense to us.” — nhưng menu thì có.
+          Gọn – đẹp – mở đúng trang. Vũ trụ thì tùy mood.
         </footer>
       </aside>
     </div>
@@ -603,6 +624,10 @@
     const statusEl = document.getElementById("status");
     const qEl = document.getElementById("q");
 
+    const chipAll = document.getElementById("chipAll");
+    const chipTools = document.getElementById("chipTools");
+    const chipHealth = document.getElementById("chipHealth");
+
     let allPages = [];
     let filterMode = "all"; // all | tools | health
 
@@ -610,7 +635,10 @@
       statusEl.className = "status " + cls;
       statusEl.textContent = msg;
       clearTimeout(setStatus._t);
-      setStatus._t = setTimeout(() => { statusEl.textContent = ""; statusEl.className = "status"; }, 3200);
+      setStatus._t = setTimeout(() => {
+        statusEl.textContent = "";
+        statusEl.className = "status";
+      }, 3200);
     }
 
     function esc(s) {
@@ -638,6 +666,14 @@
       return "all";
     }
 
+    function setActiveChip(mode){
+      filterMode = mode;
+      chipAll.classList.toggle("active", mode === "all");
+      chipTools.classList.toggle("active", mode === "tools");
+      chipHealth.classList.toggle("active", mode === "health");
+      renderMenu();
+    }
+
     function renderMenu(){
       menuGrid.innerHTML = "";
 
@@ -656,7 +692,7 @@
 
       if (!pages.length){
         menuGrid.innerHTML = `
-          <div style="grid-column: span 12; padding: 14px; color: rgba(233,237,255,.7); border: 1px dashed rgba(255,255,255,.18); border-radius: 18px;">
+          <div style="grid-column: span 12; padding: 14px; color: rgba(238,242,255,.72); border: 1px dashed rgba(255,255,255,.20); border-radius: 18px; background: rgba(0,0,0,.10);">
             Không tìm thấy trang phù hợp. Thử đổi từ khóa hoặc chọn lại bộ lọc.
           </div>
         `;
@@ -689,6 +725,18 @@
 
     async function loadPages(){
       setStatus("Đang tải pages.json…");
+      // small skeleton hint
+      menuGrid.innerHTML = `
+        <div style="grid-column: span 12; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px;">
+          ${Array.from({length: 6}).map(() => `
+            <div style="grid-column: span 6; padding: 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); box-shadow: 0 10px 30px rgba(0,0,0,.18);">
+              <div style="height: 14px; width: 55%; background: rgba(255,255,255,.10); border-radius: 10px;"></div>
+              <div style="height: 10px; width: 85%; margin-top: 10px; background: rgba(255,255,255,.07); border-radius: 10px;"></div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
       try{
         const res = await fetch("pages.json?v=" + Date.now(), { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
@@ -715,11 +763,11 @@
       window.open("pages.json", "_blank", "noopener,noreferrer");
     });
 
-    qEl.addEventListener("input", () => renderMenu());
+    qEl.addEventListener("input", renderMenu);
 
-    document.getElementById("chipAll").addEventListener("click", () => { filterMode = "all"; renderMenu(); });
-    document.getElementById("chipTools").addEventListener("click", () => { filterMode = "tools"; renderMenu(); });
-    document.getElementById("chipHealth").addEventListener("click", () => { filterMode = "health"; renderMenu(); });
+    chipAll.addEventListener("click", () => setActiveChip("all"));
+    chipTools.addEventListener("click", () => setActiveChip("tools"));
+    chipHealth.addEventListener("click", () => setActiveChip("health"));
 
     // ====== Clock ======
     const timeEl = document.getElementById("time");
@@ -737,7 +785,7 @@
     function pad2(n){ return String(n).padStart(2,"0"); }
     function setRing(el, ratio){
       const deg = Math.max(0, Math.min(1, ratio)) * 360;
-      el.style.background = `conic-gradient(rgba(0,194,255,.88) ${deg}deg, rgba(0,194,255,.10) 0deg)`;
+      el.style.background = `conic-gradient(rgba(106,168,255,.90) ${deg}deg, rgba(106,168,255,.10) 0deg)`;
     }
 
     function tick(){
@@ -748,7 +796,6 @@
       const s = now.getSeconds();
 
       timeEl.textContent = `${pad2(h)}:${pad2(m)}:${pad2(s)}` + (use24 ? "" : (h24 >= 12 ? " PM" : " AM"));
-
       const dd = now.toLocaleDateString("vi-VN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
       dateEl.textContent = dd;
 
@@ -813,27 +860,24 @@
         emissive: new THREE.Color(0x00111a),
         emissiveIntensity: 0.25
       });
-
-      // specular via roughness/metalness is fine, but add a subtle highlight
       material.metalnessMap = texSpec;
 
       const earth = new THREE.Mesh(geometry, material);
       scene.add(earth);
 
-      // Atmosphere glow (simple)
+      // Atmosphere glow
       const glowGeo = new THREE.SphereGeometry(1.03, 64, 64);
       const glowMat = new THREE.MeshBasicMaterial({
-        color: 0x37d5ff,
+        color: 0x6aa8ff,
         transparent: true,
         opacity: 0.12
       });
       const glow = new THREE.Mesh(glowGeo, glowMat);
       scene.add(glow);
 
-      // Resize
       function resize(){
         const w = box.clientWidth;
-        const h = 240; // fixed visual height (matches CSS expectation)
+        const h = 240;
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
@@ -841,12 +885,9 @@
       resize();
       window.addEventListener("resize", resize);
 
-      // Animate
       let last = performance.now();
       function animate(t){
         const dt = (t - last) / 1000; last = t;
-
-        // auto-rotate (gentle) when user not dragging
         earth.rotation.y += dt * 0.18;
         glow.rotation.y += dt * 0.10;
 
@@ -857,7 +898,6 @@
       requestAnimationFrame(animate);
     }
 
-    // Some browsers may block WebGL; fail gracefully
     try{
       if (window.THREE && THREE.WebGLRenderer){
         initEarth();
@@ -874,4 +914,3 @@
   </script>
 </body>
 </html>
-

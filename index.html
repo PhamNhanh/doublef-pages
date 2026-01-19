@@ -7,7 +7,6 @@
 
   <style>
     :root{
-      /* ===== Modern dashboard theme (NO galaxy) ===== */
       --bg0:#0b1020;
       --bg1:#0f1733;
 
@@ -19,8 +18,8 @@
       --muted: rgba(238,242,255,.72);
       --muted2: rgba(238,242,255,.55);
 
-      --accent: #6aa8ff;     /* primary */
-      --accent2:#8b5cf6;     /* secondary */
+      --accent:#6aa8ff;
+      --accent2:#8b5cf6;
       --good:#7cffb2;
       --warn:#ffb86b;
       --bad:#ff6b6b;
@@ -41,8 +40,6 @@
       font-family: var(--font);
       color: var(--text);
       overflow-x: hidden;
-
-      /* Clean, professional gradient background */
       background:
         radial-gradient(900px 520px at 12% 18%, rgba(106,168,255,.22), transparent 62%),
         radial-gradient(900px 520px at 88% 24%, rgba(139,92,246,.18), transparent 62%),
@@ -50,7 +47,6 @@
         linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
-    /* Subtle geometric texture layer (not stars) */
     .texture{
       position: fixed; inset: 0;
       pointer-events:none;
@@ -63,7 +59,6 @@
       filter: blur(.2px);
     }
 
-    /* Soft blobs */
     .blobs{
       position: fixed; inset: -20vh -10vw;
       pointer-events: none;
@@ -89,7 +84,6 @@
       z-index: 2;
     }
 
-    /* ===== Layout ===== */
     .hero{
       display: grid;
       grid-template-columns: 1.25fr .75fr;
@@ -108,8 +102,6 @@
       overflow: hidden;
       position: relative;
     }
-
-    /* Elegant top highlight */
     .panel::before{
       content:"";
       position:absolute; inset:-2px;
@@ -129,7 +121,6 @@
       gap: 12px;
     }
 
-    /* ===== Header ===== */
     .title{
       display:flex;
       align-items:center;
@@ -148,8 +139,7 @@
     .logo{
       width: 44px; height: 44px;
       border-radius: 14px;
-      background:
-        linear-gradient(135deg, rgba(106,168,255,.95), rgba(139,92,246,.95));
+      background: linear-gradient(135deg, rgba(106,168,255,.95), rgba(139,92,246,.95));
       box-shadow:
         0 14px 34px rgba(106,168,255,.14),
         0 14px 34px rgba(139,92,246,.10);
@@ -236,7 +226,6 @@
     .warn{ color: var(--warn); }
     .bad{ color: var(--bad); }
 
-    /* ===== Search & chips ===== */
     .searchRow{
       display:flex;
       gap: 10px;
@@ -308,7 +297,6 @@
       box-shadow: 0 16px 40px rgba(106,168,255,.08), var(--shadow2);
     }
 
-    /* ===== Menu grid ===== */
     .menu{
       margin-top: 2px;
       display:grid;
@@ -393,7 +381,6 @@
       .tile{ grid-column: span 12; }
     }
 
-    /* ===== Right column widgets ===== */
     .right{
       display:flex;
       flex-direction: column;
@@ -410,7 +397,6 @@
       overflow: hidden;
       position: relative;
     }
-
     .mini::before{
       content:"";
       position:absolute; inset:-2px;
@@ -437,7 +423,6 @@
       gap: 14px;
       flex-wrap: wrap;
     }
-
     .time{
       font-size: 26px;
       font-weight: 780;
@@ -456,7 +441,6 @@
       gap: 10px;
       align-items:center;
     }
-
     .ring{
       width: 46px; height: 46px;
       border-radius: 50%;
@@ -484,34 +468,52 @@
       font-weight: 680;
     }
 
-    .earthBox{ padding: 0; }
-    .earthHead{
-      padding: 12px 14px 0;
+    /* ===== Quick Stats (replaces Earth) ===== */
+    .stats{
       position: relative;
-      z-index: 2;
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .statRow{
       display:flex;
       align-items:center;
       justify-content: space-between;
       gap: 10px;
-      flex-wrap: wrap;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
     }
-    .earthTitle{
-      font-size: 14px;
-      color: rgba(238,242,255,.84);
+    .statLeft{
       display:flex;
       align-items:center;
-      gap: 8px;
+      gap: 10px;
+      min-width: 0;
     }
-    .earthHint{
-      font-size: 12px;
-      color: var(--muted2);
+    .statIcon{
+      width: 38px; height: 38px;
+      border-radius: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.14);
+      flex: 0 0 auto;
     }
-    #earthCanvas{
-      width: 100%;
-      height: 240px;
-      display:block;
-      position: relative;
-      z-index: 2;
+    .statName{
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+    .statValue{
+      font-size: 18px;
+      font-weight: 780;
+      letter-spacing: .3px;
     }
 
     footer{
@@ -522,7 +524,6 @@
       padding: 10px 0 0;
     }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       .blobs, .logo::after{ animation: none !important; }
       .tile, .btn, .chip{ transition: none !important; }
@@ -536,7 +537,7 @@
 
   <div class="wrap">
     <div class="hero">
-      <!-- Left: Title + controls -->
+      <!-- Left: Menu -->
       <section class="panel">
         <div class="panel-inner">
           <div class="title">
@@ -575,7 +576,7 @@
         </div>
       </section>
 
-      <!-- Right: Clock + Earth -->
+      <!-- Right: Clock + Stats -->
       <aside class="panel right">
         <!-- Clock -->
         <div class="mini">
@@ -598,13 +599,33 @@
           </div>
         </div>
 
-        <!-- Earth -->
-        <div class="mini earthBox">
-          <div class="earthHead">
-            <div class="earthTitle">🌍 Trái đất 3D</div>
-            <div class="earthHint">Kéo để xoay • Lăn chuột để zoom</div>
+        <!-- Quick Stats (replaces Earth) -->
+        <div class="mini">
+          <div class="stats">
+            <div class="statRow">
+              <div class="statLeft">
+                <div class="statIcon">📄</div>
+                <div class="statName">Tổng số trang</div>
+              </div>
+              <div class="statValue" id="statTotal">--</div>
+            </div>
+
+            <div class="statRow">
+              <div class="statLeft">
+                <div class="statIcon">🧰</div>
+                <div class="statName">Nhóm Tools</div>
+              </div>
+              <div class="statValue" id="statTools">--</div>
+            </div>
+
+            <div class="statRow">
+              <div class="statLeft">
+                <div class="statIcon">📊</div>
+                <div class="statName">Nhóm Sức khỏe</div>
+              </div>
+              <div class="statValue" id="statHealth">--</div>
+            </div>
           </div>
-          <canvas id="earthCanvas"></canvas>
         </div>
 
         <footer>
@@ -613,10 +634,6 @@
       </aside>
     </div>
   </div>
-
-  <!-- Three.js (CDN) -->
-  <script src="https://unpkg.com/three@0.160.1/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.160.1/examples/js/controls/OrbitControls.js"></script>
 
   <script>
     // ====== Menu logic (pages.json -> buttons, open new tab) ======
@@ -627,6 +644,10 @@
     const chipAll = document.getElementById("chipAll");
     const chipTools = document.getElementById("chipTools");
     const chipHealth = document.getElementById("chipHealth");
+
+    const statTotal = document.getElementById("statTotal");
+    const statTools = document.getElementById("statTools");
+    const statHealth = document.getElementById("statHealth");
 
     let allPages = [];
     let filterMode = "all"; // all | tools | health
@@ -655,15 +676,23 @@
       const t = normalize(p.title);
       const path = normalize(p.path);
 
-      // Health bucket: bmi/health/weight
       if (path.includes("bmi") || t.includes("bmi") || t.includes("sức khỏe") || t.includes("suc khoe") || t.includes("can nang") || path.includes("health")) {
         return "health";
       }
-      // Tools bucket: tool/tools/convert/calc
       if (path.includes("tool") || t.includes("tool") || t.includes("công cụ") || t.includes("cong cu") || t.includes("convert") || t.includes("chuyển") || t.includes("tính")) {
         return "tools";
       }
       return "all";
+    }
+
+    function updateStats(){
+      const pages = allPages.filter(p => p && p.path && normalize(p.path) !== "index.html");
+      const tools = pages.filter(p => pickGroup(p) === "tools").length;
+      const health = pages.filter(p => pickGroup(p) === "health").length;
+
+      statTotal.textContent = String(pages.length);
+      statTools.textContent = String(tools);
+      statHealth.textContent = String(health);
     }
 
     function setActiveChip(mode){
@@ -680,7 +709,7 @@
       const query = normalize(qEl.value).trim();
       const pages = allPages.filter(p => {
         if (!p || !p.path) return false;
-        if (normalize(p.path) === "index.html") return false; // hide self
+        if (normalize(p.path) === "index.html") return false;
         if (query) {
           const hay = normalize(p.title) + " " + normalize(p.path);
           if (!hay.includes(query)) return false;
@@ -707,8 +736,6 @@
         const a = document.createElement("a");
         a.className = "tile";
         a.href = path;
-
-        // Open new tab as requested
         a.target = "_blank";
         a.rel = "noopener noreferrer";
 
@@ -725,7 +752,7 @@
 
     async function loadPages(){
       setStatus("Đang tải pages.json…");
-      // small skeleton hint
+
       menuGrid.innerHTML = `
         <div style="grid-column: span 12; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px;">
           ${Array.from({length: 6}).map(() => `
@@ -744,11 +771,16 @@
         if (!Array.isArray(data)) throw new Error("pages.json không phải mảng JSON");
 
         allPages = data;
+        updateStats();
         renderMenu();
         setStatus("Menu đã sẵn sàng ✅", "ok");
       }catch(e){
         console.error(e);
         allPages = [];
+        statTotal.textContent = "--";
+        statTools.textContent = "--";
+        statHealth.textContent = "--";
+
         menuGrid.innerHTML = `
           <div style="grid-column: span 12; padding: 14px; color: rgba(255,184,107,.92); border: 1px solid rgba(255,184,107,.25); background: rgba(255,184,107,.08); border-radius: 18px;">
             Không đọc được <b>pages.json</b>. Kiểm tra GitHub Actions đã chạy xong chưa, và file pages.json đã xuất hiện ở root repo.
@@ -816,98 +848,6 @@
 
     setInterval(tick, 250);
     tick();
-
-    // ====== 3D Earth (Three.js) ======
-    function initEarth(){
-      const canvas = document.getElementById("earthCanvas");
-      const box = canvas.parentElement;
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-      const scene = new THREE.Scene();
-
-      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-      camera.position.set(0, 0, 3.2);
-
-      const controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.06;
-      controls.enablePan = false;
-      controls.minDistance = 2.2;
-      controls.maxDistance = 6.0;
-
-      // Lights
-      const key = new THREE.DirectionalLight(0xffffff, 1.2);
-      key.position.set(4, 2, 6);
-      scene.add(key);
-
-      const fill = new THREE.AmbientLight(0x88aaff, 0.55);
-      scene.add(fill);
-
-      // Globe
-      const geometry = new THREE.SphereGeometry(1, 64, 64);
-
-      const loader = new THREE.TextureLoader();
-      const texColor = loader.load("https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg");
-      const texNormal = loader.load("https://threejs.org/examples/textures/planets/earth_normal_2048.jpg");
-      const texSpec = loader.load("https://threejs.org/examples/textures/planets/earth_specular_2048.jpg");
-
-      const material = new THREE.MeshStandardMaterial({
-        map: texColor,
-        normalMap: texNormal,
-        metalness: 0.15,
-        roughness: 0.85,
-        emissive: new THREE.Color(0x00111a),
-        emissiveIntensity: 0.25
-      });
-      material.metalnessMap = texSpec;
-
-      const earth = new THREE.Mesh(geometry, material);
-      scene.add(earth);
-
-      // Atmosphere glow
-      const glowGeo = new THREE.SphereGeometry(1.03, 64, 64);
-      const glowMat = new THREE.MeshBasicMaterial({
-        color: 0x6aa8ff,
-        transparent: true,
-        opacity: 0.12
-      });
-      const glow = new THREE.Mesh(glowGeo, glowMat);
-      scene.add(glow);
-
-      function resize(){
-        const w = box.clientWidth;
-        const h = 240;
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-      resize();
-      window.addEventListener("resize", resize);
-
-      let last = performance.now();
-      function animate(t){
-        const dt = (t - last) / 1000; last = t;
-        earth.rotation.y += dt * 0.18;
-        glow.rotation.y += dt * 0.10;
-
-        controls.update();
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
-    }
-
-    try{
-      if (window.THREE && THREE.WebGLRenderer){
-        initEarth();
-      } else {
-        setStatus("Không tải được 3D (CDN). Menu vẫn hoạt động.", "warn");
-      }
-    }catch(e){
-      console.warn(e);
-      setStatus("WebGL không khả dụng. Menu vẫn hoạt động.", "warn");
-    }
 
     // Start menu
     loadPages();

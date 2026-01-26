@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tính tiền thi công — Pro Light UI</title>
+  <title>Tính tiền thi công — Light Pro Skin (giữ nguyên chức năng)</title>
 
   <style>
     :root{
@@ -40,15 +40,15 @@
       font-family: var(--font);
       color: var(--text);
       background:
-        radial-gradient(900px 520px at 12% 18%, rgba(37,99,235,.18), transparent 62%),
-        radial-gradient(900px 520px at 88% 22%, rgba(124,58,237,.16), transparent 62%),
+        radial-gradient(900px 520px at 12% 18%, rgba(37,99,235,.16), transparent 62%),
+        radial-gradient(900px 520px at 88% 22%, rgba(124,58,237,.14), transparent 62%),
         radial-gradient(900px 520px at 50% 95%, rgba(16,185,129,.10), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
     }
 
     /* ===== animated blobs ===== */
-    .blobs{
+    .skin-blobs{
       position: fixed; inset: -18vh -10vw;
       pointer-events:none;
       z-index: 0;
@@ -58,19 +58,19 @@
         radial-gradient(closest-side at 55% 80%, rgba(16,185,129,.10), transparent 62%);
       filter: blur(28px);
       opacity: .95;
-      animation: floaty 16s ease-in-out infinite alternate;
+      animation: skin-floaty 16s ease-in-out infinite alternate;
     }
-    @@keyframes floaty{
+    @@keyframes skin-floaty{
       from{ transform: translate(-1.2%,-1.0%) scale(1.02); }
       to  { transform: translate(1.2%, 1.0%) scale(1.06); }
     }
 
     /* ===== subtle grid texture ===== */
-    .texture{
+    .skin-grid{
       position: fixed; inset:0;
       pointer-events:none;
       z-index: 0;
-      opacity: .25;
+      opacity: .22;
       background-image:
         linear-gradient(to right, rgba(15,23,42,.06) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(15,23,42,.06) 1px, transparent 1px);
@@ -78,8 +78,8 @@
       mask-image: radial-gradient(closest-side at 50% 40%, rgba(0,0,0,1), transparent 72%);
     }
 
-    /* ===== App layout ===== */
-    .app{
+    /* ===== app layout ===== */
+    .skin-app{
       position: relative;
       z-index: 1;
       min-height: 100vh;
@@ -91,8 +91,8 @@
         "sidebar main";
     }
 
-    /* ===== Header ===== */
-    header{
+    /* ===== header ===== */
+    .skin-header{
       grid-area: header;
       position: sticky;
       top:0;
@@ -107,12 +107,12 @@
       border-bottom: 1px solid var(--stroke);
     }
 
-    .h-left{
-      display:flex; align-items:center; gap: 10px;
+    .skin-left{
+      display:flex; align-items:center; gap:10px;
       min-width: 0;
     }
 
-    .hamburger{
+    .skin-hamburger{
       display:none;
       border: 1px solid var(--stroke);
       background: rgba(255,255,255,.75);
@@ -122,48 +122,54 @@
       cursor:pointer;
     }
 
-    .logo{
+    .skin-logo{
       width: 44px; height: 44px;
       border-radius: 16px;
       background: linear-gradient(135deg, rgba(37,99,235,.95), rgba(124,58,237,.95));
       box-shadow: 0 14px 34px rgba(37,99,235,.18);
+      border: 1px solid rgba(255,255,255,.75);
       position: relative;
       overflow:hidden;
-      border: 1px solid rgba(255,255,255,.75);
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
-    .logo::after{
+    .skin-logo::after{
       content:"";
       position:absolute; inset:-60%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.60), transparent);
       transform: rotate(25deg);
-      animation: shine 2.8s ease-in-out infinite;
+      animation: skin-shine 2.8s ease-in-out infinite;
       opacity:.6;
     }
-    @@keyframes shine{
+    @@keyframes skin-shine{
       0%{ transform: translateX(-35%) rotate(25deg); opacity: 0; }
       28%{ opacity: .75; }
       100%{ transform: translateX(35%) rotate(25deg); opacity: 0; }
     }
 
-    .h-title{ min-width:0; display:flex; flex-direction:column; gap:2px; }
-    .h-title b{
+    .skin-title{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .skin-title b{
       font-size: 14px;
       letter-spacing:.2px;
-      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
-    .h-title span{
+    .skin-title span{
       font-size: 12px;
       color: var(--muted);
-      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
       max-width: 56vw;
     }
 
-    .h-right{
-      display:flex; align-items:center; gap:10px; flex-wrap: wrap; justify-content:flex-end;
+    .skin-right{
+      display:flex; align-items:center; gap:10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
     }
 
-    .pill{
+    .skin-pill{
       font-size: 12px;
       padding: 8px 10px;
       border-radius: 999px;
@@ -171,16 +177,19 @@
       background: rgba(255,255,255,.65);
       box-shadow: var(--shadow2);
       color: rgba(15,23,42,.78);
-      display:inline-flex; gap:8px; align-items:center;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
       user-select:none;
     }
-    .dot{
-      width: 8px; height: 8px; border-radius: 99px;
+    .skin-dot{
+      width:8px; height:8px;
+      border-radius: 99px;
       background: rgba(16,185,129,.95);
       box-shadow: 0 0 14px rgba(16,185,129,.20);
     }
 
-    .btn{
+    .skin-btn{
       border: 1px solid var(--stroke);
       background: rgba(255,255,255,.75);
       color: var(--text);
@@ -189,26 +198,30 @@
       cursor: pointer;
       font-size: 14px;
       transition: transform .10s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
-      display:inline-flex; align-items:center; gap:8px;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
       box-shadow: var(--shadow2);
       user-select:none;
     }
-    .btn:hover{
+    .skin-btn:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,.92);
       border-color: rgba(37,99,235,.22);
       box-shadow: 0 16px 40px rgba(15,23,42,.12);
     }
-    .btn.primary{
+    .skin-btn.primary{
       background: rgba(37,99,235,.10);
       border-color: rgba(37,99,235,.22);
     }
-    .btn.primary:hover{
+    .skin-btn.primary:hover{
       background: rgba(37,99,235,.14);
     }
 
-    .search{
-      display:flex; align-items:center; gap:10px;
+    .skin-search{
+      display:flex;
+      align-items:center;
+      gap:10px;
       border: 1px solid var(--stroke);
       background: rgba(255,255,255,.75);
       border-radius: 16px;
@@ -218,7 +231,7 @@
       position: relative;
       overflow:hidden;
     }
-    .search::before{
+    .skin-search::before{
       content:"";
       position:absolute; inset:-2px;
       background:
@@ -228,7 +241,7 @@
       opacity: .9;
       pointer-events:none;
     }
-    .search input{
+    .skin-search input{
       position:relative; z-index:2;
       width:100%;
       border:0; outline:none;
@@ -237,8 +250,8 @@
       font-size: 14px;
     }
 
-    /* ===== Sidebar ===== */
-    aside{
+    /* ===== sidebar ===== */
+    .skin-aside{
       grid-area: sidebar;
       position: sticky;
       top: var(--headerH);
@@ -250,7 +263,7 @@
       backdrop-filter: blur(14px);
     }
 
-    .card{
+    .skin-card{
       border: 1px solid var(--stroke);
       background: var(--card);
       border-radius: var(--radius2);
@@ -260,67 +273,53 @@
       position: relative;
       overflow:hidden;
     }
-    .card::before{
+    .skin-card::before{
       content:"";
       position:absolute; inset:-2px;
       background:
         radial-gradient(700px 160px at 20% 0%, rgba(37,99,235,.10), transparent 62%),
         radial-gradient(700px 160px at 90% 35%, rgba(124,58,237,.08), transparent 66%);
       filter: blur(18px);
-      opacity: .7;
+      opacity: .60;
       pointer-events:none;
     }
-    .card > *{ position: relative; z-index: 2; }
+    .skin-card > *{ position: relative; z-index:2; }
 
-    .cardHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom: 10px;
+    .skin-card h3{
+      margin:0 0 10px 0;
+      font-size: 13px;
+      letter-spacing:.2px;
     }
-    .cardHead b{ font-size: 13px; letter-spacing:.2px; }
-    .cardHead small{ color: var(--muted); }
+    .skin-muted{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
 
-    .kv{
+    .skin-kv{
       display:grid;
       grid-template-columns: 1fr;
       gap: 10px;
     }
-    .kvRow{
-      display:flex; align-items:flex-start; justify-content: space-between; gap: 10px;
+    .skin-kvRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 10px;
       padding: 10px 12px;
       border: 1px solid rgba(15,23,42,.08);
       background: rgba(255,255,255,.65);
       border-radius: 16px;
     }
-    .kvRow span{ color: var(--muted); font-size: 12px; }
-    .kvRow b{ font-size: 13px; max-width: 60%; text-align:right; }
+    .skin-kvRow span{ color: var(--muted); font-size: 12px; }
+    .skin-kvRow b{ font-size: 13px; max-width: 60%; text-align:right; }
 
-    .progressWrap{ display:flex; align-items:center; gap: 10px; }
-    .bar{
-      flex: 1;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(15,23,42,.08);
-      overflow:hidden;
-      border: 1px solid rgba(15,23,42,.06);
-    }
-    .bar > i{
-      display:block; height:100%;
-      width: 55%;
-      background: linear-gradient(90deg, rgba(37,99,235,.85), rgba(124,58,237,.75));
-      border-radius: 999px;
-      animation: loadBar 1.1s ease-out;
-    }
-    @@keyframes loadBar{
-      from{ width: 10%; opacity:.4; }
-      to{ width: 55%; opacity:1; }
-    }
-
-    .quick{
+    .skin-quick{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    .qbtn{
+    .skin-qbtn{
       border: 1px solid rgba(15,23,42,.08);
       background: rgba(255,255,255,.70);
       border-radius: 16px;
@@ -328,346 +327,140 @@
       cursor:pointer;
       box-shadow: var(--shadow2);
       transition: transform .10s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      user-select:none;
     }
-    .qbtn:hover{
+    .skin-qbtn:hover{
       transform: translateY(-1px);
       border-color: rgba(37,99,235,.20);
       background: rgba(255,255,255,.92);
       box-shadow: 0 16px 40px rgba(15,23,42,.12);
     }
-    .qbtn b{ font-size: 13px; }
-    .qbtn span{ color: var(--muted); font-size: 12px; }
+    .skin-qbtn b{ font-size: 13px; }
+    .skin-qbtn span{ color: var(--muted); font-size: 12px; }
 
-    /* ===== Main ===== */
-    main{
+    /* ===== main ===== */
+    .skin-main{
       grid-area: main;
       padding: 16px;
     }
-    .wrap{
+    .skin-surface{
       max-width: var(--max);
       margin: 0 auto;
-      display:flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 14px;
-      align-items:start;
-    }
-
-    .panel{
       border: 1px solid var(--stroke);
       background: var(--card);
       border-radius: var(--radius2);
       box-shadow: var(--shadow);
-      overflow:hidden;
+      padding: 16px;
       position: relative;
+      overflow:hidden;
     }
-    .panel::before{
+    .skin-surface::before{
       content:"";
       position:absolute; inset:-2px;
       background:
         radial-gradient(900px 240px at 20% 0%, rgba(37,99,235,.10), transparent 62%),
         radial-gradient(900px 240px at 80% 0%, rgba(124,58,237,.08), transparent 66%);
       filter: blur(18px);
-      opacity: .8;
+      opacity: .75;
       pointer-events:none;
     }
-    .panelInner{
-      position: relative;
-      padding: 16px;
-      display:flex;
-      flex-direction: column;
-      gap: 12px;
+    .skin-surface > *{ position: relative; z-index:2; }
+
+    /* ===== legacy area: chỉ làm đẹp, KHÔNG đổi chức năng ===== */
+    #legacyMount{
+      border-radius: var(--radius2);
     }
 
-    .panelHead{
-      display:flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
+    /* input/select/textarea trong UI cũ */
+    #legacyMount input,
+    #legacyMount select,
+    #legacyMount textarea{
+      border: 1px solid rgba(15,23,42,.12) !important;
+      background: rgba(255,255,255,.80) !important;
+      border-radius: 14px !important;
+      padding: 10px 12px !important;
+      box-shadow: var(--shadow2) !important;
+      outline: none !important;
+      color: var(--text) !important;
     }
-    .panelHead .left b{ font-size: 15px; letter-spacing:.2px; }
-    .panelHead .left div{ margin-top: 4px; font-size: 13px; color: var(--muted); }
-
-    /* ===== Input form ===== */
-    .formGrid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-    }
-    .field{
-      grid-column: span 6;
-      display:flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .field label{
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .field input, .field select{
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.78);
-      border-radius: 14px;
-      padding: 12px 12px;
-      font-size: 14px;
-      outline:none;
-      box-shadow: var(--shadow2);
-      transition: border-color .12s ease, background .12s ease;
-    }
-    .field input:focus, .field select:focus{
-      border-color: rgba(37,99,235,.25);
-      background: rgba(255,255,255,.92);
-    }
-    .field.wide{ grid-column: span 12; }
-    .field.third{ grid-column: span 4; }
-    @media (max-width: 980px){
-      .field{ grid-column: span 12; }
-      .field.third{ grid-column: span 12; }
+    #legacyMount input:focus,
+    #legacyMount select:focus,
+    #legacyMount textarea:focus{
+      border-color: rgba(37,99,235,.30) !important;
+      background: rgba(255,255,255,.92) !important;
     }
 
-    .rowActions{
-      display:flex; gap: 10px; flex-wrap: wrap; align-items:center;
+    /* button/chip trong UI cũ */
+    #legacyMount button,
+    #legacyMount .btn,
+    #legacyMount .chip,
+    #legacyMount a.btn{
+      border: 1px solid rgba(15,23,42,.12) !important;
+      background: rgba(255,255,255,.78) !important;
+      border-radius: 14px !important;
+      box-shadow: var(--shadow2) !important;
+      transition: transform .10s ease, box-shadow .12s ease, background .12s ease !important;
+    }
+    #legacyMount button:hover,
+    #legacyMount .btn:hover,
+    #legacyMount .chip:hover,
+    #legacyMount a.btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.94) !important;
+      box-shadow: 0 16px 40px rgba(15,23,42,.12) !important;
     }
 
-    /* ===== Table ===== */
-    .tableWrap{
-      overflow:auto;
-      border-radius: 18px;
-      border: 1px solid rgba(15,23,42,.08);
-      background: rgba(255,255,255,.62);
-      box-shadow: var(--shadow2);
-    }
-    table{
+    /* table trong UI cũ */
+    #legacyMount table{
       width:100%;
       border-collapse: collapse;
-      min-width: 980px;
+      overflow:hidden;
+      border-radius: 16px;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow2);
+      border: 1px solid rgba(15,23,42,.08);
     }
-    thead th{
-      position: sticky;
-      top: 0;
+    #legacyMount th{
       background: rgba(255,255,255,.92);
-      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(15,23,42,.10);
+      padding: 12px;
       font-size: 12px;
-      color: rgba(15,23,42,.72);
+      color: rgba(15,23,42,.70);
       text-align:left;
-      padding: 12px 12px;
-      border-bottom: 1px solid rgba(15,23,42,.08);
       white-space: nowrap;
     }
-    tbody td{
-      padding: 12px 12px;
+    #legacyMount td{
       border-bottom: 1px solid rgba(15,23,42,.06);
+      padding: 12px;
       font-size: 13px;
       white-space: nowrap;
     }
-    tbody tr{
-      transition: background .12s ease, transform .10s ease;
-    }
-    tbody tr:hover{
+    #legacyMount tr:hover td{
       background: rgba(37,99,235,.06);
     }
-    .money{ font-weight: 800; }
-    .tag{
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(15,23,42,.08);
-      background: rgba(255,255,255,.80);
-      color: rgba(15,23,42,.78);
-      display:inline-flex; gap:6px; align-items:center;
-    }
-    .tag i{
-      width:7px; height:7px; border-radius: 99px;
-      display:inline-block;
-      background: rgba(37,99,235,.85);
-    }
 
-    .iconBtn{
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.72);
-      border-radius: 12px;
-      padding: 8px 10px;
-      cursor:pointer;
-      box-shadow: var(--shadow2);
-      transition: transform .10s ease, background .12s ease;
-    }
-    .iconBtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.92); }
-
-    /* ===== Summary cards ===== */
-    .sumGrid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-    }
-    .sumCard{
-      grid-column: span 6;
-      border: 1px solid rgba(15,23,42,.08);
-      background: rgba(255,255,255,.70);
-      border-radius: 18px;
-      box-shadow: var(--shadow2);
-      padding: 14px;
-      position: relative;
-      overflow:hidden;
-      transition: transform .10s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .sumCard:hover{
-      transform: translateY(-1px);
-      border-color: rgba(37,99,235,.20);
-      box-shadow: 0 16px 44px rgba(15,23,42,.12);
-    }
-    .sumCard::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 180px at 20% 0%, rgba(37,99,235,.12), transparent 62%),
-        radial-gradient(700px 180px at 90% 40%, rgba(124,58,237,.10), transparent 66%);
-      filter: blur(18px);
-      opacity: .45;
-      pointer-events:none;
-    }
-    .sumCard > *{ position:relative; z-index:2; }
-    .sumTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .sumTop b{ font-size: 13px; color: rgba(15,23,42,.78); }
-    .sumVal{
-      margin-top: 8px;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing:.2px;
-    }
-    .sumSub{
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-    }
-    .sumCard.full{ grid-column: span 12; }
-
-    @@media (max-width: 980px){
-      .grid2{ grid-template-columns: 1fr; }
-      .sumCard{ grid-column: span 12; }
-      table{ min-width: 880px; }
-      .search{ min-width: min(70vw, 520px); }
-    }
-
-    /* ===== Timeline ===== */
-    .timeline{
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .step{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      padding: 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(15,23,42,.08);
-      background: rgba(255,255,255,.70);
-      box-shadow: var(--shadow2);
-      transition: transform .10s ease, border-color .12s ease;
-    }
-    .step:hover{
-      transform: translateY(-1px);
-      border-color: rgba(124,58,237,.18);
-    }
-    .sDot{
-      width: 12px; height: 12px;
-      border-radius: 99px;
-      background: rgba(37,99,235,.85);
-      box-shadow: 0 0 14px rgba(37,99,235,.18);
-      margin-top: 4px;
-      flex:0 0 auto;
-    }
-    .sBody{ min-width:0; }
-    .sBody b{ font-size: 13px; }
-    .sBody p{
-      margin: 4px 0 0 0;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-    .meta{
-      margin-top: 6px;
-      display:flex; gap:8px; flex-wrap:wrap;
-      color: rgba(15,23,42,.55);
-      font-size: 11px;
-    }
-
-    /* ===== Toast ===== */
-    .toast{
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 50;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events:none;
-    }
-    .toastItem{
-      pointer-events:auto;
-      width: min(360px, 92vw);
-      border-radius: 18px;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.86);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 22px 70px rgba(15,23,42,.18);
-      padding: 12px 12px;
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      animation: pop .18s ease-out;
-    }
-    @@keyframes pop{
-      from{ transform: translateY(8px); opacity: 0; }
-      to{ transform: translateY(0); opacity: 1; }
-    }
-    .tDot{
-      width: 12px; height: 12px; border-radius: 99px;
-      background: rgba(16,185,129,.92);
-      box-shadow: 0 0 14px rgba(16,185,129,.20);
-      margin-top: 4px;
-      flex:0 0 auto;
-    }
-    .tBody{ min-width:0; }
-    .tBody b{ font-size: 13px; }
-    .tBody p{ margin: 4px 0 0 0; font-size: 12px; color: var(--muted); line-height: 1.45; }
-    .tX{
-      margin-left:auto;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.75);
-      border-radius: 12px;
-      cursor:pointer;
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-
-    /* ===== mobile sidebar overlay ===== */
-    .backdrop{
+    /* mobile */
+    .skin-backdrop{
       display:none;
       position: fixed;
       inset: var(--headerH) 0 0 0;
       background: rgba(15,23,42,.18);
       z-index: 15;
     }
-    @media (max-width: 980px){
+
+    @@media (max-width: 980px){
       :root{ --sidebarW: 0px; }
-      .app{
+      .skin-app{
         grid-template-columns: 1fr;
         grid-template-areas:
           "header"
           "main";
       }
-      aside{
+      .skin-aside{
         position: fixed;
         top: var(--headerH);
         left: 0;
@@ -677,633 +470,249 @@
         transition: transform .18s ease;
         z-index: 30;
       }
-      body.sidebar-open aside{ transform: translateX(0); }
-      body.sidebar-open .backdrop{ display:block; }
-      .hamburger{ display:inline-flex; }
+      body.skin-sidebar-open .skin-aside{ transform: translateX(0); }
+      body.skin-sidebar-open .skin-backdrop{ display:block; }
+      .skin-hamburger{ display:inline-flex; }
+      .skin-search{ min-width: min(70vw, 520px); }
     }
 
     @@media (prefers-reduced-motion: reduce){
-      .blobs{ animation: none !important; }
-      .btn, .qbtn, .sumCard, .step, tbody tr{ transition: none !important; }
+      .skin-blobs, .skin-logo::after{ animation:none !important; }
+      .skin-btn, .skin-qbtn, #legacyMount button, #legacyMount .btn{ transition:none !important; }
     }
 
-    /* ===== print ===== */
+    /* print */
     @@media print{
-      header, aside, .backdrop, .toast, .rowActions .btn:not(.printKeep){ display:none !important; }
+      .skin-header, .skin-aside, .skin-backdrop{ display:none !important; }
       body{ background:#fff !important; }
-      .panel, .card{ box-shadow:none !important; }
-      table{ min-width: 0 !important; }
+      .skin-surface{ box-shadow:none !important; border:none !important; }
     }
   </style>
 </head>
 
 <body>
-  <div class="blobs" aria-hidden="true"></div>
-  <div class="texture" aria-hidden="true"></div>
+  <!-- nền hiệu ứng -->
+  <div class="skin-blobs" aria-hidden="true"></div>
+  <div class="skin-grid" aria-hidden="true"></div>
 
-  <div class="app">
-    <header>
-      <div class="h-left">
-        <button class="hamburger" id="sidebarBtn" aria-label="Mở thanh bên">☰</button>
-        <div class="logo" aria-hidden="true"></div>
-        <div class="h-title">
-          <b>Tính tiền thi công — Bảng dự toán & thanh toán</b>
-          <span>UI sáng • nhiều nội dung • hiệu ứng “đã mắt” • in/ xuất JSON</span>
+  <div class="skin-app">
+    <!-- Header -->
+    <div class="skin-header">
+      <div class="skin-left">
+        <button class="skin-hamburger" id="skinSidebarBtn" aria-label="Mở thanh bên">☰</button>
+        <div class="skin-logo" aria-hidden="true"></div>
+        <div class="skin-title">
+          <b>Tính tiền thi công</b>
+          <span>Giao diện sáng • nhiều nội dung • giữ nguyên toàn bộ chức năng tính</span>
         </div>
       </div>
 
-      <div class="h-right">
-        <div class="search" title="Tìm theo hạng mục / ghi chú">
+      <div class="skin-right">
+        <div class="skin-search" title="Chỉ là thanh tìm (không ép nối logic). Bạn có thể tự nối vào search cũ nếu muốn.">
           <span style="position:relative; z-index:2;">🔎</span>
-          <input id="search" placeholder="Tìm dòng… (VD: trần thạch cao, vách, sơn, điện…)" />
+          <input id="skinSearch" placeholder="Tìm nhanh… (không phá logic cũ)" />
         </div>
-        <span class="pill"><span class="dot"></span><span id="statusTxt">Đang tính realtime</span></span>
-        <button class="btn primary" id="btnExport">📦 Export JSON</button>
-        <button class="btn printKeep" id="btnPrint">🖨️ In / PDF</button>
+        <span class="skin-pill"><span class="skin-dot"></span><span id="skinStatus">Realtime</span></span>
+        <button class="skin-btn primary" id="skinPrintBtn">🖨️ In / PDF</button>
+        <button class="skin-btn" id="skinReloadBtn">🔄 Tải lại</button>
       </div>
-    </header>
+    </div>
 
-    <aside>
-      <div class="card">
-        <div class="cardHead">
-          <b>Thông tin dự án</b>
-          <small id="today">--</small>
-        </div>
-        <div class="kv">
-          <div class="kvRow"><span>Dự án</span><b id="pjName">Thi công thạch cao • Nhà phố</b></div>
-          <div class="kvRow"><span>Khách hàng</span><b id="pjClient">Anh/Chị …</b></div>
-          <div class="kvRow"><span>Địa chỉ</span><b id="pjAddr">TP.HCM</b></div>
-          <div class="kvRow"><span>Đơn vị</span><b>m² / md / bộ</b></div>
+    <!-- Sidebar -->
+    <aside class="skin-aside" aria-label="Thanh bên">
+      <div class="skin-card">
+        <h3>Thông tin nhanh</h3>
+        <div class="skin-kv">
+          <div class="skin-kvRow"><span>Ngày</span><b id="skinToday">--</b></div>
+          <div class="skin-kvRow"><span>Dự án</span><b>Thi công …</b></div>
+          <div class="skin-kvRow"><span>Đơn vị</span><b>m² / md / bộ</b></div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="cardHead">
-          <b>Tiến độ</b>
-          <small>Auto</small>
-        </div>
-        <div class="progressWrap">
-          <div class="bar"><i id="barFill"></i></div>
-          <b id="barPct">55%</b>
-        </div>
-        <div style="margin-top:10px; color:var(--muted); font-size:12px; line-height:1.45;">
-          Gợi ý: chia làm 3 đợt thanh toán (tạm ứng → nghiệm thu phần → bàn giao).
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="cardHead">
-          <b>Quick actions</b>
-          <small>1-click</small>
-        </div>
-        <div class="quick">
-          <div class="qbtn" id="btnDemo">
+      <div class="skin-card">
+        <h3>Quick actions</h3>
+        <div class="skin-quick">
+          <div class="skin-qbtn" id="skinScrollTop">
             <div>
-              <b>Thêm mẫu</b>
-              <span>3 hạng mục</span>
+              <b>Lên đầu</b>
+              <span>smooth</span>
+            </div>
+            <div>⬆️</div>
+          </div>
+          <div class="skin-qbtn" id="skinToast">
+            <div>
+              <b>Hiệu ứng</b>
+              <span>toast</span>
             </div>
             <div>✨</div>
           </div>
-          <div class="qbtn" id="btnClear">
+          <div class="skin-qbtn" id="skinFocusFirst">
             <div>
-              <b>Xóa hết</b>
-              <span>reset bảng</span>
+              <b>Focus</b>
+              <span>ô đầu</span>
             </div>
-            <div>🧹</div>
+            <div>🎯</div>
           </div>
-          <div class="qbtn" id="btnVAT">
+          <div class="skin-qbtn" id="skinCloseSidebar">
             <div>
-              <b>VAT 8%</b>
-              <span>bật/tắt</span>
+              <b>Đóng</b>
+              <span>mobile</span>
             </div>
-            <div>🧾</div>
+            <div>✖</div>
           </div>
-          <div class="qbtn" id="btnDeposit">
-            <div>
-              <b>Tạm ứng</b>
-              <span>nhập nhanh</span>
-            </div>
-            <div>💸</div>
-          </div>
+        </div>
+
+        <div class="skin-muted" style="margin-top:10px;">
+          Mục tiêu: làm UI “sịn” hơn nhưng <b>không thay đổi</b> id/class/logic tính của bạn.
         </div>
       </div>
 
-      <div class="card">
-        <div class="cardHead">
-          <b>Ghi chú</b>
-          <small>Đính kèm</small>
+      <div class="skin-card">
+        <h3>Gợi ý trình bày</h3>
+        <div class="skin-muted">
+          - Thêm logo công ty / số điện thoại / QR thanh toán<br>
+          - Thêm khối “Tổng hợp” ở phía trên bảng<br>
+          - Thêm “Bảng thanh toán” dạng A4 khi in<br>
         </div>
-        <textarea id="note" rows="4" style="width:100%; border-radius:16px; border:1px solid rgba(15,23,42,.10); background: rgba(255,255,255,.75); padding:12px; font-size:13px; outline:none; box-shadow:var(--shadow2);"
-          placeholder="VD: Đơn giá đã gồm vật tư/nhân công? Thời gian thi công? Điều khoản bảo hành..."></textarea>
       </div>
     </aside>
 
-    <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+    <div class="skin-backdrop" id="skinBackdrop" aria-hidden="true"></div>
 
-    <main>
-      <div class="wrap">
-        <section class="panel">
-          <div class="panelInner">
-            <div class="panelHead">
-              <div class="left">
-                <b>Nhập hạng mục thi công</b>
-                <div>Thêm dòng → bảng tự tính → tổng hợp & thanh toán.</div>
-              </div>
-              <div class="rowActions">
-                <button class="btn primary" id="btnAdd">➕ Thêm dòng</button>
-                <button class="btn" id="btnRecalc">🔁 Tính lại</button>
-                <button class="btn" id="btnToast">✨ Test hiệu ứng</button>
-              </div>
-            </div>
+    <!-- Main -->
+    <main class="skin-main">
+      <div class="skin-surface">
+        <!--
+          ✅ DÁN NGUYÊN HTML CŨ CỦA BẠN VÀO ĐÂY (PHẦN BODY CŨ)
+          - KHÔNG đổi id
+          - KHÔNG đổi class mà JS đang dùng
+          - KHÔNG xóa script cũ
+        -->
+        <div id="legacyRaw" style="display:none">
+          <!-- ✅ PASTE YOUR ORIGINAL BODY CONTENT HERE (only the content, NOT <body> tag) -->
+        </div>
 
-            <div class="formGrid">
-              <div class="field">
-                <label>Hạng mục</label>
-                <input id="fName" placeholder="VD: Trần thạch cao khung chìm" />
-              </div>
+        <!-- Đây là nơi UI cũ được “bọc” vào để đẹp hơn -->
+        <div id="legacyMount"></div>
+      </div>
 
-              <div class="field">
-                <label>Nhóm</label>
-                <select id="fGroup">
-                  <option value="Vật tư">Vật tư</option>
-                  <option value="Nhân công">Nhân công</option>
-                  <option value="Thiết bị">Thiết bị</option>
-                  <option value="Khác">Khác</option>
-                </select>
-              </div>
-
-              <div class="field third">
-                <label>Khối lượng</label>
-                <input id="fQty" type="number" min="0" step="0.01" value="10" />
-              </div>
-
-              <div class="field third">
-                <label>Đơn giá</label>
-                <input id="fPrice" type="number" min="0" step="1000" value="120000" />
-              </div>
-
-              <div class="field third">
-                <label>Hệ số</label>
-                <input id="fCoef" type="number" min="0" step="0.01" value="1.00" />
-              </div>
-
-              <div class="field wide">
-                <label>Ghi chú dòng</label>
-                <input id="fNote" placeholder="VD: Bao gồm vật tư + thi công, bảo hành 12 tháng..." />
-              </div>
-            </div>
-
-            <div class="tableWrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th style="width:40px;">#</th>
-                    <th>Hạng mục</th>
-                    <th>Nhóm</th>
-                    <th>Khối lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Hệ số</th>
-                    <th>Thành tiền</th>
-                    <th>Ghi chú</th>
-                    <th style="width:90px;">Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody id="tbody">
-                  <!-- rows -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <section class="grid2">
-          <section class="panel">
-            <div class="panelInner">
-              <div class="panelHead">
-                <div class="left">
-                  <b>Tổng hợp chi phí</b>
-                  <div>Chia theo nhóm + VAT + tạm ứng + còn lại.</div>
-                </div>
-              </div>
-
-              <div class="sumGrid">
-                <div class="sumCard">
-                  <div class="sumTop"><b>Vật tư</b><span class="tag"><i></i> vật tư</span></div>
-                  <div class="sumVal" id="sumMaterial">0</div>
-                  <div class="sumSub">Tổng nhóm <b>Vật tư</b></div>
-                </div>
-
-                <div class="sumCard">
-                  <div class="sumTop"><b>Nhân công</b><span class="tag"><i style="background:rgba(124,58,237,.85)"></i> nhân công</span></div>
-                  <div class="sumVal" id="sumLabor">0</div>
-                  <div class="sumSub">Tổng nhóm <b>Nhân công</b></div>
-                </div>
-
-                <div class="sumCard">
-                  <div class="sumTop"><b>Thiết bị + Khác</b><span class="tag"><i style="background:rgba(245,158,11,.90)"></i> phụ</span></div>
-                  <div class="sumVal" id="sumOther">0</div>
-                  <div class="sumSub">Thiết bị + các khoản khác</div>
-                </div>
-
-                <div class="sumCard">
-                  <div class="sumTop"><b>VAT</b><span class="tag"><i style="background:rgba(16,185,129,.92)"></i> thuế</span></div>
-                  <div class="sumVal" id="sumVAT">0</div>
-                  <div class="sumSub"><span id="vatHint">Tắt VAT</span></div>
-                </div>
-
-                <div class="sumCard full">
-                  <div class="sumTop">
-                    <b>TỔNG THANH TOÁN</b>
-                    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                      <span class="tag"><i style="background:rgba(37,99,235,.85)"></i> tổng</span>
-                      <span class="tag"><i style="background:rgba(239,68,68,.85)"></i> còn lại</span>
-                    </div>
-                  </div>
-                  <div class="sumVal" id="sumGrand">0</div>
-
-                  <div class="sumSub" style="justify-content:space-between;">
-                    <div>
-                      Tạm ứng:
-                      <input id="deposit" type="number" min="0" step="1000" value="0"
-                        style="margin-left:8px; width:180px; border-radius:14px; border:1px solid rgba(15,23,42,.10); padding:10px 12px; background: rgba(255,255,255,.82); box-shadow: var(--shadow2); outline:none;">
-                    </div>
-                    <div>
-                      Còn lại:
-                      <b id="sumRemain" style="margin-left:8px;">0</b>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panelInner">
-              <div class="panelHead">
-                <div class="left">
-                  <b>Timeline thanh toán</b>
-                  <div>Gợi ý kế hoạch thu tiền theo tiến độ.</div>
-                </div>
-              </div>
-
-              <div class="timeline" id="timeline">
-                <!-- steps -->
-              </div>
-            </div>
-          </section>
-        </section>
-
+      <div style="max-width:var(--max); margin:12px auto 0; color:rgba(15,23,42,.55); font-size:12px;">
+        © <span id="skinYear"></span> • Light Pro Skin • Không thay đổi chức năng tính tiền của bạn
       </div>
     </main>
   </div>
 
-  <div class="toast" id="toast"></div>
-
   <script>
-    // ===== Mobile sidebar =====
-    const sidebarBtn = document.getElementById("sidebarBtn");
-    const backdrop = document.getElementById("backdrop");
-    function closeSidebar(){ document.body.classList.remove("sidebar-open"); }
-    function toggleSidebar(){ document.body.classList.toggle("sidebar-open"); }
+    // ===== Sidebar mobile =====
+    const sidebarBtn = document.getElementById("skinSidebarBtn");
+    const backdrop = document.getElementById("skinBackdrop");
+    const closeBtn = document.getElementById("skinCloseSidebar");
+
+    function closeSidebar(){ document.body.classList.remove("skin-sidebar-open"); }
+    function toggleSidebar(){ document.body.classList.toggle("skin-sidebar-open"); }
+
     if (sidebarBtn) sidebarBtn.addEventListener("click", toggleSidebar);
     if (backdrop) backdrop.addEventListener("click", closeSidebar);
+    if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+
     window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeSidebar(); });
 
-    // ===== Date =====
-    document.getElementById("today").textContent =
+    // ===== Top utilities (KHÔNG can thiệp logic tính tiền) =====
+    document.getElementById("skinToday").textContent =
       new Date().toLocaleDateString("vi-VN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+    document.getElementById("skinYear").textContent = String(new Date().getFullYear());
 
-    // ===== Toast =====
-    const toastRoot = document.getElementById("toast");
-    function toast(title, msg, type="ok"){
-      const item = document.createElement("div");
-      item.className = "toastItem";
-      const dotColor = type==="ok" ? "rgba(16,185,129,.92)" : type==="warn" ? "rgba(245,158,11,.92)" : "rgba(239,68,68,.92)";
-      item.innerHTML = `
-        <div class="tDot" style="background:${dotColor}; box-shadow:0 0 14px ${dotColor.replace(',.92',',.20')}"></div>
-        <div class="tBody">
-          <b>${escapeHtml(title)}</b>
-          <p>${escapeHtml(msg)}</p>
-        </div>
-        <button class="tX">Đóng</button>
+    document.getElementById("skinPrintBtn").addEventListener("click", ()=> window.print());
+    document.getElementById("skinReloadBtn").addEventListener("click", ()=> location.reload());
+    document.getElementById("skinScrollTop").addEventListener("click", ()=>{
+      window.scrollTo({ top:0, behavior:"smooth" });
+      closeSidebar();
+    });
+
+    // “toast” mini (chỉ UI)
+    function toast(msg){
+      const t = document.createElement("div");
+      t.style.cssText = `
+        position:fixed; right:14px; bottom:14px; z-index:9999;
+        background:rgba(255,255,255,.90); border:1px solid rgba(15,23,42,.10);
+        border-radius:18px; padding:12px 12px; box-shadow:0 22px 70px rgba(15,23,42,.18);
+        display:flex; gap:10px; align-items:flex-start; width:min(360px, 92vw);
+        backdrop-filter: blur(12px);
+        animation: pop .18s ease-out;
       `;
-      item.querySelector(".tX").addEventListener("click", ()=> item.remove());
-      toastRoot.appendChild(item);
-      setTimeout(()=> item.remove(), 4200);
-    }
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-    }
+      const dot = document.createElement("div");
+      dot.style.cssText = `width:12px;height:12px;border-radius:99px;background:rgba(16,185,129,.92);box-shadow:0 0 14px rgba(16,185,129,.20);margin-top:4px;flex:0 0 auto;`;
+      const body = document.createElement("div");
+      body.innerHTML = `<b style="font-size:13px">UI Skin</b><div style="margin-top:4px;font-size:12px;color:rgba(15,23,42,.62);line-height:1.45">${msg}</div>`;
+      const x = document.createElement("button");
+      x.textContent = "Đóng";
+      x.style.cssText = `margin-left:auto;border:1px solid rgba(15,23,42,.10);background:rgba(255,255,255,.80);border-radius:12px;cursor:pointer;padding:6px 10px;font-size:12px;`;
+      x.onclick = ()=> t.remove();
 
-    // ===== Data =====
-    let vatOn = false;
-    const VAT_RATE = 0.08;
-
-    let rows = []; // {name, group, qty, price, coef, note}
-
-    const tbody = document.getElementById("tbody");
-    const searchEl = document.getElementById("search");
-
-    // summary el
-    const sumMaterial = document.getElementById("sumMaterial");
-    const sumLabor = document.getElementById("sumLabor");
-    const sumOther = document.getElementById("sumOther");
-    const sumVAT = document.getElementById("sumVAT");
-    const sumGrand = document.getElementById("sumGrand");
-    const sumRemain = document.getElementById("sumRemain");
-    const depositEl = document.getElementById("deposit");
-    const vatHint = document.getElementById("vatHint");
-
-    // form el
-    const fName = document.getElementById("fName");
-    const fGroup = document.getElementById("fGroup");
-    const fQty = document.getElementById("fQty");
-    const fPrice = document.getElementById("fPrice");
-    const fCoef = document.getElementById("fCoef");
-    const fNote = document.getElementById("fNote");
-
-    function money(n){
-      const v = Math.round(Number(n||0));
-      return v.toLocaleString("vi-VN") + " ₫";
+      t.appendChild(dot); t.appendChild(body); t.appendChild(x);
+      document.body.appendChild(t);
+      setTimeout(()=> t.remove(), 3800);
     }
 
-    function lineTotal(r){
-      return (Number(r.qty||0) * Number(r.price||0) * Number(r.coef||0));
-    }
+    document.getElementById("skinToast").addEventListener("click", ()=>{
+      toast("Giao diện sáng + glass + hover lift + nền chuyển động. Chức năng tính tiền giữ nguyên.");
+      closeSidebar();
+    });
 
-    function addRow(r){
-      rows.push({
-        name: r.name || "Hạng mục",
-        group: r.group || "Khác",
-        qty: Number(r.qty||0),
-        price: Number(r.price||0),
-        coef: Number(r.coef||1),
-        note: r.note || ""
+    document.getElementById("skinFocusFirst").addEventListener("click", ()=>{
+      // focus input đầu tiên tìm thấy trong UI cũ
+      const first = document.querySelector("#legacyMount input, #legacyMount select, #legacyMount textarea");
+      if (first){ first.focus({ preventScroll:true }); first.scrollIntoView({ behavior:"smooth", block:"center" }); }
+      closeSidebar();
+    });
+
+    // ===== AUTO MOUNT: bọc UI cũ vào #legacyMount nhưng KHÔNG đổi id/class =====
+    (function mountLegacy(){
+      const raw = document.getElementById("legacyRaw");
+      const mount = document.getElementById("legacyMount");
+
+      // Nếu bạn đã dán HTML cũ vào legacyRaw -> chuyển qua mount
+      // (Không đụng gì tới logic của bạn: chỉ đổi vị trí DOM)
+      const nodes = Array.from(raw.childNodes).filter(n => {
+        // bỏ text rỗng
+        return !(n.nodeType === 3 && !n.textContent.trim());
       });
-      render();
-      toast("Đã thêm dòng", r.name || "Hạng mục mới", "ok");
-    }
 
-    function removeRow(i){
-      const old = rows[i];
-      rows.splice(i,1);
-      render();
-      toast("Đã xóa", old?.name || "1 dòng", "warn");
-    }
-
-    function updateRow(i, key, value){
-      if (!rows[i]) return;
-      rows[i][key] = (key==="qty" || key==="price" || key==="coef") ? Number(value||0) : value;
-      recalc();
-    }
-
-    function render(){
-      renderTable();
-      recalc();
-      renderTimeline();
-    }
-
-    function renderTable(){
-      const q = String(searchEl.value||"").toLowerCase().trim();
-      tbody.innerHTML = "";
-
-      const filtered = rows.map((r, idx)=> ({...r, __i: idx}))
-        .filter(r=>{
-          if(!q) return true;
-          const hay = (r.name+" "+r.group+" "+r.note).toLowerCase();
-          return hay.includes(q);
-        });
-
-      if(!filtered.length){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="9" style="padding:16px; color: rgba(15,23,42,.60);">
-              Chưa có dữ liệu (hoặc không khớp tìm kiếm). Bấm <b>➕ Thêm dòng</b> hoặc <b>✨ Thêm mẫu</b>.
-            </td>
-          </tr>
+      if(nodes.length){
+        nodes.forEach(n => mount.appendChild(n));
+        raw.remove(); // gọn
+        toast("Đã bọc UI cũ vào giao diện mới (không đổi chức năng).");
+      }else{
+        // Nếu bạn chưa dán, vẫn chạy được như template
+        mount.innerHTML = `
+          <div style="padding:14px; border:1px dashed rgba(15,23,42,.22); border-radius:18px; background:rgba(255,255,255,.60);">
+            <b>Chưa có nội dung UI cũ</b>
+            <div style="margin-top:6px; color:rgba(15,23,42,.62); font-size:13px; line-height:1.5;">
+              Dán <b>toàn bộ phần body cũ</b> của bạn vào khối <code>#legacyRaw</code> (trong file này) là xong.
+              Tất cả id/class giữ nguyên nên JS tính tiền của bạn vẫn hoạt động.
+            </div>
+          </div>
         `;
-        return;
       }
+    })();
 
-      filtered.forEach((r, k)=>{
-        const i = r.__i;
-        const total = lineTotal(r);
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${k+1}</td>
-          <td><b>${escapeHtml(r.name)}</b></td>
-          <td><span class="tag"><i></i>${escapeHtml(r.group)}</span></td>
-          <td>
-            <input value="${r.qty}" type="number" min="0" step="0.01"
-              style="width:120px; border-radius:12px; border:1px solid rgba(15,23,42,.10); padding:9px 10px; background: rgba(255,255,255,.85); box-shadow: var(--shadow2); outline:none;"
-              data-i="${i}" data-k="qty">
-          </td>
-          <td>
-            <input value="${r.price}" type="number" min="0" step="1000"
-              style="width:150px; border-radius:12px; border:1px solid rgba(15,23,42,.10); padding:9px 10px; background: rgba(255,255,255,.85); box-shadow: var(--shadow2); outline:none;"
-              data-i="${i}" data-k="price">
-          </td>
-          <td>
-            <input value="${r.coef}" type="number" min="0" step="0.01"
-              style="width:100px; border-radius:12px; border:1px solid rgba(15,23,42,.10); padding:9px 10px; background: rgba(255,255,255,.85); box-shadow: var(--shadow2); outline:none;"
-              data-i="${i}" data-k="coef">
-          </td>
-          <td class="money">${money(total)}</td>
-          <td style="max-width:280px; overflow:hidden; text-overflow:ellipsis;">
-            ${escapeHtml(r.note||"")}
-          </td>
-          <td>
-            <button class="iconBtn" title="Xóa dòng" data-del="${i}">🗑️</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      // bind inputs
-      tbody.querySelectorAll("input[data-i]").forEach(inp=>{
-        inp.addEventListener("input", ()=>{
-          updateRow(Number(inp.dataset.i), inp.dataset.k, inp.value);
-        });
-      });
-      // bind delete
-      tbody.querySelectorAll("button[data-del]").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          removeRow(Number(btn.dataset.del));
-        });
-      });
-    }
-
-    function recalc(){
-      let material = 0, labor = 0, other = 0;
-      for (const r of rows){
-        const t = lineTotal(r);
-        if (r.group === "Vật tư") material += t;
-        else if (r.group === "Nhân công") labor += t;
-        else other += t;
-      }
-      const sub = material + labor + other;
-      const vat = vatOn ? sub * VAT_RATE : 0;
-      const grand = sub + vat;
-      const deposit = Number(depositEl.value||0);
-      const remain = Math.max(0, grand - deposit);
-
-      // count-up feel (simple)
-      sumMaterial.textContent = money(material);
-      sumLabor.textContent = money(labor);
-      sumOther.textContent = money(other);
-      sumVAT.textContent = money(vat);
-      sumGrand.textContent = money(grand);
-      sumRemain.textContent = money(remain);
-
-      vatHint.textContent = vatOn ? `Đang bật VAT ${(VAT_RATE*100).toFixed(0)}%` : "Tắt VAT";
-    }
-
-    function renderTimeline(){
-      const tl = document.getElementById("timeline");
-      const grandText = sumGrand.textContent;
-      const grandVal = parseVND(grandText);
-
-      const d1 = Math.round(grandVal * 0.3);
-      const d2 = Math.round(grandVal * 0.4);
-      const d3 = Math.max(0, grandVal - d1 - d2);
-
-      tl.innerHTML = `
-        <div class="step">
-          <div class="sDot"></div>
-          <div class="sBody">
-            <b>Đợt 1 — Tạm ứng vật tư</b>
-            <p>Thu trước để chốt vật tư/đặt hàng và triển khai.</p>
-            <div class="meta"><span>💸 ${money(d1)}</span><span>⏱ Khi ký thỏa thuận</span></div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="sDot" style="background:rgba(124,58,237,.85); box-shadow:0 0 14px rgba(124,58,237,.18)"></div>
-          <div class="sBody">
-            <b>Đợt 2 — Nghiệm thu phần</b>
-            <p>Thu khi hoàn thành ~70% khối lượng hoặc nghiệm thu từng phần.</p>
-            <div class="meta"><span>💸 ${money(d2)}</span><span>📌 Theo tiến độ</span></div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="sDot" style="background:rgba(16,185,129,.92); box-shadow:0 0 14px rgba(16,185,129,.18)"></div>
-          <div class="sBody">
-            <b>Đợt 3 — Bàn giao</b>
-            <p>Thu phần còn lại khi bàn giao/hoàn công.</p>
-            <div class="meta"><span>💸 ${money(d3)}</span><span>✅ Kết thúc</span></div>
-          </div>
-        </div>
-      `;
-    }
-
-    function parseVND(s){
-      return Number(String(s||"").replace(/[^\d]/g,"")) || 0;
-    }
-
-    // ===== Buttons =====
-    document.getElementById("btnAdd").addEventListener("click", ()=>{
-      addRow({
-        name: fName.value || "Hạng mục mới",
-        group: fGroup.value,
-        qty: fQty.value,
-        price: fPrice.value,
-        coef: fCoef.value,
-        note: fNote.value
-      });
+    // Thanh search trên header: chỉ UI (không ép nối vào logic bạn)
+    // Nếu bạn muốn nối vào input search cũ, bạn tự map 1 dòng ở đây.
+    document.getElementById("skinSearch").addEventListener("input", (e)=>{
+      document.getElementById("skinStatus").textContent = e.target.value ? "Đang tìm…" : "Realtime";
     });
 
-    document.getElementById("btnRecalc").addEventListener("click", ()=>{
-      recalc();
-      toast("Tính lại", "Đã cập nhật tổng hợp", "ok");
-    });
-
-    document.getElementById("btnToast").addEventListener("click", ()=>{
-      toast("UI đang chạy", "Hover/shine/toast/sort/search đều ok.", "ok");
-    });
-
-    document.getElementById("btnDemo").addEventListener("click", ()=>{
-      addRow({ name:"Trần thạch cao khung chìm", group:"Vật tư", qty: 32.5, price: 165000, coef: 1.00, note:"Gồm vật tư + phụ kiện cơ bản" });
-      addRow({ name:"Thi công trần thạch cao", group:"Nhân công", qty: 32.5, price: 85000, coef: 1.00, note:"Nhân công hoàn thiện" });
-      addRow({ name:"Sơn bả hoàn thiện", group:"Khác", qty: 32.5, price: 65000, coef: 1.10, note:"Hệ số 1.10 do bề mặt khó" });
-      toast("Đã thêm mẫu", "3 hạng mục demo", "ok");
-    });
-
-    document.getElementById("btnClear").addEventListener("click", ()=>{
-      rows = [];
-      render();
-      toast("Đã reset", "Bảng trống", "warn");
-    });
-
-    document.getElementById("btnVAT").addEventListener("click", ()=>{
-      vatOn = !vatOn;
-      recalc();
-      toast("VAT", vatOn ? "Đã bật VAT" : "Đã tắt VAT", "ok");
-    });
-
-    document.getElementById("btnDeposit").addEventListener("click", ()=>{
-      const cur = Number(depositEl.value||0);
-      const grand = parseVND(sumGrand.textContent);
-      const suggest = Math.round(grand * 0.3);
-      depositEl.value = String(Math.max(cur, suggest));
-      recalc();
-      toast("Tạm ứng", "Đã set tạm ứng gợi ý ~30%", "ok");
-    });
-
-    depositEl.addEventListener("input", recalc);
-
-    searchEl.addEventListener("input", ()=>{
-      renderTable();
-    });
-
-    // Export JSON
-    document.getElementById("btnExport").addEventListener("click", ()=>{
-      const payload = {
-        project: {
-          name: document.getElementById("pjName").textContent,
-          client: document.getElementById("pjClient").textContent,
-          address: document.getElementById("pjAddr").textContent,
-          note: document.getElementById("note").value || ""
-        },
-        vatOn,
-        vatRate: VAT_RATE,
-        deposit: Number(depositEl.value||0),
-        rows,
-        totals: {
-          material: parseVND(sumMaterial.textContent),
-          labor: parseVND(sumLabor.textContent),
-          other: parseVND(sumOther.textContent),
-          vat: parseVND(sumVAT.textContent),
-          grand: parseVND(sumGrand.textContent),
-          remain: parseVND(sumRemain.textContent)
-        }
-      };
-
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "du-toan-thi-cong.json";
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast("Export JSON", "Đã tải file du-toan-thi-cong.json", "ok");
-    });
-
-    // Print
-    document.getElementById("btnPrint").addEventListener("click", ()=>{
-      toast("In / PDF", "Đang mở chế độ in…", "ok");
-      setTimeout(()=> window.print(), 300);
-    });
-
-    // ===== initial =====
-    function init(){
-      render();
-      toast("Sẵn sàng", "Bạn có thể thêm dòng hoặc bấm “Thêm mẫu”.", "ok");
-
-      // progress fake
-      const pct = 55;
-      document.getElementById("barPct").textContent = pct + "%";
-      document.getElementById("barFill").style.width = pct + "%";
-    }
-    init();
+    // CSS keyframes cho toast (tạo 1 lần)
+    const style = document.createElement("style");
+    style.textContent = `@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}`;
+    document.head.appendChild(style);
   </script>
+
+  <!--
+    ✅ DÁN NGUYÊN SCRIPT CŨ (tính tiền thi công) CỦA BẠN VÀO ĐÂY
+    - KHÔNG sửa gì nếu bạn không muốn
+    - Vì id/class không đổi nên logic vẫn chạy
+  -->
+  <!-- <script> ... old script ... </script> -->
 </body>
 </html>

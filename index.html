@@ -3,90 +3,129 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>doublef.io.vn — Dashboard Menu</title>
+  <title>doublef.io.vn — Hyper Dashboard</title>
 
   <style>
     :root{
-      --bg0:#0b1020;
-      --bg1:#0f1733;
+      --bg0:#070b18;
+      --bg1:#0b1020;
+      --bg2:#0f1733;
 
-      --surface: rgba(255,255,255,.08);
-      --surface2: rgba(255,255,255,.12);
+      --glass: rgba(255,255,255,.08);
+      --glass2: rgba(255,255,255,.12);
       --stroke: rgba(255,255,255,.14);
 
       --text:#eef2ff;
-      --muted: rgba(238,242,255,.72);
-      --muted2: rgba(238,242,255,.55);
+      --muted: rgba(238,242,255,.74);
+      --muted2: rgba(238,242,255,.56);
 
-      --accent:#6aa8ff;
-      --accent2:#8b5cf6;
-      --good:#7cffb2;
-      --warn:#ffb86b;
-      --bad:#ff6b6b;
+      --a:#6aa8ff;
+      --b:#8b5cf6;
+      --c:#7cffb2;
+      --w:#ffb86b;
+      --r:#ff6b6b;
 
       --shadow: 0 18px 60px rgba(0,0,0,.35);
       --shadow2: 0 10px 30px rgba(0,0,0,.22);
 
-      --r: 18px;
-      --r2: 22px;
+      --radius: 18px;
+      --radius2: 22px;
       --font: system-ui, -apple-system, Segoe UI, Roboto, Arial;
 
-      --headerH: 68px;
-      --sidebarW: 270px;
+      --headerH: 72px;
+      --sidebarW: 290px;
+      --max: 1180px;
+
+      --ringColor: rgba(106,168,255,.92);
+      --ringBg: rgba(106,168,255,.10);
+
+      color-scheme: dark;
     }
 
-    *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
-
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
     body{
       margin:0;
       font-family: var(--font);
       color: var(--text);
-      overflow-x: hidden;
+      overflow-x:hidden;
       background:
-        radial-gradient(900px 520px at 12% 18%, rgba(106,168,255,.22), transparent 62%),
-        radial-gradient(900px 520px at 88% 24%, rgba(139,92,246,.18), transparent 62%),
-        radial-gradient(900px 520px at 50% 92%, rgba(124,252,178,.08), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+        radial-gradient(1000px 560px at 10% 16%, rgba(106,168,255,.22), transparent 62%),
+        radial-gradient(1000px 560px at 92% 22%, rgba(139,92,246,.18), transparent 62%),
+        radial-gradient(1000px 560px at 50% 92%, rgba(124,252,178,.09), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg2));
+    }
+
+    /* ========= BACKGROUND LAYERS ========= */
+    .bg-video{
+      position: fixed; inset: 0;
+      z-index: 0;
+      overflow:hidden;
+      pointer-events:none;
+      opacity:.28;
+      filter: saturate(1.15) contrast(1.05);
+    }
+    .bg-video video{
+      width:100%; height:100%;
+      object-fit: cover;
+      transform: scale(1.06);
+    }
+    .bg-video::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 520px at 20% 15%, rgba(106,168,255,.14), transparent 62%),
+        radial-gradient(900px 520px at 85% 25%, rgba(139,92,246,.12), transparent 62%),
+        linear-gradient(180deg, rgba(7,11,24,.65), rgba(15,23,51,.78));
     }
 
     .texture{
-      position: fixed; inset: 0;
+      position: fixed; inset:0;
+      z-index: 1;
       pointer-events:none;
-      opacity: .30;
+      opacity:.28;
       background-image:
         linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
       background-size: 44px 44px;
-      mask-image: radial-gradient(closest-side at 50% 40%, rgba(0,0,0,1), transparent 70%);
+      mask-image: radial-gradient(closest-side at 50% 42%, rgba(0,0,0,1), transparent 72%);
       filter: blur(.2px);
-      z-index: 0;
     }
 
     .blobs{
-      position: fixed; inset: -20vh -10vw;
-      pointer-events: none;
+      position: fixed;
+      inset: -20vh -10vw;
+      z-index: 1;
+      pointer-events:none;
       background:
-        radial-gradient(closest-side at 18% 22%, rgba(106,168,255,.16), transparent 60%),
-        radial-gradient(closest-side at 82% 28%, rgba(139,92,246,.14), transparent 62%),
-        radial-gradient(closest-side at 55% 78%, rgba(124,252,178,.08), transparent 62%);
+        radial-gradient(closest-side at 18% 22%, rgba(106,168,255,.18), transparent 60%),
+        radial-gradient(closest-side at 82% 28%, rgba(139,92,246,.16), transparent 62%),
+        radial-gradient(closest-side at 55% 78%, rgba(124,252,178,.10), transparent 62%);
       filter: blur(26px);
-      opacity: .85;
+      opacity: .95;
       transform: translate3d(0,0,0);
       animation: floaty 18s ease-in-out infinite alternate;
-      z-index: 0;
     }
     @keyframes floaty{
       from{ transform: translate(-1.5%, -1%) scale(1.02); }
-      to  { transform: translate(1.5%, 1%) scale(1.05); }
+      to  { transform: translate(1.5%, 1%) scale(1.06); }
     }
 
-    /* ===== App layout ===== */
+    /* Particle canvas layer */
+    canvas#particles{
+      position: fixed; inset:0;
+      z-index: 2;
+      pointer-events:none;
+      opacity:.55;
+      filter: blur(.1px);
+    }
+
+    /* ========= APP LAYOUT ========= */
     .app{
       position: relative;
-      z-index: 1;
+      z-index: 3;
       min-height: 100vh;
-      display: grid;
+      display:grid;
       grid-template-rows: var(--headerH) 1fr auto;
       grid-template-columns: var(--sidebarW) 1fr;
       grid-template-areas:
@@ -95,22 +134,21 @@
         "footer footer";
     }
 
-    /* ===== Header ===== */
+    /* ========= HEADER ========= */
     header{
       grid-area: header;
       position: sticky;
-      top: 0;
-      z-index: 20;
+      top:0;
+      z-index: 40;
       display:flex;
       align-items:center;
       justify-content: space-between;
       gap: 12px;
       padding: 10px 14px;
       border-bottom: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.25);
-      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,.26);
+      backdrop-filter: blur(12px);
     }
-
     .h-left{
       display:flex;
       align-items:center;
@@ -118,9 +156,11 @@
       min-width: 0;
     }
 
+    .hamburger{ display:none; }
+
     .logo{
-      width: 42px; height: 42px;
-      border-radius: 14px;
+      width: 44px; height: 44px;
+      border-radius: 16px;
       background: linear-gradient(135deg, rgba(106,168,255,.95), rgba(139,92,246,.95));
       box-shadow:
         0 14px 34px rgba(106,168,255,.14),
@@ -133,14 +173,14 @@
     .logo::after{
       content:"";
       position:absolute; inset:-60%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.26), transparent);
       transform: rotate(25deg);
-      animation: shine 2.8s ease-in-out infinite;
+      animation: shine 2.9s ease-in-out infinite;
     }
     @keyframes shine{
-      0%{ transform: translateX(-35%) rotate(25deg); opacity: .0; }
-      30%{ opacity: .6; }
-      100%{ transform: translateX(35%) rotate(25deg); opacity: .0; }
+      0%{ transform: translateX(-35%) rotate(25deg); opacity: 0; }
+      28%{ opacity: .65; }
+      100%{ transform: translateX(35%) rotate(25deg); opacity: 0; }
     }
 
     .h-title{
@@ -163,6 +203,15 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 56vw;
+      display:flex; gap:8px; align-items:center;
+    }
+    .kbdHint{
+      font-size: 11px;
+      color: rgba(238,242,255,.80);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 3px 8px;
+      border-radius: 999px;
     }
 
     .h-right{
@@ -181,18 +230,21 @@
       border-radius: 14px;
       cursor: pointer;
       font-size: 14px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+      transition: transform .10s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
       display:inline-flex;
       align-items:center;
       gap: 8px;
       user-select: none;
       box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
     }
     .btn:hover{
       transform: translateY(-1px);
       background: rgba(255,255,255,.07);
       border-color: rgba(106,168,255,.45);
     }
+    .btn:active{ transform: translateY(0); }
     .btn.primary{
       background: rgba(106,168,255,.16);
       border-color: rgba(106,168,255,.35);
@@ -201,22 +253,19 @@
       background: rgba(106,168,255,.22);
       box-shadow: 0 14px 36px rgba(106,168,255,.10);
     }
-
+    .btn.ghost{
+      background: rgba(255,255,255,.05);
+    }
     .status{
       font-size: 13px;
       color: var(--muted);
       white-space: nowrap;
     }
-    .ok{ color: var(--good); }
-    .warn{ color: var(--warn); }
-    .bad{ color: var(--bad); }
+    .ok{ color: var(--c); }
+    .warn{ color: var(--w); }
+    .bad{ color: var(--r); }
 
-    /* Mobile: sidebar toggle */
-    .hamburger{
-      display:none;
-    }
-
-    /* ===== Sidebar ===== */
+    /* ========= SIDEBAR ========= */
     aside{
       grid-area: sidebar;
       position: sticky;
@@ -226,20 +275,34 @@
       padding: 12px;
       border-right: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
-      backdrop-filter: blur(10px);
-      overflow: auto;
+      backdrop-filter: blur(12px);
+      overflow:auto;
     }
 
     .sideCard{
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.05);
       box-shadow: var(--shadow2);
-      border-radius: var(--r2);
+      border-radius: var(--radius2);
       padding: 14px;
       margin-bottom: 12px;
+      position: relative;
+      overflow:hidden;
+    }
+    .sideCard::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 180px at 20% 0%, rgba(106,168,255,.12), transparent 62%),
+        radial-gradient(700px 180px at 90% 40%, rgba(139,92,246,.10), transparent 66%);
+      filter: blur(18px);
+      opacity: .7;
+      pointer-events:none;
     }
 
     .sideHead{
+      position: relative;
+      z-index: 2;
       display:flex;
       align-items:center;
       justify-content: space-between;
@@ -251,8 +314,9 @@
       color: var(--muted);
     }
 
-    /* Sidebar search */
     .search{
+      position: relative;
+      z-index: 2;
       display:flex;
       gap: 10px;
       align-items:center;
@@ -261,21 +325,9 @@
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.16);
       box-shadow: var(--shadow2);
-      position: relative;
-      overflow: hidden;
-    }
-    .search::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(700px 180px at 20% 0%, rgba(106,168,255,.14), transparent 62%),
-                  radial-gradient(700px 180px at 90% 40%, rgba(139,92,246,.10), transparent 66%);
-      filter: blur(18px);
-      opacity: .9;
-      pointer-events:none;
+      overflow:hidden;
     }
     .search input{
-      position: relative;
-      z-index: 2;
       width: 100%;
       border: 0;
       outline: none;
@@ -284,8 +336,9 @@
       font-size: 14px;
     }
 
-    /* Chips */
     .chips{
+      position: relative;
+      z-index: 2;
       display:flex;
       gap:10px;
       flex-wrap: wrap;
@@ -304,7 +357,7 @@
       font-size: 13px;
       cursor:pointer;
       user-select:none;
-      transition: transform .08s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
+      transition: transform .10s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
       box-shadow: var(--shadow2);
     }
     .chip:hover{
@@ -318,8 +371,9 @@
       box-shadow: 0 16px 40px rgba(106,168,255,.08), var(--shadow2);
     }
 
-    /* Clock + rings */
     .clockRow{
+      position: relative;
+      z-index: 2;
       display:flex;
       align-items:center;
       justify-content: space-between;
@@ -327,8 +381,8 @@
       flex-wrap: wrap;
     }
     .time{
-      font-size: 22px;
-      font-weight: 780;
+      font-size: 24px;
+      font-weight: 820;
       letter-spacing: .6px;
       line-height: 1;
       text-shadow: 0 0 18px rgba(106,168,255,.12);
@@ -344,9 +398,9 @@
       align-items:center;
     }
     .ring{
-      width: 44px; height: 44px;
+      width: 46px; height: 46px;
       border-radius: 50%;
-      background: conic-gradient(rgba(106,168,255,.88) 0deg, rgba(106,168,255,.10) 0deg);
+      background: conic-gradient(var(--ringColor) 0deg, var(--ringBg) 0deg);
       border: 1px solid rgba(255,255,255,.18);
       box-shadow: 0 10px 30px rgba(0,0,0,.22);
       position: relative;
@@ -367,11 +421,12 @@
       font-size: 12px;
       color: rgba(238,242,255,.88);
       z-index: 2;
-      font-weight: 680;
+      font-weight: 700;
     }
 
-    /* Quick stats */
     .stats{
+      position: relative;
+      z-index: 2;
       display:grid;
       grid-template-columns: 1fr;
       gap: 10px;
@@ -385,6 +440,12 @@
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.05);
+      transition: transform .10s ease, border-color .12s ease, background .12s ease;
+    }
+    .statRow:hover{
+      transform: translateY(-1px);
+      background: rgba(106,168,255,.08);
+      border-color: rgba(106,168,255,.35);
     }
     .statLeft{
       display:flex;
@@ -408,16 +469,17 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 180px;
+      max-width: 190px;
     }
     .statValue{
       font-size: 18px;
-      font-weight: 780;
+      font-weight: 820;
       letter-spacing: .3px;
     }
 
-    /* Sidebar nav */
     .nav{
+      position: relative;
+      z-index: 2;
       display:flex;
       flex-direction: column;
       gap: 8px;
@@ -434,7 +496,7 @@
       align-items:center;
       justify-content: space-between;
       gap: 10px;
-      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      transition: transform .10s ease, background .12s ease, border-color .12s ease;
     }
     .nav a:hover{
       transform: translateY(-1px);
@@ -446,21 +508,171 @@
       font-size: 12px;
     }
 
-    /* ===== Main content ===== */
+    /* ========= MAIN ========= */
     main{
       grid-area: main;
       padding: 16px;
     }
-
     .wrapMain{
-      max-width: 1120px;
+      max-width: var(--max);
       margin: 0 auto;
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
+    /* HERO */
+    .hero{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(900px 260px at 20% 0%, rgba(106,168,255,.20), transparent 62%),
+        radial-gradient(900px 260px at 80% 0%, rgba(139,92,246,.16), transparent 66%),
+        radial-gradient(900px 260px at 50% 120%, rgba(124,252,178,.10), transparent 70%);
+      filter: blur(18px);
+      opacity: .9;
+      pointer-events:none;
+    }
+    .heroInner{
+      position: relative;
+      padding: 18px;
+      display:grid;
+      grid-template-columns: 1.35fr .95fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .heroLeft{
+      min-width:0;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tagRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items:center;
+    }
+    .tag{
+      font-size: 12px;
+      color: rgba(238,242,255,.88);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 6px 10px;
+      border-radius: 999px;
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+    }
+    .tag .dot{
+      width: 7px; height: 7px; border-radius: 99px;
+      background: rgba(124,252,178,.9);
+      box-shadow: 0 0 14px rgba(124,252,178,.25);
+    }
+    .heroTitle{
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      line-height: 1.15;
+      margin-top: 2px;
+    }
+    .heroDesc{
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+    .heroActions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 2px;
+    }
+
+    .heroRight{
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width:0;
+    }
+
+    .miniGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .miniCard{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      box-shadow: var(--shadow2);
+      padding: 14px;
+      position: relative;
+      overflow:hidden;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .miniCard:hover{
+      transform: translateY(-2px);
+      border-color: rgba(106,168,255,.50);
+      background: rgba(106,168,255,.08);
+    }
+    .miniTop{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .miniTop b{ font-size: 13px; letter-spacing:.2px; }
+    .miniTop span{ font-size: 12px; color: var(--muted2); }
+    .miniValue{
+      font-size: 22px;
+      font-weight: 920;
+      margin-top: 8px;
+      letter-spacing: .2px;
+    }
+    .miniSub{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill{
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.86);
+    }
+
+    .sparkline{
+      width:100%;
+      height: 44px;
+      margin-top: 10px;
+      opacity:.95;
+      display:block;
+    }
+
+    /* SECTION GRID */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items:start;
+    }
     .panel{
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
       border: 1px solid var(--stroke);
-      border-radius: var(--r2);
+      border-radius: var(--radius2);
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
@@ -469,20 +681,41 @@
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(900px 240px at 20% 0%, rgba(106,168,255,.18), transparent 62%),
-        radial-gradient(900px 240px at 80% 0%, rgba(139,92,246,.14), transparent 66%);
+        radial-gradient(900px 240px at 20% 0%, rgba(106,168,255,.16), transparent 62%),
+        radial-gradient(900px 240px at 80% 0%, rgba(139,92,246,.12), transparent 66%);
       filter: blur(18px);
       opacity: .85;
       pointer-events:none;
     }
-    .panel-inner{
+    .panelInner{
       position: relative;
-      padding: 18px 18px 16px;
+      padding: 16px;
       display:flex;
       flex-direction: column;
       gap: 12px;
     }
 
+    .panelHead{
+      display:flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .panelHead .left{
+      min-width:0;
+    }
+    .panelHead .title{
+      font-weight: 900;
+      letter-spacing:.2px;
+    }
+    .panelHead .sub{
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* MENU GRID */
     .menu{
       margin-top: 2px;
       display:grid;
@@ -503,21 +736,21 @@
       box-shadow: var(--shadow2);
       position: relative;
       overflow: hidden;
-      transition: transform .10s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+      transform-style: preserve-3d;
+      transition: transform .14s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
     }
     .tile::before{
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(600px 180px at 10% 10%, rgba(106,168,255,.12), transparent 60%),
-        radial-gradient(600px 180px at 90% 30%, rgba(139,92,246,.10), transparent 65%);
+        radial-gradient(600px 180px at 10% 10%, rgba(106,168,255,.14), transparent 60%),
+        radial-gradient(600px 180px at 90% 30%, rgba(139,92,246,.12), transparent 65%);
       filter: blur(18px);
       opacity: .9;
       pointer-events:none;
       transform: translateZ(0);
     }
     .tile:hover{
-      transform: translateY(-3px);
       border-color: rgba(106,168,255,.55);
       background: rgba(106,168,255,.10);
       box-shadow: 0 18px 55px rgba(0,0,0,.30);
@@ -525,7 +758,7 @@
     .tile:active{ transform: translateY(-1px); }
 
     .tIcon{
-      width: 46px; height: 46px;
+      width: 48px; height: 48px;
       border-radius: 16px;
       display:flex;
       align-items:center;
@@ -545,7 +778,7 @@
     }
     .tTitle{
       font-size: 16px;
-      font-weight: 760;
+      font-weight: 820;
       letter-spacing: .2px;
       white-space: nowrap;
       overflow: hidden;
@@ -560,23 +793,74 @@
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
+      display:flex; gap:8px; align-items:center;
     }
-    @media (max-width: 920px){
-      .tile{ grid-column: span 12; }
+    .badge{
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.84);
     }
 
-    /* ===== Footer ===== */
+    /* ACTIVITY FEED */
+    .feed{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .event{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .event:hover{
+      transform: translateY(-1px);
+      border-color: rgba(139,92,246,.45);
+      background: rgba(139,92,246,.08);
+    }
+    .evDot{
+      width: 12px; height: 12px;
+      border-radius: 99px;
+      background: rgba(106,168,255,.9);
+      box-shadow: 0 0 18px rgba(106,168,255,.18);
+      margin-top: 4px;
+      flex: 0 0 auto;
+    }
+    .evBody{ min-width:0; }
+    .evBody b{ font-size: 13px; letter-spacing:.1px; }
+    .evBody p{
+      margin: 4px 0 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .evMeta{
+      margin-top: 6px;
+      display:flex; gap: 8px; flex-wrap: wrap;
+      color: var(--muted2);
+      font-size: 11px;
+    }
+
+    /* ========= FOOTER ========= */
     footer{
       grid-area: footer;
       padding: 14px 16px;
       border-top: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.18);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       color: var(--muted2);
       font-size: 12px;
     }
     .footerWrap{
-      max-width: 1120px;
+      max-width: var(--max);
       margin: 0 auto;
       display:flex;
       gap: 10px;
@@ -585,10 +869,25 @@
       align-items:center;
     }
 
-    /* ===== Responsive sidebar overlay ===== */
-    @media (max-width: 980px){
-      :root{ --sidebarW: 0px; }
+    /* ========= MOBILE / RESPONSIVE ========= */
+    @@media (max-width: 1020px){
+      .heroInner{ grid-template-columns: 1fr; }
+      .grid2{ grid-template-columns: 1fr; }
+      .miniGrid{ grid-template-columns: repeat(2, 1fr); }
+      .tile{ grid-column: span 12; }
+    }
 
+    /* Sidebar overlay */
+    .backdrop{
+      display:none;
+      position: fixed;
+      inset: var(--headerH) 0 0 0;
+      background: rgba(0,0,0,.35);
+      z-index: 34;
+    }
+
+    @@media (max-width: 980px){
+      :root{ --sidebarW: 0px; }
       .app{
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -596,46 +895,201 @@
           "main"
           "footer";
       }
-
       aside{
         position: fixed;
         top: var(--headerH);
         left: 0;
-        width: min(88vw, 320px);
+        width: min(88vw, 340px);
         height: calc(100vh - var(--headerH));
         transform: translateX(-105%);
         transition: transform .18s ease;
-        z-index: 25;
+        z-index: 35;
         border-right: 1px solid rgba(255,255,255,.12);
       }
-      body.sidebar-open aside{
-        transform: translateX(0);
-      }
-
-      .hamburger{ display:inline-flex; }
-      .backdrop{
-        display:none;
-        position: fixed;
-        inset: var(--headerH) 0 0 0;
-        background: rgba(0,0,0,.35);
-        z-index: 24;
-      }
+      body.sidebar-open aside{ transform: translateX(0); }
       body.sidebar-open .backdrop{ display:block; }
-
+      .hamburger{ display:inline-flex; }
       main{ padding: 14px; }
       .h-title span{ max-width: 54vw; }
     }
 
-    @media (prefers-reduced-motion: reduce){
+    /* ========= COMMAND PALETTE ========= */
+    .cmdk{
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+    }
+    body.cmdk-open .cmdk{ display:flex; }
+    .cmdkBox{
+      width: min(760px, 94vw);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(10,14,28,.72);
+      box-shadow: 0 22px 80px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    .cmdkTop{
+      padding: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      display:flex; gap:10px; align-items:center;
+    }
+    .cmdkTop input{
+      width:100%;
+      border:0; outline: none;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .cmdkList{
+      max-height: min(52vh, 520px);
+      overflow:auto;
+      padding: 10px;
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .cmdkItem{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      cursor:pointer;
+      transition: transform .10s ease, border-color .12s ease, background .12s ease;
+    }
+    .cmdkItem:hover{
+      transform: translateY(-1px);
+      border-color: rgba(106,168,255,.45);
+      background: rgba(106,168,255,.10);
+    }
+    .cmdkL{
+      display:flex; gap:10px; align-items:center; min-width:0;
+    }
+    .cmdkIco{
+      width: 36px; height: 36px;
+      border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      flex: 0 0 auto;
+    }
+    .cmdkText{ min-width:0; }
+    .cmdkText b{
+      display:block;
+      font-size: 13px;
+      letter-spacing:.1px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .cmdkText small{
+      display:block;
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      max-width: 52vw;
+    }
+    .cmdkR{
+      color: var(--muted2);
+      font-size: 11px;
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      flex: 0 0 auto;
+    }
+    .keycap{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    /* ========= TOAST ========= */
+    .toast{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 90;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events:none;
+    }
+    .toastItem{
+      pointer-events:auto;
+      width: min(360px, 92vw);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(10,14,28,.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 22px 70px rgba(0,0,0,.45);
+      padding: 12px 12px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      animation: pop .18s ease-out;
+    }
+    @@keyframes pop{
+      from{ transform: translateY(6px); opacity: 0; }
+      to{ transform: translateY(0); opacity: 1; }
+    }
+    .toastDot{
+      width: 12px; height: 12px;
+      border-radius: 99px;
+      background: rgba(124,252,178,.9);
+      box-shadow: 0 0 18px rgba(124,252,178,.18);
+      margin-top: 4px;
+      flex: 0 0 auto;
+    }
+    .toastBody{ min-width:0; }
+    .toastBody b{ font-size: 13px; }
+    .toastBody p{ margin: 4px 0 0 0; font-size: 12px; color: var(--muted); line-height:1.45; }
+    .toastX{
+      margin-left:auto;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(238,242,255,.90);
+      border-radius: 12px;
+      cursor:pointer;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    /* ========= REDUCED MOTION ========= */
+    @@media (prefers-reduced-motion: reduce){
       .blobs, .logo::after{ animation: none !important; }
-      .tile, .btn, .chip, aside{ transition: none !important; }
+      .tile, .btn, .chip, aside, .cmdkItem, .miniCard, .statRow, .event{ transition: none !important; }
+      canvas#particles{ display:none !important; }
     }
   </style>
 </head>
 
 <body>
-  <div class="blobs"></div>
-  <div class="texture"></div>
+  <!-- video background (optional, auto fallback if cannot load) -->
+  <div class="bg-video" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://cdn.coverr.co/videos/coverr-a-forest-in-the-mist-9716/1080p.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="blobs" aria-hidden="true"></div>
+  <div class="texture" aria-hidden="true"></div>
+  <canvas id="particles" aria-hidden="true"></canvas>
 
   <div class="app">
     <!-- HEADER -->
@@ -644,12 +1098,16 @@
         <button class="btn hamburger" id="sidebarBtn" aria-label="Mở thanh bên">☰</button>
         <div class="logo" aria-hidden="true"></div>
         <div class="h-title">
-          <b>doublef.io.vn — Dashboard</b>
-          <span>Menu đọc pages.json • Search + Filter • Mở tab mới</span>
+          <b>doublef.io.vn — Hyper Dashboard</b>
+          <span>
+            Menu đọc pages.json • Search + Filter • Command Palette
+            <span class="kbdHint">Ctrl/⌘ + K</span>
+          </span>
         </div>
       </div>
 
       <div class="h-right">
+        <button class="btn ghost" id="cmdkBtn" title="Mở Command Palette (Ctrl/⌘+K)">⌘K</button>
         <button class="btn primary" id="reloadBtn">🔄 Tải lại</button>
         <button class="btn" id="openJsonBtn">📄 pages.json</button>
         <span class="status" id="status"></span>
@@ -665,7 +1123,7 @@
         </div>
 
         <div class="search" title="Tìm theo tên hoặc đường dẫn">
-          <span style="position:relative; z-index:2; opacity:.85;">🔎</span>
+          <span style="opacity:.88;">🔎</span>
           <input id="q" type="text" placeholder="Tìm trang... (ví dụ: bmi, tool, report)" />
         </div>
 
@@ -673,6 +1131,7 @@
           <div class="chip active" id="chipAll">📚 Tất cả</div>
           <div class="chip" id="chipTools">🧰 Tools</div>
           <div class="chip" id="chipHealth">📊 Sức khỏe</div>
+          <div class="chip" id="chipFav">⭐ Ghim</div>
         </div>
       </div>
 
@@ -725,6 +1184,14 @@
             </div>
             <div class="statValue" id="statHealth">--</div>
           </div>
+
+          <div class="statRow">
+            <div class="statLeft">
+              <div class="statIcon">⭐</div>
+              <div class="statName">Đã ghim</div>
+            </div>
+            <div class="statValue" id="statFav">--</div>
+          </div>
         </div>
       </div>
 
@@ -743,6 +1210,10 @@
             <span>⬆️ Lên đầu trang</span>
             <small>top</small>
           </a>
+          <a href="#" id="clearFav">
+            <span>🧹 Xóa ghim</span>
+            <small>reset</small>
+          </a>
         </div>
       </div>
     </aside>
@@ -753,26 +1224,132 @@
     <!-- MAIN -->
     <main>
       <div class="wrapMain">
-        <section class="panel">
-          <div class="panel-inner">
-            <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
-              <div style="min-width:0;">
-                <div style="font-weight:780; letter-spacing:.2px;">Danh sách trang</div>
-                <div style="font-size:13px; color:var(--muted); margin-top:4px;">
-                  Click thẻ để mở trang trong tab mới. (Ẩn <code>index.html</code>).
-                </div>
+        <!-- HERO -->
+        <section class="hero">
+          <div class="heroInner">
+            <div class="heroLeft">
+              <div class="tagRow">
+                <div class="tag"><span class="dot"></span><span id="heroStatus">Online</span></div>
+                <div class="tag">⚡ Glass UI</div>
+                <div class="tag">🧠 Smart filter</div>
+                <div class="tag">🎛️ Command palette</div>
               </div>
 
-              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <span style="font-size:13px; color:var(--muted2)">Tip:</span>
-                <span style="font-size:13px; color:rgba(238,242,255,.86); border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); padding:8px 10px; border-radius:999px;">
-                  Nhập từ khóa trong Sidebar
-                </span>
+              <div class="heroTitle">Một cái “cổng teleport” cho tất cả trang của bạn.</div>
+              <div class="heroDesc">
+                Index này đọc <b>pages.json</b> để dựng menu, có lọc nhóm, ghim trang yêu thích, tìm kiếm realtime,
+                hiệu ứng hover-tilt, particle nền, feed hoạt động giả lập cho “vibe dashboard”.
+                (Và đúng kiểu: nhìn phát biết chủ nhân không phải người bình thường.)
+              </div>
+
+              <div class="heroActions">
+                <button class="btn primary" id="openCmdk">🔎 Tìm nhanh (Ctrl/⌘+K)</button>
+                <button class="btn" id="randomBtn">🎲 Mở ngẫu nhiên</button>
+                <button class="btn" id="toastBtn">✨ Test hiệu ứng</button>
               </div>
             </div>
 
-            <div class="menu" id="menuGrid"></div>
+            <div class="heroRight">
+              <div class="miniGrid">
+                <div class="miniCard">
+                  <div class="miniTop">
+                    <b>Pages loaded</b><span id="miniLoaded">--</span>
+                  </div>
+                  <div class="miniValue" id="miniTotal">--</div>
+                  <div class="miniSub">
+                    <span class="pill">Auto</span>
+                    <span style="color:var(--muted2)">từ pages.json</span>
+                  </div>
+                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
+                    <path id="spark1" d="" fill="none" stroke="rgba(106,168,255,.85)" stroke-width="2" />
+                  </svg>
+                </div>
+
+                <div class="miniCard">
+                  <div class="miniTop">
+                    <b>Shortcut</b><span>⌘K</span>
+                  </div>
+                  <div class="miniValue">Command</div>
+                  <div class="miniSub">
+                    <span class="pill">Pro</span>
+                    <span style="color:var(--muted2)">gõ là mở</span>
+                  </div>
+                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
+                    <path id="spark2" d="" fill="none" stroke="rgba(139,92,246,.85)" stroke-width="2" />
+                  </svg>
+                </div>
+
+                <div class="miniCard">
+                  <div class="miniTop">
+                    <b>Uptime</b><span>Live</span>
+                  </div>
+                  <div class="miniValue" id="miniUptime">00:00</div>
+                  <div class="miniSub">
+                    <span class="pill">Local</span>
+                    <span style="color:var(--muted2)">tính từ lúc mở</span>
+                  </div>
+                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
+                    <path id="spark3" d="" fill="none" stroke="rgba(124,252,178,.80)" stroke-width="2" />
+                  </svg>
+                </div>
+
+                <div class="miniCard">
+                  <div class="miniTop">
+                    <b>Focus</b><span id="miniFocus">On</span>
+                  </div>
+                  <div class="miniValue">Particles</div>
+                  <div class="miniSub">
+                    <span class="pill">FX</span>
+                    <span style="color:var(--muted2)">nhẹ mà “đã”</span>
+                  </div>
+                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
+                    <path id="spark4" d="" fill="none" stroke="rgba(255,184,107,.82)" stroke-width="2" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
+
+        <section class="grid2">
+          <!-- MENU PANEL -->
+          <section class="panel">
+            <div class="panelInner">
+              <div class="panelHead">
+                <div class="left" style="min-width:0;">
+                  <div class="title">Danh sách trang</div>
+                  <div class="sub">
+                    Click thẻ để mở trang trong tab mới. Ghim ⭐ để đưa vào filter “Ghim”.
+                    (Ẩn <code>index.html</code>).
+                  </div>
+                </div>
+
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                  <span style="font-size:13px; color:var(--muted2)">Tip:</span>
+                  <span style="font-size:13px; color:rgba(238,242,255,.86); border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); padding:8px 10px; border-radius:999px;">
+                    Dùng Ctrl/⌘ + K để tìm siêu nhanh
+                  </span>
+                </div>
+              </div>
+
+              <div class="menu" id="menuGrid"></div>
+            </div>
+          </section>
+
+          <!-- ACTIVITY PANEL -->
+          <section class="panel">
+            <div class="panelInner">
+              <div class="panelHead">
+                <div class="left">
+                  <div class="title">Activity feed</div>
+                  <div class="sub">Tổng hợp “vibe” hệ thống (giả lập, nhưng nhìn rất thật).</div>
+                </div>
+                <button class="btn" id="regenFeed">🔁 Refresh</button>
+              </div>
+
+              <div class="feed" id="feed"></div>
+            </div>
+          </section>
         </section>
       </div>
     </main>
@@ -780,32 +1357,45 @@
     <!-- FOOTER -->
     <footer>
       <div class="footerWrap">
-        <div>© <span id="yy"></span> doublef.io.vn • Dashboard Menu</div>
-        <div>Thiết kế: <b>Phạm Nhanh 14/12/2003</b></div>
+        <div>© <span id="yy"></span> doublef.io.vn • Hyper Dashboard</div>
+        <div>Thiết kế: <b>Phạm Nhanh 14/12/2003</b> • Build: <span id="buildTag"></span></div>
       </div>
     </footer>
   </div>
 
+  <!-- COMMAND PALETTE -->
+  <div class="cmdk" id="cmdk" aria-hidden="true">
+    <div class="cmdkBox" role="dialog" aria-modal="true" aria-label="Command Palette">
+      <div class="cmdkTop">
+        <span style="opacity:.9;">🔎</span>
+        <input id="cmdkInput" type="text" placeholder="Gõ để tìm trang… (Enter để mở, Esc để đóng)" />
+      </div>
+      <div class="cmdkList" id="cmdkList"></div>
+      <div style="padding: 10px 12px; border-top:1px solid rgba(255,255,255,.10); color: var(--muted2); font-size: 12px; display:flex; justify-content: space-between; gap:10px; flex-wrap:wrap;">
+        <span>Enter: mở • ↑↓: chọn • ⭐: ghim • Esc: đóng</span>
+        <span><span class="keycap">Ctrl/⌘</span> + <span class="keycap">K</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
   <script>
-    // ===== Mobile sidebar toggle =====
+    // =========================
+    // Mobile sidebar toggle
+    // =========================
     const sidebarBtn = document.getElementById("sidebarBtn");
     const backdrop = document.getElementById("backdrop");
-
-    function closeSidebar(){
-      document.body.classList.remove("sidebar-open");
-    }
-    function toggleSidebar(){
-      document.body.classList.toggle("sidebar-open");
-    }
+    function closeSidebar(){ document.body.classList.remove("sidebar-open"); }
+    function toggleSidebar(){ document.body.classList.toggle("sidebar-open"); }
     if (sidebarBtn) sidebarBtn.addEventListener("click", toggleSidebar);
     if (backdrop) backdrop.addEventListener("click", closeSidebar);
+    window.addEventListener("keydown", (e)=>{ if (e.key==="Escape") closeSidebar(); });
 
-    // Close sidebar on ESC (mobile)
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeSidebar();
-    });
-
-    // ====== Elements ======
+    // =========================
+    // Elements
+    // =========================
     const menuGrid = document.getElementById("menuGrid");
     const statusEl = document.getElementById("status");
     const qEl = document.getElementById("q");
@@ -813,14 +1403,77 @@
     const chipAll = document.getElementById("chipAll");
     const chipTools = document.getElementById("chipTools");
     const chipHealth = document.getElementById("chipHealth");
+    const chipFav = document.getElementById("chipFav");
 
     const statTotal = document.getElementById("statTotal");
     const statTools = document.getElementById("statTools");
     const statHealth = document.getElementById("statHealth");
+    const statFav = document.getElementById("statFav");
 
+    const miniLoaded = document.getElementById("miniLoaded");
+    const miniTotal = document.getElementById("miniTotal");
+    const miniUptime = document.getElementById("miniUptime");
+    const miniFocus = document.getElementById("miniFocus");
+
+    const heroStatus = document.getElementById("heroStatus");
+    const toastRoot = document.getElementById("toast");
+
+    const feedEl = document.getElementById("feed");
+    const regenFeedBtn = document.getElementById("regenFeed");
+
+    // CmdK
+    const cmdk = document.getElementById("cmdk");
+    const cmdkBtn = document.getElementById("cmdkBtn");
+    const openCmdkBtn = document.getElementById("openCmdk");
+    const cmdkInput = document.getElementById("cmdkInput");
+    const cmdkList = document.getElementById("cmdkList");
+
+    // Buttons
+    const reloadBtn = document.getElementById("reloadBtn");
+    const openJsonBtn = document.getElementById("openJsonBtn");
+    const randomBtn = document.getElementById("randomBtn");
+    const toastBtn = document.getElementById("toastBtn");
+    const clearFavBtn = document.getElementById("clearFav");
+
+    // =========================
+    // State
+    // =========================
     let allPages = [];
-    let filterMode = "all"; // all | tools | health
+    let filterMode = "all"; // all | tools | health | fav
+    let selectedCmdkIndex = 0;
 
+    // Favorites stored in localStorage
+    const FAV_KEY = "doublef_favs_v1";
+    function loadFavs(){
+      try{
+        const raw = localStorage.getItem(FAV_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      }catch{ return []; }
+    }
+    function saveFavs(arr){
+      try{ localStorage.setItem(FAV_KEY, JSON.stringify(arr)); }catch{}
+    }
+    function isFav(path){
+      const favs = loadFavs();
+      return favs.includes(String(path||""));
+    }
+    function toggleFav(path){
+      const p = String(path||"");
+      const favs = loadFavs();
+      const idx = favs.indexOf(p);
+      if (idx >= 0) favs.splice(idx,1);
+      else favs.unshift(p);
+      saveFavs(favs.slice(0, 60));
+      updateStats();
+      renderMenu();
+      renderCmdk();
+      toast("Đã cập nhật ghim ⭐", p, "ok");
+    }
+
+    // =========================
+    // Helpers
+    // =========================
     function setStatus(msg, cls="") {
       statusEl.className = "status " + cls;
       statusEl.textContent = msg;
@@ -837,9 +1490,7 @@
       }[m]));
     }
 
-    function normalize(s){
-      return String(s || "").toLowerCase();
-    }
+    function normalize(s){ return String(s || "").toLowerCase(); }
 
     function pickGroup(p){
       const t = normalize(p.title);
@@ -854,44 +1505,111 @@
       return "all";
     }
 
+    function badgeFor(p){
+      const g = pickGroup(p);
+      if (g === "tools") return "Tools";
+      if (g === "health") return "Health";
+      return "Page";
+    }
+
+    function nowTag(){
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2,"0");
+      const mm = String(d.getMinutes()).padStart(2,"0");
+      return `${hh}:${mm}`;
+    }
+
+    // =========================
+    // Stats + Sparklines
+    // =========================
+    function genSparkPath(seed=1){
+      // deterministic-ish tiny sparkline
+      let x = 0;
+      let y = 12;
+      let d = `M 0 ${y}`;
+      for (let i=1;i<=10;i++){
+        x = i*10;
+        seed = (seed*9301 + 49297) % 233280;
+        const r = seed/233280;
+        y = 6 + Math.round(r*12);
+        d += ` L ${x} ${y}`;
+      }
+      return d;
+    }
+    function updateSparks(){
+      document.getElementById("spark1").setAttribute("d", genSparkPath(allPages.length+7));
+      document.getElementById("spark2").setAttribute("d", genSparkPath(allPages.length+17));
+      document.getElementById("spark3").setAttribute("d", genSparkPath(allPages.length+27));
+      document.getElementById("spark4").setAttribute("d", genSparkPath(allPages.length+37));
+    }
+
     function updateStats(){
       const pages = allPages.filter(p => p && p.path && normalize(p.path) !== "index.html");
       const tools = pages.filter(p => pickGroup(p) === "tools").length;
       const health = pages.filter(p => pickGroup(p) === "health").length;
+      const favs = loadFavs().filter(x => pages.some(p => String(p.path) === String(x))).length;
 
       statTotal.textContent = String(pages.length);
       statTools.textContent = String(tools);
       statHealth.textContent = String(health);
+      statFav.textContent = String(favs);
+
+      miniLoaded.textContent = pages.length ? "OK" : "--";
+      miniTotal.textContent = pages.length ? String(pages.length) : "--";
+      updateSparks();
     }
 
+    // =========================
+    // Chips
+    // =========================
     function setActiveChip(mode){
       filterMode = mode;
       chipAll.classList.toggle("active", mode === "all");
       chipTools.classList.toggle("active", mode === "tools");
       chipHealth.classList.toggle("active", mode === "health");
+      chipFav.classList.toggle("active", mode === "fav");
       renderMenu();
     }
 
-    function renderMenu(){
-      menuGrid.innerHTML = "";
-
+    // =========================
+    // Render menu
+    // =========================
+    function getFilteredPages(){
       const query = normalize(qEl.value).trim();
       const pages = allPages.filter(p => {
         if (!p || !p.path) return false;
         if (normalize(p.path) === "index.html") return false;
+
         if (query) {
           const hay = normalize(p.title) + " " + normalize(p.path);
           if (!hay.includes(query)) return false;
         }
+
         if (filterMode === "health") return pickGroup(p) === "health";
         if (filterMode === "tools") return pickGroup(p) === "tools";
+        if (filterMode === "fav") return isFav(p.path);
         return true;
       });
+
+      // Favorites first (nice touch)
+      pages.sort((a,b)=>{
+        const fa = isFav(a.path) ? 1 : 0;
+        const fb = isFav(b.path) ? 1 : 0;
+        if (fa !== fb) return fb - fa;
+        return String(a.title||a.path).localeCompare(String(b.title||b.path), "vi", { sensitivity:"base" });
+      });
+
+      return pages;
+    }
+
+    function renderMenu(){
+      menuGrid.innerHTML = "";
+      const pages = getFilteredPages();
 
       if (!pages.length){
         menuGrid.innerHTML = `
           <div style="grid-column: span 12; padding: 14px; color: rgba(238,242,255,.72); border: 1px dashed rgba(255,255,255,.20); border-radius: 18px; background: rgba(0,0,0,.10);">
-            Không tìm thấy trang phù hợp. Thử đổi từ khóa hoặc chọn lại bộ lọc.
+            Không tìm thấy trang phù hợp. Thử đổi từ khóa / đổi filter / hoặc ghim ⭐ vài trang.
           </div>
         `;
         return;
@@ -900,7 +1618,8 @@
       for (const p of pages){
         const title = p.title || p.path || "Không tên";
         const path  = p.path;
-        const icon  = p.icon || "🔗";
+        const icon  = p.icon || (pickGroup(p)==="tools" ? "🧰" : pickGroup(p)==="health" ? "📊" : "🔗");
+        const fav = isFav(path);
 
         const a = document.createElement("a");
         a.className = "tile";
@@ -911,20 +1630,52 @@
         a.innerHTML = `
           <div class="tIcon">${esc(icon)}</div>
           <div class="tText">
-            <div class="tTitle">${esc(title)}</div>
-            <div class="tPath">${esc(path)}</div>
+            <div class="tTitle">${esc(title)} ${fav ? "⭐" : ""}</div>
+            <div class="tPath">
+              <span class="badge">${esc(badgeFor(p))}</span>
+              <span>${esc(path)}</span>
+            </div>
+          </div>
+          <div style="margin-left:auto; display:flex; gap:8px; align-items:center; position:relative; z-index:2;">
+            <button class="btn ghost" data-fav="${esc(path)}" style="padding:8px 10px; font-size:13px;" title="Ghim/Bỏ ghim ⭐">
+              ${fav ? "⭐" : "☆"}
+            </button>
           </div>
         `;
+
+        // prevent star button from opening link
+        a.querySelector('button[data-fav]')?.addEventListener("click", (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          toggleFav(path);
+        });
+
+        // tilt effect (lightweight)
+        a.addEventListener("mousemove", (e)=>{
+          const r = a.getBoundingClientRect();
+          const dx = (e.clientX - r.left) / r.width - 0.5;
+          const dy = (e.clientY - r.top) / r.height - 0.5;
+          const rx = (-dy * 6).toFixed(2);
+          const ry = (dx * 8).toFixed(2);
+          a.style.transform = `translateY(-2px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+        a.addEventListener("mouseleave", ()=>{
+          a.style.transform = "";
+        });
+
         menuGrid.appendChild(a);
       }
     }
 
+    // =========================
+    // Load pages.json
+    // =========================
     async function loadPages(){
       setStatus("Đang tải pages.json…");
 
       menuGrid.innerHTML = `
         <div style="grid-column: span 12; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px;">
-          ${Array.from({length: 6}).map(() => `
+          ${Array.from({length: 8}).map(() => `
             <div style="grid-column: span 6; padding: 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); box-shadow: 0 10px 30px rgba(0,0,0,.18);">
               <div style="height: 14px; width: 55%; background: rgba(255,255,255,.10); border-radius: 10px;"></div>
               <div style="height: 10px; width: 85%; margin-top: 10px; background: rgba(255,255,255,.07); border-radius: 10px;"></div>
@@ -942,38 +1693,41 @@
         allPages = data;
         updateStats();
         renderMenu();
+        renderCmdk();
+
+        heroStatus.textContent = "Online";
         setStatus("Menu đã sẵn sàng ✅", "ok");
+        toast("Đã load menu", `${allPages.length} items`, "ok");
       }catch(e){
         console.error(e);
         allPages = [];
-        statTotal.textContent = "--";
-        statTools.textContent = "--";
-        statHealth.textContent = "--";
+        updateStats();
 
         menuGrid.innerHTML = `
           <div style="grid-column: span 12; padding: 14px; color: rgba(255,184,107,.92); border: 1px solid rgba(255,184,107,.25); background: rgba(255,184,107,.08); border-radius: 18px;">
-            Không đọc được <b>pages.json</b>. Kiểm tra GitHub Actions đã chạy xong chưa, và file pages.json đã xuất hiện ở root repo.
+            Không đọc được <b>pages.json</b>. Kiểm tra GitHub Actions/Build đã xuất file ra root repo chưa.
           </div>
         `;
+        heroStatus.textContent = "Offline";
         setStatus("Lỗi tải pages.json", "warn");
+        toast("Lỗi pages.json", "Chưa đọc được file", "warn");
       }
     }
 
     // Header buttons
-    document.getElementById("reloadBtn").addEventListener("click", loadPages);
-    document.getElementById("openJsonBtn").addEventListener("click", () => {
-      window.open("pages.json", "_blank", "noopener,noreferrer");
-    });
+    reloadBtn.addEventListener("click", loadPages);
+    openJsonBtn.addEventListener("click", ()=> window.open("pages.json", "_blank", "noopener,noreferrer"));
 
     // Sidebar interactions
-    qEl.addEventListener("input", () => { renderMenu(); });
+    qEl.addEventListener("input", () => { renderMenu(); renderCmdk(); });
 
     chipAll.addEventListener("click", () => setActiveChip("all"));
     chipTools.addEventListener("click", () => setActiveChip("tools"));
     chipHealth.addEventListener("click", () => setActiveChip("health"));
+    chipFav.addEventListener("click", () => setActiveChip("fav"));
 
-    // Scroll top shortcut
-    document.getElementById("scrollTop").addEventListener("click", (e) => {
+    // Scroll top
+    document.getElementById("scrollTop").addEventListener("click", (e)=>{
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
       closeSidebar();
@@ -984,7 +1738,28 @@
       if (window.matchMedia("(max-width: 980px)").matches) closeSidebar();
     });
 
-    // ====== Clock ======
+    // Clear fav
+    clearFavBtn.addEventListener("click", (e)=>{
+      e.preventDefault();
+      saveFavs([]);
+      updateStats();
+      renderMenu();
+      renderCmdk();
+      toast("Đã xóa ghim", "Favorites reset", "ok");
+    });
+
+    // Random open
+    randomBtn.addEventListener("click", ()=>{
+      const pages = allPages.filter(p => p && p.path && normalize(p.path) !== "index.html");
+      if (!pages.length) return toast("Không có trang", "pages.json trống", "warn");
+      const p = pages[Math.floor(Math.random() * pages.length)];
+      window.open(p.path, "_blank", "noopener,noreferrer");
+      toast("Mở ngẫu nhiên 🎲", p.path, "ok");
+    });
+
+    // =========================
+    // Clock + rings
+    // =========================
     const timeEl = document.getElementById("time");
     const dateEl = document.getElementById("date");
     const ringH = document.getElementById("ringH");
@@ -994,13 +1769,12 @@
     const mTxt = document.getElementById("mTxt");
     const sTxt = document.getElementById("sTxt");
     const toggle24Btn = document.getElementById("toggle24");
-
     let use24 = true;
 
     function pad2(n){ return String(n).padStart(2,"0"); }
     function setRing(el, ratio){
       const deg = Math.max(0, Math.min(1, ratio)) * 360;
-      el.style.background = `conic-gradient(rgba(106,168,255,.90) ${deg}deg, rgba(106,168,255,.10) 0deg)`;
+      el.style.background = `conic-gradient(var(--ringColor) ${deg}deg, var(--ringBg) 0deg)`;
     }
 
     function tick(){
@@ -1011,8 +1785,7 @@
       const s = now.getSeconds();
 
       timeEl.textContent = `${pad2(h)}:${pad2(m)}:${pad2(s)}` + (use24 ? "" : (h24 >= 12 ? " PM" : " AM"));
-      const dd = now.toLocaleDateString("vi-VN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
-      dateEl.textContent = dd;
+      dateEl.textContent = now.toLocaleDateString("vi-VN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
 
       hTxt.textContent = pad2(h24);
       mTxt.textContent = pad2(m);
@@ -1023,7 +1796,7 @@
       setRing(ringH, ((h24%24) + m/60)/24);
     }
 
-    toggle24Btn.addEventListener("click", () => {
+    toggle24Btn.addEventListener("click", ()=>{
       use24 = !use24;
       toggle24Btn.textContent = use24 ? "🕒 24h" : "🕒 12h";
       tick();
@@ -1032,11 +1805,371 @@
     setInterval(tick, 250);
     tick();
 
-    // Footer year
+    // Footer
     document.getElementById("yy").textContent = String(new Date().getFullYear());
+    document.getElementById("buildTag").textContent = "hyper-" + Math.random().toString(16).slice(2,8);
 
-    // Start menu
+    // Uptime
+    const startAt = Date.now();
+    setInterval(()=>{
+      const t = Math.floor((Date.now() - startAt)/1000);
+      const mm = String(Math.floor(t/60)).padStart(2,"0");
+      const ss = String(t%60).padStart(2,"0");
+      miniUptime.textContent = `${mm}:${ss}`;
+    }, 500);
+
+    // =========================
+    // Activity feed (fake but useful)
+    // =========================
+    function randPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+    function genFeed(){
+      const samples = [
+        { t:"pages.json synced", p:"Dashboard đã đồng bộ danh sách trang từ nguồn JSON.", m:["sync","json","ok"] },
+        { t:"Favorites updated", p:"Ghim ⭐ giúp bạn bật mode “Ghim” và ưu tiên trang quan trọng.", m:["fav","quick","pro"] },
+        { t:"Search hot path", p:"Tìm theo từ khóa: title + path. Nhanh như… suy nghĩ.", m:["search","filter","fast"] },
+        { t:"Open in new tab", p:"Click card để mở tab mới. Nhẹ nhàng mà hiệu quả.", m:["ux","tabs","safe"] },
+        { t:"Command palette ready", p:"Ctrl/⌘ + K để mở “cổng” tìm kiếm siêu tốc.", m:["cmdk","keyboard","speed"] },
+      ];
+
+      const dots = ["rgba(106,168,255,.9)","rgba(139,92,246,.9)","rgba(124,252,178,.9)","rgba(255,184,107,.9)"];
+      const events = Array.from({length: 6}).map((_,i)=>{
+        const s = randPick(samples);
+        return {
+          ...s,
+          time: (i===0 ? "just now" : `${nowTag()}`),
+          dot: dots[i % dots.length]
+        }
+      });
+
+      feedEl.innerHTML = "";
+      for (const e of events){
+        const div = document.createElement("div");
+        div.className = "event";
+        div.innerHTML = `
+          <div class="evDot" style="background:${e.dot}; box-shadow:0 0 18px ${e.dot.replace(',.9',',.18')}"></div>
+          <div class="evBody">
+            <b>${esc(e.t)}</b>
+            <p>${esc(e.p)}</p>
+            <div class="evMeta">
+              <span>⏱ ${esc(e.time)}</span>
+              ${e.m.map(x=>`<span class="badge">${esc(x)}</span>`).join("")}
+            </div>
+          </div>
+        `;
+        feedEl.appendChild(div);
+      }
+    }
+    regenFeedBtn.addEventListener("click", ()=>{
+      genFeed();
+      toast("Feed refreshed", "Đã làm mới activity", "ok");
+    });
+    genFeed();
+
+    // =========================
+    // Command palette
+    // =========================
+    function openCmdk(){
+      document.body.classList.add("cmdk-open");
+      cmdk.setAttribute("aria-hidden","false");
+      selectedCmdkIndex = 0;
+      renderCmdk();
+      setTimeout(()=> cmdkInput.focus(), 0);
+    }
+    function closeCmdk(){
+      document.body.classList.remove("cmdk-open");
+      cmdk.setAttribute("aria-hidden","true");
+    }
+    function toggleCmdk(){
+      if (document.body.classList.contains("cmdk-open")) closeCmdk();
+      else openCmdk();
+    }
+
+    cmdkBtn.addEventListener("click", openCmdk);
+    openCmdkBtn.addEventListener("click", openCmdk);
+
+    cmdk.addEventListener("click", (e)=>{
+      if (e.target === cmdk) closeCmdk();
+    });
+
+    function renderCmdk(){
+      const q = normalize(cmdkInput.value).trim();
+      const pages = allPages
+        .filter(p => p && p.path && normalize(p.path) !== "index.html")
+        .filter(p => {
+          if (!q) return true;
+          const hay = normalize(p.title) + " " + normalize(p.path);
+          return hay.includes(q);
+        })
+        .sort((a,b)=>{
+          const fa = isFav(a.path) ? 1 : 0;
+          const fb = isFav(b.path) ? 1 : 0;
+          if (fa !== fb) return fb - fa;
+          return String(a.title||a.path).localeCompare(String(b.title||b.path), "vi", { sensitivity:"base" });
+        })
+        .slice(0, 14);
+
+      if (!pages.length){
+        cmdkList.innerHTML = `
+          <div style="padding: 12px; color: var(--muted); border: 1px dashed rgba(255,255,255,.18); background: rgba(0,0,0,.10); border-radius: 16px;">
+            Không có kết quả. Thử từ khóa khác.
+          </div>
+        `;
+        return;
+      }
+
+      if (selectedCmdkIndex >= pages.length) selectedCmdkIndex = pages.length - 1;
+      if (selectedCmdkIndex < 0) selectedCmdkIndex = 0;
+
+      cmdkList.innerHTML = "";
+      pages.forEach((p, idx)=>{
+        const div = document.createElement("div");
+        div.className = "cmdkItem";
+        if (idx === selectedCmdkIndex){
+          div.style.borderColor = "rgba(106,168,255,.55)";
+          div.style.background = "rgba(106,168,255,.10)";
+        }
+        const fav = isFav(p.path);
+
+        div.innerHTML = `
+          <div class="cmdkL">
+            <div class="cmdkIco">${esc(p.icon || "🔗")}</div>
+            <div class="cmdkText">
+              <b>${esc(p.title || p.path)} ${fav ? "⭐" : ""}</b>
+              <small>${esc(p.path)}</small>
+            </div>
+          </div>
+          <div class="cmdkR">
+            <span class="keycap">Enter</span>
+            <span class="keycap" data-fav="${esc(p.path)}">⭐</span>
+          </div>
+        `;
+
+        div.addEventListener("click", ()=>{
+          window.open(p.path, "_blank", "noopener,noreferrer");
+          toast("Mở trang", p.path, "ok");
+          closeCmdk();
+        });
+
+        div.querySelector('[data-fav]')?.addEventListener("click", (e)=>{
+          e.stopPropagation();
+          toggleFav(p.path);
+        });
+
+        cmdkList.appendChild(div);
+      });
+    }
+
+    cmdkInput.addEventListener("input", ()=>{
+      selectedCmdkIndex = 0;
+      renderCmdk();
+    });
+
+    window.addEventListener("keydown", (e)=>{
+      const isMac = navigator.platform.toLowerCase().includes("mac");
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+
+      // Ctrl/Cmd + K
+      if (mod && e.key.toLowerCase() === "k"){
+        e.preventDefault();
+        toggleCmdk();
+        return;
+      }
+
+      if (!document.body.classList.contains("cmdk-open")) return;
+
+      if (e.key === "Escape"){
+        e.preventDefault();
+        closeCmdk();
+        return;
+      }
+
+      const items = cmdkList.querySelectorAll(".cmdkItem");
+      if (!items.length) return;
+
+      if (e.key === "ArrowDown"){
+        e.preventDefault();
+        selectedCmdkIndex++;
+        renderCmdk();
+        items[Math.min(selectedCmdkIndex, items.length-1)]?.scrollIntoView({ block:"nearest" });
+      } else if (e.key === "ArrowUp"){
+        e.preventDefault();
+        selectedCmdkIndex--;
+        renderCmdk();
+        items[Math.max(selectedCmdkIndex, 0)]?.scrollIntoView({ block:"nearest" });
+      } else if (e.key === "Enter"){
+        e.preventDefault();
+        // open selected
+        const q = normalize(cmdkInput.value).trim();
+        const pages = allPages
+          .filter(p => p && p.path && normalize(p.path) !== "index.html")
+          .filter(p => !q || (normalize(p.title)+" "+normalize(p.path)).includes(q))
+          .sort((a,b)=>{
+            const fa = isFav(a.path) ? 1 : 0;
+            const fb = isFav(b.path) ? 1 : 0;
+            if (fa !== fb) return fb - fa;
+            return String(a.title||a.path).localeCompare(String(b.title||b.path), "vi", { sensitivity:"base" });
+          })
+          .slice(0, 14);
+
+        const sel = pages[selectedCmdkIndex];
+        if (sel){
+          window.open(sel.path, "_blank", "noopener,noreferrer");
+          toast("Mở trang", sel.path, "ok");
+          closeCmdk();
+        }
+      } else if (e.key === "*"){
+        // just a fun easter egg: * toggles particles
+        toggleParticles();
+      }
+    });
+
+    // =========================
+    // Toast
+    // =========================
+    function toast(title, msg, type="ok"){
+      const item = document.createElement("div");
+      item.className = "toastItem";
+      const dotColor = type==="ok" ? "rgba(124,252,178,.9)" : type==="warn" ? "rgba(255,184,107,.9)" : "rgba(255,107,107,.9)";
+      item.innerHTML = `
+        <div class="toastDot" style="background:${dotColor}; box-shadow:0 0 18px ${dotColor.replace(',.9',',.18')}"></div>
+        <div class="toastBody">
+          <b>${esc(title)}</b>
+          <p>${esc(msg)}</p>
+        </div>
+        <button class="toastX">Đóng</button>
+      `;
+      item.querySelector(".toastX").addEventListener("click", ()=> item.remove());
+      toastRoot.appendChild(item);
+      setTimeout(()=> item.remove(), 4200);
+    }
+    toastBtn.addEventListener("click", ()=> toast("Hiệu ứng OK ✨", "Toast + particles + tilt đang hoạt động", "ok"));
+
+    // =========================
+    // Particles (lightweight)
+    // =========================
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let P_ON = true;
+    function resizeCanvas(){
+      canvas.width = Math.floor(window.innerWidth * devicePixelRatio);
+      canvas.height = Math.floor(window.innerHeight * devicePixelRatio);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    const particles = [];
+    function initParticles(){
+      particles.length = 0;
+      const count = Math.min(80, Math.floor((window.innerWidth * window.innerHeight) / 22000));
+      for (let i=0;i<count;i++){
+        particles.push({
+          x: Math.random()*window.innerWidth,
+          y: Math.random()*window.innerHeight,
+          r: 1 + Math.random()*2.2,
+          vx: (-0.6 + Math.random()*1.2) * 0.45,
+          vy: (-0.6 + Math.random()*1.2) * 0.45,
+          a: 0.20 + Math.random()*0.35
+        });
+      }
+    }
+    initParticles();
+
+    let mx = window.innerWidth/2, my = window.innerHeight/2;
+    window.addEventListener("mousemove", (e)=>{ mx = e.clientX; my = e.clientY; });
+
+    function drawParticles(){
+      if (!P_ON){
+        ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+        requestAnimationFrame(drawParticles);
+        return;
+      }
+
+      ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+
+      // lines
+      for (let i=0;i<particles.length;i++){
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -20) p.x = window.innerWidth + 20;
+        if (p.x > window.innerWidth + 20) p.x = -20;
+        if (p.y < -20) p.y = window.innerHeight + 20;
+        if (p.y > window.innerHeight + 20) p.y = -20;
+
+        // slight mouse gravity
+        const dx = mx - p.x, dy = my - p.y;
+        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        if (dist < 180){
+          p.x -= (dx/dist) * 0.15;
+          p.y -= (dy/dist) * 0.15;
+        }
+
+        ctx.globalAlpha = p.a;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = "rgba(238,242,255,.85)";
+        ctx.fill();
+
+        for (let j=i+1;j<particles.length;j++){
+          const q = particles[j];
+          const ddx = q.x - p.x, ddy = q.y - p.y;
+          const d2 = ddx*ddx + ddy*ddy;
+          if (d2 < 140*140){
+            const alpha = 0.10 * (1 - d2/(140*140));
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = "rgba(106,168,255,.85)";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(drawParticles);
+    }
+    requestAnimationFrame(drawParticles);
+
+    function toggleParticles(){
+      P_ON = !P_ON;
+      miniFocus.textContent = P_ON ? "On" : "Off";
+      toast("Particles", P_ON ? "Bật hiệu ứng nền" : "Tắt hiệu ứng nền", "ok");
+    }
+    // double click logo toggles particles
+    document.querySelector(".logo")?.addEventListener("dblclick", toggleParticles);
+
+    // =========================
+    // Video fallback: if video fails, reduce opacity
+    // =========================
+    const bgVid = document.querySelector(".bg-video video");
+    if (bgVid){
+      bgVid.addEventListener("error", ()=>{
+        document.querySelector(".bg-video").style.opacity = ".10";
+      });
+    }
+
+    // =========================
+    // CmdK wiring + close on ESC globally already handled
+    // =========================
+    cmdkBtn.addEventListener("click", openCmdk);
+    document.getElementById("cmdk").addEventListener("keydown", (e)=>{
+      if (e.key === "Escape") closeCmdk();
+    });
+
+    // =========================
+    // Init
+    // =========================
+    // menu start
     loadPages();
+
+    // small fun: auto toast once
+    setTimeout(()=> toast("Tip", "Double-click logo để bật/tắt particles.", "ok"), 900);
   </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>doublef.io.vn — Hyper Dashboard</title>
 
   <style>
@@ -106,7 +106,7 @@
       transform: translate3d(0,0,0);
       animation: floaty 18s ease-in-out infinite alternate;
     }
-    @keyframes floaty{
+    @@keyframes floaty{
       from{ transform: translate(-1.5%, -1%) scale(1.02); }
       to  { transform: translate(1.5%, 1%) scale(1.06); }
     }
@@ -125,6 +125,7 @@
       position: relative;
       z-index: 3;
       min-height: 100vh;
+      min-height: 100dvh;
       display:grid;
       grid-template-rows: var(--headerH) 1fr auto;
       grid-template-columns: var(--sidebarW) 1fr;
@@ -144,7 +145,7 @@
       align-items:center;
       justify-content: space-between;
       gap: 12px;
-      padding: 10px 14px;
+      padding: calc(10px + env(safe-area-inset-top)) 14px 10px 14px;
       border-bottom: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.26);
       backdrop-filter: blur(12px);
@@ -177,7 +178,7 @@
       transform: rotate(25deg);
       animation: shine 2.9s ease-in-out infinite;
     }
-    @keyframes shine{
+    @@keyframes shine{
       0%{ transform: translateX(-35%) rotate(25deg); opacity: 0; }
       28%{ opacity: .65; }
       100%{ transform: translateX(35%) rotate(25deg); opacity: 0; }
@@ -238,6 +239,7 @@
       box-shadow: var(--shadow2);
       position: relative;
       overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:hover{
       transform: translateY(-1px);
@@ -253,9 +255,8 @@
       background: rgba(106,168,255,.22);
       box-shadow: 0 14px 36px rgba(106,168,255,.10);
     }
-    .btn.ghost{
-      background: rgba(255,255,255,.05);
-    }
+    .btn.ghost{ background: rgba(255,255,255,.05); }
+
     .status{
       font-size: 13px;
       color: var(--muted);
@@ -272,11 +273,13 @@
       top: var(--headerH);
       align-self: start;
       height: calc(100vh - var(--headerH));
+      height: calc(100dvh - var(--headerH));
       padding: 12px;
       border-right: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.16);
       backdrop-filter: blur(12px);
       overflow:auto;
+      overscroll-behavior: contain;
     }
 
     .sideCard{
@@ -359,6 +362,7 @@
       user-select:none;
       transition: transform .10s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
       box-shadow: var(--shadow2);
+      -webkit-tap-highlight-color: transparent;
     }
     .chip:hover{
       transform: translateY(-1px);
@@ -512,6 +516,7 @@
     main{
       grid-area: main;
       padding: 16px;
+      min-width: 0;
     }
     .wrapMain{
       max-width: var(--max);
@@ -548,6 +553,7 @@
       grid-template-columns: 1.35fr .95fr;
       gap: 14px;
       align-items: stretch;
+      min-width: 0;
     }
     .heroLeft{
       min-width:0;
@@ -619,6 +625,7 @@
       position: relative;
       overflow:hidden;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      min-width: 0;
     }
     .miniCard:hover{
       transform: translateY(-2px);
@@ -630,6 +637,7 @@
       align-items:center;
       justify-content: space-between;
       gap: 10px;
+      min-width: 0;
     }
     .miniTop b{ font-size: 13px; letter-spacing:.2px; }
     .miniTop span{ font-size: 12px; color: var(--muted2); }
@@ -668,6 +676,7 @@
       grid-template-columns: 1.1fr .9fr;
       gap: 14px;
       align-items:start;
+      min-width: 0;
     }
     .panel{
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
@@ -676,6 +685,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
+      min-width: 0;
     }
     .panel::before{
       content:"";
@@ -693,6 +703,7 @@
       display:flex;
       flex-direction: column;
       gap: 12px;
+      min-width: 0;
     }
 
     .panelHead{
@@ -701,6 +712,7 @@
       gap: 12px;
       flex-wrap: wrap;
       align-items: center;
+      min-width: 0;
     }
     .panelHead .left{
       min-width:0;
@@ -721,6 +733,7 @@
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
+      min-width: 0;
     }
     .tile{
       grid-column: span 6;
@@ -738,6 +751,8 @@
       overflow: hidden;
       transform-style: preserve-3d;
       transition: transform .14s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+      min-width: 0;
+      -webkit-tap-highlight-color: transparent;
     }
     .tile::before{
       content:"";
@@ -775,6 +790,7 @@
       position: relative;
       z-index: 2;
       min-width: 0;
+      flex: 1 1 auto;
     }
     .tTitle{
       font-size: 16px;
@@ -802,6 +818,7 @@
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       color: rgba(238,242,255,.84);
+      flex: 0 0 auto;
     }
 
     /* ACTIVITY FEED */
@@ -820,6 +837,7 @@
       background: rgba(0,0,0,.14);
       box-shadow: var(--shadow2);
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      min-width: 0;
     }
     .event:hover{
       transform: translateY(-1px);
@@ -852,7 +870,7 @@
     /* ========= FOOTER ========= */
     footer{
       grid-area: footer;
-      padding: 14px 16px;
+      padding: 14px 16px calc(14px + env(safe-area-inset-bottom)) 16px;
       border-top: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.18);
       backdrop-filter: blur(12px);
@@ -901,6 +919,7 @@
         left: 0;
         width: min(88vw, 340px);
         height: calc(100vh - var(--headerH));
+        height: calc(100dvh - var(--headerH));
         transform: translateX(-105%);
         transition: transform .18s ease;
         z-index: 35;
@@ -911,6 +930,25 @@
       .hamburger{ display:inline-flex; }
       main{ padding: 14px; }
       .h-title span{ max-width: 54vw; }
+    }
+
+    /* “diet mode” header cho màn rất nhỏ (đỡ tràn) */
+    @@media (max-width: 520px){
+      :root{ --headerH: 64px; }
+      .kbdHint{ display:none; }
+      #openJsonBtn{ display:none; }
+      #status{ display:none; }
+
+      .btn{ padding: 9px 10px; font-size: 13px; border-radius: 12px; }
+      #reloadBtn{ font-size: 0; padding: 9px 10px; }
+      #reloadBtn::before{ content:"🔄"; font-size: 14px; }
+      #cmdkBtn{ font-size: 0; padding: 9px 10px; }
+      #cmdkBtn::before{ content:"⌘K"; font-size: 13px; }
+
+      .ring{ width: 40px; height: 40px; }
+      .ring::after{ inset: 5px; }
+      .time{ font-size: 22px; }
+      .statName{ max-width: 150px; }
     }
 
     /* ========= COMMAND PALETTE ========= */
@@ -968,6 +1006,7 @@
       background: rgba(255,255,255,.04);
       cursor:pointer;
       transition: transform .10s ease, border-color .12s ease, background .12s ease;
+      -webkit-tap-highlight-color: transparent;
     }
     .cmdkItem:hover{
       transform: translateY(-1px);
@@ -1523,7 +1562,6 @@
     // Stats + Sparklines
     // =========================
     function genSparkPath(seed=1){
-      // deterministic-ish tiny sparkline
       let x = 0;
       let y = 12;
       let d = `M 0 ${y}`;
@@ -1591,7 +1629,6 @@
         return true;
       });
 
-      // Favorites first (nice touch)
       pages.sort((a,b)=>{
         const fa = isFav(a.path) ? 1 : 0;
         const fb = isFav(b.path) ? 1 : 0;
@@ -1643,14 +1680,12 @@
           </div>
         `;
 
-        // prevent star button from opening link
         a.querySelector('button[data-fav]')?.addEventListener("click", (e)=>{
           e.preventDefault();
           e.stopPropagation();
           toggleFav(path);
         });
 
-        // tilt effect (lightweight)
         a.addEventListener("mousemove", (e)=>{
           const r = a.getBoundingClientRect();
           const dx = (e.clientX - r.left) / r.width - 0.5;
@@ -1659,9 +1694,7 @@
           const ry = (dx * 8).toFixed(2);
           a.style.transform = `translateY(-2px) rotateX(${rx}deg) rotateY(${ry}deg)`;
         });
-        a.addEventListener("mouseleave", ()=>{
-          a.style.transform = "";
-        });
+        a.addEventListener("mouseleave", ()=>{ a.style.transform = ""; });
 
         menuGrid.appendChild(a);
       }
@@ -1834,11 +1867,7 @@
       const dots = ["rgba(106,168,255,.9)","rgba(139,92,246,.9)","rgba(124,252,178,.9)","rgba(255,184,107,.9)"];
       const events = Array.from({length: 6}).map((_,i)=>{
         const s = randPick(samples);
-        return {
-          ...s,
-          time: (i===0 ? "just now" : `${nowTag()}`),
-          dot: dots[i % dots.length]
-        }
+        return { ...s, time: (i===0 ? "just now" : `${nowTag()}`), dot: dots[i % dots.length] }
       });
 
       feedEl.innerHTML = "";
@@ -1998,7 +2027,6 @@
         items[Math.max(selectedCmdkIndex, 0)]?.scrollIntoView({ block:"nearest" });
       } else if (e.key === "Enter"){
         e.preventDefault();
-        // open selected
         const q = normalize(cmdkInput.value).trim();
         const pages = allPages
           .filter(p => p && p.path && normalize(p.path) !== "index.html")
@@ -2018,7 +2046,6 @@
           closeCmdk();
         }
       } else if (e.key === "*"){
-        // just a fun easter egg: * toggles particles
         toggleParticles();
       }
     });
@@ -2050,6 +2077,7 @@
     const canvas = document.getElementById("particles");
     const ctx = canvas.getContext("2d");
     let P_ON = true;
+
     function resizeCanvas(){
       canvas.width = Math.floor(window.innerWidth * devicePixelRatio);
       canvas.height = Math.floor(window.innerHeight * devicePixelRatio);
@@ -2089,7 +2117,6 @@
 
       ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
 
-      // lines
       for (let i=0;i<particles.length;i++){
         const p = particles[i];
         p.x += p.vx;
@@ -2100,7 +2127,6 @@
         if (p.y < -20) p.y = window.innerHeight + 20;
         if (p.y > window.innerHeight + 20) p.y = -20;
 
-        // slight mouse gravity
         const dx = mx - p.x, dy = my - p.y;
         const dist = Math.sqrt(dx*dx + dy*dy) || 1;
         if (dist < 180){
@@ -2141,11 +2167,10 @@
       miniFocus.textContent = P_ON ? "On" : "Off";
       toast("Particles", P_ON ? "Bật hiệu ứng nền" : "Tắt hiệu ứng nền", "ok");
     }
-    // double click logo toggles particles
     document.querySelector(".logo")?.addEventListener("dblclick", toggleParticles);
 
     // =========================
-    // Video fallback: if video fails, reduce opacity
+    // Video fallback
     // =========================
     const bgVid = document.querySelector(".bg-video video");
     if (bgVid){
@@ -2155,20 +2180,9 @@
     }
 
     // =========================
-    // CmdK wiring + close on ESC globally already handled
-    // =========================
-    cmdkBtn.addEventListener("click", openCmdk);
-    document.getElementById("cmdk").addEventListener("keydown", (e)=>{
-      if (e.key === "Escape") closeCmdk();
-    });
-
-    // =========================
     // Init
     // =========================
-    // menu start
     loadPages();
-
-    // small fun: auto toast once
     setTimeout(()=> toast("Tip", "Double-click logo để bật/tắt particles.", "ok"), 900);
   </script>
 </body>

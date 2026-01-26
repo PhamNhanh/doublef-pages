@@ -4,303 +4,53 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bảng tính tiền thạch cao (nhiều nhóm - xuất bảng thanh toán)</title>
-
   <style>
-    /* ============================
-       LIGHT PRO UI (ONLY UI)
-       - Giữ nguyên id/class/JS
-       - Sáng hơn + nhiều hiệu ứng + card đẹp hơn
-       ============================ */
-
     :root{
-      /* Light theme */
-      --bg0:#f6f8ff;
-      --bg1:#eef2ff;
-
-      --text:#0f172a;
-      --muted: rgba(15,23,42,.62);
-
-      --good:#16a34a;
-      --bad:#ef4444;
-      --warn:#f59e0b;
-
-      --line: rgba(15,23,42,.10);
-
-      --card: rgba(255,255,255,.78);
-      --card2: rgba(255,255,255,.62);
-
-      --shadow: 0 18px 55px rgba(15,23,42,.12);
-      --shadow2: 0 10px 28px rgba(15,23,42,.10);
-
-      --a:#2563eb;   /* blue */
-      --b:#7c3aed;   /* violet */
-      --c:#10b981;   /* green */
-
-      --r: 18px;
-      --r2: 22px;
-
-      --max: 1200px;
-      --headerH: 76px;
-      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --bg:#0b1020;--text:#e9edff;--muted:#aab3d6;--good:#3ddc97;--bad:#ff6b6b;--warn:#ffd166;
+      --line:rgba(255,255,255,.10);
     }
-
     *{box-sizing:border-box}
-    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header,main{max-width:1200px;margin:0 auto;padding:16px}
+    h1{margin:0 0 6px;font-size:20px}
+    .sub{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
 
-    body{
-      margin:0;
-      font-family: var(--font);
-      color: var(--text);
-      overflow-x:hidden;
-
-      background:
-        radial-gradient(900px 520px at 12% 18%, rgba(37,99,235,.16), transparent 62%),
-        radial-gradient(900px 520px at 88% 22%, rgba(124,58,237,.14), transparent 62%),
-        radial-gradient(900px 520px at 50% 95%, rgba(16,185,129,.10), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-    }
-
-    /* ===== Animated background layers ===== */
-    .bg-blobs{
-      position: fixed; inset: -18vh -10vw;
-      pointer-events:none;
-      z-index:0;
-      background:
-        radial-gradient(closest-side at 18% 20%, rgba(37,99,235,.14), transparent 62%),
-        radial-gradient(closest-side at 82% 26%, rgba(124,58,237,.12), transparent 62%),
-        radial-gradient(closest-side at 55% 80%, rgba(16,185,129,.10), transparent 62%);
-      filter: blur(28px);
-      opacity: .95;
-      animation: floaty 16s ease-in-out infinite alternate;
-    }
-    @@keyframes floaty{
-      from{ transform: translate(-1.2%,-1.0%) scale(1.02); }
-      to  { transform: translate( 1.2%, 1.0%) scale(1.06); }
-    }
-
-    .bg-grid{
-      position: fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      opacity:.18;
-      background-image:
-        linear-gradient(to right, rgba(15,23,42,.08) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(15,23,42,.08) 1px, transparent 1px);
-      background-size: 44px 44px;
-      mask-image: radial-gradient(closest-side at 50% 40%, rgba(0,0,0,1), transparent 72%);
-    }
-
-    .bg-noise{
-      position: fixed; inset:0;
-      pointer-events:none;
-      z-index:0;
-      opacity:.06;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-      mix-blend-mode: multiply;
-    }
-
-    /* ===== Layout ===== */
-    header, main{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ===== Header (sticky + glass) ===== */
-    header{
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      padding-top: 12px;
-      padding-bottom: 12px;
-
-      border-bottom: 1px solid rgba(15,23,42,.08);
-      background: rgba(255,255,255,.60);
-      backdrop-filter: blur(14px);
-    }
-
-    /* Top hero inside header */
-    header h1{
-      margin:0 0 6px;
-      font-size: 20px;
-      letter-spacing:.2px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    header h1::before{
-      content:"";
-      width: 14px; height: 14px;
-      border-radius: 99px;
-      background: linear-gradient(135deg, rgba(37,99,235,.95), rgba(124,58,237,.95));
-      box-shadow: 0 0 18px rgba(37,99,235,.22);
-      flex: 0 0 auto;
-    }
-
-    .sub{
-      margin:0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .sub b{ color: var(--text); }
-
-    /* ===== Grid ===== */
     .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:12px}
-    @@media(max-width:980px){.grid{grid-template-columns:1fr}}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
 
-    /* ===== Cards (glass + glow border) ===== */
-    .card{
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: var(--r2);
-      overflow: hidden;
-      background: var(--card);
-      margin-top: 12px;
-      box-shadow: var(--shadow);
-      position: relative;
-      transform: translateZ(0);
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(900px 220px at 20% 0%, rgba(37,99,235,.10), transparent 62%),
-        radial-gradient(900px 220px at 80% 0%, rgba(124,58,237,.08), transparent 66%);
-      filter: blur(18px);
-      opacity: .75;
-      pointer-events:none;
-    }
-    .card > *{ position: relative; z-index: 1; }
+    .card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);margin-top:12px}
+    .hd{padding:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .title{font-weight:800;font-size:14px}
 
-    .hd{
-      padding: 12px;
-      border-bottom: 1px solid rgba(15,23,42,.10);
-      display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-      background: rgba(255,255,255,.55);
-      backdrop-filter: blur(10px);
-    }
-    .title{font-weight:900;font-size:14px;letter-spacing:.2px}
-
-    /* ===== Controls ===== */
     button,input,select,textarea{font:inherit;color:inherit}
-
     button{
-      border:1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.75);
-      padding: 9px 12px;
-      border-radius: 14px;
-      cursor:pointer;
-      box-shadow: var(--shadow2);
-      transition: transform .10s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
+      border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);
+      padding:8px 10px;border-radius:10px;cursor:pointer
     }
-    button:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.92);
-      border-color: rgba(37,99,235,.22);
-      box-shadow: 0 16px 40px rgba(15,23,42,.12);
-    }
-    button:active{ transform: translateY(0px) scale(.99); }
-
-    .primary{
-      border-color: rgba(37,99,235,.22);
-      background: rgba(37,99,235,.10);
-    }
-    .primary:hover{ background: rgba(37,99,235,.14); }
-
-    .danger{
-      border-color: rgba(239,68,68,.22);
-      background: rgba(239,68,68,.10);
-    }
-    .danger:hover{ background: rgba(239,68,68,.14); }
+    button:hover{background:rgba(255,255,255,.10)}
+    .primary{border-color:rgba(61,220,151,.45);background:rgba(61,220,151,.12)}
+    .danger{border-color:rgba(255,107,107,.45);background:rgba(255,107,107,.10)}
 
     .field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
     .field input,.field textarea,.cell{
-      width:100%;
-      border:1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.78);
-      padding: 10px 12px;
-      border-radius: 14px;
-      outline:none;
-      box-shadow: var(--shadow2);
-      transition: border-color .12s ease, background .12s ease, box-shadow .12s ease;
-    }
-    .field input:focus,.field textarea:focus,.cell:focus{
-      border-color: rgba(37,99,235,.28);
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 18px 55px rgba(37,99,235,.10);
+      width:100%;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);padding:9px;border-radius:10px;outline:none
     }
     .field textarea{min-height:84px;resize:vertical}
 
-    /* ===== Pills / Tags ===== */
-    .pill{
-      display:inline-flex;gap:8px;align-items:center;
-      padding: 8px 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(15,23,42,.10);
-      background: rgba(255,255,255,.60);
-      color: var(--muted);
-      font-size: 13px;
-      box-shadow: var(--shadow2);
-    }
-    .pill b{color: var(--text); font-weight:900}
-    .note{color:var(--muted);font-size:12px;line-height:1.55;margin-top:10px}
-    .tag{
-      display:inline-block;
-      padding: 3px 10px;
-      border-radius:999px;
-      font-size:12px;
-      border:1px solid rgba(15,23,42,.10);
-      color: rgba(15,23,42,.70);
-      background: rgba(255,255,255,.65);
-      box-shadow: var(--shadow2);
-    }
-    .hr{height:1px;background:rgba(15,23,42,.10);margin:10px 0}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.20);color:var(--muted);font-size:13px}
+    .pill b{color:var(--text)}
+    .note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:10px}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(255,255,255,.10);color:var(--muted)}
+    .hr{height:1px;background:rgba(255,255,255,.10);margin:10px 0}
 
-    /* ===== Group UI ===== */
-    .group{
-      border:1px solid rgba(15,23,42,.10);
-      border-radius: var(--r2);
-      overflow:hidden;
-      margin-bottom:10px;
-      background: rgba(255,255,255,.55);
-      box-shadow: var(--shadow2);
-    }
-    .group-hd{
-      padding:10px;
-      border-bottom:1px solid rgba(15,23,42,.10);
-      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      background:
-        radial-gradient(700px 220px at 10% 10%, rgba(37,99,235,.08), transparent 60%),
-        radial-gradient(700px 220px at 90% 30%, rgba(124,58,237,.07), transparent 65%),
-        rgba(255,255,255,.62);
-      backdrop-filter: blur(10px);
-    }
+    .group{border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden;margin-bottom:10px}
+    .group-hd{padding:10px;border-bottom:1px solid rgba(255,255,255,.10);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.03)}
     .group-hd .left,.group-hd .right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
-    /* ===== Table ===== */
     table{width:100%;border-collapse:collapse}
-    th,td{
-      border-top:1px solid rgba(15,23,42,.08);
-      padding: 10px 8px;
-      font-size:13px;
-      vertical-align:middle;
-    }
-    th{
-      color: rgba(15,23,42,.70);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.6px;
-      background: rgba(255,255,255,.72);
-      border-top:none;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      backdrop-filter: blur(10px);
-    }
-    tbody tr:hover td{ background: rgba(37,99,235,.06); }
+    th,td{border-top:1px solid rgba(255,255,255,.08);padding:8px;font-size:13px;vertical-align:middle}
+    th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px;background:rgba(255,255,255,.02)}
     .num{text-align:right}
     .center{text-align:center}
     .mini{width:180px}
@@ -308,58 +58,45 @@
     .mini3{width:120px}
     .ok{color:var(--good)} .bad{color:var(--bad)}
 
-    /* ===== Project toolbar: làm nổi bật hơn ===== */
-    .project-toolbar .card{
-      margin-top: 12px !important;
-    }
-
-    /* ===== Invoice Modal (giữ chức năng) ===== */
+    /* ===== Invoice Modal ===== */
     .modal{
-      position:fixed; inset:0;
-      background: rgba(15,23,42,.35);
+      position:fixed; inset:0; background:rgba(0,0,0,.55);
       display:none; align-items:center; justify-content:center; padding:18px;
       z-index: 9999;
-      backdrop-filter: blur(10px);
     }
     .modal.show{display:flex}
 
+    /* modal-card dùng flex column + giới hạn chiều cao theo viewport */
     .modal-card{
       width:min(980px, 100%);
       height:min(92vh, 980px);
       background:#ffffff;
       color:#111;
-      border-radius: 18px;
+      border-radius:14px;
       overflow:hidden;
-      box-shadow: 0 22px 80px rgba(15,23,42,.30);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
       border:1px solid rgba(0,0,0,.08);
+
       display:flex;
       flex-direction:column;
     }
 
+    /* thanh nút sticky ở trên */
     .modal-hd{
       position:sticky;
       top:0;
       z-index:5;
+
       display:flex; justify-content:space-between; align-items:center; gap:10px;
-      padding:10px 12px;
-      background: rgba(245,246,248,.95);
-      border-bottom:1px solid rgba(0,0,0,.10);
+      padding:10px 12px; background:#f5f6f8; border-bottom:1px solid rgba(0,0,0,.10);
       color:#111;
-      backdrop-filter: blur(10px);
     }
     .modal-hd .left{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
     .modal-hd .right{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-
-    .btn-light{
-      border:1px solid rgba(0,0,0,.15);
-      background:#fff;
-      color:#111;
-      border-radius: 12px;
-      padding: 9px 12px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
-    }
+    .btn-light{border:1px solid rgba(0,0,0,.15); background:#fff; color:#111}
     .btn-light:hover{background:#f1f1f1}
 
+    /* phần nội dung cuộn riêng */
     .invoice-wrap{
       padding:18px 18px 14px;
       overflow:auto;
@@ -367,10 +104,12 @@
       flex:1;
     }
 
+    /* thanh nút sticky ở dưới cho mobile */
     .modal-actions{
       position:sticky;
       bottom:0;
       z-index:6;
+
       display:none;
       gap:8px;
       padding:10px 12px;
@@ -379,13 +118,14 @@
       backdrop-filter: blur(8px);
     }
     .modal-actions button{flex:1; padding:10px 12px}
-    @@media(max-width:720px){
+    @media(max-width:720px){
       .modal-actions{display:flex}
       .modal-hd .right{display:none}
     }
 
+    /* Chỉ hiện nút "Copy (điện thoại)" trên mobile */
     #copyMobileBtn, #copyMobileBtn2 { display:none; }
-    @@media(max-width:720px){
+    @media(max-width:720px){
       #copyMobileBtn, #copyMobileBtn2 { display:inline-block; }
     }
 
@@ -406,7 +146,7 @@
       border:1px solid rgba(0,0,0,.12); border-radius:10px; padding:10px;
       font-size:12px; margin:12px 0;
     }
-    @@media(max-width:720px){ .inv-box{grid-template-columns:1fr} }
+    @media(max-width:720px){ .inv-box{grid-template-columns:1fr} }
     .inv-box b{color:#111}
     .inv-table{
       width:100%; border-collapse:collapse; font-size:12px;
@@ -435,7 +175,7 @@
     .inv-total .grand{background:#f5f6f8}
     .print-note{font-size:11px;color:#666;margin-top:8px;text-align:center}
 
-    /* ÉP HÓA ĐƠN ĐEN RÕ, SỐ ÂM ĐỎ (GIỮ NGUYÊN) */
+    /* ÉP HÓA ĐƠN ĐEN RÕ, SỐ ÂM ĐỎ */
     #invoiceContent,
     #invoiceContent *{
       color:#000 !important;
@@ -452,7 +192,7 @@
     }
 
     /* Print invoice only */
-    @@media print{
+    @media print{
       body{background:#fff}
       header, main, .modal-hd, .project-toolbar, .modal-actions{display:none !important}
       .modal{position:static; inset:auto; background:transparent; padding:0; display:block !important}
@@ -460,21 +200,10 @@
       .invoice-wrap{padding:0; overflow:visible}
       .print-note{display:none}
     }
-
-    /* Reduce motion */
-    @@media (prefers-reduced-motion: reduce){
-      .bg-blobs{ animation:none !important; }
-      button{ transition:none !important; }
-    }
   </style>
 </head>
 
 <body>
-  <!-- Background layers (UI only) -->
-  <div class="bg-blobs" aria-hidden="true"></div>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-noise" aria-hidden="true"></div>
-
 <header>
   <h1>Bảng tính tiền thạch cao</h1>
   <p class="sub">
@@ -486,7 +215,7 @@
 </header>
 
 <!-- ===== TOOLBAR: MỞ/XUẤT FILE DỰ ÁN ===== -->
-<div class="project-toolbar" style="max-width:1200px;margin:0 auto;padding:0 16px 10px; position:relative; z-index:1;">
+<div class="project-toolbar" style="max-width:1200px;margin:0 auto;padding:0 16px 10px">
   <div class="card" style="margin-top:0">
     <div class="hd">
       <div class="title">Thanh công cụ dự án</div>
@@ -594,12 +323,12 @@
         </div>
         <div class="hr"></div>
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
-          <div style="font-weight:900">Còn lại phải thanh toán</div>
+          <div style="font-weight:800">Còn lại phải thanh toán</div>
           <div style="font-weight:900;font-size:18px" id="sumRemain">0</div>
         </div>
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
           <div style="color:var(--muted);font-size:13px">Trạng thái</div>
-          <div style="font-weight:900" id="status">—</div>
+          <div style="font-weight:800" id="status">—</div>
         </div>
       </div>
 
@@ -783,7 +512,7 @@
           </div>
         </div>
 
-        <div style="padding:10px;border-bottom:1px solid rgba(15,23,42,.08)">
+        <div style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">
           <div class="field" style="margin:0">
             <label>Ghi chú nhóm (hiển thị trên bảng thanh toán)</label>
             <input class="cell" data-gi="${gi}" data-gk="groupNote"
@@ -1332,39 +1061,75 @@
     lockBodyScroll(false);
   }
 
-  async function copyInvoiceAsImage(){
-    const target = document.getElementById('invoiceContent');
-    if (!target) return alert('Không tìm thấy nội dung bảng thanh toán.');
+  // ==============================
+  // ✅ FIX COPY FULL: chụp FULL chiều dài invoice (không bị cắt)
+  // ==============================
+  async function renderInvoiceFullToCanvas(scale){
+    const src = document.getElementById('invoiceContent');
+    if (!src) throw new Error('Không tìm thấy nội dung bảng thanh toán.');
 
-    const scale = Math.min(2.5, (window.devicePixelRatio || 1) * 2);
+    // Sân khấu offscreen
+    const stage = document.createElement('div');
+    stage.style.position = 'fixed';
+    stage.style.left = '-100000px';
+    stage.style.top = '0';
+    stage.style.background = '#ffffff';
+    stage.style.padding = '18px';
+    stage.style.border = '0';
+    stage.style.boxShadow = 'none';
+    stage.style.width = (src.clientWidth || 900) + 'px';
+
+    const clone = src.cloneNode(true);
+    clone.style.height = 'auto';
+    clone.style.maxHeight = 'none';
+    clone.style.overflow = 'visible';
+
+    stage.appendChild(clone);
+    document.body.appendChild(stage);
+
+    // Chờ layout ổn định
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    const canvas = await html2canvas(stage, {
+      backgroundColor: '#ffffff',
+      scale,
+      useCORS: true,
+      windowWidth: stage.scrollWidth,
+      windowHeight: stage.scrollHeight,
+      scrollX: 0,
+      scrollY: 0
+    });
+
+    stage.remove();
+    return canvas;
+  }
+
+  async function copyInvoiceAsImage(){
+    const scale = Math.min(2.0, (window.devicePixelRatio || 1) * 1.6);
 
     try{
       if (!window.html2canvas) throw new Error('Chưa tải được html2canvas (CDN).');
 
-      const canvas = await html2canvas(target, {
-        backgroundColor: '#ffffff',
-        scale,
-        useCORS: true
-      });
-
+      const canvas = await renderInvoiceFullToCanvas(scale);
       const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 1));
       if (!blob) throw new Error('Không tạo được ảnh.');
 
       if (navigator.clipboard && window.ClipboardItem) {
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        alert('Đã copy ảnh bảng thanh toán (PNG) vào clipboard.');
+        alert('Đã copy ảnh bảng thanh toán (PNG) FULL chiều dài vào clipboard.');
         return;
       }
 
+      // Fallback: tải về
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `bang-thanh-toan-${Date.now()}.png`;
+      a.download = `bang-thanh-toan-full-${Date.now()}.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-      alert('Thiết bị không hỗ trợ copy ảnh trực tiếp. Mình đã tải ảnh PNG về máy.');
+      alert('Thiết bị không hỗ trợ copy ảnh trực tiếp. Mình đã tải ảnh PNG FULL về máy.');
     }catch(err){
       console.error(err);
       alert('Không copy được ảnh. Lưu ý: cần HTTPS và phải tải được thư viện CDN html2canvas.');
@@ -1372,39 +1137,28 @@
   }
 
   async function copyInvoiceForMobile(){
-    const target = document.getElementById('invoiceContent');
-    if (!target) return alert('Không tìm thấy nội dung bảng thanh toán.');
-
-    const scale = Math.min(2.5, (window.devicePixelRatio || 1) * 2);
+    const scale = Math.min(2.0, (window.devicePixelRatio || 1) * 1.6);
 
     try{
       if (!window.html2canvas) throw new Error('Chưa tải được html2canvas (CDN).');
 
-      const canvas = await html2canvas(target, {
-        backgroundColor: '#ffffff',
-        scale,
-        useCORS: true,
-        scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: document.documentElement.clientWidth,
-      });
-
+      const canvas = await renderInvoiceFullToCanvas(scale);
       const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 1));
       if (!blob) throw new Error('Không tạo được ảnh.');
 
-      // Mobile: ưu tiên Share trước
-      const file = new File([blob], `bang-thanh-toan-${Date.now()}.png`, { type: 'image/png' });
+      const file = new File([blob], `bang-thanh-toan-full-${Date.now()}.png`, { type: 'image/png' });
 
+      // Mobile: ưu tiên Share
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
-          title: 'Bảng thanh toán',
-          text: 'Ảnh bảng thanh toán',
+          title: 'Bảng thanh toán (FULL)',
+          text: 'Ảnh bảng thanh toán FULL chiều dài',
           files: [file],
         });
         return;
       }
 
-      // Fallback chắc chắn: mở ảnh ra tab mới để lưu
+      // Fallback: mở ảnh ra tab mới để lưu
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1414,7 +1168,7 @@
       a.click();
       a.remove();
 
-      alert('Đã mở ảnh ở tab mới. Bạn giữ ảnh và chọn “Lưu hình ảnh”.');
+      alert('Đã mở ảnh FULL ở tab mới. Bạn giữ ảnh và chọn “Lưu hình ảnh”.');
       setTimeout(() => URL.revokeObjectURL(url), 15000);
 
     }catch(err){

@@ -16,7 +16,7 @@
     .sub{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
 
     .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:12px}
-    @media(max-width:980px){.grid{grid-template-columns:1fr}}
+    @@media(max-width:980px){.grid{grid-template-columns:1fr}}
 
     .card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);margin-top:12px}
     .hd{padding:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -118,14 +118,14 @@
       backdrop-filter: blur(8px);
     }
     .modal-actions button{flex:1; padding:10px 12px}
-    @media(max-width:720px){
+    @@media(max-width:720px){
       .modal-actions{display:flex}
       .modal-hd .right{display:none}
     }
 
     /* Chỉ hiện nút "Copy (điện thoại)" trên mobile */
     #copyMobileBtn, #copyMobileBtn2 { display:none; }
-    @media(max-width:720px){
+    @@media(max-width:720px){
       #copyMobileBtn, #copyMobileBtn2 { display:inline-block; }
     }
 
@@ -146,7 +146,7 @@
       border:1px solid rgba(0,0,0,.12); border-radius:10px; padding:10px;
       font-size:12px; margin:12px 0;
     }
-    @media(max-width:720px){ .inv-box{grid-template-columns:1fr} }
+    @@media(max-width:720px){ .inv-box{grid-template-columns:1fr} }
     .inv-box b{color:#111}
     .inv-table{
       width:100%; border-collapse:collapse; font-size:12px;
@@ -192,7 +192,7 @@
     }
 
     /* Print invoice only */
-    @media print{
+    @@media print{
       body{background:#fff}
       header, main, .modal-hd, .project-toolbar, .modal-actions{display:none !important}
       .modal{position:static; inset:auto; background:transparent; padding:0; display:block !important}
@@ -1330,3 +1330,4 @@
 
 </body>
 </html>
+

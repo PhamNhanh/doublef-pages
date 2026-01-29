@@ -1500,42 +1500,56 @@
     // ✅ FULL RENDER: chụp FULL chiều dài invoice (không bị cắt)
     // ==============================
     async function renderInvoiceFullToCanvas(scale){
-      const src = document.getElementById('invoiceContent');
-      if (!src) throw new Error('Không tìm thấy nội dung bảng thanh toán.');
+  const src = document.getElementById('invoiceContent');
+  if (!src) throw new Error('Không tìm thấy nội dung bảng thanh toán.');
 
-      const stage = document.createElement('div');
-      stage.style.position = 'fixed';
-      stage.style.left = '-100000px';
-      stage.style.top = '0';
-      stage.style.background = '#ffffff';
-      stage.style.padding = '18px';
-      stage.style.border = '0';
-      stage.style.boxShadow = 'none';
-      stage.style.width = (src.clientWidth || 900) + 'px';
+  // Stage nằm ngoài màn hình để html2canvas chụp FULL chiều dài
+  const stage = document.createElement('div');
+  stage.style.position = 'fixed';
+  stage.style.left = '-100000px';
+  stage.style.top = '0';
+  stage.style.background = '#ffffff';
+  stage.style.padding = '24px';
+  stage.style.width = '980px';            // cố định đẹp như ảnh mẫu
+  stage.style.boxSizing = 'border-box';
 
-      const clone = src.cloneNode(true);
-      clone.style.height = 'auto';
-      clone.style.maxHeight = 'none';
-      clone.style.overflow = 'visible';
+  // Khung "tờ giấy" giống ảnh bạn gửi: bo góc + viền + shadow nhẹ
+  const frame = document.createElement('div');
+  frame.style.background = '#fff';
+  frame.style.border = '1px solid rgba(2,132,199,.25)';
+  frame.style.borderRadius = '18px';
+  frame.style.overflow = 'hidden';
+  frame.style.boxShadow = '0 18px 60px rgba(2,132,199,.12)';
+  frame.style.padding = '18px';
+  frame.style.boxSizing = 'border-box';
 
-      stage.appendChild(clone);
-      document.body.appendChild(stage);
+  // Clone invoice
+  const clone = src.cloneNode(true);
+  clone.style.height = 'auto';
+  clone.style.maxHeight = 'none';
+  clone.style.overflow = 'visible';
 
-      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  frame.appendChild(clone);
+  stage.appendChild(frame);
+  document.body.appendChild(stage);
 
-      const canvas = await html2canvas(stage, {
-        backgroundColor: '#ffffff',
-        scale,
-        useCORS: true,
-        windowWidth: stage.scrollWidth,
-        windowHeight: stage.scrollHeight,
-        scrollX: 0,
-        scrollY: 0
-      });
+  // chờ layout ổn định
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-      stage.remove();
-      return canvas;
-    }
+  const canvas = await html2canvas(stage, {
+    backgroundColor: '#ffffff',
+    scale,
+    useCORS: true,
+    scrollX: 0,
+    scrollY: 0,
+    windowWidth: stage.scrollWidth,
+    windowHeight: stage.scrollHeight,
+  });
+
+  stage.remove();
+  return canvas;
+}
+
 
     // ===== COPY to clipboard (PNG). If not supported -> download =====
     async function copyInvoiceAsImage(){
@@ -1851,3 +1865,4 @@
   </script>
 </body>
 </html>
+

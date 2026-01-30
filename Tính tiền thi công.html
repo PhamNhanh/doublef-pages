@@ -273,9 +273,8 @@
       opacity:0;
       border-top:0;
     }
-    .group.collapsed .group-hd{
-      border-bottom:0;
-    }
+    .group.collapsed .group-hd{border-bottom:0}
+
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size:11px;
@@ -323,7 +322,7 @@
       transition: width .25s ease;
     }
 
-    /* Invoice modal (match theme) */
+    /* Invoice modal */
     .modal{
       position:fixed; inset:0;
       background: rgba(2, 6, 23, .45);
@@ -379,6 +378,7 @@
       backdrop-filter: blur(8px);
     }
     .modal-actions button{flex:1; padding:10px 12px}
+
     @media(max-width:720px){
       .modal-actions{display:flex}
       .modal-hd .right{display:none}
@@ -388,7 +388,7 @@
       #copyMobileBtn, #copyMobileBtn2 { display:inline-block; }
     }
 
-    /* Invoice styles (kept readable) */
+    /* Invoice styles */
     .inv-top{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:8px;}
     .inv-meta{font-size:12px; color:#1f3850}
     .inv-title{text-align:center; margin:6px 0 10px; font-weight:900; font-size:18px; letter-spacing:.3px;}
@@ -430,7 +430,7 @@
     .inv-total .grand{background: rgba(2,132,199,.08)}
     .print-note{font-size:11px;color:#355a78;margin-top:8px;text-align:center}
 
-    /* Force invoice black text (as you had) + negative red */
+    /* Force invoice black text + negative red */
     #invoiceContent,
     #invoiceContent *{
       color:#000 !important;
@@ -502,6 +502,45 @@
       padding: 10px 12px;
       background: rgba(255,255,255,.92);
     }
+
+    /* ============================
+       ✅ NEW: FORCE MOBILE MODE
+       - Bật/tắt thủ công bằng class .force-mobile trên body
+       - Ép layout giống @media(max-width:720px)
+       ============================ */
+    body.force-mobile header,
+    body.force-mobile main{
+      padding: 12px;
+      max-width: 760px;
+    }
+    body.force-mobile .topbar{
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    body.force-mobile .brand{min-width: unset; width: 100%;}
+    body.force-mobile .chips{justify-content:flex-start}
+    body.force-mobile .grid{grid-template-columns: 1fr !important;}
+    body.force-mobile .project-toolbar{padding:0 12px 10px}
+    body.force-mobile .mini-actions{gap:6px}
+    body.force-mobile .hero .pic{width:92px; height:92px; border-radius:18px}
+    body.force-mobile .hero .txt{min-width: unset}
+    body.force-mobile .group-hd .left input.mini{width: 100%;}
+    body.force-mobile .mini, body.force-mobile .mini2, body.force-mobile .mini3{
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    body.force-mobile .group-hd .left,
+    body.force-mobile .group-hd .right{
+      width:100%;
+      justify-content: flex-start;
+    }
+    body.force-mobile table{font-size:12px}
+    body.force-mobile th, body.force-mobile td{padding:8px}
+    body.force-mobile .modal-actions{display:flex}
+    body.force-mobile .modal-hd .right{display:none}
+    body.force-mobile #copyMobileBtn, body.force-mobile #copyMobileBtn2 { display:inline-block; }
+    body.force-mobile .fab{right:12px; bottom:12px}
   </style>
 </head>
 
@@ -513,7 +552,6 @@
     <div class="topbar">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <!-- Inline “image” (SVG) -->
           <svg viewBox="0 0 24 24" fill="none" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2.8c4.9 0 8.9 4 8.9 8.9 0 4.9-4 8.9-8.9 8.9-4.9 0-8.9-4-8.9-8.9C3.1 6.8 7.1 2.8 12 2.8Z" fill="rgba(255,255,255,.95)"/>
             <path d="M7.3 13.2c1.4-3.3 7.9-3.3 9.3 0" stroke="#0284c7" stroke-width="1.8" stroke-linecap="round"/>
@@ -534,6 +572,11 @@
         <span class="chip">Mẹo: <span class="kbd">Esc</span> đóng hóa đơn</span>
         <span class="chip">Mẹo: <span class="kbd">Ctrl</span> + <span class="kbd">P</span> in/PDF</span>
         <span class="chip"><span class="tag">Chốt</span> Dùng Xuất/Mở file dự án để khôi phục chuẩn</span>
+
+        <!-- ✅ NEW: Toggle Mobile Mode -->
+        <button class="ghost" id="toggleMobileBtn" title="Bật/tắt giao diện điện thoại">
+          📱 Điện thoại: <b id="mobileModeState">OFF</b>
+        </button>
       </div>
     </div>
   </header>
@@ -609,10 +652,8 @@
         </div>
 
         <div class="bd">
-          <!-- Extra hero content + “image” -->
           <div class="hero">
             <div class="pic" aria-hidden="true">
-              <!-- Inline SVG illustration -->
               <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
@@ -701,7 +742,6 @@
               <div style="font-weight:900" id="status">—</div>
             </div>
 
-            <!-- UI-only progress bar -->
             <div>
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                 <div style="font-size:12px;color:var(--muted);font-weight:700">Thanh “cảm giác tiến độ”</div>
@@ -718,7 +758,6 @@
 
           <div class="hr"></div>
 
-          <!-- Extra text content: quick guide -->
           <div style="display:grid; gap:10px">
             <div class="pill" style="justify-content:space-between">
               <span><b>Chức năng phụ</b> (UI) đã thêm:</span>
@@ -754,7 +793,6 @@
 
       <div class="invoice-wrap" id="invoiceContent"></div>
 
-      <!-- Thanh nút luôn bấm được trên điện thoại -->
       <div class="modal-actions">
         <button class="btn-light" id="copyImgBtn2">Copy ảnh (FULL)</button>
         <button class="btn-light" id="downloadImgBtn2">Tải PNG</button>
@@ -774,13 +812,15 @@
   <!-- Floating actions -->
   <div class="fab" aria-hidden="false">
     <button class="ghost" id="btnTop" title="Lên đầu trang">↑</button>
+    <!-- ✅ NEW: toggle mobile mode from floating buttons -->
+    <button class="ghost" id="toggleMobileFab" title="Bật/tắt giao diện điện thoại">📱</button>
   </div>
 
-  <!-- html2canvas CDN -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
     const STORAGE_KEY = 'thachcao_payment_full_v13_filename_rule';
+    const MOBILE_FORCE_KEY = 'tc_force_mobile_mode_v1';
 
     const fmtVND = (n) => (isFinite(n)?n:0).toLocaleString('vi-VN') + ' ₫';
 
@@ -814,7 +854,7 @@
       return `${dd}/${mm}/${yy}`;
     }
 
-    // ===== Toast (UI-only) =====
+    // ===== Toast =====
     let toastTimer = null;
     function toast(msg){
       const el = document.getElementById('toast');
@@ -824,6 +864,28 @@
       el.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
+    }
+
+    // =========================
+    // ✅ NEW: FORCE MOBILE MODE
+    // =========================
+    function setMobileForced(on){
+      document.body.classList.toggle('force-mobile', !!on);
+      localStorage.setItem(MOBILE_FORCE_KEY, on ? '1' : '0');
+
+      const stateEl = document.getElementById('mobileModeState');
+      if (stateEl) stateEl.textContent = on ? 'ON' : 'OFF';
+
+      toast(on ? 'Đã chuyển sang giao diện điện thoại' : 'Đã tắt giao diện điện thoại');
+    }
+    function toggleMobileForced(){
+      const on = !document.body.classList.contains('force-mobile');
+      setMobileForced(on);
+    }
+    function restoreMobileForced(){
+      const v = localStorage.getItem(MOBILE_FORCE_KEY);
+      const on = (v === '1');
+      setMobileForced(on);
     }
 
     // ===== IME FIX =====
@@ -854,7 +916,7 @@
       unit: 'm²',
       unitPrice: '',
       groupNote: '',
-      collapsed: false, // UI-only
+      collapsed: false,
       lines: [{ len:'', wid:'', factor: 1, note:'' }]
     });
 
@@ -1021,7 +1083,6 @@
       else if (remain === 0) st.innerHTML = `<span class="ok">Đã thanh toán đủ</span>`;
       else st.innerHTML = `<span style="color:var(--warn)">Trả dư</span>`;
 
-      // UI-only KPI bar (0%..100% based on paid ratio)
       const bar = document.getElementById('kpiBar');
       const hint = document.getElementById('kpiHint');
       const paid = Math.max(0, Math.min(1, total > 0 ? (adv / total) : 0));
@@ -1077,7 +1138,7 @@
         unit: (g.unit ?? 'm²').toString().replace('m2','m²'),
         unitPrice: (g.unitPrice ?? '').toString(),
         groupNote: (g.groupNote ?? '').toString(),
-        collapsed: !!g.collapsed, // UI-only
+        collapsed: !!g.collapsed,
         lines: (g.lines && g.lines.length ? g.lines : [{len:'',wid:'',factor:1,note:''}]).map(L => ({
           len: (L.len ?? '').toString(),
           wid: (L.wid ?? '').toString(),
@@ -1496,62 +1557,53 @@
       lockBodyScroll(false);
     }
 
-    // ==============================
-    // ✅ FULL RENDER: chụp FULL chiều dài invoice (không bị cắt)
-    // ==============================
     async function renderInvoiceFullToCanvas(scale){
-  const src = document.getElementById('invoiceContent');
-  if (!src) throw new Error('Không tìm thấy nội dung bảng thanh toán.');
+      const src = document.getElementById('invoiceContent');
+      if (!src) throw new Error('Không tìm thấy nội dung bảng thanh toán.');
 
-  // Stage nằm ngoài màn hình để html2canvas chụp FULL chiều dài
-  const stage = document.createElement('div');
-  stage.style.position = 'fixed';
-  stage.style.left = '-100000px';
-  stage.style.top = '0';
-  stage.style.background = '#ffffff';
-  stage.style.padding = '24px';
-  stage.style.width = '980px';            // cố định đẹp như ảnh mẫu
-  stage.style.boxSizing = 'border-box';
+      const stage = document.createElement('div');
+      stage.style.position = 'fixed';
+      stage.style.left = '-100000px';
+      stage.style.top = '0';
+      stage.style.background = '#ffffff';
+      stage.style.padding = '24px';
+      stage.style.width = '980px';
+      stage.style.boxSizing = 'border-box';
 
-  // Khung "tờ giấy" giống ảnh bạn gửi: bo góc + viền + shadow nhẹ
-  const frame = document.createElement('div');
-  frame.style.background = '#fff';
-  frame.style.border = '1px solid rgba(2,132,199,.25)';
-  frame.style.borderRadius = '18px';
-  frame.style.overflow = 'hidden';
-  frame.style.boxShadow = '0 18px 60px rgba(2,132,199,.12)';
-  frame.style.padding = '18px';
-  frame.style.boxSizing = 'border-box';
+      const frame = document.createElement('div');
+      frame.style.background = '#fff';
+      frame.style.border = '1px solid rgba(2,132,199,.25)';
+      frame.style.borderRadius = '18px';
+      frame.style.overflow = 'hidden';
+      frame.style.boxShadow = '0 18px 60px rgba(2,132,199,.12)';
+      frame.style.padding = '18px';
+      frame.style.boxSizing = 'border-box';
 
-  // Clone invoice
-  const clone = src.cloneNode(true);
-  clone.style.height = 'auto';
-  clone.style.maxHeight = 'none';
-  clone.style.overflow = 'visible';
+      const clone = src.cloneNode(true);
+      clone.style.height = 'auto';
+      clone.style.maxHeight = 'none';
+      clone.style.overflow = 'visible';
 
-  frame.appendChild(clone);
-  stage.appendChild(frame);
-  document.body.appendChild(stage);
+      frame.appendChild(clone);
+      stage.appendChild(frame);
+      document.body.appendChild(stage);
 
-  // chờ layout ổn định
-  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-  const canvas = await html2canvas(stage, {
-    backgroundColor: '#ffffff',
-    scale,
-    useCORS: true,
-    scrollX: 0,
-    scrollY: 0,
-    windowWidth: stage.scrollWidth,
-    windowHeight: stage.scrollHeight,
-  });
+      const canvas = await html2canvas(stage, {
+        backgroundColor: '#ffffff',
+        scale,
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: stage.scrollWidth,
+        windowHeight: stage.scrollHeight,
+      });
 
-  stage.remove();
-  return canvas;
-}
+      stage.remove();
+      return canvas;
+    }
 
-
-    // ===== COPY to clipboard (PNG). If not supported -> download =====
     async function copyInvoiceAsImage(){
       const scale = Math.min(2.0, (window.devicePixelRatio || 1) * 1.6);
 
@@ -1568,7 +1620,6 @@
           return;
         }
 
-        // fallback: download
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -1584,7 +1635,6 @@
       }
     }
 
-    // ===== MOBILE SHARE (if supported) =====
     async function copyInvoiceForMobile(){
       const scale = Math.min(2.0, (window.devicePixelRatio || 1) * 1.6);
 
@@ -1624,9 +1674,6 @@
       }
     }
 
-    // =======================================================
-    // ✅ NEW: DOWNLOAD PNG (always export invoice to image file)
-    // =======================================================
     function buildInvoiceImageFileName(){
       const date = yyyymmddFromInvDate();
       const proj = sanitizeFilePart(document.getElementById('invCustomer')?.value || 'BangThanhToan');
@@ -1662,7 +1709,6 @@
       }
     }
 
-    // ===== UI helper: highlight group by name =====
     function flashGroup(gi){
       const el = document.querySelector(`.group[data-gi="${gi}"]`);
       if (!el) return;
@@ -1812,6 +1858,9 @@
       if (t.id === 'printBtn' || t.id === 'printBtn2') { window.print(); return; }
 
       if (t.id === 'btnTop'){ window.scrollTo({top:0, behavior:'smooth'}); return; }
+
+      // ✅ NEW: toggle mobile mode buttons
+      if (t.id === 'toggleMobileBtn' || t.id === 'toggleMobileFab') { toggleMobileForced(); return; }
     });
 
     document.getElementById('invoiceModal').addEventListener('click', (e) => {
@@ -1821,7 +1870,6 @@
       if (e.key === 'Escape') closeInvoice();
     });
 
-    // Quick search jump
     document.getElementById('quickSearch').addEventListener('keydown', (e) => {
       if (e.key !== 'Enter') return;
       const q = (e.target.value || '').trim().toLowerCase();
@@ -1861,8 +1909,10 @@
       groups = normalizeGroups(groups);
       restoreDefaultFolder();
       render();
+
+      // ✅ restore mobile mode last state
+      restoreMobileForced();
     })();
   </script>
 </body>
 </html>
-

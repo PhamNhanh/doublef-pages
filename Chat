@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat cơ bản</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-box {
+      width: 100%;
+      max-width: 700px;
+      height: 90vh;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 16px 20px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      background: #f9fafb;
+    }
+
+    .msg {
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: #e5e7eb;
+      border-radius: 10px;
+    }
+
+    .msg strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .msg small {
+      color: #6b7280;
+      display: block;
+      margin-top: 5px;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .input-area input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    #username {
+      width: 160px;
+    }
+
+    #message {
+      flex: 1;
+    }
+
+    .input-area button {
+      padding: 10px 16px;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .input-area button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-box">
+    <div class="header">Phòng chat cơ bản</div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="input-area">
+      <input type="text" id="username" placeholder="Tên của bạn" />
+      <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+      <button onclick="sendMessage()">Gửi</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      onChildAdded
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // THAY THÔNG TIN FIREBASE CỦA BẠN VÀO ĐÂY
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const messagesDiv = document.getElementById("messages");
+    const usernameInput = document.getElementById("username");
+    const messageInput = document.getElementById("message");
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.innerText = text;
+      return div.innerHTML;
+    }
+
+    window.sendMessage = function () {
+      const username = usernameInput.value.trim() || "Ẩn danh";
+      const message = messageInput.value.trim();
+
+      if (!message) return;
+
+      push(ref(db, "messages"), {
+        username,
+        text: message,
+        time: new Date().toLocaleString("vi-VN")
+      });
+
+      messageInput.value = "";
+      messageInput.focus();
+    };
+
+    messageInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    onChildAdded(ref(db, "messages"), (snapshot) => {
+      const data = snapshot.val();
+
+      const div = document.createElement("div");
+      div.className = "msg";
+      div.innerHTML = `
+        <strong>${escapeHtml(data.username)}</strong>
+        <span>${escapeHtml(data.text)}</span>
+        <small>${escapeHtml(data.time)}</small>
+      `;
+
+      messagesDiv.appendChild(div);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+  </script>
+</body>
+</html>

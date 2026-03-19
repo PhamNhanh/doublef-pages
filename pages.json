@@ -5,6 +5,11 @@
     "icon": "🏠"
   },
   {
+    "title": "Chat cơ bản",
+    "path": "Chat.html",
+    "icon": "🔗"
+  },
+  {
     "title": "Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell",
     "path": "Kiểm tra lỗi chính tả.html",
     "icon": "🔗"

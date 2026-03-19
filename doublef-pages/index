@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Chat Cơ Bản</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="chat-app">
+    <div class="chat-header">
+      <h1>Phòng chat chung</h1>
+      <div id="status">Đang kết nối...</div>
+    </div>
+
+    <div id="messages" class="messages"></div>
+
+    <div class="chat-input">
+      <input type="text" id="username" placeholder="Nhập tên của bạn" />
+      <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+      <button id="sendBtn">Gửi</button>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

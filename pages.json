@@ -10,6 +10,11 @@
     "icon": "🔗"
   },
   {
+    "title": "Web Chat Cơ Bản",
+    "path": "doublef-pages/index.html",
+    "icon": "🏠"
+  },
+  {
     "title": "Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell",
     "path": "Kiểm tra lỗi chính tả.html",
     "icon": "🔗"

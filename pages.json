@@ -5,6 +5,11 @@
     "icon": "🏠"
   },
   {
+    "title": "Báo giá thi công",
+    "path": "Báo giá thi công.html",
+    "icon": "🔗"
+  },
+  {
     "title": "Chat cơ bản",
     "path": "Chat.html",
     "icon": "🔗"

@@ -52,15 +52,15 @@
       <div class="hd"><b>Thông tin báo giá</b><span class="hint">Các thông tin này sẽ hiển thị trên ảnh báo giá xuất ra.</span></div>
       <div class="bd">
         <div class="grid">
-          <div class="field"><label>Đơn vị báo giá</label><input id="companyName" value="doublef.io.vn" oninput="scheduleUpdate()"></div>
+          <div class="field"><label>Đơn vị báo giá</label><input id="companyName" placeholder="Nhập tên đơn vị báo giá" oninput="scheduleUpdate()"></div>
           <div class="field"><label>Số báo giá</label><input id="quoteNo" value="BG-001" oninput="scheduleUpdate()"></div>
-          <div class="field"><label>Ngày báo giá</label><input id="quoteDate" type="date" oninput="scheduleUpdate()"></div>
+          <div class="field"><label>Ngày báo giá</label><input id="quoteDate" type="text" inputmode="numeric" placeholder="dd/mm/yyyy" oninput="scheduleUpdate()"></div>
           <div class="field"><label>Tên khách hàng</label><input id="customerName" placeholder="Nhập tên khách hàng" oninput="scheduleUpdate()"></div>
           <div class="field"><label>Công trình/Dự án</label><input id="projectName" placeholder="Nhập tên công trình" oninput="scheduleUpdate()"></div>
           <div class="field"><label>Địa điểm</label><input id="projectAddress" placeholder="Nhập địa điểm thi công" oninput="scheduleUpdate()"></div>
         </div>
         <div class="grid2" style="margin-top:12px">
-          <div class="field"><label>Thông tin liên hệ đơn vị báo giá</label><textarea id="companyInfo" oninput="scheduleUpdate()">Hotline: 0900 000 000&#10;Email: contact@doublef.io.vn</textarea></div>
+          <div class="field"><label>Thông tin liên hệ đơn vị báo giá</label><div class="grid2" style="gap:8px"><input id="companyHotline" placeholder="Hotline" oninput="scheduleUpdate()"><input id="companyEmail" placeholder="Email" oninput="scheduleUpdate()"></div></div>
           <div class="field"><label>Điều kiện/Ghi chú chung</label><textarea id="generalNote" oninput="scheduleUpdate()">Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.</textarea></div>
         </div>
       </div>
@@ -95,8 +95,8 @@
           <div class="paper-inner">
             <div class="paper-top">
               <div class="company">
-                <h2 id="pCompanyName">doublef.io.vn</h2>
-                <p id="pCompanyInfo">Hotline: 0900 000 000<br>Email: contact@doublef.io.vn</p>
+                <h2 id="pCompanyName">—</h2>
+                <p id="pCompanyInfo"></p>
               </div>
               <div class="paper-info" style="text-align:right">
                 <p><b>Số:</b> <span id="pQuoteNo">BG-001</span></p>
@@ -136,19 +136,27 @@
             </div>
 
             <div class="quote-note" id="pGeneralNote"></div>
-            <div class="signs">
-              <div class="sign-box"><b>Khách hàng</b><span>Ký, ghi rõ họ tên</span></div>
-              <div class="sign-box"><b>Đơn vị báo giá</b><span>Ký, ghi rõ họ tên</span></div>
-            </div>
           </div>
         </div>
       </div>
     </section>
   </div>
+  <datalist id="unitOptions">
+  <option value="m²"></option>
+  <option value="m"></option>
+  <option value="md"></option>
+  <option value="cái"></option>
+  <option value="bộ"></option>
+  <option value="công"></option>
+  <option value="ngày"></option>
+  <option value="lần"></option>
+  <option value="gói"></option>
+  <option value="hạng mục"></option>
+</datalist>
   <div class="toast" id="toast"></div>
 
 <script>
-  const STORAGE_KEY='doublef_bao_gia_thi_cong_v1';
+  const STORAGE_KEY='doublef_bao_gia_thi_cong_v2';
   let data={rows:[]};
   let updateTimer=null;
   const $=id=>document.getElementById(id);
@@ -156,12 +164,12 @@
   const money=n=>(Number(n)||0).toLocaleString('vi-VN')+' ₫';
   function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),2200)}
   function toNum(v){if(typeof v==='number')return isFinite(v)?v:0;let s=String(v??'').trim();if(!s)return 0;s=s.replace(/[^\d,.-]/g,'');if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',', '.');else if(s.includes(',')&&!s.includes('.'))s=s.replace(',', '.');else s=s.replace(/\.(?=\d{3}(\D|$))/g,'');const n=Number(s);return isFinite(n)?n:0}
-  function today(){const d=new Date();return d.toISOString().slice(0,10)}
-  function formatDate(v){if(!v)return'';const [y,m,d]=String(v).split('-');return d&&m&&y?`${d}/${m}/${y}`:v}
+  function today(){const d=new Date();return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()}
+  function formatDate(v){if(!v)return'';const s=String(v).trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-');return `${d}/${m}/${y}`}return s}
   function scheduleUpdate(){clearTimeout(updateTimer);updateTimer=setTimeout(updatePreview,120)}
-  function collectMeta(){return{companyName:$('companyName').value,quoteNo:$('quoteNo').value,quoteDate:$('quoteDate').value,customerName:$('customerName').value,projectName:$('projectName').value,projectAddress:$('projectAddress').value,companyInfo:$('companyInfo').value,generalNote:$('generalNote').value}}
-  function applyMeta(m){$('companyName').value=m.companyName??'doublef.io.vn';$('quoteNo').value=m.quoteNo??'BG-001';$('quoteDate').value=m.quoteDate??today();$('customerName').value=m.customerName??'';$('projectName').value=m.projectName??'';$('projectAddress').value=m.projectAddress??'';$('companyInfo').value=m.companyInfo??'Hotline: 0900 000 000\nEmail: contact@doublef.io.vn';$('generalNote').value=m.generalNote??'Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.'}
-  function addRow(row){data.rows.push(row||{hangMuc:'',moTa:'',donVi:'',donGia:'',ghiChu:''});renderRows();updatePreview()}
+  function collectMeta(){return{companyName:$('companyName').value,quoteNo:$('quoteNo').value,quoteDate:$('quoteDate').value,customerName:$('customerName').value,projectName:$('projectName').value,projectAddress:$('projectAddress').value,companyHotline:$('companyHotline').value,companyEmail:$('companyEmail').value,generalNote:$('generalNote').value}}
+  function applyMeta(m){$('companyName').value=m.companyName??'';$('quoteNo').value=m.quoteNo??'BG-001';$('quoteDate').value=m.quoteDate??today();$('customerName').value=m.customerName??'';$('projectName').value=m.projectName??'';$('projectAddress').value=m.projectAddress??'';$('companyHotline').value=m.companyHotline??'';$('companyEmail').value=m.companyEmail??'';$('generalNote').value=m.generalNote??'Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.'}
+  function addRow(row, afterIndex){const item=row||{hangMuc:'',moTa:'',donVi:'',donGia:'',ghiChu:''}; if(Number.isInteger(afterIndex)){data.rows.splice(afterIndex+1,0,item)}else{data.rows.push(item)} renderRows();updatePreview()}
   function removeRow(i){data.rows.splice(i,1);renderRows();updatePreview()}
   function moveRow(i,dir){const j=i+dir;if(j<0||j>=data.rows.length)return;[data.rows[i],data.rows[j]]=[data.rows[j],data.rows[i]];renderRows();updatePreview()}
   function updateRow(i,key,val){data.rows[i][key]=val;scheduleUpdate()}
@@ -170,12 +178,12 @@
       <td class="stt">${i+1}</td>
       <td><textarea class="row-input" oninput="updateRow(${i},'hangMuc',this.value)">${esc(r.hangMuc)}</textarea></td>
       <td><textarea class="row-input" oninput="updateRow(${i},'moTa',this.value)">${esc(r.moTa)}</textarea></td>
-      <td><input class="row-input" value="${esc(r.donVi)}" oninput="updateRow(${i},'donVi',this.value)" placeholder="m², md, bộ..."></td>
+      <td><input class="row-input" list="unitOptions" value="${esc(r.donVi)}" oninput="updateRow(${i},'donVi',this.value)" placeholder="Chọn hoặc tự nhập"></td>
       <td><input class="row-input money" value="${esc(r.donGia)}" oninput="updateRow(${i},'donGia',this.value)" placeholder="0"></td>
       <td><textarea class="row-input" oninput="updateRow(${i},'ghiChu',this.value)">${esc(r.ghiChu)}</textarea></td>
-      <td class="thaotac"><button class="small-btn" onclick="moveRow(${i},-1)">↑</button> <button class="small-btn" onclick="moveRow(${i},1)">↓</button><br><button class="small-btn danger" style="margin-top:6px" onclick="removeRow(${i})">Xóa</button></td>
+      <td class="thaotac"><button class="small-btn" onclick="moveRow(${i},-1)">↑</button> <button class="small-btn" onclick="moveRow(${i},1)">↓</button><br><button class="small-btn" style="margin-top:6px" onclick="addRow(null,${i})">+ Dòng</button><br><button class="small-btn danger" style="margin-top:6px" onclick="removeRow(${i})">Xóa</button></td>
     </tr>`).join('')}
-  function updatePreview(){const m=collectMeta();$('pCompanyName').textContent=m.companyName||'—';$('pCompanyInfo').innerHTML=esc(m.companyInfo||'').replace(/\n/g,'<br>');$('pQuoteNo').textContent=m.quoteNo||'—';$('pQuoteDate').textContent=formatDate(m.quoteDate);$('pCustomerName').textContent=m.customerName||'—';$('pProjectName').textContent=m.projectName||'—';$('pProjectAddress').textContent=m.projectAddress||'—';$('pGeneralNote').innerHTML=esc(m.generalNote||'').replace(/\n/g,'<br>');
+  function updatePreview(){const m=collectMeta();$('pCompanyName').textContent=m.companyName||'—';const contact=[];if(m.companyHotline)contact.push('Hotline: '+m.companyHotline);if(m.companyEmail)contact.push('Email: '+m.companyEmail);$('pCompanyInfo').innerHTML=contact.map(esc).join('<br>');$('pQuoteNo').textContent=m.quoteNo||'—';$('pQuoteDate').textContent=formatDate(m.quoteDate);$('pCustomerName').textContent=m.customerName||'—';$('pProjectName').textContent=m.projectName||'—';$('pProjectAddress').textContent=m.projectAddress||'—';$('pGeneralNote').innerHTML=esc(m.generalNote||'').replace(/\n/g,'<br>');
     const rows=data.rows.filter(r=>r.hangMuc||r.moTa||r.donVi||r.donGia||r.ghiChu);let total=0;
     $('previewRows').innerHTML=(rows.length?rows:[{hangMuc:'—',moTa:'—',donVi:'—',donGia:'',ghiChu:'—'}]).map((r,i)=>{const dg=toNum(r.donGia);total+=dg;return `<tr><td style="text-align:center;font-weight:700">${i+1}</td><td>${esc(r.hangMuc||'—')}</td><td>${esc(r.moTa||'—').replace(/\n/g,'<br>')}</td><td style="text-align:center">${esc(r.donVi||'—')}</td><td class="money">${dg?money(dg):esc(r.donGia||'—')}</td><td>${esc(r.ghiChu||'—').replace(/\n/g,'<br>')}</td></tr>`}).join('');$('pTotal').textContent=money(total)}
   function getState(){return{meta:collectMeta(),rows:data.rows}}

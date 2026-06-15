@@ -2,58 +2,834 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Danh sách dự án thi công</title>
+
   <style>
-    :root{--bg:#f6f8fb;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--line2:#cbd5e1;--primary:#0f766e;--primary2:#14b8a6;--danger:#dc2626;--warn:#d97706;--good:#16a34a;--shadow:0 20px 60px rgba(15,23,42,.08);--r:18px;--r2:24px}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(900px 500px at 0% -10%,rgba(20,184,166,.14),transparent 60%),radial-gradient(900px 500px at 100% 0%,rgba(15,23,42,.08),transparent 56%),var(--bg);color:var(--text);min-height:100vh}
-    .wrap{max-width:1180px;margin:0 auto;padding:22px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}.brand{display:flex;gap:12px;align-items:center}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));box-shadow:0 16px 40px rgba(15,118,110,.18);display:grid;place-items:center;color:white;font-weight:900}.brand h1{margin:0;font-size:22px}.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}
-    button,input,select{font:inherit}button{border:1px solid var(--line2);background:white;color:var(--text);padding:10px 13px;border-radius:14px;cursor:pointer;box-shadow:0 10px 24px rgba(15,23,42,.05);transition:.15s}button:hover{transform:translateY(-1px);border-color:var(--primary);box-shadow:0 16px 34px rgba(15,23,42,.08)}button.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));border-color:transparent;color:white}button.danger{color:#991b1b;border-color:#fecaca;background:#fff7f7}input,select{width:100%;border:1px solid var(--line);background:white;border-radius:14px;padding:11px 12px;outline:none}input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(20,184,166,.12)}
-    .card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(10px)}.hd{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}.bd{padding:16px}.filters{display:grid;grid-template-columns:1.4fr 220px 140px;gap:10px}@media(max-width:760px){.filters{grid-template-columns:1fr}.wrap{padding:14px}.brand h1{font-size:18px}}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}}.stat{background:white;border:1px solid var(--line);border-radius:18px;padding:14px}.stat span{color:var(--muted);font-size:12px;font-weight:700}.stat b{display:block;font-size:22px;margin-top:4px;color:#0f766e}
-    table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}th{text-align:left;color:#475569;background:#f8fafc;font-size:11px;text-transform:uppercase;letter-spacing:.5px}.num{text-align:right}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:12px;border:1px solid var(--line);background:#f8fafc;color:#475569}.pill.good{background:#f0fdf4;color:#166534;border-color:#bbf7d0}.pill.warn{background:#fffbeb;color:#92400e;border-color:#fde68a}.pill.bad{background:#fef2f2;color:#991b1b;border-color:#fecaca}.row-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line2);border-radius:18px;background:#f8fafc}.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#0f172a;color:white;padding:11px 14px;border-radius:999px;display:none;z-index:99;box-shadow:0 20px 60px rgba(15,23,42,.22);font-size:13px}.toast.show{display:block}.small{font-size:12px;color:var(--muted);line-height:1.5}.table-wrap{overflow:auto}.table-wrap table{min-width:940px}
+    :root {
+      --bg: #f3f7fb;
+      --bg2: #eef5f8;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #dbe5ef;
+      --line2: #edf2f7;
+      --primary: #0f9f8f;
+      --primary2: #0d9488;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --good: #16a34a;
+      --shadow: 0 20px 50px rgba(15, 23, 42, .08);
+      --radius: 22px;
+      --radius2: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 8% -10%, rgba(15, 159, 143, .15), transparent 60%),
+        radial-gradient(900px 500px at 100% 0%, rgba(37, 99, 235, .08), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+    }
+
+    .wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 18px 42px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 260px;
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      background: linear-gradient(135deg, #0f9f8f, #0d9488);
+      box-shadow: 0 16px 30px rgba(15, 159, 143, .2);
+      flex: none;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -.3px;
+      line-height: 1.2;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 11px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: .18s ease;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, .04);
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(15, 159, 143, .45);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, .08);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 14px 26px rgba(15, 159, 143, .18);
+    }
+
+    .danger {
+      color: var(--danger);
+      border-color: rgba(220, 38, 38, .22);
+      background: #fff7f7;
+    }
+
+    .ghost {
+      background: #fff;
+    }
+
+    .card {
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 18px;
+      backdrop-filter: blur(12px);
+    }
+
+    .card-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card-bd {
+      padding: 18px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 250px 160px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 13px 14px;
+      border-radius: 14px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(15, 159, 143, .55);
+      box-shadow: 0 0 0 4px rgba(15, 159, 143, .10);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      padding: 16px;
+      background: #fff;
+      min-height: 92px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      color: #0f766e;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.3px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      padding: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 12px;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .id {
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: #475569;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .badge.good {
+      background: #ecfdf5;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .badge.warn {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #fde68a;
+    }
+
+    .badge.bad {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .empty {
+      border: 1px dashed #cbd5e1;
+      background: #f8fafc;
+      color: #64748b;
+      border-radius: 18px;
+      padding: 34px;
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 999;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      display: none;
+      max-width: min(92vw, 520px);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastIn .22s ease both;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .loading {
+      opacity: .65;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        padding: 18px 12px 32px;
+      }
+
+      .brand {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .logo {
+        width: 48px;
+        height: 48px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .sub {
+        font-size: 13px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .card-hd,
+      .card-bd,
+      .table-wrap {
+        padding: 14px;
+      }
+
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .actions button {
+        flex: 1 1 auto;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <div class="top">
-      <div class="brand"><div class="logo">DF</div><div><h1>Danh sách dự án thi công</h1><p>Database Google Sheets • xem, tìm kiếm, mở lại dự án từ Cloud</p></div></div>
-      <div class="actions"><button onclick="location.reload()">Tải lại</button><button class="primary" onclick="openCalculator()">+ Mở bảng tính</button></div>
-    </div>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">DF</div>
+        <div>
+          <h1>Danh sách dự án thi công</h1>
+          <div class="sub">Database Google Sheets • xem, tìm kiếm, mở lại dự án từ Cloud</div>
+        </div>
+      </div>
 
-    <div class="card">
-      <div class="hd"><b>Bộ lọc dự án</b><span class="small" id="apiStatus">Đang kết nối Cloud...</span></div>
-      <div class="bd">
-        <div class="filters"><input id="q" placeholder="Tìm mã CT, tên công trình, khách hàng, SĐT..." /><select id="status"><option value="">Tất cả trạng thái</option><option>Nháp</option><option>Đã báo giá</option><option>Đang thi công</option><option>Đã nghiệm thu</option><option>Đã thanh toán</option><option>Bảo hành</option></select><button class="primary" id="btnSearch">Tìm kiếm</button></div>
-        <div class="stats"><div class="stat"><span>Tổng dự án</span><b id="stTotal">0</b></div><div class="stat"><span>Tổng giá trị</span><b id="stValue">0</b></div><div class="stat"><span>Đã thanh toán</span><b id="stPaid">0</b></div><div class="stat"><span>Còn lại</span><b id="stRemain">0</b></div></div>
+      <div class="actions">
+        <button class="ghost" id="reloadBtn">Tải lại</button>
+        <button class="primary" id="openCalcBtn">+ Mở bảng tính</button>
       </div>
     </div>
 
-    <div class="card" style="margin-top:14px">
-      <div class="hd"><b>Dự án đã lưu trên Cloud</b><span class="small">Bấm “Mở” để nạp dữ liệu vào trang Tính tiền thi công Pro</span></div>
-      <div class="bd"><div id="content" class="empty">Đang tải danh sách dự án...</div></div>
-    </div>
+    <section class="card">
+      <div class="card-hd">
+        <div class="card-title">Bộ lọc dự án</div>
+        <div class="hint" id="cloudStatus">Đang kết nối Cloud...</div>
+      </div>
+
+      <div class="card-bd">
+        <div class="filter-grid">
+          <input id="searchInput" placeholder="Tìm mã CT, tên công trình, khách hàng, SĐT..." />
+
+          <select id="statusFilter">
+            <option value="">Tất cả trạng thái</option>
+            <option>Nháp</option>
+            <option>Đã báo giá</option>
+            <option>Đang thi công</option>
+            <option>Đã nghiệm thu</option>
+            <option>Đã thanh toán</option>
+            <option>Bảo hành</option>
+          </select>
+
+          <button class="primary" id="searchBtn">Tìm kiếm</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Tổng dự án</div>
+            <div class="stat-value" id="statCount">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Tổng giá trị</div>
+            <div class="stat-value" id="statTotal">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Đã thanh toán</div>
+            <div class="stat-value" id="statPaid">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Còn lại</div>
+            <div class="stat-value" id="statRemain">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-hd">
+        <div class="card-title">Dự án đã lưu trên Cloud</div>
+        <div class="hint">Bấm “Mở” để nạp dữ liệu vào trang Tính tiền thi công Pro</div>
+      </div>
+
+      <div class="table-wrap" id="projectList">
+        <div class="empty">
+          Đang tải danh sách dự án từ Google Sheets...
+        </div>
+      </div>
+    </section>
   </div>
+
   <div class="toast" id="toast"></div>
-<script>
-  const CLOUD_API_URL='https://script.google.com/macros/s/AKfycbx-RWcTA0t-EQwSpPWJpXWYn1jx_v1vC4pn_-y2ka17XUJg8zlOXjDl4AEXgq8t-r6Deg/exec';
-  const CALC_PAGE='Tinh tien thi cong Pro.html';
-  let projects=[];
-  const $=id=>document.getElementById(id);
-  const fmt=n=>(Number(n)||0).toLocaleString('vi-VN')+' ₫';
-  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-  function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),1800)}
-  function cloudJsonp(params){return new Promise((resolve,reject)=>{const cb='__cloud_list_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);const qs=new URLSearchParams(params||{});qs.set('callback',cb);const s=document.createElement('script');const timer=setTimeout(()=>{cleanup();reject(new Error('Quá thời gian tải dữ liệu'))},15000);function cleanup(){clearTimeout(timer);delete window[cb];s.remove()}window[cb]=data=>{cleanup();resolve(data)};s.onerror=()=>{cleanup();reject(new Error('Không gọi được API'))};s.src=CLOUD_API_URL+'?'+qs.toString();document.body.appendChild(s)})}
-  async function loadList(){try{$('apiStatus').textContent='Đang tải dữ liệu...';const res=await cloudJsonp({action:'list'});if(!res.ok)throw new Error(res.message||'Lỗi API');projects=res.projects||[];$('apiStatus').textContent='Đã kết nối Google Sheets';render()}catch(e){console.error(e);$('apiStatus').textContent='Lỗi kết nối Cloud';$('content').className='empty';$('content').innerHTML='Không tải được danh sách. Kiểm tra Apps Script đã hỗ trợ callback JSONP và đã Deploy bản mới chưa.<br><br>'+esc(e.message)}}
-  function filtered(){const q=$('q').value.trim().toLowerCase();const st=$('status').value;return projects.filter(p=>{const hay=[p.id,p.code,p.name,p.customer,p.contact,p.status].join(' ').toLowerCase();if(q&&!hay.includes(q))return false;if(st&&p.status!==st)return false;return true})}
-  function badge(status){let cls='';if(status==='Đã thanh toán')cls='good';else if(status==='Đang thi công'||status==='Đã nghiệm thu')cls='warn';else if(status==='Bảo hành')cls='good';return `<span class="pill ${cls}">${esc(status||'—')}</span>`}
-  function render(){const arr=filtered();const total=arr.reduce((s,p)=>s+(Number(p.total)||0),0), paid=arr.reduce((s,p)=>s+(Number(p.paid)||0),0), remain=arr.reduce((s,p)=>s+(Number(p.remain)||0),0);$('stTotal').textContent=arr.length;$('stValue').textContent=fmt(total);$('stPaid').textContent=fmt(paid);$('stRemain').textContent=fmt(remain);if(!arr.length){$('content').className='empty';$('content').textContent='Chưa có dự án phù hợp.';return}$('content').className='table-wrap';$('content').innerHTML=`<table><thead><tr><th>Mã CT</th><th>Tên công trình</th><th>Khách hàng</th><th>SĐT</th><th>Trạng thái</th><th class="num">Tổng tiền</th><th class="num">Đã TT</th><th class="num">Còn lại</th><th>Cập nhật</th><th class="num">Thao tác</th></tr></thead><tbody>${arr.map(p=>`<tr><td><b>${esc(p.code||p.id)}</b></td><td>${esc(p.name||'—')}</td><td>${esc(p.customer||'—')}</td><td>${esc(p.contact||'—')}</td><td>${badge(p.status)}</td><td class="num"><b>${fmt(p.total)}</b></td><td class="num">${fmt(p.paid)}</td><td class="num"><b>${fmt(p.remain)}</b></td><td>${esc(p.updatedAt||'')}</td><td><div class="row-actions"><button class="primary" onclick="openProject('${esc(p.id)}')">Mở</button><button onclick="copyId('${esc(p.id)}')">Copy ID</button><button class="danger" onclick="deleteProject('${esc(p.id)}')">Xóa</button></div></td></tr>`).join('')}</tbody></table>`}
-  function openProject(id){location.href=CALC_PAGE+'?project_id='+encodeURIComponent(id)}
-  function openCalculator(){location.href=CALC_PAGE}
-  function copyId(id){navigator.clipboard&&navigator.clipboard.writeText(id);toast('Đã copy ID dự án')}
-  async function deleteProject(id){if(!confirm('Xóa dự án này khỏi Google Sheets?'))return;try{await fetch(CLOUD_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete',id})});toast('Đã gửi yêu cầu xóa');setTimeout(loadList,1200)}catch(e){alert('Không xóa được: '+e.message)}}
-  $('q').addEventListener('input',render);$('status').addEventListener('change',render);$('btnSearch').addEventListener('click',render);loadList();
-</script>
+
+  <script>
+    const CLOUD_API_URL = 'https://script.google.com/macros/s/AKfycbx-RWcTA0t-EQwSpPWJpXWYn1jx_v1vC4pn_-y2ka17XUJg8zlOXjDl4AEXgq8t-r6Deg/exec';
+
+    /*
+      Tên file trang tính tiền.
+      Nếu file thật trên GitHub của bạn là tên khác, chỉ cần sửa dòng này.
+      Ví dụ:
+      - 'Tinh tien thi cong Pro.html'
+      - 'Tinh_tien_thi_cong_Pro_cloud.html'
+    */
+    const CALC_PAGE = 'Tinh tien thi cong Pro.html';
+
+    let allProjects = [];
+
+    const $ = (id) => document.getElementById(id);
+
+    function formatVND(value) {
+      const n = Number(value) || 0;
+      return n.toLocaleString('vi-VN') + ' đ';
+    }
+
+    function normalizeText(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function toast(message) {
+      const el = $('toast');
+      el.textContent = message;
+      el.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    function setStatus(message, type) {
+      const el = $('cloudStatus');
+      el.textContent = message;
+
+      if (type === 'ok') {
+        el.style.color = '#0f766e';
+      } else if (type === 'bad') {
+        el.style.color = '#dc2626';
+      } else {
+        el.style.color = '#64748b';
+      }
+    }
+
+    function jsonp(action, params = {}) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'jsonpCallback_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+
+        const query = new URLSearchParams({
+          action,
+          callback: callbackName,
+          _: Date.now(),
+          ...params
+        });
+
+        const script = document.createElement('script');
+        script.src = CLOUD_API_URL + '?' + query.toString();
+        script.id = callbackName;
+
+        const timer = setTimeout(() => {
+          cleanup();
+          reject(new Error('Không gọi được API'));
+        }, 15000);
+
+        function cleanup() {
+          clearTimeout(timer);
+          delete window[callbackName];
+          const old = document.getElementById(callbackName);
+          if (old) old.remove();
+        }
+
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = function() {
+          cleanup();
+          reject(new Error('Lỗi kết nối Cloud'));
+        };
+
+        document.body.appendChild(script);
+      });
+    }
+
+    async function loadProjects() {
+      document.body.classList.add('loading');
+      setStatus('Đang kết nối Cloud...', '');
+
+      $('projectList').innerHTML = `
+        <div class="empty">
+          Đang tải danh sách dự án từ Google Sheets...
+        </div>
+      `;
+
+      try {
+        const res = await jsonp('list');
+
+        if (!res || !res.ok) {
+          throw new Error(res && res.message ? res.message : 'Cloud trả về lỗi');
+        }
+
+        allProjects = Array.isArray(res.projects) ? res.projects : [];
+
+        setStatus('Đã kết nối Cloud', 'ok');
+        renderProjects();
+        toast('Đã tải danh sách dự án');
+      } catch (err) {
+        console.error(err);
+        allProjects = [];
+        updateStats([]);
+
+        setStatus('Lỗi kết nối Cloud', 'bad');
+
+        $('projectList').innerHTML = `
+          <div class="empty">
+            Không tải được danh sách. Kiểm tra Apps Script đã hỗ trợ callback JSONP và đã Deploy phiên bản mới chưa.
+            <br />
+            <b>${escapeHtml(err.message || 'Không gọi được API')}</b>
+          </div>
+        `;
+      } finally {
+        document.body.classList.remove('loading');
+      }
+    }
+
+    function getFilteredProjects() {
+      const q = normalizeText($('searchInput').value);
+      const status = $('statusFilter').value;
+
+      return allProjects.filter(p => {
+        if (status && String(p.status || '') !== status) {
+          return false;
+        }
+
+        if (!q) {
+          return true;
+        }
+
+        const haystack = normalizeText([
+          p.id,
+          p.code,
+          p.name,
+          p.customer,
+          p.contact,
+          p.status
+        ].join(' '));
+
+        return haystack.includes(q);
+      });
+    }
+
+    function renderProjects() {
+      const projects = getFilteredProjects();
+
+      updateStats(projects);
+
+      if (!projects.length) {
+        $('projectList').innerHTML = `
+          <div class="empty">
+            Không có dự án phù hợp bộ lọc.
+          </div>
+        `;
+        return;
+      }
+
+      const rows = projects.map(p => {
+        const statusClass = getStatusClass(p.status);
+
+        return `
+          <tr>
+            <td>
+              <div class="id">${escapeHtml(p.id || '')}</div>
+            </td>
+            <td>${escapeHtml(p.code || '—')}</td>
+            <td>${escapeHtml(p.name || '—')}</td>
+            <td>${escapeHtml(p.customer || '—')}</td>
+            <td>${escapeHtml(p.contact || '—')}</td>
+            <td>
+              <span class="badge ${statusClass}">${escapeHtml(p.status || 'Nháp')}</span>
+            </td>
+            <td class="num"><b>${formatVND(p.total)}</b></td>
+            <td class="num">${formatVND(p.paid)}</td>
+            <td class="num"><b>${formatVND(p.remain)}</b></td>
+            <td>${escapeHtml(p.updatedAt || '—')}</td>
+            <td>
+              <div class="row-actions">
+                <button class="primary" onclick="openProject('${escapeHtml(p.id)}')">Mở</button>
+                <button onclick="copyId('${escapeHtml(p.id)}')">Copy ID</button>
+                <button class="danger" onclick="deleteProject('${escapeHtml(p.id)}')">Xóa</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      $('projectList').innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mã CT</th>
+              <th>Tên công trình</th>
+              <th>Khách hàng</th>
+              <th>SĐT</th>
+              <th>Trạng thái</th>
+              <th class="num">Tổng tiền</th>
+              <th class="num">Đã TT</th>
+              <th class="num">Còn lại</th>
+              <th>Cập nhật</th>
+              <th class="num">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function getStatusClass(status) {
+      const s = String(status || '');
+
+      if (s.includes('thanh toán')) {
+        return 'good';
+      }
+
+      if (s.includes('thi công') || s.includes('bảo hành')) {
+        return 'warn';
+      }
+
+      if (s.includes('nghiệm thu')) {
+        return 'good';
+      }
+
+      return '';
+    }
+
+    function updateStats(projects) {
+      const total = projects.reduce((sum, p) => sum + (Number(p.total) || 0), 0);
+      const paid = projects.reduce((sum, p) => sum + (Number(p.paid) || 0), 0);
+      const remain = projects.reduce((sum, p) => sum + (Number(p.remain) || 0), 0);
+
+      $('statCount').textContent = projects.length;
+      $('statTotal').textContent = formatVND(total);
+      $('statPaid').textContent = formatVND(paid);
+      $('statRemain').textContent = formatVND(remain);
+    }
+
+    function openProject(id) {
+      if (!id) {
+        alert('Thiếu ID dự án');
+        return;
+      }
+
+      const targetUrl = CALC_PAGE + '?project_id=' + encodeURIComponent(id);
+      window.location.href = targetUrl;
+    }
+
+    function copyId(id) {
+      if (!id) return;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(id).then(() => {
+          toast('Đã copy ID dự án');
+        }).catch(() => {
+          prompt('Copy ID dự án:', id);
+        });
+      } else {
+        prompt('Copy ID dự án:', id);
+      }
+    }
+
+    async function deleteProject(id) {
+      if (!id) {
+        alert('Thiếu ID dự án');
+        return;
+      }
+
+      if (!confirm('Bạn chắc chắn muốn xóa dự án này khỏi Google Sheets?')) {
+        return;
+      }
+
+      try {
+        await fetch(CLOUD_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify({
+            action: 'delete',
+            id
+          })
+        });
+
+        toast('Đã gửi yêu cầu xóa. Đang tải lại...');
+        setTimeout(loadProjects, 1200);
+      } catch (err) {
+        console.error(err);
+        alert('Không xóa được dự án');
+      }
+    }
+
+    $('reloadBtn').addEventListener('click', loadProjects);
+    $('searchBtn').addEventListener('click', renderProjects);
+    $('searchInput').addEventListener('input', renderProjects);
+    $('statusFilter').addEventListener('change', renderProjects);
+
+    $('openCalcBtn').addEventListener('click', () => {
+      window.location.href = CALC_PAGE;
+    });
+
+    window.addEventListener('load', loadProjects);
+  </script>
 </body>
 </html>

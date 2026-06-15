@@ -459,6 +459,7 @@
     const PROJECT_EXT='.tcproj.json';
     const CLOUD_API_URL='https://script.google.com/macros/s/AKfycbx-RWcTA0t-EQwSpPWJpXWYn1jx_v1vC4pn_-y2ka17XUJg8zlOXjDl4AEXgq8t-r6Deg/exec';
     const CLOUD_CURRENT_ID_KEY='construction_payment_current_cloud_id_v1';
+    const OPEN_PROJECT_PAYLOAD_KEY='construction_open_project_payload_v1';
     let groups=[]; let payments=[]; let renderTimer=null; let isComposing=false; let currentDocType='payment'; let dirHandle=null;
 
     const $=id=>document.getElementById(id);
@@ -611,9 +612,34 @@
     }
     function openProjectList(){window.open('Danh sach du an.html','_blank','noopener,noreferrer')}
     function getParam(name){return new URLSearchParams(location.search).get(name)||''}
+    function loadProjectFromSessionPayload(id){
+      try{
+        const raw=sessionStorage.getItem(OPEN_PROJECT_PAYLOAD_KEY);
+        if(!raw) return false;
+        const payload=JSON.parse(raw);
+        if(!payload||!payload.project) return false;
+        if(id && payload.id && String(payload.id)!==String(id)) return false;
+        // Chỉ nhận dữ liệu vừa mở từ trang danh sách trong 30 phút để tránh nạp nhầm dự án cũ
+        if(payload.ts && (Date.now()-Number(payload.ts)>30*60*1000)) return false;
+        apply(payload.project);
+        const cloudId=id||payload.id||payload.project.cloudId||payload.project.id;
+        if(cloudId) setCurrentCloudId(cloudId);
+        save();
+        updateCloudStatus('Cloud: đã mở toàn bộ dự án '+(cloudId||''),'ok');
+        toast('Đã nạp toàn bộ hạng mục từ danh sách dự án');
+        sessionStorage.removeItem(OPEN_PROJECT_PAYLOAD_KEY);
+        return true;
+      }catch(e){
+        console.error(e);
+        return false;
+      }
+    }
     async function loadCloudProjectFromUrl(){
       const id=getParam('project_id')||getParam('cloudId')||getParam('id');
-      if(id) await loadCloudProject(id);
+      if(id){
+        if(loadProjectFromSessionPayload(id)) return;
+        await loadCloudProject(id);
+      }
       else if(getCurrentCloudId()) updateCloudStatus('Cloud: '+getCurrentCloudId(),'ok');
       else updateCloudStatus('Cloud: chưa lưu','');
     }

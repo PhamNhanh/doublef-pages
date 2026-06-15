@@ -2,1390 +2,315 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>doublef.io.vn — Hyper Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b18" />
+  <meta name="color-scheme" content="dark light" />
+  <title>doublef.io.vn — Hyper Dashboard Pro</title>
 
   <style>
     :root{
-      --bg0:#070b18;
-      --bg1:#0b1020;
-      --bg2:#0f1733;
-
-      --glass: rgba(255,255,255,.08);
-      --glass2: rgba(255,255,255,.12);
-      --stroke: rgba(255,255,255,.14);
-
-      --text:#eef2ff;
-      --muted: rgba(238,242,255,.74);
-      --muted2: rgba(238,242,255,.56);
-
-      --a:#6aa8ff;
-      --b:#8b5cf6;
-      --c:#7cffb2;
-      --w:#ffb86b;
-      --r:#ff6b6b;
-
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-      --shadow2: 0 10px 30px rgba(0,0,0,.22);
-
-      --radius: 18px;
-      --radius2: 22px;
-      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-
-      --headerH: 72px;
-      --sidebarW: 290px;
-      --max: 1180px;
-
-      --ringColor: rgba(106,168,255,.92);
-      --ringBg: rgba(106,168,255,.10);
-
-      color-scheme: dark;
+      --bg0:#060914;
+      --bg1:#0a1022;
+      --bg2:#0f1a38;
+      --panel:rgba(255,255,255,.085);
+      --panel2:rgba(255,255,255,.12);
+      --panel3:rgba(0,0,0,.18);
+      --stroke:rgba(255,255,255,.14);
+      --stroke2:rgba(255,255,255,.22);
+      --text:#eef3ff;
+      --muted:rgba(238,243,255,.72);
+      --muted2:rgba(238,243,255,.52);
+      --blue:#67a7ff;
+      --purple:#9b72ff;
+      --green:#79f2b1;
+      --amber:#ffc36b;
+      --red:#ff7474;
+      --cyan:#4ce5ff;
+      --shadow:0 24px 80px rgba(0,0,0,.38);
+      --shadow2:0 12px 38px rgba(0,0,0,.25);
+      --radius:20px;
+      --radius2:26px;
+      --headerH:74px;
+      --sidebarW:310px;
+      --max:1260px;
+      --font:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      color-scheme:dark;
     }
 
-    *{ box-sizing:border-box; }
-    html, body{ height:100%; }
+    *{box-sizing:border-box}
+    html{height:100%;scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: var(--font);
-      color: var(--text);
+      min-height:100%;
       overflow-x:hidden;
+      font-family:var(--font);
+      color:var(--text);
       background:
-        radial-gradient(1000px 560px at 10% 16%, rgba(106,168,255,.22), transparent 62%),
-        radial-gradient(1000px 560px at 92% 22%, rgba(139,92,246,.18), transparent 62%),
-        radial-gradient(1000px 560px at 50% 92%, rgba(124,252,178,.09), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg2));
+        radial-gradient(1000px 620px at 10% 10%, rgba(103,167,255,.25), transparent 62%),
+        radial-gradient(900px 600px at 92% 16%, rgba(155,114,255,.21), transparent 64%),
+        radial-gradient(900px 620px at 48% 105%, rgba(121,242,177,.11), transparent 62%),
+        linear-gradient(180deg,var(--bg0),var(--bg2));
     }
 
-    /* ========= BACKGROUND LAYERS ========= */
-    .bg-video{
-      position: fixed; inset: 0;
-      z-index: 0;
-      overflow:hidden;
-      pointer-events:none;
-      opacity:.28;
-      filter: saturate(1.15) contrast(1.05);
-    }
-    .bg-video video{
-      width:100%; height:100%;
-      object-fit: cover;
-      transform: scale(1.06);
-    }
-    .bg-video::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(900px 520px at 20% 15%, rgba(106,168,255,.14), transparent 62%),
-        radial-gradient(900px 520px at 85% 25%, rgba(139,92,246,.12), transparent 62%),
-        linear-gradient(180deg, rgba(7,11,24,.65), rgba(15,23,51,.78));
+    body.light{
+      --bg0:#f5f9ff;--bg1:#eef5ff;--bg2:#eaf2ff;
+      --panel:rgba(255,255,255,.82);--panel2:rgba(255,255,255,.92);--panel3:rgba(255,255,255,.70);
+      --stroke:rgba(10,40,90,.13);--stroke2:rgba(10,40,90,.20);
+      --text:#0c1426;--muted:rgba(12,20,38,.70);--muted2:rgba(12,20,38,.50);
+      --shadow:0 24px 80px rgba(40,92,160,.16);--shadow2:0 12px 38px rgba(40,92,160,.12);
+      color-scheme:light;
     }
 
-    .texture{
-      position: fixed; inset:0;
-      z-index: 1;
-      pointer-events:none;
-      opacity:.28;
+    ::selection{background:rgba(103,167,255,.32)}
+    a{color:inherit}
+    button,input{font:inherit;color:inherit}
+    button{-webkit-tap-highlight-color:transparent}
+
+    /* Background effects */
+    .bgLayer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .aurora{
+      position:absolute;inset:-20vh -20vw;
+      background:
+        radial-gradient(closest-side at 16% 22%, rgba(103,167,255,.25), transparent 64%),
+        radial-gradient(closest-side at 84% 18%, rgba(155,114,255,.20), transparent 62%),
+        radial-gradient(closest-side at 55% 84%, rgba(121,242,177,.12), transparent 66%);
+      filter:blur(28px);
+      opacity:.95;
+      animation:aurora 18s ease-in-out infinite alternate;
+    }
+    @keyframes aurora{from{transform:translate(-1.2%,-1%) scale(1.02)}to{transform:translate(1.2%,1%) scale(1.07)}}
+    .gridFx{
+      position:absolute;inset:0;
+      opacity:.25;
       background-image:
-        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 44px 44px;
-      mask-image: radial-gradient(closest-side at 50% 42%, rgba(0,0,0,1), transparent 72%);
-      filter: blur(.2px);
+        linear-gradient(to right, rgba(255,255,255,.055) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.055) 1px, transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(closest-side at 50% 42%, #000, transparent 78%);
     }
+    canvas#particles{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.55}
 
-    .blobs{
-      position: fixed;
-      inset: -20vh -10vw;
-      z-index: 1;
-      pointer-events:none;
-      background:
-        radial-gradient(closest-side at 18% 22%, rgba(106,168,255,.18), transparent 60%),
-        radial-gradient(closest-side at 82% 28%, rgba(139,92,246,.16), transparent 62%),
-        radial-gradient(closest-side at 55% 78%, rgba(124,252,178,.10), transparent 62%);
-      filter: blur(26px);
-      opacity: .95;
-      transform: translate3d(0,0,0);
-      animation: floaty 18s ease-in-out infinite alternate;
-    }
-    @@keyframes floaty{
-      from{ transform: translate(-1.5%, -1%) scale(1.02); }
-      to  { transform: translate(1.5%, 1%) scale(1.06); }
-    }
-
-    /* Particle canvas layer */
-    canvas#particles{
-      position: fixed; inset:0;
-      z-index: 2;
-      pointer-events:none;
-      opacity:.55;
-      filter: blur(.1px);
-    }
-
-    /* ========= APP LAYOUT ========= */
+    /* App */
     .app{
-      position: relative;
-      z-index: 3;
-      min-height: 100vh;
-      min-height: 100dvh;
+      position:relative;z-index:2;
+      min-height:100vh;min-height:100dvh;
       display:grid;
-      grid-template-rows: var(--headerH) 1fr auto;
-      grid-template-columns: var(--sidebarW) 1fr;
-      grid-template-areas:
-        "header header"
-        "sidebar main"
-        "footer footer";
+      grid-template-columns:var(--sidebarW) minmax(0,1fr);
+      grid-template-rows:var(--headerH) minmax(0,1fr) auto;
+      grid-template-areas:"header header" "sidebar main" "footer footer";
     }
 
-    /* ========= HEADER ========= */
     header{
-      grid-area: header;
-      position: sticky;
-      top:0;
-      z-index: 40;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: calc(10px + env(safe-area-inset-top)) 14px 10px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.26);
-      backdrop-filter: blur(12px);
+      grid-area:header;
+      position:sticky;top:0;z-index:60;
+      height:var(--headerH);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:rgba(2,6,18,.42);
+      backdrop-filter:blur(16px);
     }
-    .h-left{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .hamburger{ display:none; }
-
+    body.light header{background:rgba(255,255,255,.68)}
+    .hLeft,.hRight{display:flex;align-items:center;gap:10px;min-width:0}
+    .hLeft{flex:1 1 auto}.hRight{flex:0 0 auto;justify-content:flex-end}
+    .hamburger{display:none}
     .logo{
-      width: 44px; height: 44px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(106,168,255,.95), rgba(139,92,246,.95));
-      box-shadow:
-        0 14px 34px rgba(106,168,255,.14),
-        0 14px 34px rgba(139,92,246,.10);
-      border: 1px solid rgba(255,255,255,.22);
-      position: relative;
-      overflow: hidden;
-      flex: 0 0 auto;
+      width:46px;height:46px;border-radius:18px;flex:0 0 auto;position:relative;overflow:hidden;
+      background:linear-gradient(135deg,var(--blue),var(--purple));
+      box-shadow:0 14px 42px rgba(103,167,255,.16),0 14px 42px rgba(155,114,255,.12);
+      border:1px solid rgba(255,255,255,.24);
     }
-    .logo::after{
-      content:"";
-      position:absolute; inset:-60%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.26), transparent);
-      transform: rotate(25deg);
-      animation: shine 2.9s ease-in-out infinite;
-    }
-    @@keyframes shine{
-      0%{ transform: translateX(-35%) rotate(25deg); opacity: 0; }
-      28%{ opacity: .65; }
-      100%{ transform: translateX(35%) rotate(25deg); opacity: 0; }
-    }
-
-    .h-title{
-      min-width: 0;
-      display:flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .h-title b{
-      font-size: 14px;
-      letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .h-title span{
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 56vw;
-      display:flex; gap:8px; align-items:center;
-    }
-    .kbdHint{
-      font-size: 11px;
-      color: rgba(238,242,255,.80);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      padding: 3px 8px;
-      border-radius: 999px;
-    }
-
-    .h-right{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
+    .logo:before{content:"";position:absolute;inset:9px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.10)}
+    .logo:after{content:"";position:absolute;inset:-70%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);transform:rotate(25deg);animation:shine 3.2s ease-in-out infinite}
+    @keyframes shine{0%{transform:translateX(-36%) rotate(25deg);opacity:0}30%{opacity:.75}100%{transform:translateX(38%) rotate(25deg);opacity:0}}
+    .brand{min-width:0;display:flex;flex-direction:column;gap:2px}
+    .brand b{font-size:15px;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52vw}
+    .brand span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw;display:flex;align-items:center;gap:8px}
+    .kbd{font-size:11px;color:rgba(238,243,255,.86);border:1px solid var(--stroke);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:999px;white-space:nowrap}
+    body.light .kbd{color:#20304e;background:rgba(255,255,255,.65)}
 
     .btn{
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: transform .10s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      user-select: none;
-      box-shadow: var(--shadow2);
-      position: relative;
-      overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
+      border:1px solid var(--stroke);background:rgba(255,255,255,.06);color:var(--text);
+      min-height:40px;padding:9px 12px;border-radius:15px;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:var(--shadow2);transition:transform .14s ease,background .14s ease,border-color .14s ease,box-shadow .14s ease;
+      user-select:none;white-space:nowrap;
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.07);
-      border-color: rgba(106,168,255,.45);
-    }
-    .btn:active{ transform: translateY(0); }
-    .btn.primary{
-      background: rgba(106,168,255,.16);
-      border-color: rgba(106,168,255,.35);
-    }
-    .btn.primary:hover{
-      background: rgba(106,168,255,.22);
-      box-shadow: 0 14px 36px rgba(106,168,255,.10);
-    }
-    .btn.ghost{ background: rgba(255,255,255,.05); }
+    .btn:hover{transform:translateY(-1px);background:rgba(103,167,255,.12);border-color:rgba(103,167,255,.42)}
+    .btn:active{transform:translateY(0)}
+    .btn.primary{background:rgba(103,167,255,.18);border-color:rgba(103,167,255,.38)}
+    .btn.success{background:rgba(121,242,177,.13);border-color:rgba(121,242,177,.34)}
+    .btn.danger{background:rgba(255,116,116,.10);border-color:rgba(255,116,116,.28)}
+    .btn.icon{width:42px;padding:0}
 
-    .status{
-      font-size: 13px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .ok{ color: var(--c); }
-    .warn{ color: var(--w); }
-    .bad{ color: var(--r); }
-
-    /* ========= SIDEBAR ========= */
+    /* Sidebar */
     aside{
-      grid-area: sidebar;
-      position: sticky;
-      top: var(--headerH);
-      align-self: start;
-      height: calc(100vh - var(--headerH));
-      height: calc(100dvh - var(--headerH));
-      padding: 12px;
-      border-right: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-      backdrop-filter: blur(12px);
-      overflow:auto;
-      overscroll-behavior: contain;
+      grid-area:sidebar;position:sticky;top:var(--headerH);align-self:start;
+      height:calc(100vh - var(--headerH));height:calc(100dvh - var(--headerH));
+      padding:12px;border-right:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);backdrop-filter:blur(14px);
+      overflow:auto;overscroll-behavior:contain;
     }
+    body.light aside{background:rgba(255,255,255,.40)}
+    .sideCard,.panel,.hero,.dock{
+      border:1px solid var(--stroke);background:linear-gradient(180deg,var(--panel),rgba(255,255,255,.045));
+      border-radius:var(--radius2);box-shadow:var(--shadow2);position:relative;overflow:hidden;
+    }
+    .sideCard{padding:14px;margin-bottom:12px}
+    .sideCard:before,.panel:before,.hero:before,.dock:before{
+      content:"";position:absolute;inset:-2px;pointer-events:none;opacity:.9;filter:blur(18px);
+      background:radial-gradient(600px 190px at 18% 0%,rgba(103,167,255,.15),transparent 62%),radial-gradient(600px 190px at 90% 20%,rgba(155,114,255,.11),transparent 66%);
+    }
+    .inner{position:relative;z-index:1}
+    .sideHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .sideHead .label,.small{font-size:13px;color:var(--muted)}
+    .searchBox{display:flex;align-items:center;gap:10px;border:1px solid var(--stroke);background:rgba(0,0,0,.16);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow2)}
+    body.light .searchBox{background:rgba(255,255,255,.68)}
+    .searchBox input{width:100%;border:0;outline:none;background:transparent;font-size:14px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .chip{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 10px;font-size:13px;cursor:pointer;user-select:none;transition:.14s ease;display:inline-flex;align-items:center;gap:7px}
+    .chip:hover,.chip.active{background:rgba(103,167,255,.16);border-color:rgba(103,167,255,.45);transform:translateY(-1px)}
+    .statList{display:grid;gap:10px}
+    .statRow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-radius:18px;border:1px solid var(--stroke);background:rgba(255,255,255,.055)}
+    .statLeft{display:flex;align-items:center;gap:10px;min-width:0}.statIcon{width:38px;height:38px;border-radius:15px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid var(--stroke);flex:0 0 auto}.statName{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.statValue{font-size:20px;font-weight:900}
+    .time{font-size:25px;font-weight:900;letter-spacing:.5px}.date{font-size:12px;color:var(--muted);margin-top:4px}.rings{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.ring{width:48px;height:48px;border-radius:50%;position:relative;background:conic-gradient(var(--blue) 0deg,rgba(103,167,255,.10) 0deg);border:1px solid var(--stroke)}.ring:after{content:"";position:absolute;inset:6px;border-radius:50%;background:rgba(0,0,0,.26);border:1px solid var(--stroke)}body.light .ring:after{background:rgba(255,255,255,.62)}.ring span{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:12px;z-index:1}
+    .nav{display:grid;gap:8px}.nav a{text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--stroke);background:rgba(255,255,255,.05);padding:11px 12px;border-radius:16px;color:var(--text)}.nav a:hover{border-color:rgba(103,167,255,.45);background:rgba(103,167,255,.10)}.nav small{color:var(--muted2)}
 
-    .sideCard{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      box-shadow: var(--shadow2);
-      border-radius: var(--radius2);
-      padding: 14px;
-      margin-bottom: 12px;
-      position: relative;
-      overflow:hidden;
-    }
-    .sideCard::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(700px 180px at 20% 0%, rgba(106,168,255,.12), transparent 62%),
-        radial-gradient(700px 180px at 90% 40%, rgba(139,92,246,.10), transparent 66%);
-      filter: blur(18px);
-      opacity: .7;
-      pointer-events:none;
-    }
+    main{grid-area:main;min-width:0;padding:16px}.wrap{max-width:var(--max);margin:0 auto;display:flex;flex-direction:column;gap:14px;min-width:0}
+    .hero{box-shadow:var(--shadow)}.heroInner{position:relative;z-index:1;padding:18px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.85fr);gap:14px;align-items:stretch}.heroLeft{display:flex;flex-direction:column;gap:12px;min-width:0}.tagRow{display:flex;gap:8px;flex-wrap:wrap}.tag{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--stroke);background:rgba(255,255,255,.06);padding:6px 10px;border-radius:999px;font-size:12px;color:rgba(238,243,255,.88)}body.light .tag{color:#20304e}.dot{width:8px;height:8px;border-radius:99px;background:var(--green);box-shadow:0 0 18px rgba(121,242,177,.28)}.heroTitle{font-size:clamp(27px,4vw,48px);line-height:1.08;font-weight:950;letter-spacing:-.8px}.heroDesc{font-size:15px;line-height:1.62;color:var(--muted);max-width:76ch}.heroActions{display:flex;gap:10px;flex-wrap:wrap}.miniGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.miniCard{border:1px solid var(--stroke);background:rgba(0,0,0,.15);border-radius:20px;padding:14px;box-shadow:var(--shadow2);min-width:0;transition:.14s ease}body.light .miniCard{background:rgba(255,255,255,.58)}.miniCard:hover{transform:translateY(-2px);border-color:rgba(103,167,255,.48)}.miniTop{display:flex;justify-content:space-between;gap:10px;font-size:13px}.miniTop span{color:var(--muted2)}.miniValue{font-size:24px;font-weight:950;margin-top:8px}.miniSub{font-size:12px;color:var(--muted);display:flex;gap:7px;align-items:center;margin-top:5px}.pill{font-size:11px;padding:3px 8px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted)}.sparkline{width:100%;height:42px;margin-top:10px;display:block}
 
-    .sideHead{
-      position: relative;
-      z-index: 2;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .sideHead .label{
-      font-size: 13px;
-      color: var(--muted);
-    }
+    .grid2{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(330px,.86fr);gap:14px;align-items:start}.panel{box-shadow:var(--shadow);min-width:0}.panelInner{position:relative;z-index:1;padding:16px;display:flex;flex-direction:column;gap:12px}.panelHead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.title{font-weight:950;letter-spacing:.2px}.sub{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5}
+    .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.select{border:1px solid var(--stroke);background:rgba(255,255,255,.06);color:var(--text);border-radius:14px;padding:9px 10px;outline:none}body.light .select{background:rgba(255,255,255,.72)}
+    .menu{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.tile{grid-column:span 6;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:13px;padding:16px;border-radius:20px;border:1px solid var(--stroke);background:rgba(0,0,0,.16);box-shadow:var(--shadow2);position:relative;overflow:hidden;min-width:0;transition:transform .16s ease,border-color .16s ease,background .16s ease}.tile:before{content:"";position:absolute;inset:-2px;opacity:.88;filter:blur(18px);background:radial-gradient(520px 170px at 12% 10%,rgba(103,167,255,.15),transparent 60%),radial-gradient(520px 170px at 92% 25%,rgba(155,114,255,.12),transparent 66%)}body.light .tile{background:rgba(255,255,255,.62)}.tile:hover{transform:translateY(-2px);border-color:rgba(103,167,255,.58);background:rgba(103,167,255,.11)}.tileIcon{width:50px;height:50px;border-radius:18px;border:1px solid var(--stroke2);background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:23px;flex:0 0 auto;position:relative;z-index:1}.tileText{min-width:0;flex:1;position:relative;z-index:1}.tileTitle{font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tileMeta{display:flex;align-items:center;gap:8px;margin-top:5px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tilePath{overflow:hidden;text-overflow:ellipsis}.favBtn{position:relative;z-index:2;flex:0 0 auto}.empty{grid-column:span 12;padding:16px;border:1px dashed var(--stroke2);border-radius:20px;color:var(--muted);background:rgba(255,255,255,.05)}
+    .viewList .tile{grid-column:span 12}.viewCompact .tile{grid-column:span 4;flex-direction:column;align-items:flex-start}.viewCompact .tileIcon{width:44px;height:44px}.viewCompact .favBtn{position:absolute;right:10px;top:10px}
 
-    .search{
-      position: relative;
-      z-index: 2;
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.16);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .search input{
-      width: 100%;
-      border: 0;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 14px;
-    }
+    .feed{display:flex;flex-direction:column;gap:10px}.event{display:flex;gap:11px;padding:12px;border:1px solid var(--stroke);border-radius:18px;background:rgba(0,0,0,.13);box-shadow:var(--shadow2)}body.light .event{background:rgba(255,255,255,.52)}.evDot{width:12px;height:12px;border-radius:99px;margin-top:4px;flex:0 0 auto}.evBody{min-width:0}.evBody b{font-size:13px}.evBody p{margin:5px 0 0;font-size:12px;color:var(--muted);line-height:1.45}.evMeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}
 
-    .chips{
-      position: relative;
-      z-index: 2;
-      display:flex;
-      gap:10px;
-      flex-wrap: wrap;
-      align-items:center;
-      margin-top: 10px;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(238,242,255,.88);
-      font-size: 13px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .10s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
-      box-shadow: var(--shadow2);
-      -webkit-tap-highlight-color: transparent;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      background: rgba(106,168,255,.12);
-      border-color: rgba(106,168,255,.42);
-    }
-    .chip.active{
-      background: rgba(106,168,255,.18);
-      border-color: rgba(106,168,255,.55);
-      box-shadow: 0 16px 40px rgba(106,168,255,.08), var(--shadow2);
-    }
+    .dock{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:55;padding:8px;display:flex;gap:7px;backdrop-filter:blur(16px)}.dock .btn{min-height:38px;border-radius:14px;padding:8px 10px}.dockLabel{font-size:12px;color:var(--muted);display:flex;align-items:center;padding:0 6px}
 
-    .clockRow{
-      position: relative;
-      z-index: 2;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .time{
-      font-size: 24px;
-      font-weight: 820;
-      letter-spacing: .6px;
-      line-height: 1;
-      text-shadow: 0 0 18px rgba(106,168,255,.12);
-    }
-    .date{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-    .rings{
-      display:flex;
-      gap: 8px;
-      align-items:center;
-    }
-    .ring{
-      width: 46px; height: 46px;
-      border-radius: 50%;
-      background: conic-gradient(var(--ringColor) 0deg, var(--ringBg) 0deg);
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 10px 30px rgba(0,0,0,.22);
-      position: relative;
-    }
-    .ring::after{
-      content:"";
-      position:absolute; inset: 6px;
-      border-radius: 50%;
-      background: rgba(0,0,0,.30);
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .ring span{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 12px;
-      color: rgba(238,242,255,.88);
-      z-index: 2;
-      font-weight: 700;
-    }
+    footer{grid-area:footer;padding:14px 16px calc(18px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);backdrop-filter:blur(12px);color:var(--muted2);font-size:12px}body.light footer{background:rgba(255,255,255,.45)}.footerWrap{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 
-    .stats{
-      position: relative;
-      z-index: 2;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    .statRow{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      transition: transform .10s ease, border-color .12s ease, background .12s ease;
-    }
-    .statRow:hover{
-      transform: translateY(-1px);
-      background: rgba(106,168,255,.08);
-      border-color: rgba(106,168,255,.35);
-    }
-    .statLeft{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width: 0;
-    }
-    .statIcon{
-      width: 36px; height: 36px;
-      border-radius: 14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.14);
-      flex: 0 0 auto;
-    }
-    .statName{
-      font-size: 13px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 190px;
-    }
-    .statValue{
-      font-size: 18px;
-      font-weight: 820;
-      letter-spacing: .3px;
-    }
+    /* Command palette */
+    .cmdk{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.48);backdrop-filter:blur(12px)}body.cmdkOpen .cmdk{display:flex}.cmdkBox{width:min(780px,94vw);max-height:min(82vh,760px);display:flex;flex-direction:column;border:1px solid var(--stroke2);border-radius:26px;background:rgba(8,12,28,.82);box-shadow:0 28px 90px rgba(0,0,0,.58);overflow:hidden}body.light .cmdkBox{background:rgba(255,255,255,.90)}.cmdkTop{padding:12px;border-bottom:1px solid var(--stroke);display:flex;gap:10px;align-items:center}.cmdkTop input{width:100%;border:1px solid var(--stroke);outline:none;background:rgba(255,255,255,.06);padding:13px 13px;border-radius:16px}.cmdkList{overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px}.cmdkItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--stroke);border-radius:18px;background:rgba(255,255,255,.05);cursor:pointer}.cmdkItem.active,.cmdkItem:hover{background:rgba(103,167,255,.12);border-color:rgba(103,167,255,.50)}.cmdkL{display:flex;gap:10px;align-items:center;min-width:0}.cmdkIco{width:38px;height:38px;border-radius:15px;border:1px solid var(--stroke);background:rgba(255,255,255,.07);display:grid;place-items:center;flex:0 0 auto}.cmdkText{min-width:0}.cmdkText b,.cmdkText small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cmdkText small{font-size:12px;color:var(--muted);margin-top:2px}.cmdkFoot{padding:10px 12px;border-top:1px solid var(--stroke);font-size:12px;color:var(--muted2);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 
-    .nav{
-      position: relative;
-      z-index: 2;
-      display:flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .nav a{
-      text-decoration:none;
-      color: rgba(238,242,255,.86);
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      padding: 10px 12px;
-      border-radius: 14px;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
-      transition: transform .10s ease, background .12s ease, border-color .12s ease;
-    }
-    .nav a:hover{
-      transform: translateY(-1px);
-      background: rgba(106,168,255,.10);
-      border-color: rgba(106,168,255,.45);
-    }
-    .nav small{
-      color: var(--muted2);
-      font-size: 12px;
-    }
+    .toast{position:fixed;right:14px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:110;display:flex;flex-direction:column;gap:10px;pointer-events:none}.toastItem{pointer-events:auto;width:min(360px,92vw);display:flex;gap:10px;align-items:flex-start;border:1px solid var(--stroke2);border-radius:20px;background:rgba(8,12,28,.82);backdrop-filter:blur(12px);box-shadow:0 24px 80px rgba(0,0,0,.46);padding:12px;animation:toastIn .18s ease-out}body.light .toastItem{background:rgba(255,255,255,.92)}@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.toastDot{width:12px;height:12px;border-radius:99px;margin-top:4px;flex:0 0 auto}.toastBody{min-width:0}.toastBody b{font-size:13px}.toastBody p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.4}.toastX{margin-left:auto;border:1px solid var(--stroke);background:rgba(255,255,255,.06);color:var(--text);border-radius:12px;padding:6px 9px;cursor:pointer}
+    .backdrop{display:none;position:fixed;inset:var(--headerH) 0 0 0;z-index:49;background:rgba(0,0,0,.48);backdrop-filter:blur(4px)}
 
-    /* ========= MAIN ========= */
-    main{
-      grid-area: main;
-      padding: 16px;
-      min-width: 0;
-    }
-    .wrapMain{
-      max-width: var(--max);
-      margin: 0 auto;
-      display:flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* HERO */
-    .hero{
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position: relative;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(900px 260px at 20% 0%, rgba(106,168,255,.20), transparent 62%),
-        radial-gradient(900px 260px at 80% 0%, rgba(139,92,246,.16), transparent 66%),
-        radial-gradient(900px 260px at 50% 120%, rgba(124,252,178,.10), transparent 70%);
-      filter: blur(18px);
-      opacity: .9;
-      pointer-events:none;
-    }
-    .heroInner{
-      position: relative;
-      padding: 18px;
-      display:grid;
-      grid-template-columns: 1.35fr .95fr;
-      gap: 14px;
-      align-items: stretch;
-      min-width: 0;
-    }
-    .heroLeft{
-      min-width:0;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .tagRow{
-      display:flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items:center;
-    }
-    .tag{
-      font-size: 12px;
-      color: rgba(238,242,255,.88);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      padding: 6px 10px;
-      border-radius: 999px;
-      display:inline-flex;
-      gap: 8px;
-      align-items:center;
-    }
-    .tag .dot{
-      width: 7px; height: 7px; border-radius: 99px;
-      background: rgba(124,252,178,.9);
-      box-shadow: 0 0 14px rgba(124,252,178,.25);
-    }
-    .heroTitle{
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: .2px;
-      line-height: 1.15;
-      margin-top: 2px;
-    }
-    .heroDesc{
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.55;
-      max-width: 70ch;
-    }
-    .heroActions{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-      margin-top: 2px;
-    }
-
-    .heroRight{
-      display:flex;
-      flex-direction: column;
-      gap: 12px;
-      min-width:0;
-    }
-
-    .miniGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .miniCard{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
-      box-shadow: var(--shadow2);
-      padding: 14px;
-      position: relative;
-      overflow:hidden;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      min-width: 0;
-    }
-    .miniCard:hover{
-      transform: translateY(-2px);
-      border-color: rgba(106,168,255,.50);
-      background: rgba(106,168,255,.08);
-    }
-    .miniTop{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
-      min-width: 0;
-    }
-    .miniTop b{ font-size: 13px; letter-spacing:.2px; }
-    .miniTop span{ font-size: 12px; color: var(--muted2); }
-    .miniValue{
-      font-size: 22px;
-      font-weight: 920;
-      margin-top: 8px;
-      letter-spacing: .2px;
-    }
-    .miniSub{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
-      display:flex; gap:8px; align-items:center;
-    }
-    .pill{
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(238,242,255,.86);
-    }
-
-    .sparkline{
-      width:100%;
-      height: 44px;
-      margin-top: 10px;
-      opacity:.95;
-      display:block;
-    }
-
-    /* SECTION GRID */
-    .grid2{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-      align-items:start;
-      min-width: 0;
-    }
-    .panel{
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-      min-width: 0;
-    }
-    .panel::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(900px 240px at 20% 0%, rgba(106,168,255,.16), transparent 62%),
-        radial-gradient(900px 240px at 80% 0%, rgba(139,92,246,.12), transparent 66%);
-      filter: blur(18px);
-      opacity: .85;
-      pointer-events:none;
-    }
-    .panelInner{
-      position: relative;
-      padding: 16px;
-      display:flex;
-      flex-direction: column;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .panelHead{
-      display:flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-      min-width: 0;
-    }
-    .panelHead .left{
-      min-width:0;
-    }
-    .panelHead .title{
-      font-weight: 900;
-      letter-spacing:.2px;
-    }
-    .panelHead .sub{
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    /* MENU GRID */
-    .menu{
-      margin-top: 2px;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      min-width: 0;
-    }
-    .tile{
-      grid-column: span 6;
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      padding: 16px;
-      border-radius: 18px;
-      text-decoration: none;
-      color: var(--text);
-      background: rgba(0,0,0,.16);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: var(--shadow2);
-      position: relative;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition: transform .14s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
-      min-width: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .tile::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(600px 180px at 10% 10%, rgba(106,168,255,.14), transparent 60%),
-        radial-gradient(600px 180px at 90% 30%, rgba(139,92,246,.12), transparent 65%);
-      filter: blur(18px);
-      opacity: .9;
-      pointer-events:none;
-      transform: translateZ(0);
-    }
-    .tile:hover{
-      border-color: rgba(106,168,255,.55);
-      background: rgba(106,168,255,.10);
-      box-shadow: 0 18px 55px rgba(0,0,0,.30);
-    }
-    .tile:active{ transform: translateY(-1px); }
-
-    .tIcon{
-      width: 48px; height: 48px;
-      border-radius: 16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 22px;
-      border: 1px solid rgba(255,255,255,.20);
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.20);
-      position: relative;
-      z-index: 2;
-      flex: 0 0 auto;
-    }
-    .tText{
-      position: relative;
-      z-index: 2;
-      min-width: 0;
-      flex: 1 1 auto;
-    }
-    .tTitle{
-      font-size: 16px;
-      font-weight: 820;
-      letter-spacing: .2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-    .tPath{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-      display:flex; gap:8px; align-items:center;
-    }
-    .badge{
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(238,242,255,.84);
-      flex: 0 0 auto;
-    }
-
-    /* ACTIVITY FEED */
-    .feed{
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .event{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.14);
-      box-shadow: var(--shadow2);
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      min-width: 0;
-    }
-    .event:hover{
-      transform: translateY(-1px);
-      border-color: rgba(139,92,246,.45);
-      background: rgba(139,92,246,.08);
-    }
-    .evDot{
-      width: 12px; height: 12px;
-      border-radius: 99px;
-      background: rgba(106,168,255,.9);
-      box-shadow: 0 0 18px rgba(106,168,255,.18);
-      margin-top: 4px;
-      flex: 0 0 auto;
-    }
-    .evBody{ min-width:0; }
-    .evBody b{ font-size: 13px; letter-spacing:.1px; }
-    .evBody p{
-      margin: 4px 0 0 0;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-    .evMeta{
-      margin-top: 6px;
-      display:flex; gap: 8px; flex-wrap: wrap;
-      color: var(--muted2);
-      font-size: 11px;
-    }
-
-    /* ========= FOOTER ========= */
-    footer{
-      grid-area: footer;
-      padding: 14px 16px calc(14px + env(safe-area-inset-bottom)) 16px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      backdrop-filter: blur(12px);
-      color: var(--muted2);
-      font-size: 12px;
-    }
-    .footerWrap{
-      max-width: var(--max);
-      margin: 0 auto;
-      display:flex;
-      gap: 10px;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      align-items:center;
-    }
-
-    /* ========= MOBILE / RESPONSIVE ========= */
-    @@media (max-width: 1020px){
-      .heroInner{ grid-template-columns: 1fr; }
-      .grid2{ grid-template-columns: 1fr; }
-      .miniGrid{ grid-template-columns: repeat(2, 1fr); }
-      .tile{ grid-column: span 12; }
-    }
-
-    /* Sidebar overlay */
-    .backdrop{
-      display:none;
-      position: fixed;
-      inset: var(--headerH) 0 0 0;
-      background: rgba(0,0,0,.35);
-      z-index: 34;
-    }
-
-    @@media (max-width: 980px){
-      :root{ --sidebarW: 0px; }
-      .app{
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "header"
-          "main"
-          "footer";
-      }
-      aside{
-        position: fixed;
-        top: var(--headerH);
-        left: 0;
-        width: min(88vw, 340px);
-        height: calc(100vh - var(--headerH));
-        height: calc(100dvh - var(--headerH));
-        transform: translateX(-105%);
-        transition: transform .18s ease;
-        z-index: 35;
-        border-right: 1px solid rgba(255,255,255,.12);
-      }
-      body.sidebar-open aside{ transform: translateX(0); }
-      body.sidebar-open .backdrop{ display:block; }
-      .hamburger{ display:inline-flex; }
-      main{ padding: 14px; }
-      .h-title span{ max-width: 54vw; }
-    }
-
-    /* “diet mode” header cho màn rất nhỏ (đỡ tràn) */
-    @@media (max-width: 520px){
-      :root{ --headerH: 64px; }
-      .kbdHint{ display:none; }
-      #openJsonBtn{ display:none; }
-      #status{ display:none; }
-
-      .btn{ padding: 9px 10px; font-size: 13px; border-radius: 12px; }
-      #reloadBtn{ font-size: 0; padding: 9px 10px; }
-      #reloadBtn::before{ content:"🔄"; font-size: 14px; }
-      #cmdkBtn{ font-size: 0; padding: 9px 10px; }
-      #cmdkBtn::before{ content:"⌘K"; font-size: 13px; }
-
-      .ring{ width: 40px; height: 40px; }
-      .ring::after{ inset: 5px; }
-      .time{ font-size: 22px; }
-      .statName{ max-width: 150px; }
-    }
-
-    /* ========= COMMAND PALETTE ========= */
-    .cmdk{
-      position: fixed;
-      inset: 0;
-      z-index: 80;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-    }
-    body.cmdk-open .cmdk{ display:flex; }
-    .cmdkBox{
-      width: min(760px, 94vw);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(10,14,28,.72);
-      box-shadow: 0 22px 80px rgba(0,0,0,.55);
-      overflow:hidden;
-    }
-    .cmdkTop{
-      padding: 12px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      display:flex; gap:10px; align-items:center;
-    }
-    .cmdkTop input{
-      width:100%;
-      border:0; outline: none;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 14px;
-      padding: 12px 12px;
-      color: var(--text);
-      font-size: 14px;
-    }
-    .cmdkList{
-      max-height: min(52vh, 520px);
-      overflow:auto;
-      padding: 10px;
-      display:flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .cmdkItem{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      cursor:pointer;
-      transition: transform .10s ease, border-color .12s ease, background .12s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .cmdkItem:hover{
-      transform: translateY(-1px);
-      border-color: rgba(106,168,255,.45);
-      background: rgba(106,168,255,.10);
-    }
-    .cmdkL{
-      display:flex; gap:10px; align-items:center; min-width:0;
-    }
-    .cmdkIco{
-      width: 36px; height: 36px;
-      border-radius: 14px;
-      display:flex; align-items:center; justify-content:center;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      flex: 0 0 auto;
-    }
-    .cmdkText{ min-width:0; }
-    .cmdkText b{
-      display:block;
-      font-size: 13px;
-      letter-spacing:.1px;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .cmdkText small{
-      display:block;
-      margin-top: 2px;
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      max-width: 52vw;
-    }
-    .cmdkR{
-      color: var(--muted2);
-      font-size: 11px;
-      display:flex;
-      gap: 8px;
-      align-items:center;
-      flex: 0 0 auto;
-    }
-    .keycap{
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      padding: 3px 8px;
-      border-radius: 10px;
-    }
-
-    /* ========= TOAST ========= */
-    .toast{
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 90;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events:none;
-    }
-    .toastItem{
-      pointer-events:auto;
-      width: min(360px, 92vw);
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(10,14,28,.72);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 22px 70px rgba(0,0,0,.45);
-      padding: 12px 12px;
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      animation: pop .18s ease-out;
-    }
-    @@keyframes pop{
-      from{ transform: translateY(6px); opacity: 0; }
-      to{ transform: translateY(0); opacity: 1; }
-    }
-    .toastDot{
-      width: 12px; height: 12px;
-      border-radius: 99px;
-      background: rgba(124,252,178,.9);
-      box-shadow: 0 0 18px rgba(124,252,178,.18);
-      margin-top: 4px;
-      flex: 0 0 auto;
-    }
-    .toastBody{ min-width:0; }
-    .toastBody b{ font-size: 13px; }
-    .toastBody p{ margin: 4px 0 0 0; font-size: 12px; color: var(--muted); line-height:1.45; }
-    .toastX{
-      margin-left:auto;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: rgba(238,242,255,.90);
-      border-radius: 12px;
-      cursor:pointer;
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-
-    /* ========= REDUCED MOTION ========= */
-    @@media (prefers-reduced-motion: reduce){
-      .blobs, .logo::after{ animation: none !important; }
-      .tile, .btn, .chip, aside, .cmdkItem, .miniCard, .statRow, .event{ transition: none !important; }
-      canvas#particles{ display:none !important; }
-    }
+    /* Mobile responsive */
+    @media (max-width:1120px){.heroInner{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.tile{grid-column:span 12}.viewCompact .tile{grid-column:span 6}}
+    @media (max-width:980px){
+      :root{--sidebarW:0px;--headerH:68px}
+      .app{grid-template-columns:1fr;grid-template-areas:"header" "main" "footer"}
+      header{padding-left:10px;padding-right:10px}.hamburger{display:inline-flex}.brand b{max-width:42vw}.brand span{max-width:44vw}.hRight{gap:6px}
+      aside{position:fixed;top:var(--headerH);left:0;width:min(88vw,350px);height:calc(100vh - var(--headerH));height:calc(100dvh - var(--headerH));z-index:50;transform:translateX(-106%);transition:transform .20s ease;background:rgba(6,9,20,.88);border-right:1px solid var(--stroke2)}body.light aside{background:rgba(255,255,255,.90)}body.sidebarOpen aside{transform:translateX(0)}body.sidebarOpen .backdrop{display:block}
+      main{padding:12px}.wrap{max-width:100%}.heroInner{padding:14px}.miniGrid{grid-template-columns:repeat(2,1fr)}.menu{grid-template-columns:1fr}.tile,.viewCompact .tile{grid-column:auto}.dock{max-width:calc(100vw - 24px);overflow:auto}.dockLabel{display:none}
+    }
+    @media (max-width:620px){
+      :root{--headerH:64px}
+      .logo{width:40px;height:40px;border-radius:15px}.brand b{max-width:32vw;font-size:14px}.brand span{max-width:32vw}.kbd,#status,#openJsonBtn,#themeText,#reloadText{display:none!important}.btn{min-height:38px;padding:8px 10px;border-radius:13px}.btn.icon{width:38px}.heroTitle{font-size:28px}.heroDesc{font-size:14px}.heroActions{flex-direction:column}.heroActions .btn{width:100%}.miniGrid{grid-template-columns:1fr}.panelInner{padding:12px}.tile{padding:12px}.tileIcon{width:44px;height:44px;font-size:20px}.tileTitle{font-size:15px}.tileMeta{font-size:11px}.viewCompact .tile{grid-column:auto;flex-direction:row}.toast{right:10px;bottom:calc(74px + env(safe-area-inset-bottom))}.dock .btn span.hideMob{display:none}.cmdk{align-items:flex-start;padding-top:calc(14px + env(safe-area-inset-top))}.cmdkBox{max-height:90dvh}.footerWrap{padding-bottom:44px}
+    }
+    @media (max-width:390px){.brand b{max-width:26vw}.brand span{display:none}.heroTitle{font-size:25px}.hLeft{gap:7px}.hRight{gap:4px}.btn.icon{width:36px}}
+    @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}canvas#particles{display:none!important}}
   </style>
 </head>
-
 <body>
-  <!-- video background (optional, auto fallback if cannot load) -->
-  <div class="bg-video" aria-hidden="true">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="https://cdn.coverr.co/videos/coverr-a-forest-in-the-mist-9716/1080p.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <div class="blobs" aria-hidden="true"></div>
-  <div class="texture" aria-hidden="true"></div>
+  <div class="bgLayer" aria-hidden="true"><div class="aurora"></div><div class="gridFx"></div></div>
   <canvas id="particles" aria-hidden="true"></canvas>
 
   <div class="app">
-    <!-- HEADER -->
     <header>
-      <div class="h-left">
-        <button class="btn hamburger" id="sidebarBtn" aria-label="Mở thanh bên">☰</button>
-        <div class="logo" aria-hidden="true"></div>
-        <div class="h-title">
-          <b>doublef.io.vn — Hyper Dashboard</b>
-          <span>
-            Menu đọc pages.json • Search + Filter • Command Palette
-            <span class="kbdHint">Ctrl/⌘ + K</span>
-          </span>
+      <div class="hLeft">
+        <button class="btn icon hamburger" id="sidebarBtn" aria-label="Mở menu">☰</button>
+        <div class="logo" id="logo" aria-hidden="true"></div>
+        <div class="brand">
+          <b>doublef.io.vn — Hyper Dashboard Pro</b>
+          <span>Menu đọc pages.json • Search • Filter • Command Palette <span class="kbd">Ctrl/⌘ + K</span></span>
         </div>
       </div>
-
-      <div class="h-right">
-        <button class="btn ghost" id="cmdkBtn" title="Mở Command Palette (Ctrl/⌘+K)">⌘K</button>
-        <button class="btn primary" id="reloadBtn">🔄 Tải lại</button>
+      <div class="hRight">
+        <button class="btn icon" id="cmdkBtn" title="Command Palette">⌘K</button>
+        <button class="btn primary" id="reloadBtn" title="Tải lại pages.json">🔄 <span id="reloadText">Tải lại</span></button>
         <button class="btn" id="openJsonBtn">📄 pages.json</button>
-        <span class="status" id="status"></span>
+        <button class="btn icon" id="themeBtn" title="Đổi giao diện">🌙<span id="themeText"></span></button>
+        <span class="small" id="status"></span>
       </div>
     </header>
 
-    <!-- SIDEBAR -->
-    <aside aria-label="Thanh bên">
-      <div class="sideCard">
-        <div class="sideHead">
-          <div class="label">Tìm & lọc</div>
-          <small style="color:var(--muted2)">Sidebar</small>
+    <aside aria-label="Sidebar">
+      <div class="sideCard"><div class="inner">
+        <div class="sideHead"><div class="label">Tìm & lọc</div><small class="small">Sidebar</small></div>
+        <div class="searchBox"><span>🔎</span><input id="q" type="text" placeholder="Tìm trang... ví dụ: thi công, chat, tool" autocomplete="off" /></div>
+        <div class="chips" id="chips">
+          <div class="chip active" data-filter="all">📚 Tất cả</div>
+          <div class="chip" data-filter="tools">🧰 Tools</div>
+          <div class="chip" data-filter="health">📊 Sức khỏe</div>
+          <div class="chip" data-filter="fav">⭐ Ghim</div>
         </div>
+      </div></div>
 
-        <div class="search" title="Tìm theo tên hoặc đường dẫn">
-          <span style="opacity:.88;">🔎</span>
-          <input id="q" type="text" placeholder="Tìm trang... (ví dụ: bmi, tool, report)" />
+      <div class="sideCard"><div class="inner">
+        <div class="sideHead"><div class="label">Thời gian</div><button class="btn" id="toggle24">🕒 24h</button></div>
+        <div class="time" id="time">--:--:--</div><div class="date" id="date">--</div>
+        <div class="rings"><div class="ring" id="ringH"><span id="hTxt">--</span></div><div class="ring" id="ringM"><span id="mTxt">--</span></div><div class="ring" id="ringS"><span id="sTxt">--</span></div></div>
+      </div></div>
+
+      <div class="sideCard"><div class="inner">
+        <div class="sideHead"><div class="label">Quick stats</div><small class="small">Tự đếm</small></div>
+        <div class="statList">
+          <div class="statRow"><div class="statLeft"><div class="statIcon">📄</div><div class="statName">Tổng số trang</div></div><div class="statValue" id="statTotal">--</div></div>
+          <div class="statRow"><div class="statLeft"><div class="statIcon">🧰</div><div class="statName">Nhóm Tools</div></div><div class="statValue" id="statTools">--</div></div>
+          <div class="statRow"><div class="statLeft"><div class="statIcon">📊</div><div class="statName">Nhóm Sức khỏe</div></div><div class="statValue" id="statHealth">--</div></div>
+          <div class="statRow"><div class="statLeft"><div class="statIcon">⭐</div><div class="statName">Đã ghim</div></div><div class="statValue" id="statFav">--</div></div>
         </div>
+      </div></div>
 
-        <div class="chips">
-          <div class="chip active" id="chipAll">📚 Tất cả</div>
-          <div class="chip" id="chipTools">🧰 Tools</div>
-          <div class="chip" id="chipHealth">📊 Sức khỏe</div>
-          <div class="chip" id="chipFav">⭐ Ghim</div>
-        </div>
-      </div>
-
-      <div class="sideCard">
-        <div class="sideHead">
-          <div class="label">Thời gian</div>
-          <button class="btn" id="toggle24">🕒 24h</button>
-        </div>
-
-        <div class="clockRow">
-          <div>
-            <div class="time" id="time">--:--:--</div>
-            <div class="date" id="date">--</div>
-          </div>
-          <div class="rings" aria-label="vòng tiến trình">
-            <div class="ring" id="ringH"><span id="hTxt">--</span></div>
-            <div class="ring" id="ringM"><span id="mTxt">--</span></div>
-            <div class="ring" id="ringS"><span id="sTxt">--</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sideCard">
-        <div class="sideHead">
-          <div class="label">Quick stats</div>
-          <small style="color:var(--muted2)">Tự đếm</small>
-        </div>
-
-        <div class="stats">
-          <div class="statRow">
-            <div class="statLeft">
-              <div class="statIcon">📄</div>
-              <div class="statName">Tổng số trang</div>
-            </div>
-            <div class="statValue" id="statTotal">--</div>
-          </div>
-
-          <div class="statRow">
-            <div class="statLeft">
-              <div class="statIcon">🧰</div>
-              <div class="statName">Nhóm Tools</div>
-            </div>
-            <div class="statValue" id="statTools">--</div>
-          </div>
-
-          <div class="statRow">
-            <div class="statLeft">
-              <div class="statIcon">📊</div>
-              <div class="statName">Nhóm Sức khỏe</div>
-            </div>
-            <div class="statValue" id="statHealth">--</div>
-          </div>
-
-          <div class="statRow">
-            <div class="statLeft">
-              <div class="statIcon">⭐</div>
-              <div class="statName">Đã ghim</div>
-            </div>
-            <div class="statValue" id="statFav">--</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sideCard">
-        <div class="sideHead">
-          <div class="label">Điều hướng nhanh</div>
-          <small style="color:var(--muted2)">Shortcuts</small>
-        </div>
-
+      <div class="sideCard"><div class="inner">
+        <div class="sideHead"><div class="label">Điều hướng nhanh</div><small class="small">Shortcuts</small></div>
         <div class="nav">
-          <a href="pages.json" target="_blank" rel="noopener noreferrer">
-            <span>📄 Mở pages.json</span>
-            <small>new tab</small>
-          </a>
-          <a href="#" id="scrollTop">
-            <span>⬆️ Lên đầu trang</span>
-            <small>top</small>
-          </a>
-          <a href="#" id="clearFav">
-            <span>🧹 Xóa ghim</span>
-            <small>reset</small>
-          </a>
+          <a href="pages.json" target="_blank" rel="noopener noreferrer"><span>📄 Mở pages.json</span><small>new tab</small></a>
+          <a href="#" id="scrollTop"><span>⬆️ Lên đầu trang</span><small>top</small></a>
+          <a href="#" id="clearFav"><span>🧹 Xóa ghim</span><small>reset</small></a>
+          <a href="#" id="copyLinks"><span>🔗 Copy danh sách trang</span><small>copy</small></a>
         </div>
-      </div>
+      </div></div>
     </aside>
-
-    <!-- Mobile backdrop -->
     <div class="backdrop" id="backdrop" aria-hidden="true"></div>
 
-    <!-- MAIN -->
     <main>
-      <div class="wrapMain">
-        <!-- HERO -->
+      <div class="wrap">
         <section class="hero">
           <div class="heroInner">
             <div class="heroLeft">
-              <div class="tagRow">
-                <div class="tag"><span class="dot"></span><span id="heroStatus">Online</span></div>
-                <div class="tag">⚡ Glass UI</div>
-                <div class="tag">🧠 Smart filter</div>
-                <div class="tag">🎛️ Command palette</div>
-              </div>
-
-              <div class="heroTitle">Một cái “cổng teleport” cho tất cả trang của bạn.</div>
-              <div class="heroDesc">
-                Index này đọc <b>pages.json</b> để dựng menu, có lọc nhóm, ghim trang yêu thích, tìm kiếm realtime,
-                hiệu ứng hover-tilt, particle nền, feed hoạt động giả lập cho “vibe dashboard”.
-                (Và đúng kiểu: nhìn phát biết chủ nhân không phải người bình thường.)
-              </div>
-
-              <div class="heroActions">
-                <button class="btn primary" id="openCmdk">🔎 Tìm nhanh (Ctrl/⌘+K)</button>
-                <button class="btn" id="randomBtn">🎲 Mở ngẫu nhiên</button>
-                <button class="btn" id="toastBtn">✨ Test hiệu ứng</button>
-              </div>
+              <div class="tagRow"><div class="tag"><span class="dot"></span><span id="heroStatus">Online</span></div><div class="tag">⚡ Glass UI Pro</div><div class="tag">🧠 Smart filter</div><div class="tag">🎛️ Command palette</div><div class="tag">📱 Mobile first</div></div>
+              <div class="heroTitle">Trung tâm điều hướng siêu cấp cho toàn bộ web của bạn.</div>
+              <div class="heroDesc">Dashboard tự đọc <b>pages.json</b>, dựng menu, tìm kiếm realtime, lọc nhóm, ghim trang yêu thích, mở nhanh bằng Command Palette, đổi giao diện sáng/tối, hỗ trợ điện thoại — máy tính bảng — desktop.</div>
+              <div class="heroActions"><button class="btn primary" id="openCmdk">🔎 Tìm nhanh Ctrl/⌘+K</button><button class="btn" id="randomBtn">🎲 Mở ngẫu nhiên</button><button class="btn success" id="toastBtn">✨ Test hiệu ứng</button></div>
             </div>
-
             <div class="heroRight">
               <div class="miniGrid">
-                <div class="miniCard">
-                  <div class="miniTop">
-                    <b>Pages loaded</b><span id="miniLoaded">--</span>
-                  </div>
-                  <div class="miniValue" id="miniTotal">--</div>
-                  <div class="miniSub">
-                    <span class="pill">Auto</span>
-                    <span style="color:var(--muted2)">từ pages.json</span>
-                  </div>
-                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
-                    <path id="spark1" d="" fill="none" stroke="rgba(106,168,255,.85)" stroke-width="2" />
-                  </svg>
-                </div>
-
-                <div class="miniCard">
-                  <div class="miniTop">
-                    <b>Shortcut</b><span>⌘K</span>
-                  </div>
-                  <div class="miniValue">Command</div>
-                  <div class="miniSub">
-                    <span class="pill">Pro</span>
-                    <span style="color:var(--muted2)">gõ là mở</span>
-                  </div>
-                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
-                    <path id="spark2" d="" fill="none" stroke="rgba(139,92,246,.85)" stroke-width="2" />
-                  </svg>
-                </div>
-
-                <div class="miniCard">
-                  <div class="miniTop">
-                    <b>Uptime</b><span>Live</span>
-                  </div>
-                  <div class="miniValue" id="miniUptime">00:00</div>
-                  <div class="miniSub">
-                    <span class="pill">Local</span>
-                    <span style="color:var(--muted2)">tính từ lúc mở</span>
-                  </div>
-                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
-                    <path id="spark3" d="" fill="none" stroke="rgba(124,252,178,.80)" stroke-width="2" />
-                  </svg>
-                </div>
-
-                <div class="miniCard">
-                  <div class="miniTop">
-                    <b>Focus</b><span id="miniFocus">On</span>
-                  </div>
-                  <div class="miniValue">Particles</div>
-                  <div class="miniSub">
-                    <span class="pill">FX</span>
-                    <span style="color:var(--muted2)">nhẹ mà “đã”</span>
-                  </div>
-                  <svg class="sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
-                    <path id="spark4" d="" fill="none" stroke="rgba(255,184,107,.82)" stroke-width="2" />
-                  </svg>
-                </div>
+                <div class="miniCard"><div class="miniTop"><b>Pages loaded</b><span id="miniLoaded">--</span></div><div class="miniValue" id="miniTotal">--</div><div class="miniSub"><span class="pill">Auto</span><span>từ pages.json</span></div><svg class="sparkline" viewBox="0 0 100 24"><path id="spark1" d="" fill="none" stroke="rgba(103,167,255,.90)" stroke-width="2"/></svg></div>
+                <div class="miniCard"><div class="miniTop"><b>Shortcut</b><span>⌘K</span></div><div class="miniValue">Command</div><div class="miniSub"><span class="pill">Pro</span><span>gõ là mở</span></div><svg class="sparkline" viewBox="0 0 100 24"><path id="spark2" d="" fill="none" stroke="rgba(155,114,255,.90)" stroke-width="2"/></svg></div>
+                <div class="miniCard"><div class="miniTop"><b>Uptime</b><span>Live</span></div><div class="miniValue" id="miniUptime">00:00</div><div class="miniSub"><span class="pill">Local</span><span>từ lúc mở</span></div><svg class="sparkline" viewBox="0 0 100 24"><path id="spark3" d="" fill="none" stroke="rgba(121,242,177,.90)" stroke-width="2"/></svg></div>
+                <div class="miniCard"><div class="miniTop"><b>Focus</b><span id="miniFocus">On</span></div><div class="miniValue">Particles</div><div class="miniSub"><span class="pill">FX</span><span>nhẹ mà đã</span></div><svg class="sparkline" viewBox="0 0 100 24"><path id="spark4" d="" fill="none" stroke="rgba(255,195,107,.90)" stroke-width="2"/></svg></div>
               </div>
             </div>
           </div>
         </section>
 
         <section class="grid2">
-          <!-- MENU PANEL -->
           <section class="panel">
             <div class="panelInner">
               <div class="panelHead">
-                <div class="left" style="min-width:0;">
-                  <div class="title">Danh sách trang</div>
-                  <div class="sub">
-                    Click thẻ để mở trang trong tab mới. Ghim ⭐ để đưa vào filter “Ghim”.
-                    (Ẩn <code>index.html</code>).
-                  </div>
-                </div>
-
-                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                  <span style="font-size:13px; color:var(--muted2)">Tip:</span>
-                  <span style="font-size:13px; color:rgba(238,242,255,.86); border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); padding:8px 10px; border-radius:999px;">
-                    Dùng Ctrl/⌘ + K để tìm siêu nhanh
-                  </span>
-                </div>
+                <div><div class="title">Danh sách trang</div><div class="sub">Click thẻ để mở trang. Ghim ⭐ để ưu tiên và dùng bộ lọc “Ghim”. Tự ẩn <code>index.html</code>.</div></div>
+                <div class="toolbar"><select class="select" id="viewMode"><option value="grid">Lưới</option><option value="list">Danh sách</option><option value="compact">Compact</option></select><select class="select" id="sortMode"><option value="name">Sắp xếp A-Z</option><option value="fav">Ghim trước</option><option value="group">Theo nhóm</option></select></div>
               </div>
-
               <div class="menu" id="menuGrid"></div>
             </div>
           </section>
 
-          <!-- ACTIVITY PANEL -->
           <section class="panel">
             <div class="panelInner">
-              <div class="panelHead">
-                <div class="left">
-                  <div class="title">Activity feed</div>
-                  <div class="sub">Tổng hợp “vibe” hệ thống (giả lập, nhưng nhìn rất thật).</div>
-                </div>
-                <button class="btn" id="regenFeed">🔁 Refresh</button>
-              </div>
-
+              <div class="panelHead"><div><div class="title">Activity feed</div><div class="sub">Hiển thị trạng thái, mẹo sử dụng và hoạt động gần đây.</div></div><button class="btn" id="regenFeed">🔁 Refresh</button></div>
               <div class="feed" id="feed"></div>
             </div>
           </section>
@@ -1393,797 +318,100 @@
       </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer>
-      <div class="footerWrap">
-        <div>© <span id="yy"></span> doublef.io.vn • Hyper Dashboard</div>
-        <div>Thiết kế: <b>Phạm Nhanh 14/12/2003</b> • Build: <span id="buildTag"></span></div>
-      </div>
-    </footer>
+    <footer><div class="footerWrap"><div>© <span id="yy"></span> doublef.io.vn • Hyper Dashboard Pro</div><div>Thiết kế: <b>Phạm Nhanh 14/12/2003</b> • Build: <span id="buildTag"></span></div></div></footer>
   </div>
 
-  <!-- COMMAND PALETTE -->
-  <div class="cmdk" id="cmdk" aria-hidden="true">
-    <div class="cmdkBox" role="dialog" aria-modal="true" aria-label="Command Palette">
-      <div class="cmdkTop">
-        <span style="opacity:.9;">🔎</span>
-        <input id="cmdkInput" type="text" placeholder="Gõ để tìm trang… (Enter để mở, Esc để đóng)" />
-      </div>
-      <div class="cmdkList" id="cmdkList"></div>
-      <div style="padding: 10px 12px; border-top:1px solid rgba(255,255,255,.10); color: var(--muted2); font-size: 12px; display:flex; justify-content: space-between; gap:10px; flex-wrap:wrap;">
-        <span>Enter: mở • ↑↓: chọn • ⭐: ghim • Esc: đóng</span>
-        <span><span class="keycap">Ctrl/⌘</span> + <span class="keycap">K</span></span>
-      </div>
-    </div>
-  </div>
+  <div class="dock" aria-label="Quick dock"><span class="dockLabel">Quick</span><button class="btn" id="dockTop">⬆️ <span class="hideMob">Top</span></button><button class="btn primary" id="dockCmdk">🔎 <span class="hideMob">Search</span></button><button class="btn" id="dockSide">☰ <span class="hideMob">Menu</span></button><button class="btn" id="dockFx">✨ <span class="hideMob">FX</span></button></div>
 
-  <!-- TOAST -->
+  <div class="cmdk" id="cmdk" aria-hidden="true"><div class="cmdkBox" role="dialog" aria-modal="true" aria-label="Command Palette"><div class="cmdkTop"><span>🔎</span><input id="cmdkInput" type="text" placeholder="Gõ tên trang, đường dẫn hoặc nhóm…" autocomplete="off" /></div><div class="cmdkList" id="cmdkList"></div><div class="cmdkFoot"><span>Enter: mở • ↑↓: chọn • ⭐: ghim • Esc: đóng</span><span><span class="kbd">Ctrl/⌘</span> + <span class="kbd">K</span></span></div></div></div>
   <div class="toast" id="toast"></div>
 
   <script>
-    // =========================
-    // Mobile sidebar toggle
-    // =========================
-    const sidebarBtn = document.getElementById("sidebarBtn");
-    const backdrop = document.getElementById("backdrop");
-    function closeSidebar(){ document.body.classList.remove("sidebar-open"); }
-    function toggleSidebar(){ document.body.classList.toggle("sidebar-open"); }
-    if (sidebarBtn) sidebarBtn.addEventListener("click", toggleSidebar);
-    if (backdrop) backdrop.addEventListener("click", closeSidebar);
-    window.addEventListener("keydown", (e)=>{ if (e.key==="Escape") closeSidebar(); });
+    const $ = (s, r=document) => r.querySelector(s);
+    const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+    const norm = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 
-    // =========================
-    // Elements
-    // =========================
-    const menuGrid = document.getElementById("menuGrid");
-    const statusEl = document.getElementById("status");
-    const qEl = document.getElementById("q");
+    const state = { pages: [], filter:'all', view: localStorage.getItem('df_view') || 'grid', sort: localStorage.getItem('df_sort') || 'fav', selected:0, particles:true, use24:true };
+    const FAV_KEY='doublef_favs_v2'; const THEME_KEY='doublef_theme_v2';
+    function favs(){ try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}catch{return[]} }
+    function saveFavs(a){ localStorage.setItem(FAV_KEY, JSON.stringify([...new Set(a)].slice(0,100))) }
+    function isFav(path){ return favs().includes(String(path||'')) }
+    function toggleFav(path){ const p=String(path||''); let a=favs(); a=a.includes(p)?a.filter(x=>x!==p):[p,...a]; saveFavs(a); updateStats(); renderMenu(); renderCmdk(); toast('Đã cập nhật ghim ⭐', p, 'ok') }
+    function groupOf(p){ const s=norm((p.title||'')+' '+(p.path||'')+' '+(p.group||'')); if(s.includes('bmi')||s.includes('suc khoe')||s.includes('health')) return 'health'; if(s.includes('tool')||s.includes('cong cu')||s.includes('tinh')||s.includes('convert')||s.includes('thi cong')) return 'tools'; return 'page' }
+    function badgeOf(p){ const g=groupOf(p); return g==='tools'?'Tools':g==='health'?'Health':'Page' }
 
-    const chipAll = document.getElementById("chipAll");
-    const chipTools = document.getElementById("chipTools");
-    const chipHealth = document.getElementById("chipHealth");
-    const chipFav = document.getElementById("chipFav");
+    const els = {
+      q: $('#q'), menu: $('#menuGrid'), status: $('#status'), cmdk: $('#cmdk'), cmdkInput: $('#cmdkInput'), cmdkList: $('#cmdkList'), toast: $('#toast'),
+      statTotal: $('#statTotal'), statTools: $('#statTools'), statHealth: $('#statHealth'), statFav: $('#statFav'), miniLoaded: $('#miniLoaded'), miniTotal: $('#miniTotal'), miniUptime: $('#miniUptime'), heroStatus: $('#heroStatus'), miniFocus: $('#miniFocus')
+    };
 
-    const statTotal = document.getElementById("statTotal");
-    const statTools = document.getElementById("statTools");
-    const statHealth = document.getElementById("statHealth");
-    const statFav = document.getElementById("statFav");
-
-    const miniLoaded = document.getElementById("miniLoaded");
-    const miniTotal = document.getElementById("miniTotal");
-    const miniUptime = document.getElementById("miniUptime");
-    const miniFocus = document.getElementById("miniFocus");
-
-    const heroStatus = document.getElementById("heroStatus");
-    const toastRoot = document.getElementById("toast");
-
-    const feedEl = document.getElementById("feed");
-    const regenFeedBtn = document.getElementById("regenFeed");
-
-    // CmdK
-    const cmdk = document.getElementById("cmdk");
-    const cmdkBtn = document.getElementById("cmdkBtn");
-    const openCmdkBtn = document.getElementById("openCmdk");
-    const cmdkInput = document.getElementById("cmdkInput");
-    const cmdkList = document.getElementById("cmdkList");
-
-    // Buttons
-    const reloadBtn = document.getElementById("reloadBtn");
-    const openJsonBtn = document.getElementById("openJsonBtn");
-    const randomBtn = document.getElementById("randomBtn");
-    const toastBtn = document.getElementById("toastBtn");
-    const clearFavBtn = document.getElementById("clearFav");
-
-    // =========================
-    // State
-    // =========================
-    let allPages = [];
-    let filterMode = "all"; // all | tools | health | fav
-    let selectedCmdkIndex = 0;
-
-    // Favorites stored in localStorage
-    const FAV_KEY = "doublef_favs_v1";
-    function loadFavs(){
-      try{
-        const raw = localStorage.getItem(FAV_KEY);
-        const arr = raw ? JSON.parse(raw) : [];
-        return Array.isArray(arr) ? arr : [];
-      }catch{ return []; }
-    }
-    function saveFavs(arr){
-      try{ localStorage.setItem(FAV_KEY, JSON.stringify(arr)); }catch{}
-    }
-    function isFav(path){
-      const favs = loadFavs();
-      return favs.includes(String(path||""));
-    }
-    function toggleFav(path){
-      const p = String(path||"");
-      const favs = loadFavs();
-      const idx = favs.indexOf(p);
-      if (idx >= 0) favs.splice(idx,1);
-      else favs.unshift(p);
-      saveFavs(favs.slice(0, 60));
-      updateStats();
-      renderMenu();
-      renderCmdk();
-      toast("Đã cập nhật ghim ⭐", p, "ok");
+    function setStatus(msg, cls=''){ els.status.textContent=msg; els.status.style.color=cls==='ok'?'var(--green)':cls==='warn'?'var(--amber)':'var(--muted)'; clearTimeout(setStatus.t); setStatus.t=setTimeout(()=>els.status.textContent='',3200) }
+    function toast(title,msg='',type='ok'){
+      const color=type==='ok'?'rgba(121,242,177,.95)':type==='warn'?'rgba(255,195,107,.95)':'rgba(255,116,116,.95)';
+      const item=document.createElement('div'); item.className='toastItem'; item.innerHTML=`<div class="toastDot" style="background:${color};box-shadow:0 0 18px ${color.replace('.95','.22')}"></div><div class="toastBody"><b>${esc(title)}</b><p>${esc(msg)}</p></div><button class="toastX">Đóng</button>`;
+      item.querySelector('button').onclick=()=>item.remove(); els.toast.appendChild(item); setTimeout(()=>item.remove(),4200);
     }
 
-    // =========================
-    // Helpers
-    // =========================
-    function setStatus(msg, cls="") {
-      statusEl.className = "status " + cls;
-      statusEl.textContent = msg;
-      clearTimeout(setStatus._t);
-      setStatus._t = setTimeout(() => {
-        statusEl.textContent = "";
-        statusEl.className = "status";
-      }, 3200);
-    }
-
-    function esc(s) {
-      return String(s).replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
-    }
-
-    function normalize(s){ return String(s || "").toLowerCase(); }
-
-    function pickGroup(p){
-      const t = normalize(p.title);
-      const path = normalize(p.path);
-
-      if (path.includes("bmi") || t.includes("bmi") || t.includes("sức khỏe") || t.includes("suc khoe") || t.includes("can nang") || path.includes("health")) {
-        return "health";
-      }
-      if (path.includes("tool") || t.includes("tool") || t.includes("công cụ") || t.includes("cong cu") || t.includes("convert") || t.includes("chuyển") || t.includes("tính")) {
-        return "tools";
-      }
-      return "all";
-    }
-
-    function badgeFor(p){
-      const g = pickGroup(p);
-      if (g === "tools") return "Tools";
-      if (g === "health") return "Health";
-      return "Page";
-    }
-
-    function nowTag(){
-      const d = new Date();
-      const hh = String(d.getHours()).padStart(2,"0");
-      const mm = String(d.getMinutes()).padStart(2,"0");
-      return `${hh}:${mm}`;
-    }
-
-    // =========================
-    // Stats + Sparklines
-    // =========================
-    function genSparkPath(seed=1){
-      let x = 0;
-      let y = 12;
-      let d = `M 0 ${y}`;
-      for (let i=1;i<=10;i++){
-        x = i*10;
-        seed = (seed*9301 + 49297) % 233280;
-        const r = seed/233280;
-        y = 6 + Math.round(r*12);
-        d += ` L ${x} ${y}`;
-      }
-      return d;
-    }
-    function updateSparks(){
-      document.getElementById("spark1").setAttribute("d", genSparkPath(allPages.length+7));
-      document.getElementById("spark2").setAttribute("d", genSparkPath(allPages.length+17));
-      document.getElementById("spark3").setAttribute("d", genSparkPath(allPages.length+27));
-      document.getElementById("spark4").setAttribute("d", genSparkPath(allPages.length+37));
-    }
-
-    function updateStats(){
-      const pages = allPages.filter(p => p && p.path && normalize(p.path) !== "index.html");
-      const tools = pages.filter(p => pickGroup(p) === "tools").length;
-      const health = pages.filter(p => pickGroup(p) === "health").length;
-      const favs = loadFavs().filter(x => pages.some(p => String(p.path) === String(x))).length;
-
-      statTotal.textContent = String(pages.length);
-      statTools.textContent = String(tools);
-      statHealth.textContent = String(health);
-      statFav.textContent = String(favs);
-
-      miniLoaded.textContent = pages.length ? "OK" : "--";
-      miniTotal.textContent = pages.length ? String(pages.length) : "--";
-      updateSparks();
-    }
-
-    // =========================
-    // Chips
-    // =========================
-    function setActiveChip(mode){
-      filterMode = mode;
-      chipAll.classList.toggle("active", mode === "all");
-      chipTools.classList.toggle("active", mode === "tools");
-      chipHealth.classList.toggle("active", mode === "health");
-      chipFav.classList.toggle("active", mode === "fav");
-      renderMenu();
-    }
-
-    // =========================
-    // Render menu
-    // =========================
-    function getFilteredPages(){
-      const query = normalize(qEl.value).trim();
-      const pages = allPages.filter(p => {
-        if (!p || !p.path) return false;
-        if (normalize(p.path) === "index.html") return false;
-
-        if (query) {
-          const hay = normalize(p.title) + " " + normalize(p.path);
-          if (!hay.includes(query)) return false;
-        }
-
-        if (filterMode === "health") return pickGroup(p) === "health";
-        if (filterMode === "tools") return pickGroup(p) === "tools";
-        if (filterMode === "fav") return isFav(p.path);
-        return true;
-      });
-
-      pages.sort((a,b)=>{
-        const fa = isFav(a.path) ? 1 : 0;
-        const fb = isFav(b.path) ? 1 : 0;
-        if (fa !== fb) return fb - fa;
-        return String(a.title||a.path).localeCompare(String(b.title||b.path), "vi", { sensitivity:"base" });
-      });
-
-      return pages;
+    function cleanPages(){ return state.pages.filter(p=>p&&p.path&&norm(p.path)!=='index.html') }
+    function filteredPages(){
+      const q=norm(els.q.value).trim(); let arr=cleanPages().filter(p=>{ const hay=norm((p.title||'')+' '+(p.path||'')+' '+(p.desc||'')+' '+(p.group||'')); if(q&&!hay.includes(q)) return false; if(state.filter==='fav') return isFav(p.path); if(state.filter==='tools') return groupOf(p)==='tools'; if(state.filter==='health') return groupOf(p)==='health'; return true; });
+      arr.sort((a,b)=>{ if(state.sort==='fav'){ const fa=isFav(a.path)?1:0, fb=isFav(b.path)?1:0; if(fa!==fb) return fb-fa; } if(state.sort==='group'){ const ga=groupOf(a), gb=groupOf(b); if(ga!==gb) return ga.localeCompare(gb); } return String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'}); });
+      return arr;
     }
 
     function renderMenu(){
-      menuGrid.innerHTML = "";
-      const pages = getFilteredPages();
-
-      if (!pages.length){
-        menuGrid.innerHTML = `
-          <div style="grid-column: span 12; padding: 14px; color: rgba(238,242,255,.72); border: 1px dashed rgba(255,255,255,.20); border-radius: 18px; background: rgba(0,0,0,.10);">
-            Không tìm thấy trang phù hợp. Thử đổi từ khóa / đổi filter / hoặc ghim ⭐ vài trang.
-          </div>
-        `;
-        return;
-      }
-
-      for (const p of pages){
-        const title = p.title || p.path || "Không tên";
-        const path  = p.path;
-        const icon  = p.icon || (pickGroup(p)==="tools" ? "🧰" : pickGroup(p)==="health" ? "📊" : "🔗");
-        const fav = isFav(path);
-
-        const a = document.createElement("a");
-        a.className = "tile";
-        a.href = path;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-
-        a.innerHTML = `
-          <div class="tIcon">${esc(icon)}</div>
-          <div class="tText">
-            <div class="tTitle">${esc(title)} ${fav ? "⭐" : ""}</div>
-            <div class="tPath">
-              <span class="badge">${esc(badgeFor(p))}</span>
-              <span>${esc(path)}</span>
-            </div>
-          </div>
-          <div style="margin-left:auto; display:flex; gap:8px; align-items:center; position:relative; z-index:2;">
-            <button class="btn ghost" data-fav="${esc(path)}" style="padding:8px 10px; font-size:13px;" title="Ghim/Bỏ ghim ⭐">
-              ${fav ? "⭐" : "☆"}
-            </button>
-          </div>
-        `;
-
-        a.querySelector('button[data-fav]')?.addEventListener("click", (e)=>{
-          e.preventDefault();
-          e.stopPropagation();
-          toggleFav(path);
-        });
-
-        a.addEventListener("mousemove", (e)=>{
-          const r = a.getBoundingClientRect();
-          const dx = (e.clientX - r.left) / r.width - 0.5;
-          const dy = (e.clientY - r.top) / r.height - 0.5;
-          const rx = (-dy * 6).toFixed(2);
-          const ry = (dx * 8).toFixed(2);
-          a.style.transform = `translateY(-2px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-        });
-        a.addEventListener("mouseleave", ()=>{ a.style.transform = ""; });
-
-        menuGrid.appendChild(a);
-      }
+      els.menu.className='menu '+(state.view==='list'?'viewList':state.view==='compact'?'viewCompact':''); els.menu.innerHTML=''; const pages=filteredPages();
+      if(!pages.length){ els.menu.innerHTML='<div class="empty">Không tìm thấy trang phù hợp. Thử đổi từ khóa, đổi filter hoặc thêm trang vào pages.json.</div>'; return; }
+      pages.forEach(p=>{ const fav=isFav(p.path); const a=document.createElement('a'); a.className='tile'; a.href=p.path; a.target='_blank'; a.rel='noopener noreferrer'; a.innerHTML=`<div class="tileIcon">${esc(p.icon|| (groupOf(p)==='tools'?'🧰':groupOf(p)==='health'?'📊':'🔗'))}</div><div class="tileText"><div class="tileTitle">${esc(p.title||p.path)} ${fav?'⭐':''}</div><div class="tileMeta"><span class="pill">${esc(badgeOf(p))}</span><span class="tilePath">${esc(p.path)}</span></div></div><button class="btn icon favBtn" title="Ghim/Bỏ ghim">${fav?'⭐':'☆'}</button>`; a.querySelector('button').onclick=e=>{e.preventDefault();e.stopPropagation();toggleFav(p.path)}; a.onmousemove=e=>{ if(matchMedia('(pointer:fine)').matches){ const r=a.getBoundingClientRect(), dx=(e.clientX-r.left)/r.width-.5, dy=(e.clientY-r.top)/r.height-.5; a.style.transform=`translateY(-2px) rotateX(${(-dy*5).toFixed(2)}deg) rotateY(${(dx*7).toFixed(2)}deg)`; }}; a.onmouseleave=()=>a.style.transform=''; els.menu.appendChild(a); });
     }
 
-    // =========================
-    // Load pages.json
-    // =========================
+    function updateStats(){ const p=cleanPages(), tools=p.filter(x=>groupOf(x)==='tools').length, health=p.filter(x=>groupOf(x)==='health').length, fav=favs().filter(x=>p.some(y=>String(y.path)===String(x))).length; els.statTotal.textContent=p.length; els.statTools.textContent=tools; els.statHealth.textContent=health; els.statFav.textContent=fav; els.miniLoaded.textContent=p.length?'OK':'--'; els.miniTotal.textContent=p.length||'--'; updateSparks(); }
+    function spark(seed){ let d='M 0 12', y=12; for(let i=1;i<=10;i++){ seed=(seed*9301+49297)%233280; y=5+Math.round((seed/233280)*14); d+=` L ${i*10} ${y}`;} return d; }
+    function updateSparks(){ ['spark1','spark2','spark3','spark4'].forEach((id,i)=>$('#'+id).setAttribute('d',spark(state.pages.length+7+i*11))) }
+
     async function loadPages(){
-      setStatus("Đang tải pages.json…");
-
-      menuGrid.innerHTML = `
-        <div style="grid-column: span 12; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px;">
-          ${Array.from({length: 8}).map(() => `
-            <div style="grid-column: span 6; padding: 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); box-shadow: 0 10px 30px rgba(0,0,0,.18);">
-              <div style="height: 14px; width: 55%; background: rgba(255,255,255,.10); border-radius: 10px;"></div>
-              <div style="height: 10px; width: 85%; margin-top: 10px; background: rgba(255,255,255,.07); border-radius: 10px;"></div>
-            </div>
-          `).join("")}
-        </div>
-      `;
-
-      try{
-        const res = await fetch("pages.json?v=" + Date.now(), { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-        if (!Array.isArray(data)) throw new Error("pages.json không phải mảng JSON");
-
-        allPages = data;
-        updateStats();
-        renderMenu();
-        renderCmdk();
-
-        heroStatus.textContent = "Online";
-        setStatus("Menu đã sẵn sàng ✅", "ok");
-        toast("Đã load menu", `${allPages.length} items`, "ok");
-      }catch(e){
-        console.error(e);
-        allPages = [];
-        updateStats();
-
-        menuGrid.innerHTML = `
-          <div style="grid-column: span 12; padding: 14px; color: rgba(255,184,107,.92); border: 1px solid rgba(255,184,107,.25); background: rgba(255,184,107,.08); border-radius: 18px;">
-            Không đọc được <b>pages.json</b>. Kiểm tra GitHub Actions/Build đã xuất file ra root repo chưa.
-          </div>
-        `;
-        heroStatus.textContent = "Offline";
-        setStatus("Lỗi tải pages.json", "warn");
-        toast("Lỗi pages.json", "Chưa đọc được file", "warn");
-      }
+      setStatus('Đang tải pages.json…'); els.menu.innerHTML=Array.from({length:6}).map(()=>'<div class="tile" style="grid-column:span 6;min-height:82px;opacity:.55"><div class="tileText"><div style="height:14px;width:55%;background:rgba(255,255,255,.12);border-radius:10px"></div><div style="height:10px;width:78%;margin-top:12px;background:rgba(255,255,255,.08);border-radius:10px"></div></div></div>').join('');
+      try{ const res=await fetch('pages.json?v='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error('HTTP '+res.status); const data=await res.json(); if(!Array.isArray(data)) throw new Error('pages.json không phải mảng JSON'); state.pages=data; updateStats(); renderMenu(); renderCmdk(); els.heroStatus.textContent='Online'; setStatus('Menu sẵn sàng ✅','ok'); toast('Đã load menu', `${cleanPages().length} trang`, 'ok'); }
+      catch(e){ console.error(e); state.pages=[]; updateStats(); renderMenu(); els.heroStatus.textContent='Offline'; setStatus('Lỗi tải pages.json','warn'); toast('Lỗi pages.json','Kiểm tra file pages.json ở root website','warn'); }
     }
 
-    // Header buttons
-    reloadBtn.addEventListener("click", loadPages);
-    openJsonBtn.addEventListener("click", ()=> window.open("pages.json", "_blank", "noopener,noreferrer"));
+    function openCmdk(){ document.body.classList.add('cmdkOpen'); els.cmdk.setAttribute('aria-hidden','false'); state.selected=0; renderCmdk(); setTimeout(()=>els.cmdkInput.focus(),0) }
+    function closeCmdk(){ document.body.classList.remove('cmdkOpen'); els.cmdk.setAttribute('aria-hidden','true') }
+    function renderCmdk(){ const q=norm(els.cmdkInput.value).trim(); let pages=cleanPages().filter(p=>!q||norm((p.title||'')+' '+(p.path||'')+' '+(p.desc||'')).includes(q)); pages.sort((a,b)=>(isFav(b.path)-isFav(a.path))||String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'})); pages=pages.slice(0,15); if(state.selected>=pages.length)state.selected=pages.length-1; if(state.selected<0)state.selected=0; els.cmdkList.innerHTML=pages.length?'':'<div class="empty">Không có kết quả.</div>'; pages.forEach((p,i)=>{ const div=document.createElement('div'); div.className='cmdkItem '+(i===state.selected?'active':''); div.innerHTML=`<div class="cmdkL"><div class="cmdkIco">${esc(p.icon||'🔗')}</div><div class="cmdkText"><b>${esc(p.title||p.path)} ${isFav(p.path)?'⭐':''}</b><small>${esc(p.path)}</small></div></div><div class="pill">Enter</div>`; div.onclick=()=>{window.open(p.path,'_blank','noopener,noreferrer');toast('Mở trang',p.path,'ok');closeCmdk()}; els.cmdkList.appendChild(div); }); }
+    function currentCmdkPage(){ const q=norm(els.cmdkInput.value).trim(); let pages=cleanPages().filter(p=>!q||norm((p.title||'')+' '+(p.path||'')+' '+(p.desc||'')).includes(q)); pages.sort((a,b)=>(isFav(b.path)-isFav(a.path))||String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'})); return pages.slice(0,15)[state.selected]; }
 
-    // Sidebar interactions
-    qEl.addEventListener("input", () => { renderMenu(); renderCmdk(); });
+    function toggleSidebar(){document.body.classList.toggle('sidebarOpen')} function closeSidebar(){document.body.classList.remove('sidebarOpen')}
+    $('#sidebarBtn').onclick=toggleSidebar; $('#dockSide').onclick=toggleSidebar; $('#backdrop').onclick=closeSidebar;
+    $('#reloadBtn').onclick=loadPages; $('#openJsonBtn').onclick=()=>open('pages.json','_blank','noopener,noreferrer'); $('#openCmdk').onclick=openCmdk; $('#cmdkBtn').onclick=openCmdk; $('#dockCmdk').onclick=openCmdk; $('#cmdk').onclick=e=>{ if(e.target.id==='cmdk') closeCmdk(); };
+    $('#randomBtn').onclick=()=>{ const p=cleanPages(); if(!p.length)return toast('Không có trang','pages.json trống','warn'); const x=p[Math.floor(Math.random()*p.length)]; open(x.path,'_blank','noopener,noreferrer'); toast('Mở ngẫu nhiên 🎲',x.path,'ok') };
+    $('#toastBtn').onclick=()=>toast('Hiệu ứng Pro ✨','Dashboard đang hoạt động ổn định','ok'); $('#dockTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+    $('#scrollTop').onclick=e=>{e.preventDefault();scrollTo({top:0,behavior:'smooth'});closeSidebar()}; $('#clearFav').onclick=e=>{e.preventDefault();saveFavs([]);updateStats();renderMenu();renderCmdk();toast('Đã xóa ghim','Favorites reset','ok')};
+    $('#copyLinks').onclick=async e=>{ e.preventDefault(); const text=cleanPages().map(p=>`${p.title||p.path}: ${location.origin+'/'+p.path}`).join('\n'); try{await navigator.clipboard.writeText(text);toast('Đã copy danh sách trang','Clipboard đã cập nhật','ok')}catch{toast('Không copy được','Trình duyệt chặn clipboard','warn')} };
+    $('#q').oninput=()=>{renderMenu();renderCmdk()}; $('#cmdkInput').oninput=()=>{state.selected=0;renderCmdk()}; $('#viewMode').value=state.view; $('#sortMode').value=state.sort; $('#viewMode').onchange=e=>{state.view=e.target.value;localStorage.setItem('df_view',state.view);renderMenu()}; $('#sortMode').onchange=e=>{state.sort=e.target.value;localStorage.setItem('df_sort',state.sort);renderMenu()};
+    $('#chips').onclick=e=>{ const chip=e.target.closest('.chip'); if(!chip)return; state.filter=chip.dataset.filter; $$('.chip',$('#chips')).forEach(x=>x.classList.toggle('active',x===chip)); renderMenu(); closeSidebar(); };
 
-    chipAll.addEventListener("click", () => setActiveChip("all"));
-    chipTools.addEventListener("click", () => setActiveChip("tools"));
-    chipHealth.addEventListener("click", () => setActiveChip("health"));
-    chipFav.addEventListener("click", () => setActiveChip("fav"));
+    window.addEventListener('keydown',e=>{ const mod=(navigator.platform.toLowerCase().includes('mac')?e.metaKey:e.ctrlKey); if(mod&&e.key.toLowerCase()==='k'){e.preventDefault(); document.body.classList.contains('cmdkOpen')?closeCmdk():openCmdk(); return;} if(e.key==='Escape'){closeCmdk();closeSidebar();return;} if(!document.body.classList.contains('cmdkOpen'))return; if(e.key==='ArrowDown'){e.preventDefault();state.selected++;renderCmdk()} if(e.key==='ArrowUp'){e.preventDefault();state.selected--;renderCmdk()} if(e.key==='Enter'){e.preventDefault(); const p=currentCmdkPage(); if(p){open(p.path,'_blank','noopener,noreferrer');toast('Mở trang',p.path,'ok');closeCmdk();}} });
 
-    // Scroll top
-    document.getElementById("scrollTop").addEventListener("click", (e)=>{
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      closeSidebar();
-    });
+    // Theme
+    function applyTheme(){ const t=localStorage.getItem(THEME_KEY)||'dark'; document.body.classList.toggle('light',t==='light'); $('#themeBtn').firstChild.nodeValue=t==='light'?'☀️':'🌙'; }
+    $('#themeBtn').onclick=()=>{ const next=document.body.classList.contains('light')?'dark':'light'; localStorage.setItem(THEME_KEY,next); applyTheme(); toast('Đã đổi giao diện',next==='light'?'Light mode':'Dark mode','ok')}; applyTheme();
 
-    // Close sidebar after clicking any menu tile on mobile
-    menuGrid.addEventListener("click", () => {
-      if (window.matchMedia("(max-width: 980px)").matches) closeSidebar();
-    });
+    // Clock
+    function pad(n){return String(n).padStart(2,'0')} function ring(el,ratio){el.style.background=`conic-gradient(var(--blue) ${Math.max(0,Math.min(1,ratio))*360}deg, rgba(103,167,255,.10) 0deg)`}
+    function tick(){ const d=new Date(), h24=d.getHours(), h=state.use24?h24:(h24%12||12), m=d.getMinutes(), s=d.getSeconds(); $('#time').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`+(state.use24?'':h24>=12?' PM':' AM'); $('#date').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',year:'numeric',month:'long',day:'numeric'}); $('#hTxt').textContent=pad(h24); $('#mTxt').textContent=pad(m); $('#sTxt').textContent=pad(s); ring($('#ringS'),s/60); ring($('#ringM'),(m+s/60)/60); ring($('#ringH'),((h24%24)+m/60)/24); }
+    $('#toggle24').onclick=()=>{state.use24=!state.use24;$('#toggle24').textContent=state.use24?'🕒 24h':'🕒 12h';tick()}; setInterval(tick,250); tick();
+    const start=Date.now(); setInterval(()=>{const t=Math.floor((Date.now()-start)/1000), mm=pad(Math.floor(t/60)), ss=pad(t%60); els.miniUptime.textContent=`${mm}:${ss}`},500);
 
-    // Clear fav
-    clearFavBtn.addEventListener("click", (e)=>{
-      e.preventDefault();
-      saveFavs([]);
-      updateStats();
-      renderMenu();
-      renderCmdk();
-      toast("Đã xóa ghim", "Favorites reset", "ok");
-    });
+    // Feed
+    function feed(){ const samples=[['pages.json synced','Dashboard đã đồng bộ danh sách trang từ JSON.',['sync','json','ok']],['Responsive ready','Giao diện tự thích nghi điện thoại, tablet và desktop.',['mobile','ui','pro']],['Favorites updated','Ghim ⭐ giúp ưu tiên trang quan trọng.',['fav','quick']],['Command palette ready','Ctrl/⌘ + K để mở cổng tìm kiếm siêu tốc.',['cmdk','speed']],['Theme switched','Hỗ trợ giao diện sáng/tối theo nhu cầu.',['theme','vip']]]; const colors=['var(--blue)','var(--purple)','var(--green)','var(--amber)']; $('#feed').innerHTML=Array.from({length:5}).map((_,i)=>{const s=samples[(i+Math.floor(Math.random()*samples.length))%samples.length];return `<div class="event"><div class="evDot" style="background:${colors[i%colors.length]};box-shadow:0 0 18px ${colors[i%colors.length]}"></div><div class="evBody"><b>${esc(s[0])}</b><p>${esc(s[1])}</p><div class="evMeta"><span class="pill">${i?'vừa xong':'just now'}</span>${s[2].map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div></div></div>`}).join('') }
+    $('#regenFeed').onclick=()=>{feed();toast('Feed refreshed','Đã làm mới activity','ok')}; feed();
 
-    // Random open
-    randomBtn.addEventListener("click", ()=>{
-      const pages = allPages.filter(p => p && p.path && normalize(p.path) !== "index.html");
-      if (!pages.length) return toast("Không có trang", "pages.json trống", "warn");
-      const p = pages[Math.floor(Math.random() * pages.length)];
-      window.open(p.path, "_blank", "noopener,noreferrer");
-      toast("Mở ngẫu nhiên 🎲", p.path, "ok");
-    });
+    // Particles
+    const canvas=$('#particles'), ctx=canvas.getContext('2d'); let parts=[]; function resize(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);initParts()} addEventListener('resize',resize); function initParts(){parts=Array.from({length:Math.min(90,Math.floor(innerWidth*innerHeight/22000))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*2.1,vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45,a:.18+Math.random()*.35}))} resize(); let mx=innerWidth/2,my=innerHeight/2; addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY}); function draw(){ctx.clearRect(0,0,innerWidth,innerHeight); if(state.particles){ for(let i=0;i<parts.length;i++){const p=parts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<-20)p.x=innerWidth+20;if(p.x>innerWidth+20)p.x=-20;if(p.y<-20)p.y=innerHeight+20;if(p.y>innerHeight+20)p.y=-20;const dx=mx-p.x,dy=my-p.y,dist=Math.hypot(dx,dy)||1;if(dist<160){p.x-=dx/dist*.12;p.y-=dy/dist*.12}ctx.globalAlpha=p.a;ctx.fillStyle='rgba(238,243,255,.85)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();for(let j=i+1;j<parts.length;j++){const q=parts[j],dd=(q.x-p.x)**2+(q.y-p.y)**2;if(dd<130*130){ctx.globalAlpha=.09*(1-dd/(130*130));ctx.strokeStyle='rgba(103,167,255,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}}}} ctx.globalAlpha=1;requestAnimationFrame(draw)} draw(); function toggleFx(){state.particles=!state.particles;els.miniFocus.textContent=state.particles?'On':'Off';toast('Particles',state.particles?'Đã bật hiệu ứng nền':'Đã tắt hiệu ứng nền','ok')} $('#dockFx').onclick=toggleFx; $('#logo').ondblclick=toggleFx;
 
-    // =========================
-    // Clock + rings
-    // =========================
-    const timeEl = document.getElementById("time");
-    const dateEl = document.getElementById("date");
-    const ringH = document.getElementById("ringH");
-    const ringM = document.getElementById("ringM");
-    const ringS = document.getElementById("ringS");
-    const hTxt = document.getElementById("hTxt");
-    const mTxt = document.getElementById("mTxt");
-    const sTxt = document.getElementById("sTxt");
-    const toggle24Btn = document.getElementById("toggle24");
-    let use24 = true;
-
-    function pad2(n){ return String(n).padStart(2,"0"); }
-    function setRing(el, ratio){
-      const deg = Math.max(0, Math.min(1, ratio)) * 360;
-      el.style.background = `conic-gradient(var(--ringColor) ${deg}deg, var(--ringBg) 0deg)`;
-    }
-
-    function tick(){
-      const now = new Date();
-      const h24 = now.getHours();
-      const h = use24 ? h24 : ((h24 % 12) || 12);
-      const m = now.getMinutes();
-      const s = now.getSeconds();
-
-      timeEl.textContent = `${pad2(h)}:${pad2(m)}:${pad2(s)}` + (use24 ? "" : (h24 >= 12 ? " PM" : " AM"));
-      dateEl.textContent = now.toLocaleDateString("vi-VN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
-
-      hTxt.textContent = pad2(h24);
-      mTxt.textContent = pad2(m);
-      sTxt.textContent = pad2(s);
-
-      setRing(ringS, s/60);
-      setRing(ringM, (m + s/60)/60);
-      setRing(ringH, ((h24%24) + m/60)/24);
-    }
-
-    toggle24Btn.addEventListener("click", ()=>{
-      use24 = !use24;
-      toggle24Btn.textContent = use24 ? "🕒 24h" : "🕒 12h";
-      tick();
-    });
-
-    setInterval(tick, 250);
-    tick();
-
-    // Footer
-    document.getElementById("yy").textContent = String(new Date().getFullYear());
-    document.getElementById("buildTag").textContent = "hyper-" + Math.random().toString(16).slice(2,8);
-
-    // Uptime
-    const startAt = Date.now();
-    setInterval(()=>{
-      const t = Math.floor((Date.now() - startAt)/1000);
-      const mm = String(Math.floor(t/60)).padStart(2,"0");
-      const ss = String(t%60).padStart(2,"0");
-      miniUptime.textContent = `${mm}:${ss}`;
-    }, 500);
-
-    // =========================
-    // Activity feed (fake but useful)
-    // =========================
-    function randPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-    function genFeed(){
-      const samples = [
-        { t:"pages.json synced", p:"Dashboard đã đồng bộ danh sách trang từ nguồn JSON.", m:["sync","json","ok"] },
-        { t:"Favorites updated", p:"Ghim ⭐ giúp bạn bật mode “Ghim” và ưu tiên trang quan trọng.", m:["fav","quick","pro"] },
-        { t:"Search hot path", p:"Tìm theo từ khóa: title + path. Nhanh như… suy nghĩ.", m:["search","filter","fast"] },
-        { t:"Open in new tab", p:"Click card để mở tab mới. Nhẹ nhàng mà hiệu quả.", m:["ux","tabs","safe"] },
-        { t:"Command palette ready", p:"Ctrl/⌘ + K để mở “cổng” tìm kiếm siêu tốc.", m:["cmdk","keyboard","speed"] },
-      ];
-
-      const dots = ["rgba(106,168,255,.9)","rgba(139,92,246,.9)","rgba(124,252,178,.9)","rgba(255,184,107,.9)"];
-      const events = Array.from({length: 6}).map((_,i)=>{
-        const s = randPick(samples);
-        return { ...s, time: (i===0 ? "just now" : `${nowTag()}`), dot: dots[i % dots.length] }
-      });
-
-      feedEl.innerHTML = "";
-      for (const e of events){
-        const div = document.createElement("div");
-        div.className = "event";
-        div.innerHTML = `
-          <div class="evDot" style="background:${e.dot}; box-shadow:0 0 18px ${e.dot.replace(',.9',',.18')}"></div>
-          <div class="evBody">
-            <b>${esc(e.t)}</b>
-            <p>${esc(e.p)}</p>
-            <div class="evMeta">
-              <span>⏱ ${esc(e.time)}</span>
-              ${e.m.map(x=>`<span class="badge">${esc(x)}</span>`).join("")}
-            </div>
-          </div>
-        `;
-        feedEl.appendChild(div);
-      }
-    }
-    regenFeedBtn.addEventListener("click", ()=>{
-      genFeed();
-      toast("Feed refreshed", "Đã làm mới activity", "ok");
-    });
-    genFeed();
-
-    // =========================
-    // Command palette
-    // =========================
-    function openCmdk(){
-      document.body.classList.add("cmdk-open");
-      cmdk.setAttribute("aria-hidden","false");
-      selectedCmdkIndex = 0;
-      renderCmdk();
-      setTimeout(()=> cmdkInput.focus(), 0);
-    }
-    function closeCmdk(){
-      document.body.classList.remove("cmdk-open");
-      cmdk.setAttribute("aria-hidden","true");
-    }
-    function toggleCmdk(){
-      if (document.body.classList.contains("cmdk-open")) closeCmdk();
-      else openCmdk();
-    }
-
-    cmdkBtn.addEventListener("click", openCmdk);
-    openCmdkBtn.addEventListener("click", openCmdk);
-
-    cmdk.addEventListener("click", (e)=>{
-      if (e.target === cmdk) closeCmdk();
-    });
-
-    function renderCmdk(){
-      const q = normalize(cmdkInput.value).trim();
-      const pages = allPages
-        .filter(p => p && p.path && normalize(p.path) !== "index.html")
-        .filter(p => {
-          if (!q) return true;
-          const hay = normalize(p.title) + " " + normalize(p.path);
-          return hay.includes(q);
-        })
-        .sort((a,b)=>{
-          const fa = isFav(a.path) ? 1 : 0;
-          const fb = isFav(b.path) ? 1 : 0;
-          if (fa !== fb) return fb - fa;
-          return String(a.title||a.path).localeCompare(String(b.title||b.path), "vi", { sensitivity:"base" });
-        })
-        .slice(0, 14);
-
-      if (!pages.length){
-        cmdkList.innerHTML = `
-          <div style="padding: 12px; color: var(--muted); border: 1px dashed rgba(255,255,255,.18); background: rgba(0,0,0,.10); border-radius: 16px;">
-            Không có kết quả. Thử từ khóa khác.
-          </div>
-        `;
-        return;
-      }
-
-      if (selectedCmdkIndex >= pages.length) selectedCmdkIndex = pages.length - 1;
-      if (selectedCmdkIndex < 0) selectedCmdkIndex = 0;
-
-      cmdkList.innerHTML = "";
-      pages.forEach((p, idx)=>{
-        const div = document.createElement("div");
-        div.className = "cmdkItem";
-        if (idx === selectedCmdkIndex){
-          div.style.borderColor = "rgba(106,168,255,.55)";
-          div.style.background = "rgba(106,168,255,.10)";
-        }
-        const fav = isFav(p.path);
-
-        div.innerHTML = `
-          <div class="cmdkL">
-            <div class="cmdkIco">${esc(p.icon || "🔗")}</div>
-            <div class="cmdkText">
-              <b>${esc(p.title || p.path)} ${fav ? "⭐" : ""}</b>
-              <small>${esc(p.path)}</small>
-            </div>
-          </div>
-          <div class="cmdkR">
-            <span class="keycap">Enter</span>
-            <span class="keycap" data-fav="${esc(p.path)}">⭐</span>
-          </div>
-        `;
-
-        div.addEventListener("click", ()=>{
-          window.open(p.path, "_blank", "noopener,noreferrer");
-          toast("Mở trang", p.path, "ok");
-          closeCmdk();
-        });
-
-        div.querySelector('[data-fav]')?.addEventListener("click", (e)=>{
-          e.stopPropagation();
-          toggleFav(p.path);
-        });
-
-        cmdkList.appendChild(div);
-      });
-    }
-
-    cmdkInput.addEventListener("input", ()=>{
-      selectedCmdkIndex = 0;
-      renderCmdk();
-    });
-
-    window.addEventListener("keydown", (e)=>{
-      const isMac = navigator.platform.toLowerCase().includes("mac");
-      const mod = isMac ? e.metaKey : e.ctrlKey;
-
-      // Ctrl/Cmd + K
-      if (mod && e.key.toLowerCase() === "k"){
-        e.preventDefault();
-        toggleCmdk();
-        return;
-      }
-
-      if (!document.body.classList.contains("cmdk-open")) return;
-
-      if (e.key === "Escape"){
-        e.preventDefault();
-        closeCmdk();
-        return;
-      }
-
-      const items = cmdkList.querySelectorAll(".cmdkItem");
-      if (!items.length) return;
-
-      if (e.key === "ArrowDown"){
-        e.preventDefault();
-        selectedCmdkIndex++;
-        renderCmdk();
-        items[Math.min(selectedCmdkIndex, items.length-1)]?.scrollIntoView({ block:"nearest" });
-      } else if (e.key === "ArrowUp"){
-        e.preventDefault();
-        selectedCmdkIndex--;
-        renderCmdk();
-        items[Math.max(selectedCmdkIndex, 0)]?.scrollIntoView({ block:"nearest" });
-      } else if (e.key === "Enter"){
-        e.preventDefault();
-        const q = normalize(cmdkInput.value).trim();
-        const pages = allPages
-          .filter(p => p && p.path && normalize(p.path) !== "index.html")
-          .filter(p => !q || (normalize(p.title)+" "+normalize(p.path)).includes(q))
-          .sort((a,b)=>{
-            const fa = isFav(a.path) ? 1 : 0;
-            const fb = isFav(b.path) ? 1 : 0;
-            if (fa !== fb) return fb - fa;
-            return String(a.title||a.path).localeCompare(String(b.title||b.path), "vi", { sensitivity:"base" });
-          })
-          .slice(0, 14);
-
-        const sel = pages[selectedCmdkIndex];
-        if (sel){
-          window.open(sel.path, "_blank", "noopener,noreferrer");
-          toast("Mở trang", sel.path, "ok");
-          closeCmdk();
-        }
-      } else if (e.key === "*"){
-        toggleParticles();
-      }
-    });
-
-    // =========================
-    // Toast
-    // =========================
-    function toast(title, msg, type="ok"){
-      const item = document.createElement("div");
-      item.className = "toastItem";
-      const dotColor = type==="ok" ? "rgba(124,252,178,.9)" : type==="warn" ? "rgba(255,184,107,.9)" : "rgba(255,107,107,.9)";
-      item.innerHTML = `
-        <div class="toastDot" style="background:${dotColor}; box-shadow:0 0 18px ${dotColor.replace(',.9',',.18')}"></div>
-        <div class="toastBody">
-          <b>${esc(title)}</b>
-          <p>${esc(msg)}</p>
-        </div>
-        <button class="toastX">Đóng</button>
-      `;
-      item.querySelector(".toastX").addEventListener("click", ()=> item.remove());
-      toastRoot.appendChild(item);
-      setTimeout(()=> item.remove(), 4200);
-    }
-    toastBtn.addEventListener("click", ()=> toast("Hiệu ứng OK ✨", "Toast + particles + tilt đang hoạt động", "ok"));
-
-    // =========================
-    // Particles (lightweight)
-    // =========================
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let P_ON = true;
-
-    function resizeCanvas(){
-      canvas.width = Math.floor(window.innerWidth * devicePixelRatio);
-      canvas.height = Math.floor(window.innerHeight * devicePixelRatio);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    const particles = [];
-    function initParticles(){
-      particles.length = 0;
-      const count = Math.min(80, Math.floor((window.innerWidth * window.innerHeight) / 22000));
-      for (let i=0;i<count;i++){
-        particles.push({
-          x: Math.random()*window.innerWidth,
-          y: Math.random()*window.innerHeight,
-          r: 1 + Math.random()*2.2,
-          vx: (-0.6 + Math.random()*1.2) * 0.45,
-          vy: (-0.6 + Math.random()*1.2) * 0.45,
-          a: 0.20 + Math.random()*0.35
-        });
-      }
-    }
-    initParticles();
-
-    let mx = window.innerWidth/2, my = window.innerHeight/2;
-    window.addEventListener("mousemove", (e)=>{ mx = e.clientX; my = e.clientY; });
-
-    function drawParticles(){
-      if (!P_ON){
-        ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-        requestAnimationFrame(drawParticles);
-        return;
-      }
-
-      ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-
-      for (let i=0;i<particles.length;i++){
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < -20) p.x = window.innerWidth + 20;
-        if (p.x > window.innerWidth + 20) p.x = -20;
-        if (p.y < -20) p.y = window.innerHeight + 20;
-        if (p.y > window.innerHeight + 20) p.y = -20;
-
-        const dx = mx - p.x, dy = my - p.y;
-        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-        if (dist < 180){
-          p.x -= (dx/dist) * 0.15;
-          p.y -= (dy/dist) * 0.15;
-        }
-
-        ctx.globalAlpha = p.a;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        ctx.fillStyle = "rgba(238,242,255,.85)";
-        ctx.fill();
-
-        for (let j=i+1;j<particles.length;j++){
-          const q = particles[j];
-          const ddx = q.x - p.x, ddy = q.y - p.y;
-          const d2 = ddx*ddx + ddy*ddy;
-          if (d2 < 140*140){
-            const alpha = 0.10 * (1 - d2/(140*140));
-            ctx.globalAlpha = alpha;
-            ctx.strokeStyle = "rgba(106,168,255,.85)";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(q.x, q.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(drawParticles);
-    }
-    requestAnimationFrame(drawParticles);
-
-    function toggleParticles(){
-      P_ON = !P_ON;
-      miniFocus.textContent = P_ON ? "On" : "Off";
-      toast("Particles", P_ON ? "Bật hiệu ứng nền" : "Tắt hiệu ứng nền", "ok");
-    }
-    document.querySelector(".logo")?.addEventListener("dblclick", toggleParticles);
-
-    // =========================
-    // Video fallback
-    // =========================
-    const bgVid = document.querySelector(".bg-video video");
-    if (bgVid){
-      bgVid.addEventListener("error", ()=>{
-        document.querySelector(".bg-video").style.opacity = ".10";
-      });
-    }
-
-    // =========================
     // Init
-    // =========================
-    loadPages();
-    setTimeout(()=> toast("Tip", "Double-click logo để bật/tắt particles.", "ok"), 900);
+    $('#yy').textContent=new Date().getFullYear(); $('#buildTag').textContent='vip-pro-'+Math.random().toString(16).slice(2,8); loadPages(); setTimeout(()=>toast('Tip','Double click logo để bật/tắt particles.','ok'),900);
   </script>
 </body>
 </html>

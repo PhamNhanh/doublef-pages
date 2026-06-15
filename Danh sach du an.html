@@ -49,22 +49,7 @@
   function filtered(){const q=$('q').value.trim().toLowerCase();const st=$('status').value;return projects.filter(p=>{const hay=[p.id,p.code,p.name,p.customer,p.contact,p.status].join(' ').toLowerCase();if(q&&!hay.includes(q))return false;if(st&&p.status!==st)return false;return true})}
   function badge(status){let cls='';if(status==='Đã thanh toán')cls='good';else if(status==='Đang thi công'||status==='Đã nghiệm thu')cls='warn';else if(status==='Bảo hành')cls='good';return `<span class="pill ${cls}">${esc(status||'—')}</span>`}
   function render(){const arr=filtered();const total=arr.reduce((s,p)=>s+(Number(p.total)||0),0), paid=arr.reduce((s,p)=>s+(Number(p.paid)||0),0), remain=arr.reduce((s,p)=>s+(Number(p.remain)||0),0);$('stTotal').textContent=arr.length;$('stValue').textContent=fmt(total);$('stPaid').textContent=fmt(paid);$('stRemain').textContent=fmt(remain);if(!arr.length){$('content').className='empty';$('content').textContent='Chưa có dự án phù hợp.';return}$('content').className='table-wrap';$('content').innerHTML=`<table><thead><tr><th>Mã CT</th><th>Tên công trình</th><th>Khách hàng</th><th>SĐT</th><th>Trạng thái</th><th class="num">Tổng tiền</th><th class="num">Đã TT</th><th class="num">Còn lại</th><th>Cập nhật</th><th class="num">Thao tác</th></tr></thead><tbody>${arr.map(p=>`<tr><td><b>${esc(p.code||p.id)}</b></td><td>${esc(p.name||'—')}</td><td>${esc(p.customer||'—')}</td><td>${esc(p.contact||'—')}</td><td>${badge(p.status)}</td><td class="num"><b>${fmt(p.total)}</b></td><td class="num">${fmt(p.paid)}</td><td class="num"><b>${fmt(p.remain)}</b></td><td>${esc(p.updatedAt||'')}</td><td><div class="row-actions"><button class="primary" onclick="openProject('${esc(p.id)}')">Mở</button><button onclick="copyId('${esc(p.id)}')">Copy ID</button><button class="danger" onclick="deleteProject('${esc(p.id)}')">Xóa</button></div></td></tr>`).join('')}</tbody></table>`}
-  const OPEN_PROJECT_PAYLOAD_KEY='construction_open_project_payload_v1';
-  async function openProject(id){
-    if(!id){alert('Thiếu ID dự án');return}
-    toast('Đang tải toàn bộ nội dung dự án...');
-    try{
-      const res=await cloudJsonp({action:'get',id});
-      if(!res||!res.ok||!res.project) throw new Error((res&&res.message)||'Không lấy được dữ liệu dự án');
-      sessionStorage.setItem(OPEN_PROJECT_PAYLOAD_KEY, JSON.stringify({id,project:res.project,ts:Date.now()}));
-      localStorage.setItem('construction_payment_current_cloud_id_v1', id);
-      location.href=CALC_PAGE+'?project_id='+encodeURIComponent(id)+'&from=list';
-    }catch(e){
-      console.error(e);
-      alert('Không tải được toàn bộ dự án từ Cloud: '+e.message+'\nTrang vẫn sẽ mở bằng ID để thử tải lại.');
-      location.href=CALC_PAGE+'?project_id='+encodeURIComponent(id);
-    }
-  }
+  function openProject(id){location.href=CALC_PAGE+'?project_id='+encodeURIComponent(id)}
   function openCalculator(){location.href=CALC_PAGE}
   function copyId(id){navigator.clipboard&&navigator.clipboard.writeText(id);toast('Đã copy ID dự án')}
   async function deleteProject(id){if(!confirm('Xóa dự án này khỏi Google Sheets?'))return;try{await fetch(CLOUD_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete',id})});toast('Đã gửi yêu cầu xóa');setTimeout(loadList,1200)}catch(e){alert('Không xóa được: '+e.message)}}

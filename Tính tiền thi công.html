@@ -267,6 +267,9 @@
       .fab{right:12px;bottom:12px}
     }
 
+    .cloud-status{border:1px solid rgba(15,23,42,.12);background:rgba(15,23,42,.04);color:#334155;border-radius:999px;padding:8px 10px;font-size:12px;display:inline-flex;gap:6px;align-items:center}
+    .cloud-status.ok{background:rgba(22,163,74,.08);border-color:rgba(22,163,74,.20);color:#166534}
+    .cloud-status.warn{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.22);color:#92400e}
     @media print{body{background:#fff}header,main,.modal-hd,.project-toolbar,.modal-actions,.bgfx,.bgfx2,.fab{display:none!important}.modal{position:static;inset:auto;background:transparent;padding:0;display:block!important}.modal-card{box-shadow:none;border:none;border-radius:0;height:auto}.doc-wrap{padding:0;overflow:visible}.print-note{display:none}}
 
   </style>
@@ -302,8 +305,10 @@
           <button class="primary" id="btnExportProject">Xuất file dự án</button>
           <button id="btnImportProject">Mở file dự án</button>
           <button id="btnExportBackup">Xuất backup</button>
+          <button class="primary" id="btnSaveCloud">☁️ Lưu Cloud</button>
+          <button id="btnOpenProjectList">📁 Mở danh sách dự án</button>
           <button id="btnPickSaveFolder">Chọn nơi lưu mặc định</button>
-          <span class="pill" id="saveFolderHint">Nơi lưu: <b>Download</b></span>
+          <span class="pill" id="saveFolderHint">Nơi lưu: <b>Download</b></span><span class="cloud-status" id="cloudStatus">Cloud: chưa lưu</span>
           <button class="danger" id="btnNewProject">Tạo dự án mới</button>
           <input id="projectFileInput" type="file" accept=".json,application/json" style="display:none" />
         </div>
@@ -452,6 +457,8 @@
     const STORAGE_KEY='construction_payment_pro_v2';
     const MOBILE_FORCE_KEY='construction_payment_pro_mobile_v1';
     const PROJECT_EXT='.tcproj.json';
+    const CLOUD_API_URL='https://script.google.com/macros/s/AKfycbx-RWcTA0t-EQwSpPWJpXWYn1jx_v1vC4pn_-y2ka17XUJg8zlOXjDl4AEXgq8t-r6Deg/exec';
+    const CLOUD_CURRENT_ID_KEY='construction_payment_current_cloud_id_v1';
     let groups=[]; let payments=[]; let renderTimer=null; let isComposing=false; let currentDocType='payment'; let dirHandle=null;
 
     const $=id=>document.getElementById(id);
@@ -549,6 +556,68 @@
     function downloadBlob(blob,fn){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
     async function downloadDocImage(){try{const canvas=await renderDocCanvas(Math.min(2.2,(devicePixelRatio||1)*1.8));const blob=await new Promise(res=>canvas.toBlob(res,'image/png',1));downloadBlob(blob,`${baseFileName()}_${currentDocType}.png`);toast('Đã tải PNG')}catch(e){console.error(e);alert('Không tải được ảnh.')}}
     async function copyMobile(){try{const canvas=await renderDocCanvas(Math.min(2,(devicePixelRatio||1)*1.6));const blob=await new Promise(res=>canvas.toBlob(res,'image/png',1));const file=new File([blob],`${baseFileName()}_${currentDocType}.png`,{type:'image/png'});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:docTitle(currentDocType),files:[file]});return}downloadBlob(blob,file.name);toast('Đã tải ảnh cho điện thoại')}catch(e){alert('Không tạo được ảnh điện thoại')}}
+
+    function updateCloudStatus(text, cls=''){
+      const el=$('cloudStatus'); if(!el) return;
+      el.className='cloud-status '+cls;
+      el.textContent=text;
+    }
+    function makeCloudId(){return 'P'+Date.now()+'_'+Math.random().toString(36).slice(2,8)}
+    function getCurrentCloudId(){return localStorage.getItem(CLOUD_CURRENT_ID_KEY)||''}
+    function setCurrentCloudId(id){if(id){localStorage.setItem(CLOUD_CURRENT_ID_KEY,id);updateCloudStatus('Cloud: '+id,'ok')}}
+    function collectForCloud(){
+      const data=collect();
+      let id=data.cloudId||getCurrentCloudId();
+      if(!id) id=makeCloudId();
+      data.cloudId=id; data.id=id; data.totals=totals();
+      return data;
+    }
+    async function saveCloud(){
+      const data=collectForCloud();
+      setCurrentCloudId(data.cloudId);
+      updateCloudStatus('Cloud: đang lưu...','warn');
+      try{
+        await fetch(CLOUD_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',project:data})});
+        save();
+        updateCloudStatus('Cloud: đã lưu '+data.cloudId,'ok');
+        toast('Đã gửi dữ liệu lên Cloud');
+      }catch(e){console.error(e);updateCloudStatus('Cloud: lỗi lưu','warn');alert('Không lưu được Cloud. Kiểm tra URL Apps Script và quyền truy cập Web App.');}
+    }
+    function cloudJsonp(params){
+      return new Promise((resolve,reject)=>{
+        const cb='__cloud_cb_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+        const qs=new URLSearchParams(params||{}); qs.set('callback',cb);
+        const script=document.createElement('script');
+        const timer=setTimeout(()=>{cleanup();reject(new Error('Quá thời gian tải dữ liệu Cloud'));},15000);
+        function cleanup(){clearTimeout(timer);delete window[cb];script.remove();}
+        window[cb]=(data)=>{cleanup();resolve(data)};
+        script.onerror=()=>{cleanup();reject(new Error('Không gọi được Cloud API'))};
+        script.src=CLOUD_API_URL+'?'+qs.toString();
+        document.body.appendChild(script);
+      });
+    }
+    async function loadCloudProject(id){
+      if(!id){alert('Thiếu ID dự án Cloud');return}
+      updateCloudStatus('Cloud: đang mở...','warn');
+      try{
+        const res=await cloudJsonp({action:'get',id});
+        if(!res||!res.ok) throw new Error((res&&res.message)||'Không lấy được dự án');
+        apply(res.project);
+        setCurrentCloudId(id);
+        save();
+        updateCloudStatus('Cloud: đã mở '+id,'ok');
+        toast('Đã mở dự án từ Cloud');
+      }catch(e){console.error(e);updateCloudStatus('Cloud: lỗi mở','warn');alert('Không mở được dự án Cloud: '+e.message)}
+    }
+    function openProjectList(){window.open('Danh sach du an.html','_blank','noopener,noreferrer')}
+    function getParam(name){return new URLSearchParams(location.search).get(name)||''}
+    async function loadCloudProjectFromUrl(){
+      const id=getParam('project_id')||getParam('cloudId')||getParam('id');
+      if(id) await loadCloudProject(id);
+      else if(getCurrentCloudId()) updateCloudStatus('Cloud: '+getCurrentCloudId(),'ok');
+      else updateCloudStatus('Cloud: chưa lưu','');
+    }
+
     function setMobileForced(on){document.body.classList.toggle('force-mobile',!!on);localStorage.setItem(MOBILE_FORCE_KEY,on?'1':'0');$('mobileModeState').textContent=on?'ON':'OFF';toast(on?'Đã bật giao diện điện thoại':'Đã tắt giao diện điện thoại')}
     function toggleMobileForced(){setMobileForced(!document.body.classList.contains('force-mobile'))}
     function flashGroup(gi){const el=document.querySelector(`.group[data-gi="${gi}"]`);if(!el)return;el.style.boxShadow='0 0 0 6px rgba(56,189,248,.28),0 18px 60px rgba(2,132,199,.18)';setTimeout(()=>el.style.boxShadow='',950)}
@@ -561,7 +630,7 @@
       if(t.id==='addPayment'){payments.push(defaultPayment());render();toast('Đã thêm thanh toán');return}if(t.dataset.act==='delPayment'){payments.splice(+t.dataset.pi,1);render();return}
       if(t.dataset.act==='toggleGroup'){groups[+t.dataset.gi].collapsed=!groups[+t.dataset.gi].collapsed;render();return}if(t.dataset.act==='addLine'){groups[+t.dataset.gi].lines.push({type:'normal',len:'',wid:'',factor:1,note:'',confirmedBy:'',confirmedDate:''});render();return}if(t.dataset.act==='delGroup'){groups.splice(+t.dataset.gi,1);render();toast('Đã xóa nhóm');return}if(t.dataset.act==='delLine'){const g=groups[+t.dataset.gi];g.lines.splice(+t.dataset.li,1);if(!g.lines.length)g.lines.push({type:'normal',len:'',wid:'',factor:1,note:''});render();return}
       if(t.id==='btnExpandAll'){groups.forEach(g=>g.collapsed=false);render();toast('Đã mở hết');return}if(t.id==='btnCollapseAll'){groups.forEach(g=>g.collapsed=true);render();toast('Đã thu gọn');return}if(t.id==='btnNewProject'){if(confirm('Tạo dự án mới? Nên xuất file trước khi xóa.')){localStorage.removeItem(STORAGE_KEY);init(true);toast('Đã tạo dự án mới')}return}
-      if(t.id==='btnExportProject'){exportProject(false);return}if(t.id==='btnExportBackup'){exportProject(true);return}if(t.id==='btnImportProject'){$('projectFileInput').click();return}if(t.id==='btnPickSaveFolder'){pickDefaultFolder();return}
+      if(t.id==='btnExportProject'){exportProject(false);return}if(t.id==='btnExportBackup'){exportProject(true);return}if(t.id==='btnSaveCloud'){saveCloud();return}if(t.id==='btnOpenProjectList'){openProjectList();return}if(t.id==='btnImportProject'){$('projectFileInput').click();return}if(t.id==='btnPickSaveFolder'){pickDefaultFolder();return}
       if(t.id==='docBtn'){openDoc('payment');return}if(t.dataset.doc){openDoc(t.dataset.doc);return}if(t.id==='closeDoc'||t.id==='closeDoc2'){closeDoc();return}if(t.id==='copyImgBtn'||t.id==='copyImgBtn2'){copyDocImage();return}if(t.id==='downloadImgBtn'||t.id==='downloadImgBtn2'){downloadDocImage();return}if(t.id==='copyMobileBtn'||t.id==='copyMobileBtn2'){copyMobile();return}if(t.id==='printBtn'||t.id==='printBtn2'){window.print();return}if(t.id==='btnTop'){scrollTo({top:0,behavior:'smooth'});return}if(t.id==='toggleMobileBtn'||t.id==='toggleMobileFab'){toggleMobileForced();return}
     });
     $('docModal').addEventListener('click',e=>{if(e.target.id==='docModal')closeDoc()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDoc()});
@@ -569,6 +638,7 @@
     function init(fresh=false){if(!fresh&&localStorage.getItem(STORAGE_KEY)){try{apply(JSON.parse(localStorage.getItem(STORAGE_KEY)));restoreDefaultFolder();setMobileForced(localStorage.getItem(MOBILE_FORCE_KEY)==='1');return}catch(e){console.error(e)}}
       groups=normalizeGroups([{name:'Trần thạch cao',unit:'m²',unitPrice:'40000',groupNote:'Trần phòng khách + bếp',lines:[{type:'normal',len:'3,22',wid:'4,3',factor:1,note:'Khu A'},{type:'normal',len:'6,7',wid:'4,2',factor:1,note:'Khu B'}]},{name:'Vách',unit:'m²',unitPrice:'70000',groupNote:'Vách 2 mặt',lines:[{type:'normal',len:'5',wid:'1,4',factor:2,note:'2 vách hông'}]},{name:'Lỗ thông trần',unit:'lỗ',unitPrice:'50000',groupNote:'Khoan lỗ + xử lý viền',lines:[{type:'normal',len:'2',wid:'',factor:1,note:'2 lỗ'}]}]);payments=[{date:todayVN(),content:'Tạm ứng',amount:'0',note:''}];$('projectStatus').value='Nháp';$('invDate').value=todayVN();$('rounding').value='1000';render();restoreDefaultFolder();setMobileForced(localStorage.getItem(MOBILE_FORCE_KEY)==='1')}
     init();
+    setTimeout(loadCloudProjectFromUrl, 350);
   </script>
 </body>
 </html>

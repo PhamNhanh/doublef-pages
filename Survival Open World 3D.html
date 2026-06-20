@@ -36,11 +36,11 @@
 </div><div class="hint">Búa xây: <b id="buildTxt">Tắt</b> • Vũ khí: Cung gỗ • Vòng đời cây: hạt → mầm → cây.</div></div>
 <div class="hud panel world"><h3>Thế giới</h3><p>Vị trí: <b id="posTxt">0,0</b></p><p>Khu vực: <b id="zoneTxt">Bình nguyên</b></p><p>Cây: <b id="treeTxt">0</b> • Đá: <b id="rockTxt">0</b> • Thú: <b id="animalTxt">0</b></p><p>Biome: <b id="biomeTxt">forest</b></p></div>
 <div class="hud panel log"><h3>Nhật ký</h3><div class="logList" id="logList"></div></div>
-<div class="hud panel bottom">WASD/Phím mũi tên: di chuyển đúng hướng • Chuột: xoay camera • V: đổi góc nhìn 1/3 • Space: nhảy • Shift: chạy • E: tương tác • F: trồng cây • B: xây dựng • Click: bắn/đặt khối • R: ăn thịt • T: uống nước • P: tạm dừng</div>
+<div class="hud panel bottom">W/↑: tiến theo hướng nhìn • S/↓: lùi • A/←: trái • D/→: phải • Chuột: xoay camera • V: đổi góc nhìn 1/3 • Q: chiêu Đốn cây/khai thác mạnh • E: tương tác thường • Space: nhảy • Shift: chạy • F: trồng cây • B: xây dựng • Click: bắn/đặt khối • I: đảo hướng nếu máy bị ngược</div>
 <div class="miniMap"><canvas id="mini"></canvas></div>
 <div class="controls"><button id="viewBtn">Đổi góc nhìn V</button><button id="saveBtn">Lưu</button><button id="loadBtn">Tải</button><button id="resetBtn">Reset</button></div>
 <div class="mobilePad"><button class="up">↑</button><button class="left">←</button><button class="down">↓</button><button class="right">→</button></div>
-<div class="mobileActions"><button class="actE">E</button><button class="actShoot">Bắn</button><button class="actV">View</button><button class="actB">Build</button></div>
+<div class="mobileActions"><button class="actE">E</button><button class="actChop">Chặt</button><button class="actShoot">Bắn</button><button class="actV">View</button><button class="actB">Build</button><button class="actInvert">Đảo</button></div>
 <div class="start" id="start"><div class="startCard"><h2>Survival Open World 3D</h2><p>Bản “xịn nhưng 1 file”: không dùng model ngoài, nhân vật/động vật được dựng bằng hình học 3D trong code. Vì vậy sẽ ổn định trên GitHub Pages hơn, nhưng vẫn không thể thật như game dùng asset GLB/PBR.</p><div class="row"><button id="startBtn">Bắt đầu / Khóa chuột</button><button id="startNoLock">Chơi không khóa chuột</button></div><div class="loading" id="loader">Đang kiểm tra thư viện 3D...</div></div></div>
 <script>
 (function(){
@@ -81,29 +81,116 @@ addHouse(-34,38,.4);addHouse(-18,52,-.2);addHouse(-48,60,1.1);addFence(-34,51,52
 for(let i=0;i<10;i++)plants.push({x:-84+Math.random()*24,z:43+Math.random()*20,stage:Math.floor(Math.random()*3),t:0});
 function makeHumanoid(){const g=new THREE.Group();g.name='player';const body=box(2.5,4,1.3,mats.cloth,0,5.1,0);const head=sph(1.05,mats.skin,0,7.9,0,.95);const hair=sph(1.08,mats.dark,0,8.25,-.08,.48);const armL=box(.55,3.2,.55,mats.skin,-1.75,5.15,0);const armR=box(.55,3.2,.55,mats.skin,1.75,5.15,0);const legL=box(.7,3.2,.65,mats.dark,-.65,1.9,0);const legR=box(.7,3.2,.65,mats.dark,.65,1.9,0);const bow=cyl(.05,.05,3.5,8,mats.wood,2.15,5.4,.55);bow.rotation.z=.25;g.add(body,head,hair,armL,armR,legL,legR,bow);g.userData={armL,armR,legL,legR};return g}
 const player=makeHumanoid(); scene.add(player);
-const state={x:0,z:10,y:0,vx:0,vz:0,vy:0,yaw:0,camYaw:0,camPitch:.18,third:true,hp:100,hunger:100,thirst:100,energy:100,temp:22,wood:0,stone:0,meat:0,seed:2,arrow:18,xp:0,day:1,time:8*60,build:false,paused:false,onGround:true};
-function makeAnimal(type,x,z){const g=new THREE.Group();g.position.set(x,0,z);const mat=type==='wolf'?mats.wolf:mats.deer;const body=sph(type==='wolf'?1.8:1.6,mat,0,2.5,0,.55);body.scale.z=1.7;const head=sph(type==='wolf'?.8:.7,mat,0,3.1,-2.1,.8);const snout=box(.7,.45,.8,mat,0,3.0,-2.75);g.add(body,head,snout);for(let sx of[-.9,.9])for(let sz of[-1.1,1.1])g.add(box(.32,2,.32,mat,sx,1,sz));if(type==='deer'){const ant1=cyl(.05,.05,1.4,6,mats.wood,-.35,4.0,-2.35);ant1.rotation.z=.45;const ant2=cyl(.05,.05,1.4,6,mats.wood,.35,4.0,-2.35);ant2.rotation.z=-.45;g.add(ant1,ant2)}world.add(g);const a={type,x,z,obj:g,hp:type==='wolf'?45:25,speed:type==='wolf'?18:22,dir:Math.random()*Math.PI*2,state:'wander',cool:0};animals.push(a);return a}
-for(let i=0;i<8;i++)makeAnimal('deer',-110+Math.random()*90,-80+Math.random()*120);for(let i=0;i<5;i++)makeAnimal('wolf',95+Math.random()*45,60+Math.random()*60);
+const state={x:0,z:10,y:0,vx:0,vz:0,vy:0,yaw:0,camYaw:0,camPitch:.18,third:true,invertMove:true,hp:100,hunger:100,thirst:100,energy:100,temp:22,wood:0,stone:0,meat:0,seed:2,arrow:18,xp:0,day:1,time:8*60,build:false,paused:false,onGround:true};
+function animalName(type){return {deer:'nai',wolf:'sói',boar:'heo rừng',bear:'gấu',rabbit:'thỏ'}[type]||type}
+function makeAnimal(type,x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);
+  const color={wolf:0x59616c,deer:0xa86f3d,boar:0x5b4033,bear:0x4a3326,rabbit:0xd9c7b4}[type]||0x888888;
+  const mat=new THREE.MeshStandardMaterial({color,roughness:.78});
+  const size={wolf:1.0,deer:.95,boar:.85,bear:1.35,rabbit:.42}[type]||1;
+  const body=sph((type==='bear'?2.0:type==='rabbit'?.85:1.7)*size,mat,0,2.4*size,0,.55); body.scale.z=type==='rabbit'?1.25:1.75; body.scale.x=type==='bear'?1.25:1;
+  const head=sph((type==='bear'?1.0:type==='rabbit'?.48:.75)*size,mat,0,3.05*size,-2.15*size,.82);
+  const snout=box((type==='rabbit'?.28:.7)*size,(type==='rabbit'?.18:.45)*size,(type==='rabbit'?.38:.8)*size,mat,0,3.0*size,-2.75*size);
+  g.add(body,head,snout);
+  for(let sx of[-.85,.85])for(let sz of[-1.1,1.1])g.add(box((type==='rabbit'?.16:.32)*size,(type==='rabbit'?.7:1.85)*size,(type==='rabbit'?.16:.32)*size,mat,sx*size,(type==='rabbit'?.45:.95)*size,sz*size));
+  if(type==='deer'){
+    const ant1=cyl(.05,.05,1.4,6,mats.wood,-.35*size,4.0*size,-2.35*size);ant1.rotation.z=.45;
+    const ant2=cyl(.05,.05,1.4,6,mats.wood,.35*size,4.0*size,-2.35*size);ant2.rotation.z=-.45;g.add(ant1,ant2);
+  }
+  if(type==='rabbit'){
+    const e1=box(.16,.9,.16,mat,-.25,1.85,-.65); const e2=box(.16,.9,.16,mat,.25,1.85,-.65); e1.rotation.x=.28; e2.rotation.x=.28; g.add(e1,e2);
+  }
+  if(type==='boar'){
+    const tuskMat=new THREE.MeshStandardMaterial({color:0xf8fafc,roughness:.5});
+    const t1=cyl(.04,.08,.7,8,tuskMat,-.32,2.75,-2.95);t1.rotation.x=1.2; const t2=cyl(.04,.08,.7,8,tuskMat,.32,2.75,-2.95);t2.rotation.x=1.2;g.add(t1,t2);
+  }
+  if(type==='bear'){
+    const ear1=sph(.25,mat,-.55,4.0,-2.1,.9), ear2=sph(.25,mat,.55,4.0,-2.1,.9);g.add(ear1,ear2);
+  }
+  world.add(g);
+  const a={type,x,z,obj:g,hp:{wolf:50,deer:28,boar:42,bear:95,rabbit:12}[type]||25,speed:{wolf:18,deer:24,boar:16,bear:13,rabbit:30}[type]||20,dir:Math.random()*Math.PI*2,state:'wander',cool:0};
+  animals.push(a);return a
+}
+for(let i=0;i<8;i++)makeAnimal('deer',-110+Math.random()*90,-80+Math.random()*120);
+for(let i=0;i<6;i++)makeAnimal('rabbit',-130+Math.random()*110,-120+Math.random()*150);
+for(let i=0;i<4;i++)makeAnimal('boar',-10+Math.random()*80,70+Math.random()*70);
+for(let i=0;i<5;i++)makeAnimal('wolf',95+Math.random()*45,60+Math.random()*60);
+for(let i=0;i<2;i++)makeAnimal('bear',60+Math.random()*50,-115+Math.random()*40);
 function rebuildPlants(){for(const old of world.children.filter(o=>o.userData&&o.userData.plant))world.remove(old);for(const p of plants){const g=new THREE.Group();g.userData.plant=true;g.position.set(p.x,0,p.z);if(p.stage===0)g.add(cyl(.08,.08,.8,8,mats.leaf,0,.4,0));else if(p.stage===1){g.add(cyl(.12,.16,1.4,8,mats.leaf,0,.7,0));g.add(sph(.5,mats.leaf2,0,1.45,0,.7))}else{g.add(cyl(.22,.3,2.2,8,mats.wood,0,1.1,0));g.add(sph(1.15,mats.leaf2,0,2.5,0,.8))}world.add(g)}} rebuildPlants();
-const keys={}; addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='v')toggleView();if(e.key.toLowerCase()==='b'){state.build=!state.build;log(state.build?'Bật chế độ xây dựng':'Tắt chế độ xây dựng')}if(e.key.toLowerCase()==='p'){state.paused=!state.paused}if(e.key.toLowerCase()==='r')eat();if(e.key.toLowerCase()==='t')drink();if(e.key.toLowerCase()==='f')plantSeed();if(e.key.toLowerCase()==='e')interact();if(e.code==='Space')shoot();}); addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+const keys={}; addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='v')toggleView();if(e.key.toLowerCase()==='b'){state.build=!state.build;log(state.build?'Bật chế độ xây dựng':'Tắt chế độ xây dựng')}if(e.key.toLowerCase()==='p'){state.paused=!state.paused}if(e.key.toLowerCase()==='r')eat();if(e.key.toLowerCase()==='t')drink();if(e.key.toLowerCase()==='f')plantSeed();if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='q')chopSkill();if(e.key.toLowerCase()==='i')invertMoveToggle();if(e.code==='Space')shoot();}); addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 let dragging=false,lastX=0,lastY=0; canvas.addEventListener('mousedown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;if(document.pointerLockElement===canvas)shoot()}); addEventListener('mouseup',()=>dragging=false); addEventListener('mousemove',e=>{let dx=e.movementX,dy=e.movementY;if(document.pointerLockElement!==canvas){if(!dragging)return;dx=e.clientX-lastX;dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY}state.camYaw-=dx*.004;state.camPitch=Math.max(-.8,Math.min(.85,state.camPitch-dy*.003))});
 document.getElementById('startBtn').onclick=()=>{document.getElementById('start').classList.add('hidden');canvas.requestPointerLock&&canvas.requestPointerLock()};document.getElementById('startNoLock').onclick=()=>document.getElementById('start').classList.add('hidden');document.getElementById('viewBtn').onclick=toggleView;document.getElementById('saveBtn').onclick=saveGame;document.getElementById('loadBtn').onclick=loadGame;document.getElementById('resetBtn').onclick=()=>{localStorage.removeItem('survival3d_xin_single');location.reload()};document.getElementById('loader').textContent='Three.js đã sẵn sàng.';
-function bindBtn(cls,k){const el=document.querySelector(cls);if(!el)return;el.onpointerdown=()=>keys[k]=true;el.onpointerup=el.onpointercancel=()=>keys[k]=false}bindBtn('.up','w');bindBtn('.down','s');bindBtn('.left','a');bindBtn('.right','d');document.querySelector('.actE').onclick=interact;document.querySelector('.actShoot').onclick=shoot;document.querySelector('.actV').onclick=toggleView;document.querySelector('.actB').onclick=()=>{state.build=!state.build;log(state.build?'Bật xây dựng':'Tắt xây dựng')};
+function bindBtn(cls,k){const el=document.querySelector(cls);if(!el)return;el.onpointerdown=()=>keys[k]=true;el.onpointerup=el.onpointercancel=()=>keys[k]=false}bindBtn('.up','w');bindBtn('.down','s');bindBtn('.left','a');bindBtn('.right','d');document.querySelector('.actE').onclick=interact;document.querySelector('.actChop').onclick=chopSkill;document.querySelector('.actShoot').onclick=shoot;document.querySelector('.actV').onclick=toggleView;document.querySelector('.actInvert').onclick=invertMoveToggle;document.querySelector('.actB').onclick=()=>{state.build=!state.build;log(state.build?'Bật xây dựng':'Tắt xây dựng')};
 function toggleView(){state.third=!state.third;document.getElementById('viewTag').textContent='Góc nhìn: '+(state.third?'Thứ ba':'Thứ nhất');log(state.third?'Chuyển sang góc nhìn thứ ba':'Chuyển sang góc nhìn thứ nhất')}
 function areaName(x,z){if(Math.hypot(x-18,z+20)<34)return'Hồ trung tâm';if(x<-55&&z>35&&z<78)return'Khu trồng trọt';if(x>60&&z>50)return'Tháp quan sát';if(x>75&&z<-145)return'Mỏ đá';if(x>85&&z>45)return'Trại sói';if(x<-60&&z<-40)return'Rừng sâu';if(x>-58&&x<-8&&z>25&&z<78)return'Làng bỏ hoang';return'Bình nguyên'}
 function collides(nx,nz){if(Math.abs(nx)>175||Math.abs(nz)>175)return true;for(const o of objects){if(o.type==='tree'||o.type==='rock'||o.type==='building'||o.type==='tower'){if(Math.hypot(nx-o.x,nz-o.z)<o.r+1.4)return true}}return false}
-function updatePlayer(dt){let f=0,r=0;if(keys.w||keys.arrowup)f+=1;if(keys.s||keys.arrowdown)f-=1;if(keys.d||keys.arrowright)r+=1;if(keys.a||keys.arrowleft)r-=1;let len=Math.hypot(f,r);if(len>0){f/=len;r/=len}const sprint=(keys.shift&&state.energy>4);const speed=sprint?34:19;if(sprint)state.energy-=18*dt;else state.energy=Math.min(100,state.energy+10*dt);const yaw=state.camYaw;const forward=new THREE.Vector3(Math.sin(yaw),0,Math.cos(yaw));const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));const move=forward.multiplyScalar(f).add(right.multiplyScalar(r));let nx=state.x+move.x*speed*dt,nz=state.z+move.z*speed*dt;if(!collides(nx,state.z))state.x=nx;if(!collides(state.x,nz))state.z=nz;if(len>0)state.yaw=Math.atan2(move.x,move.z);if(keys[' ']&&state.onGround){state.vy=16;state.onGround=false}state.vy-=36*dt;state.y+=state.vy*dt;if(state.y<=0){state.y=0;state.vy=0;state.onGround=true}player.position.set(state.x,state.y,state.z);player.rotation.y=state.yaw;const walk=Date.now()*.009*(sprint?1.6:1)*(len>0?1:0);const ud=player.userData;ud.legL.rotation.x=Math.sin(walk)*.65;ud.legR.rotation.x=-Math.sin(walk)*.65;ud.armL.rotation.x=-Math.sin(walk)*.35;ud.armR.rotation.x=Math.sin(walk)*.35;}
+function invertMoveToggle(){state.invertMove=!state.invertMove;log(state.invertMove?'Đã dùng hướng di chuyển đã đảo để sửa lỗi ngược.':'Đã dùng hướng di chuyển gốc.');}
+function updatePlayer(dt){
+  let f=0,r=0;
+  if(keys.w||keys.arrowup)f+=1;if(keys.s||keys.arrowdown)f-=1;
+  if(keys.d||keys.arrowright)r+=1;if(keys.a||keys.arrowleft)r-=1;
+  let len=Math.hypot(f,r);if(len>0){f/=len;r/=len}
+  const sprint=(keys.shift&&state.energy>4);const speed=sprint?34:19;
+  if(sprint)state.energy-=18*dt;else state.energy=Math.min(100,state.energy+10*dt);
+  const yaw=state.camYaw;
+  const sign=state.invertMove?-1:1;
+  const forward=new THREE.Vector3(Math.sin(yaw)*sign,0,Math.cos(yaw)*sign);
+  const right=new THREE.Vector3(Math.cos(yaw)*sign,0,-Math.sin(yaw)*sign);
+  const move=forward.multiplyScalar(f).add(right.multiplyScalar(r));
+  let nx=state.x+move.x*speed*dt,nz=state.z+move.z*speed*dt;
+  if(!collides(nx,state.z))state.x=nx;if(!collides(state.x,nz))state.z=nz;
+  if(len>0)state.yaw=Math.atan2(move.x,move.z);
+  if(keys[' ']&&state.onGround){state.vy=16;state.onGround=false}
+  state.vy-=36*dt;state.y+=state.vy*dt;if(state.y<=0){state.y=0;state.vy=0;state.onGround=true}
+  player.position.set(state.x,state.y,state.z);player.rotation.y=state.yaw;
+  const walk=Date.now()*.009*(sprint?1.6:1)*(len>0?1:0);const ud=player.userData;
+  ud.legL.rotation.x=Math.sin(walk)*.65;ud.legR.rotation.x=-Math.sin(walk)*.65;ud.armL.rotation.x=-Math.sin(walk)*.35;ud.armR.rotation.x=Math.sin(walk)*.35;
+}
 function updateCamera(){const head=new THREE.Vector3(state.x,state.y+7.2,state.z);if(state.third){const dist=18, height=9;const back=new THREE.Vector3(Math.sin(state.camYaw),0,Math.cos(state.camYaw)).multiplyScalar(-dist);camera.position.copy(head).add(back).add(new THREE.Vector3(0,height,0));camera.lookAt(head.x,head.y+1,head.z)}else{camera.position.set(state.x,state.y+7.2,state.z);const dir=new THREE.Vector3(Math.sin(state.camYaw)*Math.cos(state.camPitch),Math.sin(state.camPitch),Math.cos(state.camYaw)*Math.cos(state.camPitch));camera.lookAt(camera.position.clone().add(dir));}}
-function updateAnimals(dt){for(const a of animals){if(a.hp<=0)continue;const d=Math.hypot(a.x-state.x,a.z-state.z);let tx=0,tz=0;if(a.type==='wolf'&&d<55){a.state='chase';tx=state.x-a.x;tz=state.z-a.z;if(d<4){state.hp-=18*dt}}else if(a.type==='deer'&&d<42){a.state='flee';tx=a.x-state.x;tz=a.z-state.z}else{a.state='wander';a.cool-=dt;if(a.cool<=0){a.dir+=(-.9+Math.random()*1.8);a.cool=1+Math.random()*3}tx=Math.sin(a.dir);tz=Math.cos(a.dir)}let l=Math.hypot(tx,tz)||1;tx/=l;tz/=l;const sp=a.state==='wander'?a.speed*.35:a.speed;let nx=a.x+tx*sp*dt,nz=a.z+tz*sp*dt;if(!collides(nx,nz)){a.x=nx;a.z=nz}else a.dir+=Math.PI*.6;a.obj.position.set(a.x,0,a.z);a.obj.rotation.y=Math.atan2(tx,tz);a.obj.children.forEach((c,i)=>{if(i>2)c.rotation.x=Math.sin(Date.now()*.008+i)*.35})}}
+function updateAnimals(dt){for(const a of animals){
+  if(a.hp<=0)continue;const d=Math.hypot(a.x-state.x,a.z-state.z);let tx=0,tz=0;
+  const predator=a.type==='wolf'||a.type==='bear'||a.type==='boar';
+  if(predator&&d<({wolf:55,bear:42,boar:30}[a.type]||40)){
+    a.state='chase';tx=state.x-a.x;tz=state.z-a.z;
+    if(d<({wolf:4,bear:5,boar:3.6}[a.type]||4)){state.hp-=({wolf:18,bear:30,boar:14}[a.type]||16)*dt}
+  }else if((a.type==='deer'||a.type==='rabbit')&&d<({deer:42,rabbit:32}[a.type])){
+    a.state='flee';tx=a.x-state.x;tz=a.z-state.z;
+  }else{
+    a.state='wander';a.cool-=dt;if(a.cool<=0){a.dir+=(-.9+Math.random()*1.8);a.cool=1+Math.random()*3}tx=Math.sin(a.dir);tz=Math.cos(a.dir)
+  }
+  let l=Math.hypot(tx,tz)||1;tx/=l;tz/=l;const sp=a.state==='wander'?a.speed*.35:a.speed;
+  let nx=a.x+tx*sp*dt,nz=a.z+tz*sp*dt;if(!collides(nx,nz)){a.x=nx;a.z=nz}else a.dir+=Math.PI*.6;
+  a.obj.position.set(a.x,0,a.z);a.obj.rotation.y=Math.atan2(tx,tz);a.obj.children.forEach((c,i)=>{if(i>2)c.rotation.x=Math.sin(Date.now()*.008+i)*.35})
+}}
 function shoot(){if(state.build){placeBlock();return}if(state.arrow<=0){log('Hết tên.');return}state.arrow--;const dir=new THREE.Vector3(Math.sin(state.camYaw)*Math.cos(state.camPitch),Math.sin(state.camPitch),Math.cos(state.camYaw)*Math.cos(state.camPitch));const arr=cyl(.08,.08,2.5,8,mats.wood,state.x,state.y+6,state.z);arr.rotation.x=Math.PI/2;world.add(arr);arrows.push({obj:arr,pos:new THREE.Vector3(state.x,state.y+6,state.z),vel:dir.multiplyScalar(80),life:2.2});}
-function updateArrows(dt){for(let i=arrows.length-1;i>=0;i--){const a=arrows[i];a.life-=dt;a.vel.y-=18*dt;a.pos.addScaledVector(a.vel,dt);a.obj.position.copy(a.pos);a.obj.lookAt(a.pos.clone().add(a.vel));for(const an of animals){if(an.hp>0&&Math.hypot(an.x-a.pos.x,an.z-a.pos.z)<2.7&&Math.abs(a.pos.y-2.5)<5){an.hp-=35;world.remove(a.obj);arrows.splice(i,1);if(an.hp<=0){state.meat+=an.type==='wolf'?2:3;state.xp+=25;world.remove(an.obj);log('Săn được '+(an.type==='wolf'?'sói':'nai')+', nhận thịt và điểm.')}break}}if(i<arrows.length&&a.life<=0){world.remove(a.obj);arrows.splice(i,1)}}}
-function interact(){let nearest=null,dist=999;for(const o of objects){const d=Math.hypot(o.x-state.x,o.z-state.z);if(d<dist){dist=d;nearest=o}}if(dist<6&&nearest){nearest.hp=(nearest.hp||1)-1;if(nearest.type==='tree'){state.wood+=2;log('Chặt cây: +2 gỗ.');if(nearest.hp<=0){world.remove(nearest.obj);objects.splice(objects.indexOf(nearest),1);trees.splice(trees.indexOf(nearest.obj),1)}}else if(nearest.type==='rock'){state.stone+=2;log('Đào đá: +2 đá.');if(nearest.hp<=0){world.remove(nearest.obj);objects.splice(objects.indexOf(nearest),1);rocks.splice(rocks.indexOf(nearest.obj),1)}}return}if(Math.hypot(state.x-18,state.z+20)<34||Math.abs(state.x+54)<10&&Math.abs(state.z+18)<60){drink();return}for(const p of plants){if(p.stage>=2&&Math.hypot(p.x-state.x,p.z-state.z)<5){state.seed+=2;state.hunger=Math.min(100,state.hunger+20);p.stage=0;p.t=0;rebuildPlants();log('Thu hoạch cây trồng: +hạt, hồi đói.');return}}log('Không có gì để tương tác gần đây.')}
+function updateArrows(dt){for(let i=arrows.length-1;i>=0;i--){const a=arrows[i];a.life-=dt;a.vel.y-=18*dt;a.pos.addScaledVector(a.vel,dt);a.obj.position.copy(a.pos);a.obj.lookAt(a.pos.clone().add(a.vel));for(const an of animals){if(an.hp>0&&Math.hypot(an.x-a.pos.x,an.z-a.pos.z)<2.7&&Math.abs(a.pos.y-2.5)<5){an.hp-=35;world.remove(a.obj);arrows.splice(i,1);if(an.hp<=0){state.meat+=an.type==='wolf'?2:3;state.xp+=25;world.remove(an.obj);log('Săn được '+animalName(an.type)+', nhận thịt và điểm.')}break}}if(i<arrows.length&&a.life<=0){world.remove(a.obj);arrows.splice(i,1)}}}
+function findNearestResource(maxDist=10){let best=null,dist=999;for(const o of objects){if(o.type!=='tree'&&o.type!=='rock')continue;const d=Math.hypot(o.x-state.x,o.z-state.z);if(d<dist){dist=d;best=o}}return {best,dist}}
+function chopSkill(){
+  const {best,dist}=findNearestResource(11);
+  if(!best||dist>11){log('Chiêu đốn cây: không có cây/đá đủ gần. Hãy áp sát rồi bấm Q.');return}
+  const dir=new THREE.Vector3(Math.sin(state.yaw),0,Math.cos(state.yaw));
+  const to=new THREE.Vector3(best.x-state.x,0,best.z-state.z).normalize();
+  const facing=dir.dot(to);
+  if(facing<-.25){log('Bạn đang quay lưng với mục tiêu. Hãy nhìn về phía cây/đá rồi bấm Q.');return}
+  const hit=3;
+  best.hp=(best.hp||1)-hit;
+  if(best.type==='tree'){
+    state.wood+=6;state.energy=Math.max(0,state.energy-8);log('Chiêu Đốn cây: +6 gỗ, sát thương mạnh vào cây.');
+    if(best.obj){best.obj.rotation.z+=0.18;best.obj.scale.y=Math.max(.6,best.obj.scale.y*.96)}
+    if(best.hp<=0){world.remove(best.obj);objects.splice(objects.indexOf(best),1);trees.splice(trees.indexOf(best.obj),1);log('Cây đã đổ hoàn toàn.')}
+  }else if(best.type==='rock'){
+    state.stone+=5;state.energy=Math.max(0,state.energy-9);log('Chiêu Phá đá: +5 đá.');
+    if(best.obj){best.obj.scale.multiplyScalar(.94)}
+    if(best.hp<=0){world.remove(best.obj);objects.splice(objects.indexOf(best),1);rocks.splice(rocks.indexOf(best.obj),1);log('Tảng đá đã vỡ.')}
+  }
+}
+function interact(){let nearest=null,dist=999;for(const o of objects){if(o.type!=='tree'&&o.type!=='rock')continue;const d=Math.hypot(o.x-state.x,o.z-state.z);if(d<dist){dist=d;nearest=o}}if(dist<6&&nearest){nearest.hp=(nearest.hp||1)-1;if(nearest.type==='tree'){state.wood+=2;log('Chặt cây: +2 gỗ.');if(nearest.hp<=0){world.remove(nearest.obj);objects.splice(objects.indexOf(nearest),1);trees.splice(trees.indexOf(nearest.obj),1)}}else if(nearest.type==='rock'){state.stone+=2;log('Đào đá: +2 đá.');if(nearest.hp<=0){world.remove(nearest.obj);objects.splice(objects.indexOf(nearest),1);rocks.splice(rocks.indexOf(nearest.obj),1)}}return}if(Math.hypot(state.x-18,state.z+20)<34||Math.abs(state.x+54)<10&&Math.abs(state.z+18)<60){drink();return}for(const p of plants){if(p.stage>=2&&Math.hypot(p.x-state.x,p.z-state.z)<5){state.seed+=2;state.hunger=Math.min(100,state.hunger+20);p.stage=0;p.t=0;rebuildPlants();log('Thu hoạch cây trồng: +hạt, hồi đói.');return}}log('Không có gì để tương tác gần đây.')}
 function plantSeed(){if(state.seed<=0){log('Không còn hạt giống.');return}if(!(state.x<-55&&state.z>35&&state.z<78)){log('Chỉ trồng được ở khu ruộng.');return}state.seed--;plants.push({x:state.x+Math.random()*3,z:state.z+Math.random()*3,stage:0,t:0});rebuildPlants();log('Đã gieo hạt.')}function placeBlock(){if(state.wood<2&&state.stone<2){log('Cần 2 gỗ hoặc 2 đá để xây.');return}const dir=new THREE.Vector3(Math.sin(state.camYaw),0,Math.cos(state.camYaw));const x=state.x+dir.x*8,z=state.z+dir.z*8;const m=state.stone>=2?mats.rock:mats.wood;if(state.stone>=2)state.stone-=2;else state.wood-=2;const b=box(5,4,5,m,x,2,z);world.add(b);objects.push({type:'building',x,z,r:3.8,obj:b});log('Đã đặt khối xây dựng.')}function eat(){if(state.meat<=0){log('Không có thịt.');return}state.meat--;state.hunger=Math.min(100,state.hunger+35);log('Ăn thịt: hồi đói.')}function drink(){state.thirst=Math.min(100,state.thirst+40);log('Uống nước: hồi khát.')}
 function updateSurvival(dt){state.time+=dt*6;if(state.time>=1440){state.time-=1440;state.day++;log('Một ngày mới bắt đầu.')}const hour=state.time/60;state.hunger=Math.max(0,state.hunger-dt*(keys.shift?1.1:.38));state.thirst=Math.max(0,state.thirst-dt*(keys.shift?1.3:.48));state.temp=12+14*Math.sin((hour-6)/24*Math.PI*2);if(state.hunger<=0)state.hp-=5*dt;if(state.thirst<=0)state.hp-=7*dt;for(const p of plants){p.t+=dt;if(p.t>18&&p.stage<2){p.stage++;p.t=0;rebuildPlants()}}if(state.hp<=0){state.hp=0;state.paused=true;log('Bạn đã gục ngã. Bấm Reset để chơi lại.')}}
 function drawMini(){const c=document.getElementById('mini'),ctx=c.getContext('2d'),w=c.width=210,h=c.height=210;ctx.fillStyle='#0f172a';ctx.fillRect(0,0,w,h);function map(x,z){return[(x+180)/360*w,(z+180)/360*h]}ctx.fillStyle='#2563eb';let [lx,lz]=map(18,-20);ctx.beginPath();ctx.arc(lx,lz,18,0,Math.PI*2);ctx.fill();ctx.fillStyle='#166534';for(const tr of trees){const [x,z]=map(tr.position.x,tr.position.z);ctx.fillRect(x-1,z-1,2,2)}ctx.fillStyle='#94a3b8';for(const r of rocks){const [x,z]=map(r.position.x,r.position.z);ctx.fillRect(x-1,z-1,2,2)}ctx.fillStyle='#f43f5e';for(const a of animals){if(a.hp<=0)continue;const [x,z]=map(a.x,a.z);ctx.fillRect(x-2,z-2,4,4)}ctx.fillStyle='#fde047';const [px,pz]=map(state.x,state.z);ctx.beginPath();ctx.arc(px,pz,4,0,Math.PI*2);ctx.fill()}
 function hud(){function set(id,v){document.getElementById(id).textContent=v}function bar(id,v){document.getElementById(id).style.width=Math.max(0,Math.min(100,v))+'%'}set('hpTxt',Math.round(state.hp));set('hunTxt',Math.round(state.hunger));set('thiTxt',Math.round(state.thirst));set('engTxt',Math.round(state.energy));set('tmpTxt',Math.round(state.temp)+'°C');bar('hpBar',state.hp);bar('hunBar',state.hunger);bar('thiBar',state.thirst);bar('engBar',state.energy);bar('tmpBar',(state.temp+10)*2.2);set('woodTxt',state.wood);set('stoneTxt',state.stone);set('meatTxt',state.meat);set('seedTxt',state.seed);set('arrowTxt',state.arrow);set('xpTxt',state.xp);set('dayTxt',state.day);const hh=String(Math.floor(state.time/60)).padStart(2,'0'),mm=String(Math.floor(state.time%60)).padStart(2,'0');set('clockTxt',hh+':'+mm);set('buildTxt',state.build?'Bật':'Tắt');set('posTxt',Math.round(state.x)+', '+Math.round(state.z));set('zoneTxt',areaName(state.x,state.z));set('treeTxt',trees.length);set('rockTxt',rocks.length);set('animalTxt',animals.filter(a=>a.hp>0).length);set('biomeTxt',areaName(state.x,state.z).toLowerCase())}
 const logs=[];function log(s){logs.unshift(s);logs.splice(5);document.getElementById('logList').innerHTML=logs.map(x=>'<div class="logItem">'+x+'</div>').join('')}
-function saveGame(){localStorage.setItem('survival3d_xin_single',JSON.stringify({state,objects:objects.filter(o=>o.type==='tree'||o.type==='rock').map(o=>({type:o.type,x:o.x,z:o.z,hp:o.hp})),plants,animals:animals.filter(a=>a.hp>0).map(a=>({type:a.type,x:a.x,z:a.z,hp:a.hp}))}));log('Đã lưu game.')}function loadGame(){const raw=localStorage.getItem('survival3d_xin_single');if(!raw){log('Chưa có save.');return}try{const d=JSON.parse(raw);Object.assign(state,d.state||{});log('Đã tải save.')}catch(e){log('Save lỗi.')}}
+function saveGame(){localStorage.setItem('survival3d_xin_single',JSON.stringify({state,objects:objects.filter(o=>o.type==='tree'||o.type==='rock').map(o=>({type:o.type,x:o.x,z:o.z,hp:o.hp})),plants,animals:animals.filter(a=>a.hp>0).map(a=>({type:a.type,x:a.x,z:a.z,hp:a.hp}))}));log('Đã lưu game.')}function loadGame(){const raw=localStorage.getItem('survival3d_xin_single');if(!raw){log('Chưa có save.');return}try{const d=JSON.parse(raw);Object.assign(state,d.state||{}); if(typeof state.invertMove==='undefined')state.invertMove=true; log('Đã tải save.')}catch(e){log('Save lỗi.')}}
 function dayNight(){const hour=state.time/60;const k=Math.max(.08,Math.sin((hour-6)/24*Math.PI*2));sun.intensity= .3 + Math.max(0,k)*2.1;hemi.intensity=.45+Math.max(0,k)*.9;moon.intensity=hour>18||hour<6?.7:.08;scene.background=new THREE.Color().setHSL(.58,.45,Math.max(.05,.32+.35*Math.max(0,k)));scene.fog.color.copy(scene.background)}
 let last=performance.now();function loop(now){requestAnimationFrame(loop);let dt=Math.min(.033,(now-last)/1000);last=now;if(!state.paused){updatePlayer(dt);updateAnimals(dt);updateArrows(dt);updateSurvival(dt);dayNight()}updateCamera();hud();drawMini();renderer.render(scene,camera)}
 addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});

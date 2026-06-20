@@ -7,622 +7,159 @@
   <link rel="icon" type="image/png" href="LOGODF.png" />
   <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
   <link rel="apple-touch-icon" href="LOGODF.png" />
-  <title>doublef.io.vn - Professional Portal</title>
+  <title>doublef.io.vn - Portal</title>
   <style>
     :root{
-      --bg:#f4f6f8;
-      --surface:#ffffff;
-      --surface2:#f8fafc;
-      --panel:#ffffff;
-      --ink:#111827;
-      --muted:#667085;
-      --subtle:#98a2b3;
-      --line:#e5e7eb;
-      --line2:#d0d5dd;
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --card2:#f8fafc;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --line2:#cbd5e1;
       --brand:#0f172a;
-      --brand2:#1d4ed8;
-      --brand3:#0b5cab;
-      --accent:#b7791f;
-      --success:#067647;
-      --warning:#b54708;
-      --danger:#b42318;
-      --shadow:0 18px 45px rgba(16,24,40,.08);
-      --shadow2:0 8px 22px rgba(16,24,40,.06);
-      --radius:18px;
-      --radius2:24px;
-      --header:72px;
-      --sidebar:308px;
-      --max:1240px;
+      --blue:#2563eb;
+      --green:#0f766e;
+      --shadow:0 18px 45px rgba(15,23,42,.08);
+      --r:18px;
+      --side:280px;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       color-scheme:light;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-
     body.dark{
       --bg:#0b1220;
-      --surface:#111827;
-      --surface2:#0f172a;
-      --panel:#111827;
-      --ink:#f9fafb;
+      --card:#111827;
+      --card2:#0f172a;
+      --text:#f8fafc;
       --muted:#cbd5e1;
-      --subtle:#94a3b8;
       --line:#243042;
       --line2:#334155;
       --brand:#f8fafc;
-      --brand2:#60a5fa;
-      --brand3:#93c5fd;
-      --accent:#f2c97d;
-      --shadow:0 22px 55px rgba(0,0,0,.35);
-      --shadow2:0 10px 28px rgba(0,0,0,.25);
+      --shadow:0 18px 45px rgba(0,0,0,.28);
       color-scheme:dark;
     }
-
     *{box-sizing:border-box}
-    html,body{min-height:100%;margin:0}
-    body{
-      color:var(--ink);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,0) 260px),
-        radial-gradient(760px 420px at 84% -8%, rgba(29,78,216,.12), transparent 62%),
-        radial-gradient(680px 420px at -8% 12%, rgba(183,121,31,.10), transparent 64%),
-        var(--bg);
-      overflow-x:hidden;
-    }
-    body.dark{
-      background:
-        radial-gradient(760px 420px at 84% -8%, rgba(96,165,250,.14), transparent 62%),
-        radial-gradient(680px 420px at -8% 12%, rgba(242,201,125,.08), transparent 64%),
-        var(--bg);
-    }
-
-    a{color:inherit}
-    button,input,select{font:inherit}
-    button{border:0;background:none;color:inherit;cursor:pointer}
-
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:var(--sidebar) minmax(0,1fr);
-      grid-template-rows:var(--header) minmax(0,1fr);
-      grid-template-areas:"aside header" "aside main";
-    }
-
-    /* Sidebar */
-    aside{
-      grid-area:aside;
-      position:sticky;
-      top:0;
-      height:100vh;
-      padding:18px;
-      border-right:1px solid var(--line);
-      background:rgba(255,255,255,.72);
-      backdrop-filter:blur(18px);
-      z-index:50;
-      overflow:auto;
-    }
+    body{margin:0;min-height:100vh;background:radial-gradient(780px 420px at 90% -10%,rgba(37,99,235,.12),transparent 62%),radial-gradient(680px 420px at -8% 8%,rgba(15,118,110,.10),transparent 60%),var(--bg);color:var(--text)}
+    button,input,select{font:inherit}button{cursor:pointer;color:inherit}
+    a{color:inherit;text-decoration:none}
+    .app{min-height:100vh;display:grid;grid-template-columns:var(--side) minmax(0,1fr)}
+    aside{position:sticky;top:0;height:100vh;padding:18px;border-right:1px solid var(--line);background:rgba(255,255,255,.72);backdrop-filter:blur(18px);overflow:auto;z-index:20}
     body.dark aside{background:rgba(15,23,42,.78)}
-
-    .brand{
-      display:flex;align-items:center;gap:12px;
-      padding:8px 8px 18px;
-      border-bottom:1px solid var(--line);
-      margin-bottom:16px;
-    }
-    .brandMark{
-      width:44px;height:44px;border-radius:14px;
-      background:linear-gradient(135deg, #0f172a, #1d4ed8);
-      display:grid;place-items:center;color:#fff;font-weight:900;letter-spacing:-1px;
-      box-shadow:0 14px 32px rgba(29,78,216,.20);
-      flex:none;
-    }
-    body.dark .brandMark{background:linear-gradient(135deg,#60a5fa,#1e40af)}
-    .brandTitle{min-width:0}
-    .brandTitle b{display:block;font-size:15px;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .brandTitle span{display:block;margin-top:3px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-    .sideSection{margin-top:16px}
-    .sideLabel{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--subtle);font-weight:800;margin:0 8px 8px}
-    .searchBox{
-      display:flex;align-items:center;gap:10px;
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px 12px;
-      box-shadow:var(--shadow2);
-    }
-    .searchBox svg{width:18px;height:18px;color:var(--subtle);flex:none}
-    .searchBox input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:14px;min-width:0}
-
-    .navPills{display:grid;gap:8px;margin-top:10px}
-    .pillBtn{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      width:100%;padding:11px 12px;border-radius:14px;
-      border:1px solid transparent;color:var(--muted);
-      transition:.16s ease;background:transparent;
-      text-align:left;
-    }
-    .pillBtn:hover{background:var(--surface2);border-color:var(--line)}
-    .pillBtn.active{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;font-weight:800}
-    body.dark .pillBtn.active{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.35);color:#93c5fd}
-    .pillBtn .left{display:flex;align-items:center;gap:10px;min-width:0}
-    .pillIcon{width:28px;height:28px;border-radius:10px;background:var(--surface2);display:grid;place-items:center;border:1px solid var(--line);font-size:14px;flex:none}
-    .count{font-size:12px;color:var(--subtle);font-weight:800}
-
-    .sideCard{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px;
-      box-shadow:var(--shadow2);
-    }
-    .statList{display:grid;gap:10px}
-    .statLine{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:13px;color:var(--muted)}
-    .statLine b{font-size:16px;color:var(--ink)}
-    .timeBox{display:grid;gap:4px}
-    .timeBox .time{font-size:28px;font-weight:900;letter-spacing:-.6px;color:var(--brand)}
-    .timeBox .date{font-size:12px;color:var(--muted);line-height:1.45}
-
-    .quickLinks{display:grid;gap:8px}
-    .quickLinks a,.quickLinks button{
-      text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-size:13px;
-    }
-    .quickLinks a:hover,.quickLinks button:hover{border-color:var(--line2);color:var(--ink)}
-
-    /* Header */
-    header{
-      grid-area:header;
-      position:sticky;top:0;z-index:40;
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:0 22px;
-      border-bottom:1px solid var(--line);
-      background:rgba(244,246,248,.74);
-      backdrop-filter:blur(18px);
-    }
-    body.dark header{background:rgba(11,18,32,.76)}
-    .mobileMenu{display:none}
-    .pageHead{min-width:0}
-    .pageHead h1{margin:0;font-size:18px;letter-spacing:-.35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .pageHead p{margin:3px 0 0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .topActions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      min-height:40px;padding:9px 13px;border-radius:12px;
-      border:1px solid var(--line);background:var(--surface);color:var(--ink);
-      box-shadow:var(--shadow2);font-size:13px;font-weight:750;transition:.16s ease;white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-1px);border-color:var(--line2)}
-    .btn.primary{background:var(--brand);color:var(--surface);border-color:var(--brand)}
-    body.dark .btn.primary{background:#f8fafc;color:#0f172a;border-color:#f8fafc}
-    .btn.subtle{background:transparent;box-shadow:none}
-    .btn.icon{width:40px;padding:0}
-
-    /* Main */
-    main{grid-area:main;padding:22px;min-width:0}
-    .container{max-width:var(--max);margin:0 auto;display:grid;gap:18px}
-
-    .hero{
-      position:relative;overflow:hidden;
-      background:linear-gradient(135deg, #0f172a, #111827 55%, #17345f);
-      color:white;border-radius:28px;padding:28px;border:1px solid rgba(255,255,255,.08);
-      box-shadow:var(--shadow);
-      display:grid;grid-template-columns:minmax(0,1.1fr) 380px;gap:24px;align-items:stretch;
-    }
-    .hero:before{
-      content:"";position:absolute;inset:auto -80px -160px auto;width:420px;height:420px;border-radius:50%;background:rgba(96,165,250,.24);filter:blur(12px)
-    }
-    .hero:after{
-      content:"";position:absolute;inset:-140px auto auto -140px;width:340px;height:340px;border-radius:50%;background:rgba(183,121,31,.18);filter:blur(10px)
-    }
-    .heroContent,.heroAside{position:relative;z-index:2}
-    .eyebrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
-    .tag{font-size:12px;font-weight:800;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.10);padding:7px 10px;border-radius:999px;color:rgba(255,255,255,.86)}
-    .tag.gold{background:rgba(183,121,31,.22);border-color:rgba(242,201,125,.28);color:#fde68a}
-    .hero h2{margin:0;font-size:clamp(30px,4vw,52px);line-height:1.02;letter-spacing:-1.8px;max-width:760px}
-    .hero p{margin:16px 0 0;color:rgba(255,255,255,.72);font-size:15px;line-height:1.7;max-width:760px}
-    .heroActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-    .hero .btn{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.10);color:white;box-shadow:none}
-    .hero .btn.primary{background:white;color:#0f172a;border-color:white}
-
-    .executiveCard{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:24px;padding:18px;backdrop-filter:blur(14px);
-      display:grid;gap:14px;min-width:0;
-    }
-    .execTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-    .execTop b{font-size:13px;color:rgba(255,255,255,.86)}
-    .execTop span{font-size:12px;color:rgba(255,255,255,.58)}
-    .execValue{font-size:44px;font-weight:950;letter-spacing:-1.6px;line-height:1}
-    .execGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .execMini{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:16px;padding:12px;min-width:0}
-    .execMini span{display:block;font-size:11px;color:rgba(255,255,255,.60)}
-    .execMini b{display:block;margin-top:6px;font-size:18px;color:white}
-
-    .toolbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow2)
-    }
-    .toolbarLeft{display:flex;gap:10px;flex-wrap:wrap;align-items:center;min-width:0}
-    .select{
-      min-height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);padding:0 12px;outline:0;font-weight:700;font-size:13px
-    }
-    .viewTabs{display:flex;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
-    .viewTabs button{padding:8px 10px;border-radius:9px;color:var(--muted);font-weight:800;font-size:12px}
-    .viewTabs button.active{background:var(--surface);color:var(--brand2);box-shadow:var(--shadow2)}
-
-    .contentGrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
-    .panel{
-      background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow2);overflow:hidden;min-width:0
-    }
-    .panelHead{padding:18px 18px 0;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
-    .panelHead h3{margin:0;font-size:18px;letter-spacing:-.35px}
-    .panelHead p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
-    .panelBody{padding:18px}
-
-    .menuGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .menuGrid.list{grid-template-columns:1fr}
-    .menuGrid.compact{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-    .empty{
-      padding:24px;border:1px dashed var(--line2);border-radius:18px;background:var(--surface2);color:var(--muted);text-align:center;grid-column:1/-1
-    }
-    .tile{
-      position:relative;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:flex-start;min-width:0;transition:.18s ease;box-shadow:0 1px 0 rgba(16,24,40,.02)
-    }
-    .tile:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:rgba(29,78,216,.28)}
-    .tileIcon{width:46px;height:46px;border-radius:14px;background:#eff6ff;border:1px solid #dbeafe;display:grid;place-items:center;color:#1d4ed8;font-weight:900;flex:none;font-size:18px}
-    body.dark .tileIcon{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.22);color:#bfdbfe}
-    .tileText{min-width:0;flex:1}
-    .tileTitle{font-size:15px;font-weight:900;letter-spacing:-.18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .tilePath{margin-top:4px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .tileDesc{display:none;margin-top:10px;color:var(--muted);font-size:12px;line-height:1.55}
-    .tileMeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
-    .badge{font-size:11px;font-weight:850;border:1px solid var(--line);background:var(--surface2);color:var(--muted);padding:4px 8px;border-radius:999px}
-    .favBtn{width:36px;height:36px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);display:grid;place-items:center;color:var(--accent);flex:none}
-    .favBtn:hover{background:#fff8eb;border-color:#f3d19b}
-    body.dark .favBtn:hover{background:rgba(242,201,125,.10);border-color:rgba(242,201,125,.24)}
-    .list .tile{align-items:center}
-    .list .tileDesc{display:block}
-    .compact .tile{padding:12px;border-radius:16px;gap:10px}
-    .compact .tileIcon{width:36px;height:36px;border-radius:12px;font-size:15px}
-    .compact .tileMeta,.compact .tilePath{display:none}
-
-    .activity{display:grid;gap:12px}
-    .event{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);background:var(--surface2);padding:13px;border-radius:16px}
-    .eventDot{width:10px;height:10px;border-radius:99px;background:var(--brand2);margin-top:4px;flex:none;box-shadow:0 0 0 4px rgba(29,78,216,.10)}
-    .event b{display:block;font-size:13px;letter-spacing:-.1px}
-    .event p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
-    .event small{display:block;margin-top:7px;color:var(--subtle);font-size:11px;font-weight:750}
-
-    .insightGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .insight{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow2)}
-    .insight span{display:block;color:var(--muted);font-size:12px;font-weight:750}
-    .insight b{display:block;margin-top:8px;font-size:28px;letter-spacing:-.8px}
-
-    /* Command palette */
-    .cmdk{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(10px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:8vh 16px 16px}
-    body.cmdk-open .cmdk{display:flex}
-    .cmdkBox{width:min(760px,100%);background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:0 28px 80px rgba(0,0,0,.25);overflow:hidden}
-    .cmdkTop{padding:14px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
-    .cmdkTop input{width:100%;border:0;outline:0;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:13px 14px;color:var(--ink);font-size:15px}
-    .cmdkList{padding:10px;display:grid;gap:8px;max-height:min(58vh,540px);overflow:auto}
-    .cmdkItem{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--line);border-radius:16px;background:var(--surface2);cursor:pointer}
-    .cmdkItem.active,.cmdkItem:hover{border-color:rgba(29,78,216,.35);background:#eff6ff}
-    body.dark .cmdkItem.active, body.dark .cmdkItem:hover{background:rgba(96,165,250,.11)}
-    .cmdkLeft{display:flex;gap:12px;align-items:center;min-width:0}
-    .cmdkIco{width:38px;height:38px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;flex:none}
-    .cmdkText{min-width:0}.cmdkText b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.cmdkText small{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;margin-top:2px}
-    .cmdkFoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;background:var(--surface2)}
-    .key{border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:3px 7px;font-weight:850;color:var(--ink)}
-
-    .toast{position:fixed;right:18px;bottom:18px;z-index:120;display:grid;gap:10px;pointer-events:none}
-    .toastItem{width:min(380px,calc(100vw - 36px));background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px;display:flex;gap:12px;align-items:flex-start;pointer-events:auto;animation:slide .18s ease}
-    @keyframes slide{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
-    .toastDot{width:10px;height:10px;border-radius:99px;background:var(--success);margin-top:4px;flex:none}.toastBody b{font-size:13px}.toastBody p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
-
-    .dock{display:none}
-    .backdrop{display:none}
-
-    @media (max-width:1180px){
-      .contentGrid{grid-template-columns:1fr}
-      .hero{grid-template-columns:1fr}.heroAside{max-width:520px}
-    }
-    @media (max-width:980px){
-      :root{--sidebar:0px;--header:68px}
-      .app{grid-template-columns:1fr;grid-template-areas:"header" "main"}
-      aside{position:fixed;left:0;top:0;bottom:0;height:100dvh;width:min(88vw,330px);transform:translateX(-105%);transition:.2s ease;box-shadow:0 24px 70px rgba(0,0,0,.22)}
-      body.sidebar-open aside{transform:none}
-      .backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:45;backdrop-filter:blur(3px)}
-      body.sidebar-open .backdrop{display:block}
-      header{padding:0 14px}.mobileMenu{display:inline-flex}.pageHead p{max-width:54vw}.topActions{gap:7px}.btn.hideMobile{display:none}
-      main{padding:14px 14px 86px}.menuGrid{grid-template-columns:1fr}.menuGrid.compact{grid-template-columns:1fr 1fr}.insightGrid{grid-template-columns:1fr 1fr}
-      .dock{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;display:flex;gap:8px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:999px;padding:8px;box-shadow:var(--shadow)}
-      body.dark .dock{background:rgba(15,23,42,.82)}.dock button{width:44px;height:44px;border-radius:999px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-weight:900;color:var(--ink)}
-    }
-    @media (max-width:620px){
-      :root{--header:64px}.brand{padding-bottom:14px}header{height:var(--header)}.pageHead h1{font-size:15px;max-width:46vw}.pageHead p{display:none}.btn{min-height:38px;padding:8px 10px}.btn span.label{display:none}
-      .hero{border-radius:22px;padding:20px}.hero h2{font-size:32px;letter-spacing:-1px}.hero p{font-size:14px}.heroActions .btn{width:100%}.execGrid{grid-template-columns:1fr}.execValue{font-size:38px}.toolbar{border-radius:18px}.toolbarLeft{width:100%}.select{flex:1;min-width:150px}.viewTabs{width:100%;justify-content:space-between}.viewTabs button{flex:1}
-      .panel{border-radius:20px}.panelHead{padding:15px 15px 0}.panelBody{padding:15px}.menuGrid.compact{grid-template-columns:1fr}.tile{border-radius:18px;padding:14px}.tileIcon{width:42px;height:42px}.insightGrid{grid-template-columns:1fr}.toast{right:12px;bottom:80px}.cmdk{padding-top:6vh}.cmdkFoot span:last-child{display:none}
-    }
+    .brand{display:flex;align-items:center;gap:12px;padding:6px 4px 18px;border-bottom:1px solid var(--line);margin-bottom:18px}
+    .brand img{width:46px;height:46px;border-radius:14px;object-fit:cover;background:#0f172a;box-shadow:0 12px 28px rgba(15,23,42,.18)}
+    .brand b{display:block;font-size:16px;letter-spacing:-.2px}.brand span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+    .side-title{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;font-weight:900;margin:16px 4px 8px}
+    .search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:0 6px 18px rgba(15,23,42,.04)}
+    .search input{width:100%;border:0;background:transparent;outline:0;color:var(--text);min-width:0}
+    .filters{display:grid;gap:8px}
+    .filter{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;border:1px solid transparent;background:transparent;border-radius:14px;padding:10px 11px;color:var(--muted);font-weight:700}
+    .filter:hover{background:var(--card2);border-color:var(--line)}
+    .filter.active{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+    body.dark .filter.active{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.35);color:#93c5fd}
+    .count{font-size:12px;color:#94a3b8;font-weight:900}
+    .side-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 6px 18px rgba(15,23,42,.04)}
+    .stat-line{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px;margin:8px 0}.stat-line b{color:var(--text)}
+    .time{font-size:26px;font-weight:950;color:var(--brand);letter-spacing:-.5px}.date{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px}
+    main{min-width:0;padding:22px}.container{max-width:1180px;margin:0 auto;display:grid;gap:16px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+    body.dark .topbar{background:rgba(17,24,39,.72)}
+    .topbar h1{margin:0;font-size:20px;letter-spacing:-.4px}.topbar p{margin:3px 0 0;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .btn{border:1px solid var(--line);background:var(--card);border-radius:13px;padding:10px 13px;font-weight:800;box-shadow:0 6px 18px rgba(15,23,42,.04)}
+    .btn:hover{border-color:var(--line2);transform:translateY(-1px)}.btn.primary{background:var(--brand);color:var(--card);border-color:var(--brand)}
+    .hero{background:linear-gradient(135deg,#0f172a,#111827 56%,#17345f);color:#fff;border-radius:26px;padding:26px;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px;overflow:hidden;position:relative}
+    .hero:after{content:"";position:absolute;right:-80px;bottom:-150px;width:360px;height:360px;border-radius:50%;background:rgba(96,165,250,.24);filter:blur(12px)}
+    .hero>*{position:relative;z-index:1}.hero h2{margin:0;font-size:clamp(28px,4vw,46px);line-height:1.05;letter-spacing:-1.4px}.hero p{margin:13px 0 0;color:rgba(255,255,255,.72);line-height:1.65}
+    .hero-panel{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:16px;display:grid;gap:12px}.hero-num{font-size:42px;font-weight:950}.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px}.mini span{display:block;color:rgba(255,255,255,.6);font-size:11px}.mini b{display:block;margin-top:5px;font-size:18px}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;box-shadow:0 6px 18px rgba(15,23,42,.04)}
+    .select{border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:12px;padding:10px 12px;font-weight:750;outline:0}.view{display:flex;gap:4px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px}.view button{border:0;background:transparent;border-radius:9px;padding:8px 10px;color:var(--muted);font-weight:850}.view button.active{background:var(--card);color:var(--blue);box-shadow:0 5px 14px rgba(15,23,42,.06)}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 8px 24px rgba(15,23,42,.05);overflow:hidden}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px 18px 0;flex-wrap:wrap}.panel-head h3{margin:0;font-size:18px}.panel-head p{margin:5px 0 0;color:var(--muted);font-size:13px}.panel-body{padding:18px}
+    .menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.menu.list{grid-template-columns:1fr}.menu.compact{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.tile{display:flex;gap:13px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;transition:.16s ease;min-width:0}.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(37,99,235,.30)}.ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#eff6ff;border:1px solid #dbeafe;color:#1d4ed8;font-weight:950;flex:none}.tile-text{min-width:0;flex:1}.tile-title{font-size:15px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tile-path{margin-top:4px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tile-desc{display:none;margin-top:8px;color:var(--muted);font-size:12px;line-height:1.5}.list .tile-desc{display:block}.compact .tile{padding:12px}.compact .ico{width:36px;height:36px}.compact .tile-path,.compact .tile-desc{display:none}.fav{width:34px;height:34px;border:1px solid var(--line);background:var(--card2);border-radius:11px;color:#b7791f;flex:none}.badge{display:inline-flex;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:850}.empty{grid-column:1/-1;border:1px dashed var(--line2);background:var(--card2);border-radius:16px;padding:28px;text-align:center;color:var(--muted)}
+    .mobile-menu,.backdrop{display:none}.toast{position:fixed;right:18px;bottom:18px;display:grid;gap:10px;z-index:100}.toast-item{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:12px 14px;font-size:13px;animation:in .18s ease}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .cmdk{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);z-index:80;display:none;align-items:flex-start;justify-content:center;padding:8vh 16px}.cmdk.open{display:flex}.cmdk-box{width:min(720px,100%);background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 28px 80px rgba(0,0,0,.25);overflow:hidden}.cmdk-top{padding:14px;border-bottom:1px solid var(--line)}.cmdk-top input{width:100%;border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:14px;padding:13px;outline:0}.cmdk-list{padding:10px;display:grid;gap:8px;max-height:58vh;overflow:auto}.cmdk-item{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);background:var(--card2);border-radius:15px;padding:12px;cursor:pointer}.cmdk-item.active,.cmdk-item:hover{background:#eff6ff;border-color:#bfdbfe}.cmdk-foot{border-top:1px solid var(--line);padding:11px 14px;color:var(--muted);font-size:12px;background:var(--card2)}
+    @media(max-width:980px){:root{--side:0px}.app{grid-template-columns:1fr}aside{position:fixed;left:0;top:0;bottom:0;width:min(88vw,320px);height:100dvh;transform:translateX(-105%);transition:.2s ease;box-shadow:0 24px 70px rgba(0,0,0,.22)}body.sidebar-open aside{transform:none}.backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);z-index:15}body.sidebar-open .backdrop{display:block}.mobile-menu{display:inline-flex}.hero{grid-template-columns:1fr}.menu{grid-template-columns:1fr}.menu.compact{grid-template-columns:1fr 1fr}main{padding:14px 14px 84px}}
+    @media(max-width:620px){.topbar{border-radius:18px}.topbar h1{font-size:17px}.actions .hide-sm{display:none}.hero{padding:20px;border-radius:22px}.hero h2{font-size:30px}.toolbar{align-items:stretch}.select,.view{width:100%}.view button{flex:1}.menu.compact{grid-template-columns:1fr}.panel-head,.panel-body{padding:15px}.toast{right:12px;bottom:12px}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside id="sidebar">
       <div class="brand">
-        <div class="brandMark">DF</div>
-        <div class="brandTitle">
-          <b>doublef.io.vn</b>
-          <span>Professional Client Portal</span>
-        </div>
+        <img src="LOGODF.png" alt="DF" onerror="this.style.display='none';this.nextElementSibling.style.marginLeft='0'" />
+        <div><b>doublef.io.vn</b><span>Professional Portal</span></div>
       </div>
-
-      <div class="sideSection">
-        <div class="sideLabel">Tìm kiếm</div>
-        <div class="searchBox">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.3-4.3m1.3-5.2a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          <input id="q" placeholder="Tìm trang, công cụ, đường dẫn..." />
-        </div>
+      <div class="side-title">Tìm kiếm</div>
+      <div class="search"><span>⌕</span><input id="q" placeholder="Tìm trang, công cụ..." /></div>
+      <div class="side-title">Bộ lọc</div>
+      <div class="filters">
+        <button class="filter active" data-filter="all"><span>Tất cả trang</span><span class="count" id="countAll">0</span></button>
+        <button class="filter" data-filter="tools"><span>Công cụ</span><span class="count" id="countTools">0</span></button>
+        <button class="filter" data-filter="games"><span>Game</span><span class="count" id="countGames">0</span></button>
+        <button class="filter" data-filter="fav"><span>Đã ghim</span><span class="count" id="countFav">0</span></button>
       </div>
-
-      <div class="sideSection">
-        <div class="sideLabel">Bộ lọc</div>
-        <div class="navPills">
-          <button class="pillBtn active" data-filter="all"><span class="left"><span class="pillIcon">A</span><span>Tất cả trang</span></span><span class="count" id="countAll">0</span></button>
-          <button class="pillBtn" data-filter="tools"><span class="left"><span class="pillIcon">T</span><span>Công cụ</span></span><span class="count" id="countTools">0</span></button>
-          <button class="pillBtn" data-filter="health"><span class="left"><span class="pillIcon">H</span><span>Sức khỏe</span></span><span class="count" id="countHealth">0</span></button>
-          <button class="pillBtn" data-filter="fav"><span class="left"><span class="pillIcon">★</span><span>Đã ghim</span></span><span class="count" id="countFav">0</span></button>
-        </div>
-      </div>
-
-      <div class="sideSection">
-        <div class="sideLabel">Thời gian</div>
-        <div class="sideCard timeBox">
-          <div class="time" id="time">--:--</div>
-          <div class="date" id="date">--</div>
-        </div>
-      </div>
-
-      <div class="sideSection">
-        <div class="sideLabel">Thống kê</div>
-        <div class="sideCard statList">
-          <div class="statLine"><span>Tổng số trang</span><b id="statTotal">0</b></div>
-          <div class="statLine"><span>Công cụ</span><b id="statTools">0</b></div>
-          <div class="statLine"><span>Sức khỏe</span><b id="statHealth">0</b></div>
-          <div class="statLine"><span>Đã ghim</span><b id="statFav">0</b></div>
-        </div>
-      </div>
-
-      <div class="sideSection">
-        <div class="sideLabel">Điều hướng nhanh</div>
-        <div class="quickLinks">
-          <a href="pages.json" target="_blank" rel="noopener">Mở pages.json <span>↗</span></a>
-          <button id="clearFav">Xóa danh sách ghim <span>Reset</span></button>
-        </div>
+      <div class="side-title">Thời gian</div>
+      <div class="side-card"><div class="time" id="time">--:--</div><div class="date" id="date">--</div></div>
+      <div class="side-title">Thống kê</div>
+      <div class="side-card">
+        <div class="stat-line"><span>Tổng trang</span><b id="statTotal">0</b></div>
+        <div class="stat-line"><span>Công cụ</span><b id="statTools">0</b></div>
+        <div class="stat-line"><span>Game</span><b id="statGames">0</b></div>
+        <div class="stat-line"><span>Đã ghim</span><b id="statFav">0</b></div>
       </div>
     </aside>
-
-    <header>
-      <button class="btn icon mobileMenu" id="sidebarBtn" aria-label="Mở menu">☰</button>
-      <div class="pageHead">
-        <h1>Professional Portal</h1>
-        <p>Không gian truy cập tập trung cho các trang và công cụ nội bộ</p>
-      </div>
-      <div class="topActions">
-        <button class="btn subtle hideMobile" id="themeBtn"><span>Chế độ</span></button>
-        <button class="btn hideMobile" id="copyListBtn"><span>Copy danh sách</span></button>
-        <button class="btn" id="cmdkBtn"><span class="label">Tìm nhanh</span> ⌘K</button>
-        <button class="btn primary" id="reloadBtn"><span class="label">Tải lại</span></button>
-      </div>
-    </header>
-
+    <div class="backdrop" id="backdrop"></div>
     <main>
       <div class="container">
+        <section class="topbar">
+          <button class="btn mobile-menu" id="sidebarBtn">☰</button>
+          <div><h1>Professional Portal</h1><p>Truy cập nhanh toàn bộ trang và công cụ của bạn</p></div>
+          <div class="actions">
+            <button class="btn hide-sm" id="themeBtn">Chế độ</button>
+            <button class="btn" id="cmdBtn">Tìm nhanh ⌘K</button>
+            <button class="btn primary" id="reloadBtn">Tải lại</button>
+          </div>
+        </section>
         <section class="hero">
-          <div class="heroContent">
-            <div class="eyebrow">
-              <span class="tag gold">Client-ready Interface</span>
-              <span class="tag" id="heroStatus">Online</span>
-              <span class="tag">pages.json driven</span>
-            </div>
-            <h2>Cổng truy cập chuyên nghiệp cho toàn bộ hệ thống web của bạn.</h2>
-            <p>Giao diện được thiết kế theo phong cách doanh nghiệp: rõ ràng, nghiêm túc, tối ưu trải nghiệm khách hàng, phù hợp khi trình bày portfolio, công cụ nội bộ hoặc dashboard sản phẩm.</p>
-            <div class="heroActions">
-              <button class="btn primary" id="openCmdk">Mở tìm kiếm nhanh</button>
-              <button class="btn" id="randomBtn">Mở trang ngẫu nhiên</button>
-              <button class="btn" id="topBtn">Lên đầu trang</button>
-            </div>
-          </div>
-          <div class="heroAside">
-            <div class="executiveCard">
-              <div class="execTop"><div><b>Pages loaded</b><br><span>Nguồn dữ liệu: pages.json</span></div><span id="loadStatus">Ready</span></div>
-              <div class="execValue" id="miniTotal">0</div>
-              <div class="execGrid">
-                <div class="execMini"><span>Công cụ</span><b id="miniTools">0</b></div>
-                <div class="execMini"><span>Đã ghim</span><b id="miniFav">0</b></div>
-                <div class="execMini"><span>Uptime</span><b id="miniUptime">00:00</b></div>
-                <div class="execMini"><span>Theme</span><b id="themeName">Light</b></div>
-              </div>
-            </div>
-          </div>
+          <div><h2>Cổng truy cập gọn gàng cho hệ thống web doublef.</h2><p>Menu được lấy tự động từ <b>pages.json</b>. Giao diện đã bỏ các khu vực trùng lặp, chỉ giữ lại tìm kiếm, bộ lọc, thống kê, chế độ xem và danh sách trang.</p></div>
+          <div class="hero-panel"><div><span style="color:rgba(255,255,255,.65);font-size:12px">Pages loaded</span><div class="hero-num" id="miniTotal">0</div></div><div class="mini-grid"><div class="mini"><span>Công cụ</span><b id="miniTools">0</b></div><div class="mini"><span>Game</span><b id="miniGames">0</b></div><div class="mini"><span>Đã ghim</span><b id="miniFav">0</b></div><div class="mini"><span>Theme</span><b id="themeName">Light</b></div></div></div>
         </section>
-
-        <section class="insightGrid">
-          <div class="insight"><span>Tổng trang khả dụng</span><b id="insTotal">0</b></div>
-          <div class="insight"><span>Nhóm công cụ</span><b id="insTools">0</b></div>
-          <div class="insight"><span>Mục đã ghim</span><b id="insFav">0</b></div>
+        <section class="toolbar">
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><select class="select" id="sortMode"><option value="fav">Ghim trước</option><option value="az">Sắp xếp A-Z</option><option value="group">Theo nhóm</option></select><select class="select" id="openMode"><option value="same">Mở cùng tab</option><option value="new">Mở tab mới</option></select></div>
+          <div class="view"><button class="active" data-view="grid">Lưới</button><button data-view="list">Danh sách</button><button data-view="compact">Gọn</button></div>
         </section>
-
-        <div class="toolbar">
-          <div class="toolbarLeft">
-            <select class="select" id="sortMode">
-              <option value="fav">Ghim trước</option>
-              <option value="az">Sắp xếp A-Z</option>
-              <option value="group">Theo nhóm</option>
-            </select>
-            <select class="select" id="openMode">
-              <option value="new">Mở tab mới</option>
-              <option value="same">Mở cùng tab</option>
-            </select>
-          </div>
-          <div class="viewTabs" aria-label="Chế độ xem">
-            <button class="active" data-view="grid">Lưới</button>
-            <button data-view="list">Danh sách</button>
-            <button data-view="compact">Gọn</button>
-          </div>
-        </div>
-
-        <section class="contentGrid">
-          <section class="panel">
-            <div class="panelHead">
-              <div>
-                <h3>Danh sách trang</h3>
-                <p>Chọn một thẻ để mở trang. Dùng dấu sao để ghim các công cụ thường sử dụng.</p>
-              </div>
-              <span class="badge" id="resultInfo">0 kết quả</span>
-            </div>
-            <div class="panelBody">
-              <div class="menuGrid" id="menuGrid"></div>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panelHead">
-              <div>
-                <h3>Hoạt động hệ thống</h3>
-                <p>Thông tin nhanh phục vụ theo dõi trạng thái portal.</p>
-              </div>
-              <button class="btn subtle" id="regenFeed">Làm mới</button>
-            </div>
-            <div class="panelBody">
-              <div class="activity" id="feed"></div>
-            </div>
-          </section>
+        <section class="panel">
+          <div class="panel-head"><div><h3>Danh sách trang</h3><p>Bấm vào thẻ để mở trang, bấm sao để ghim.</p></div><span class="badge" id="resultInfo">0 kết quả</span></div>
+          <div class="panel-body"><div class="menu" id="menu"></div></div>
         </section>
       </div>
     </main>
   </div>
-
-  <div class="backdrop" id="backdrop"></div>
-
-  <div class="cmdk" id="cmdk" aria-hidden="true">
-    <div class="cmdkBox">
-      <div class="cmdkTop"><input id="cmdkInput" placeholder="Gõ tên trang hoặc đường dẫn..." /></div>
-      <div class="cmdkList" id="cmdkList"></div>
-      <div class="cmdkFoot"><span>Enter: mở trang • ↑↓: chọn • Esc: đóng</span><span><span class="key">Ctrl/⌘</span> + <span class="key">K</span></span></div>
-    </div>
-  </div>
-
+  <div class="cmdk" id="cmdk"><div class="cmdk-box"><div class="cmdk-top"><input id="cmdInput" placeholder="Gõ tên trang hoặc đường dẫn..." /></div><div class="cmdk-list" id="cmdList"></div><div class="cmdk-foot">Enter: mở trang • ↑↓: chọn • Esc: đóng • Ctrl/⌘ + K</div></div></div>
   <div class="toast" id="toast"></div>
-
-  <div class="dock">
-    <button id="dockMenu">☰</button>
-    <button id="dockSearch">⌕</button>
-    <button id="dockTheme">◐</button>
-    <button id="dockTop">↑</button>
-  </div>
-
-  <script>
-    const $ = (s,root=document)=>root.querySelector(s);
-    const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
-    const FAV_KEY = 'doublef_favs_v2_corporate';
-    const THEME_KEY = 'doublef_theme_corporate';
-    let allPages = [];
-    let filterMode = 'all';
-    let viewMode = 'grid';
-    let selectedCmdkIndex = 0;
-    const startAt = Date.now();
-
-    const els = {
-      sidebarBtn: $('#sidebarBtn'), backdrop: $('#backdrop'), q: $('#q'), menuGrid: $('#menuGrid'), resultInfo: $('#resultInfo'),
-      cmdk: $('#cmdk'), cmdkInput: $('#cmdkInput'), cmdkList: $('#cmdkList'), toast: $('#toast'),
-      statTotal: $('#statTotal'), statTools: $('#statTools'), statHealth: $('#statHealth'), statFav: $('#statFav'),
-      countAll: $('#countAll'), countTools: $('#countTools'), countHealth: $('#countHealth'), countFav: $('#countFav'),
-      miniTotal: $('#miniTotal'), miniTools: $('#miniTools'), miniFav: $('#miniFav'), insTotal: $('#insTotal'), insTools: $('#insTools'), insFav: $('#insFav'),
-      heroStatus: $('#heroStatus'), loadStatus: $('#loadStatus'), feed: $('#feed'), themeName: $('#themeName')
-    };
-
-    function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-    function norm(s){return String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
-    function favs(){try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}catch{return []}}
-    function saveFavs(a){localStorage.setItem(FAV_KEY,JSON.stringify(a))}
-    function isFav(path){return favs().includes(String(path||''))}
-    function cleanPages(){return allPages.filter(p=>p&&p.path&&norm(p.path)!=='index.html')}
-    function groupOf(p){const t=norm((p.title||'')+' '+(p.path||'')+' '+(p.group||'')); if(t.includes('suc khoe')||t.includes('health')||t.includes('bmi')) return 'health'; if(t.includes('tool')||t.includes('cong cu')||t.includes('tinh')||t.includes('convert')||t.includes('thi cong')) return 'tools'; return 'page'}
-    function groupLabel(p){const g=groupOf(p);return g==='tools'?'Công cụ':g==='health'?'Sức khỏe':'Trang'}
-    function iconOf(p){return p.icon || (groupOf(p)==='tools'?'T':groupOf(p)==='health'?'H':'P')}
-
-    function toggleSidebar(on){document.body.classList.toggle('sidebar-open',on ?? !document.body.classList.contains('sidebar-open'))}
-    $('#sidebarBtn').onclick=()=>toggleSidebar(); $('#dockMenu').onclick=()=>toggleSidebar(true); $('#backdrop').onclick=()=>toggleSidebar(false);
-
-    function setTheme(t){document.body.classList.toggle('dark',t==='dark'); localStorage.setItem(THEME_KEY,t); els.themeName.textContent=t==='dark'?'Dark':'Light'}
-    function toggleTheme(){setTheme(document.body.classList.contains('dark')?'light':'dark')}
-    $('#themeBtn').onclick=toggleTheme; $('#dockTheme').onclick=toggleTheme; setTheme(localStorage.getItem(THEME_KEY)||'light');
-
-    function toast(title,msg,type='ok'){
-      const d=document.createElement('div'); d.className='toastItem';
-      const color=type==='warn'?'var(--warning)':type==='bad'?'var(--danger)':'var(--success)';
-      d.innerHTML=`<span class="toastDot" style="background:${color}"></span><div class="toastBody"><b>${esc(title)}</b><p>${esc(msg||'')}</p></div>`;
-      els.toast.appendChild(d); setTimeout(()=>d.remove(),3600);
-    }
-
-    function toggleFav(path){const a=favs();const p=String(path);const i=a.indexOf(p); if(i>=0)a.splice(i,1); else a.unshift(p); saveFavs(a.slice(0,80)); renderAll(); toast('Đã cập nhật ghim',p)}
-
-    function updateStats(){
-      const pages=cleanPages(); const tools=pages.filter(p=>groupOf(p)==='tools').length; const health=pages.filter(p=>groupOf(p)==='health').length; const favCount=favs().filter(x=>pages.some(p=>String(p.path)===String(x))).length;
-      [['statTotal',pages.length],['statTools',tools],['statHealth',health],['statFav',favCount],['countAll',pages.length],['countTools',tools],['countHealth',health],['countFav',favCount],['miniTotal',pages.length],['miniTools',tools],['miniFav',favCount],['insTotal',pages.length],['insTools',tools],['insFav',favCount]].forEach(([k,v])=>els[k].textContent=v);
-    }
-
-    function filteredPages(){
-      const q=norm(els.q.value).trim(); let pages=cleanPages().filter(p=>{const hay=norm((p.title||'')+' '+(p.path||'')+' '+(p.desc||'')); if(q&&!hay.includes(q))return false; if(filterMode==='fav')return isFav(p.path); if(filterMode==='tools')return groupOf(p)==='tools'; if(filterMode==='health')return groupOf(p)==='health'; return true});
-      const mode=$('#sortMode').value;
-      pages.sort((a,b)=>{if(mode==='fav'){const fa=isFav(a.path)?1:0,fb=isFav(b.path)?1:0;if(fa!==fb)return fb-fa} if(mode==='group'){const ga=groupOf(a),gb=groupOf(b);if(ga!==gb)return ga.localeCompare(gb)} return String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'});});
-      return pages;
-    }
-
-    function openPage(path){const mode=$('#openMode').value; if(mode==='same') location.href=path; else window.open(path,'_blank','noopener,noreferrer')}
-
-    function renderMenu(){
-      const pages=filteredPages(); els.menuGrid.className='menuGrid '+(viewMode==='grid'?'':viewMode); els.resultInfo.textContent=pages.length+' kết quả';
-      if(!pages.length){els.menuGrid.innerHTML='<div class="empty">Không tìm thấy trang phù hợp. Hãy kiểm tra từ khóa hoặc bộ lọc.</div>';return}
-      els.menuGrid.innerHTML=pages.map(p=>`<a class="tile" href="${esc(p.path)}" data-path="${esc(p.path)}"><div class="tileIcon">${esc(iconOf(p))}</div><div class="tileText"><div class="tileTitle">${esc(p.title||p.path)} ${isFav(p.path)?'★':''}</div><div class="tilePath">${esc(p.path)}</div><div class="tileDesc">${esc(p.desc||'Mở trang trong hệ thống doublef portal.')}</div><div class="tileMeta"><span class="badge">${esc(groupLabel(p))}</span><span class="badge">${isFav(p.path)?'Đã ghim':'Chưa ghim'}</span></div></div><button class="favBtn" data-fav="${esc(p.path)}" title="Ghim/Bỏ ghim">${isFav(p.path)?'★':'☆'}</button></a>`).join('');
-      $$('.tile',els.menuGrid).forEach(a=>{a.onclick=e=>{if(e.target.closest('[data-fav]'))return; e.preventDefault(); openPage(a.dataset.path)}});
-      $$('[data-fav]',els.menuGrid).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();toggleFav(b.dataset.fav)});
-    }
-
-    function renderCmdk(){
-      const q=norm(els.cmdkInput.value).trim(); const pages=cleanPages().filter(p=>!q||norm((p.title||'')+' '+(p.path||'')).includes(q)).sort((a,b)=>String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'})).slice(0,14);
-      if(selectedCmdkIndex>=pages.length)selectedCmdkIndex=pages.length-1;if(selectedCmdkIndex<0)selectedCmdkIndex=0;
-      els.cmdkList.innerHTML=pages.length?pages.map((p,i)=>`<div class="cmdkItem ${i===selectedCmdkIndex?'active':''}" data-path="${esc(p.path)}"><div class="cmdkLeft"><div class="cmdkIco">${esc(iconOf(p))}</div><div class="cmdkText"><b>${esc(p.title||p.path)} ${isFav(p.path)?'★':''}</b><small>${esc(p.path)}</small></div></div><span class="badge">Enter</span></div>`).join(''):'<div class="empty">Không có kết quả.</div>';
-      $$('.cmdkItem',els.cmdkList).forEach(x=>x.onclick=()=>{openPage(x.dataset.path);closeCmdk()});
-    }
-    function openCmdk(){document.body.classList.add('cmdk-open');els.cmdk.setAttribute('aria-hidden','false');selectedCmdkIndex=0;renderCmdk();setTimeout(()=>els.cmdkInput.focus(),0)}
-    function closeCmdk(){document.body.classList.remove('cmdk-open');els.cmdk.setAttribute('aria-hidden','true')}
-    $('#cmdkBtn').onclick=openCmdk; $('#openCmdk').onclick=openCmdk; $('#dockSearch').onclick=openCmdk; els.cmdk.onclick=e=>{if(e.target===els.cmdk)closeCmdk()}; els.cmdkInput.oninput=()=>{selectedCmdkIndex=0;renderCmdk()};
-
-    function renderFeed(){
-      const items=[['Dữ liệu đã sẵn sàng','Portal đọc pages.json và dựng menu tự động.'],['Tìm kiếm nhanh','Sử dụng Ctrl/⌘ + K để mở Command Palette.'],['Ghim công cụ','Các trang quan trọng được lưu tại trình duyệt bằng localStorage.'],['Responsive','Giao diện tối ưu cho điện thoại, tablet và desktop.']];
-      els.feed.innerHTML=items.map((x,i)=>`<div class="event"><span class="eventDot" style="background:${i%2?'var(--accent)':'var(--brand2)'}"></span><div><b>${x[0]}</b><p>${x[1]}</p><small>${new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})}</small></div></div>`).join('')
-    }
-
-    function renderAll(){updateStats();renderMenu();renderCmdk();renderFeed()}
-    async function loadPages(){
-      els.loadStatus.textContent='Loading'; els.heroStatus.textContent='Đang tải';
-      try{const res=await fetch('pages.json?v='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error('HTTP '+res.status); const data=await res.json(); if(!Array.isArray(data)) throw new Error('pages.json không phải mảng'); allPages=data; els.loadStatus.textContent='Ready'; els.heroStatus.textContent='Online'; renderAll(); toast('Đã tải dữ liệu','Menu đã cập nhật từ pages.json')}
-      catch(e){console.error(e); allPages=[]; els.loadStatus.textContent='Error'; els.heroStatus.textContent='Offline'; renderAll(); toast('Không đọc được pages.json','Kiểm tra file pages.json ở cùng thư mục index.html','warn')}
-    }
-
-    $$('.pillBtn').forEach(b=>b.onclick=()=>{filterMode=b.dataset.filter;$$('.pillBtn').forEach(x=>x.classList.toggle('active',x===b));renderMenu()});
-    $$('.viewTabs button').forEach(b=>b.onclick=()=>{viewMode=b.dataset.view;$$('.viewTabs button').forEach(x=>x.classList.toggle('active',x===b));renderMenu()});
-    els.q.oninput=renderMenu; $('#sortMode').onchange=renderMenu; $('#reloadBtn').onclick=loadPages; $('#regenFeed').onclick=()=>{renderFeed();toast('Đã làm mới','Hoạt động hệ thống đã cập nhật')};
-    $('#randomBtn').onclick=()=>{const p=cleanPages(); if(!p.length)return toast('Chưa có trang','pages.json chưa có dữ liệu','warn'); openPage(p[Math.floor(Math.random()*p.length)].path)};
-    $('#topBtn').onclick=()=>scrollTo({top:0,behavior:'smooth'}); $('#dockTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
-    $('#clearFav').onclick=()=>{saveFavs([]);renderAll();toast('Đã xóa ghim','Danh sách ghim đã được đặt lại')};
-    $('#copyListBtn').onclick=async()=>{const txt=cleanPages().map(p=>`${p.title||p.path} - ${p.path}`).join('\n'); try{await navigator.clipboard.writeText(txt);toast('Đã copy danh sách',cleanPages().length+' trang')}catch{toast('Không copy được','Trình duyệt không cho phép clipboard','warn')}};
-
-    addEventListener('keydown',e=>{const mod=navigator.platform.toLowerCase().includes('mac')?e.metaKey:e.ctrlKey; if(mod&&e.key.toLowerCase()==='k'){e.preventDefault();openCmdk();return} if(!document.body.classList.contains('cmdk-open'))return; if(e.key==='Escape'){e.preventDefault();closeCmdk()} if(e.key==='ArrowDown'){e.preventDefault();selectedCmdkIndex++;renderCmdk()} if(e.key==='ArrowUp'){e.preventDefault();selectedCmdkIndex--;renderCmdk()} if(e.key==='Enter'){e.preventDefault();const item=$$('.cmdkItem',els.cmdkList)[selectedCmdkIndex]; if(item){openPage(item.dataset.path);closeCmdk()}}});
-
-    function tick(){const d=new Date();$('#time').textContent=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});$('#date').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});const t=Math.floor((Date.now()-startAt)/1000);$('#miniUptime').textContent=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0')}
-    setInterval(tick,500);tick();renderFeed();loadPages();
-  </script>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const FAV_KEY='doublef_favs_clean_v1', THEME_KEY='doublef_theme_clean_v1';
+let allPages=[], filter='all', view='grid', selected=0;
+const els={q:$('#q'),menu:$('#menu'),cmdk:$('#cmdk'),cmdInput:$('#cmdInput'),cmdList:$('#cmdList'),toast:$('#toast'),themeName:$('#themeName')};
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function norm(s){return String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function favs(){try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}catch{return[]}} function saveFavs(a){localStorage.setItem(FAV_KEY,JSON.stringify(a))} function isFav(p){return favs().includes(String(p||''))}
+function clean(){return allPages.filter(p=>p&&p.path&&norm(p.path)!=='index.html')}
+function typeOf(p){const t=norm((p.title||'')+' '+(p.path||'')+' '+(p.group||'')+' '+(p.desc||'')); if(t.includes('game')||t.includes('tom')||t.includes('jerry')||t.includes('survival')||t.includes('runner'))return'games'; if(t.includes('tool')||t.includes('cong cu')||t.includes('tinh')||t.includes('thi cong')||t.includes('bao gia')||t.includes('ssvb'))return'tools'; return'page'}
+function label(p){return typeOf(p)==='games'?'Game':typeOf(p)==='tools'?'Công cụ':'Trang'} function icon(p){return p.icon||(typeOf(p)==='games'?'🎮':typeOf(p)==='tools'?'🛠':'📄')}
+function setTheme(t){document.body.classList.toggle('dark',t==='dark');localStorage.setItem(THEME_KEY,t);els.themeName.textContent=t==='dark'?'Dark':'Light'} setTheme(localStorage.getItem(THEME_KEY)||'light'); $('#themeBtn').onclick=()=>setTheme(document.body.classList.contains('dark')?'light':'dark');
+function toast(t){const d=document.createElement('div');d.className='toast-item';d.textContent=t;els.toast.appendChild(d);setTimeout(()=>d.remove(),2500)}
+function toggleSidebar(on){document.body.classList.toggle('sidebar-open',on??!document.body.classList.contains('sidebar-open'))} $('#sidebarBtn').onclick=()=>toggleSidebar(); $('#backdrop').onclick=()=>toggleSidebar(false);
+function updateStats(){const p=clean(), tools=p.filter(x=>typeOf(x)==='tools').length, games=p.filter(x=>typeOf(x)==='games').length, fav=favs().filter(x=>p.some(y=>String(y.path)===String(x))).length; [['statTotal',p.length],['statTools',tools],['statGames',games],['statFav',fav],['countAll',p.length],['countTools',tools],['countGames',games],['countFav',fav],['miniTotal',p.length],['miniTools',tools],['miniGames',games],['miniFav',fav]].forEach(([id,v])=>{const e=$('#'+id); if(e)e.textContent=v})}
+function filtered(){const q=norm(els.q.value).trim();let p=clean().filter(x=>{const hay=norm((x.title||'')+' '+(x.path||'')+' '+(x.desc||'')); if(q&&!hay.includes(q))return false; if(filter==='fav')return isFav(x.path); if(filter==='tools')return typeOf(x)==='tools'; if(filter==='games')return typeOf(x)==='games'; return true}); const mode=$('#sortMode').value; p.sort((a,b)=>{if(mode==='fav'){const fa=isFav(a.path)?1:0,fb=isFav(b.path)?1:0;if(fa!==fb)return fb-fa} if(mode==='group'){const ga=typeOf(a),gb=typeOf(b); if(ga!==gb)return ga.localeCompare(gb)} return String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'})}); return p}
+function openPage(path){$('#openMode').value==='new'?window.open(path,'_blank','noopener,noreferrer'):location.href=path}
+function render(){updateStats();const p=filtered();els.menu.className='menu '+(view==='grid'?'':view);$('#resultInfo').textContent=p.length+' kết quả'; if(!p.length){els.menu.innerHTML='<div class="empty">Không tìm thấy trang phù hợp.</div>';return} els.menu.innerHTML=p.map(x=>`<a class="tile" href="${esc(x.path)}" data-path="${esc(x.path)}"><div class="ico">${esc(icon(x))}</div><div class="tile-text"><div class="tile-title">${esc(x.title||x.path)} ${isFav(x.path)?'★':''}</div><div class="tile-path">${esc(x.path)}</div><div class="tile-desc">${esc(x.desc||'Mở trang trong hệ thống doublef portal.')}</div><div style="margin-top:10px"><span class="badge">${esc(label(x))}</span></div></div><button class="fav" data-fav="${esc(x.path)}">${isFav(x.path)?'★':'☆'}</button></a>`).join(''); $$('.tile',els.menu).forEach(a=>a.onclick=e=>{if(e.target.closest('[data-fav]'))return;e.preventDefault();openPage(a.dataset.path)}); $$('[data-fav]',els.menu).forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();let a=favs(),p=b.dataset.fav,i=a.indexOf(p);i>=0?a.splice(i,1):a.unshift(p);saveFavs(a);render();toast('Đã cập nhật ghim')})}
+async function loadPages(){try{const res=await fetch('pages.json?v='+Date.now(),{cache:'no-store'}); if(!res.ok)throw new Error('HTTP '+res.status); const data=await res.json(); if(!Array.isArray(data))throw new Error('pages.json không phải mảng'); allPages=data; render(); toast('Đã tải pages.json')}catch(e){console.error(e);allPages=[];render();toast('Không đọc được pages.json')}}
+function renderCmd(){const q=norm(els.cmdInput.value).trim(); const p=clean().filter(x=>!q||norm((x.title||'')+' '+(x.path||'')).includes(q)).slice(0,14); if(selected>=p.length)selected=p.length-1;if(selected<0)selected=0; els.cmdList.innerHTML=p.length?p.map((x,i)=>`<div class="cmdk-item ${i===selected?'active':''}" data-path="${esc(x.path)}"><span>${esc(icon(x))} <b>${esc(x.title||x.path)}</b><br><small>${esc(x.path)}</small></span><span class="badge">Enter</span></div>`).join(''):'<div class="empty">Không có kết quả.</div>'; $$('.cmdk-item',els.cmdList).forEach(x=>x.onclick=()=>{openPage(x.dataset.path);closeCmd()})}
+function openCmd(){els.cmdk.classList.add('open');selected=0;renderCmd();setTimeout(()=>els.cmdInput.focus(),0)} function closeCmd(){els.cmdk.classList.remove('open')} $('#cmdBtn').onclick=openCmd; els.cmdk.onclick=e=>{if(e.target===els.cmdk)closeCmd()}; els.cmdInput.oninput=()=>{selected=0;renderCmd()};
+$$('.filter').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;$$('.filter').forEach(x=>x.classList.toggle('active',x===b));render()}); $$('.view button').forEach(b=>b.onclick=()=>{view=b.dataset.view;$$('.view button').forEach(x=>x.classList.toggle('active',x===b));render()}); els.q.oninput=render; $('#sortMode').onchange=render; $('#reloadBtn').onclick=loadPages;
+addEventListener('keydown',e=>{const mod=navigator.platform.toLowerCase().includes('mac')?e.metaKey:e.ctrlKey;if(mod&&e.key.toLowerCase()==='k'){e.preventDefault();openCmd();return} if(!els.cmdk.classList.contains('open'))return; if(e.key==='Escape'){e.preventDefault();closeCmd()} if(e.key==='ArrowDown'){e.preventDefault();selected++;renderCmd()} if(e.key==='ArrowUp'){e.preventDefault();selected--;renderCmd()} if(e.key==='Enter'){e.preventDefault();const item=$$('.cmdk-item',els.cmdList)[selected]; if(item){openPage(item.dataset.path);closeCmd()}}});
+function tick(){const d=new Date();$('#time').textContent=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});$('#date').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})} setInterval(tick,500);tick();loadPages();
+</script>
 </body>
 </html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Đại Chiến Mèo & Chuột - RPG</title>
+  <style>
+    :root{
+      --bg:#fff7e8;--bg2:#fde6b9;--card:#fffaf1;--ink:#251b13;--muted:#7b6048;--line:#efd3a5;
+      --cat:#7c8793;--mouse:#d9a25d;--cheese:#ffd84d;--danger:#e24b4b;--good:#2aa876;--blue:#2f80ed;--purple:#7c3aed;
+      --shadow:0 18px 50px rgba(80,45,15,.18);--r:22px;--r2:30px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink)}
+    body{a
+      background:
+        radial-gradient(900px 520px at 12% -10%,rgba(255,216,77,.45),transparent 60%),
+        radial-gradient(760px 500px at 98% 0%,rgba(47,128,237,.16),transparent 60%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1240px;margin:0 auto;padding:22px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+    .brand{display:flex;gap:12px;align-items:center}.logo{width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,#4b5563,#111827);display:grid;place-items:center;color:#fff;font-weight:1000;box-shadow:var(--shadow);position:relative;overflow:hidden}.logo:before{content:"";position:absolute;width:22px;height:22px;background:var(--cheese);clip-path:polygon(0 0,100% 45%,0 100%);right:7px;bottom:7px}.brand h1{margin:0;font-size:26px;letter-spacing:-.5px}.brand p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.45}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}button,input,select{font:inherit}button{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 13px;border-radius:15px;cursor:pointer;box-shadow:0 8px 20px rgba(80,45,15,.08);font-weight:800;transition:.16s ease}button:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(80,45,15,.14)}button.primary{background:linear-gradient(135deg,#2f80ed,#7c3aed);color:#fff;border-color:transparent}button.good{background:linear-gradient(135deg,#2aa876,#16a34a);color:#fff;border-color:transparent}button.danger{background:#fff1f1;color:#b42318;border-color:#ffc9c9}button.warn{background:#fff8d7;color:#7a5200;border-color:#f4d46d}button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .grid{display:grid;grid-template-columns:360px minmax(0,1fr) 330px;gap:16px;align-items:start}@media(max-width:1080px){.grid{grid-template-columns:1fr}.side{order:2}.main{order:1}.right{order:3}}
+    .card{background:rgba(255,250,241,.93);border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(10px);margin-bottom:14px}.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fffdf7,#fff4df)}.hd b{font-size:16px}.bd{padding:17px}.hint{font-size:12px;color:var(--muted);line-height:1.45}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;gap:12px;align-items:center}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 10px;color:var(--muted);font-size:12px;font-weight:800}.stat{display:grid;gap:8px}.statLine{display:grid;grid-template-columns:92px 1fr 44px;gap:8px;align-items:center;font-size:13px;color:var(--muted)}.bar{height:10px;border-radius:999px;background:#f3dfbd;border:1px solid #e5c58f;overflow:hidden}.bar i{display:block;height:100%;width:50%;background:linear-gradient(90deg,#2f80ed,#7c3aed);border-radius:999px;transition:.25s}.bar.hp i{background:linear-gradient(90deg,#e24b4b,#f97316)}.bar.en i{background:linear-gradient(90deg,#2f80ed,#06b6d4)}.bar.luck i{background:linear-gradient(90deg,#ffd84d,#f59e0b)}
+    .stage{position:relative;min-height:420px;border-radius:28px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,#ccecff 0 42%,#f9d69a 42% 100%);box-shadow:inset 0 0 0 6px rgba(255,255,255,.26)}.stage:before{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;background:repeating-linear-gradient(90deg,#c58b4a 0 80px,#b67836 80px 160px);opacity:.9}.stage:after{content:"";position:absolute;left:26px;right:26px;bottom:76px;height:16px;background:#70411d;border-radius:999px;box-shadow:0 48px 0 #70411d}.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.85}.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:999px}.cloud.c1{width:120px;height:38px;left:42px;top:40px}.cloud.c1:before{width:44px;height:44px;left:20px;top:-18px}.cloud.c1:after{width:58px;height:58px;right:16px;top:-28px}.cloud.c2{width:160px;height:44px;right:64px;top:70px}.cloud.c2:before{width:60px;height:60px;left:26px;top:-26px}.cloud.c2:after{width:72px;height:72px;right:24px;top:-36px}
+    .sprite{position:absolute;bottom:92px;width:112px;height:132px;transition:.22s ease;filter:drop-shadow(0 14px 8px rgba(65,35,10,.22));}.sprite.cat{left:58px}.sprite.mouse{right:78px;width:86px;height:102px}.sprite.jump{animation:jump .5s ease}.sprite.hit{animation:hit .34s ease}.sprite.attack{animation:attack .34s ease}.sprite.hide{opacity:.2;transform:scale(.92)}@keyframes jump{50%{transform:translateY(-36px)}}@keyframes hit{25%{transform:translateX(-12px) rotate(-3deg)}50%{transform:translateX(12px) rotate(3deg)}75%{transform:translateX(-6px)}}@keyframes attack{50%{transform:translateX(70px) scale(1.05)}}
+    .catBody{position:absolute;left:18px;bottom:12px;width:76px;height:86px;background:var(--cat);border-radius:40px 42px 30px 30px;border:4px solid #4b5563}.catHead{position:absolute;left:8px;top:4px;width:92px;height:78px;background:var(--cat);border:4px solid #4b5563;border-radius:50%}.catEar{position:absolute;top:-8px;width:30px;height:34px;background:var(--cat);border:4px solid #4b5563;clip-path:polygon(50% 0,100% 100%,0 100%)}.catEar.l{left:14px}.catEar.r{right:14px}.catFace{position:absolute;left:26px;top:28px;width:42px;height:32px;background:#f3d7c2;border-radius:50%}.eye{position:absolute;top:25px;width:14px;height:18px;background:#fff;border:2px solid #111;border-radius:50%}.eye:after{content:"";position:absolute;left:5px;top:6px;width:5px;height:6px;background:#111;border-radius:50%}.eye.l{left:28px}.eye.r{right:28px}.nose{position:absolute;left:43px;top:46px;width:12px;height:8px;background:#111;border-radius:999px}.whisker{position:absolute;top:50px;width:34px;height:2px;background:#111}.whisker.l{left:0;transform:rotate(10deg)}.whisker.r{right:0;transform:rotate(-10deg)}.tail{position:absolute;right:0;bottom:34px;width:52px;height:18px;border:6px solid #4b5563;border-left:0;border-bottom:0;border-radius:0 80px 0 0;transform:rotate(20deg)}
+    .mouseBody{position:absolute;left:20px;bottom:10px;width:48px;height:58px;background:var(--mouse);border:3px solid #8c6237;border-radius:28px 28px 20px 20px}.mouseHead{position:absolute;left:12px;top:8px;width:62px;height:54px;background:var(--mouse);border:3px solid #8c6237;border-radius:50%}.mouseEar{position:absolute;top:0;width:28px;height:28px;background:#e7b67d;border:3px solid #8c6237;border-radius:50%}.mouseEar.l{left:6px}.mouseEar.r{right:6px}.mouseEar:after{content:"";position:absolute;inset:6px;background:#f3c6c6;border-radius:50%}.mouseFace{position:absolute;left:18px;top:26px;width:28px;height:22px;background:#f1c492;border-radius:50%}.mEye{position:absolute;top:23px;width:9px;height:11px;background:#111;border-radius:50%}.mEye.l{left:23px}.mEye.r{right:23px}.mNose{position:absolute;left:29px;top:38px;width:9px;height:7px;background:#111;border-radius:50%}.mTail{position:absolute;right:0;bottom:24px;width:40px;height:22px;border:4px solid #8c6237;border-left:0;border-bottom:0;border-radius:0 80px 0 0;transform:rotate(20deg)}.cheese{position:absolute;width:34px;height:30px;background:var(--cheese);clip-path:polygon(0 0,100% 50%,0 100%);border-radius:6px;filter:drop-shadow(0 5px 3px rgba(80,45,15,.22))}.cheese:after{content:"";position:absolute;left:7px;top:8px;width:6px;height:6px;background:#d59b1f;border-radius:50%;box-shadow:12px 7px 0 #d59b1f,3px 15px 0 #d59b1f}.cheese.c1{left:48%;bottom:118px}.cheese.c2{left:58%;bottom:176px;transform:scale(.8)}.bubble{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px 14px;box-shadow:0 12px 30px rgba(80,45,15,.13);font-weight:900;max-width:82%;text-align:center}.bubble:after{content:"";position:absolute;left:50%;bottom:-9px;width:16px;height:16px;background:#fff;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+    .choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}.heroCard{border:2px solid var(--line);border-radius:22px;background:#fff;padding:14px;cursor:pointer;transition:.16s}.heroCard:hover,.heroCard.active{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 14px 30px rgba(47,128,237,.13)}.heroCard h3{margin:8px 0 4px}.heroPreview{height:110px;position:relative;border-radius:18px;background:#f8ead2;overflow:hidden}.heroPreview .sprite{transform:scale(.62);bottom:0;left:50%;right:auto;margin-left:-56px}.heroPreview .sprite.mouse{margin-left:-43px}
+    .log{height:200px;overflow:auto;background:#21170f;color:#fff4dc;border-radius:18px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.55}.log p{margin:0 0 6px}.quest{border:1px solid var(--line);background:#fff;border-radius:18px;padding:12px;margin-bottom:8px}.quest b{display:block}.quest small{color:var(--muted)}.inventory{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.item{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px;display:flex;gap:10px;align-items:center}.ico{width:38px;height:38px;border-radius:14px;background:#fff4cf;display:grid;place-items:center;font-size:20px;border:1px solid #f0d17d}.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#111827;color:#fff;border-radius:999px;padding:11px 15px;display:none;z-index:99;box-shadow:0 18px 50px rgba(0,0,0,.25);font-size:13px}.toast.show{display:block}
+    @media(max-width:620px){.wrap{padding:14px}.brand h1{font-size:21px}.choice{grid-template-columns:1fr}.stage{min-height:360px}.sprite.cat{left:24px;transform:scale(.8);transform-origin:bottom left}.sprite.mouse{right:24px;transform:scale(.82);transform-origin:bottom right}.actions button{flex:1 1 auto}.inventory{grid-template-columns:1fr}.bubble{font-size:13px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand"><div class="logo">MC</div><div><h1>Đại Chiến Mèo & Chuột - RPG</h1><p>Game nhập vai mini phong cách hoạt hình cổ điển: chọn phe, làm nhiệm vụ, thu thập phô mai, nâng cấp kỹ năng và chiến đấu vui nhộn.</p></div></div>
+      <div class="actions"><button class="primary" id="newGameBtn">Game mới</button><button id="saveBtn">Lưu</button><button id="loadBtn">Mở lưu</button></div>
+    </div>
+
+    <div class="grid">
+      <aside class="side">
+        <section class="card">
+          <div class="hd"><b>Nhân vật</b><span class="pill" id="rolePill">Chưa chọn</span></div>
+          <div class="bd">
+            <div class="choice" id="chooseBox">
+              <div class="heroCard" data-role="cat"><div class="heroPreview"><div class="sprite cat"><div class="tail"></div><div class="catEar l"></div><div class="catEar r"></div><div class="catHead"><div class="eye l"></div><div class="eye r"></div><div class="catFace"></div><div class="nose"></div><div class="whisker l"></div><div class="whisker r"></div></div><div class="catBody"></div></div></div><h3>Mèo Xám Tí Quậy</h3><p class="hint">Mạnh, lì đòn, phù hợp lối chơi truy bắt.</p></div>
+              <div class="heroCard" data-role="mouse"><div class="heroPreview"><div class="sprite mouse"><div class="mTail"></div><div class="mouseEar l"></div><div class="mouseEar r"></div><div class="mouseHead"><div class="mEye l"></div><div class="mEye r"></div><div class="mouseFace"></div><div class="mNose"></div></div><div class="mouseBody"></div></div></div><h3>Chuột Vàng Nhanh Nhí</h3><p class="hint">Nhanh, may mắn, phù hợp lối chơi né tránh.</p></div>
+            </div>
+            <div class="stat" style="margin-top:14px">
+              <div class="statLine"><b>Cấp</b><div class="bar"><i id="xpBar"></i></div><span id="levelVal">1</span></div>
+              <div class="statLine"><b>Máu</b><div class="bar hp"><i id="hpBar"></i></div><span id="hpVal">100</span></div>
+              <div class="statLine"><b>Năng lượng</b><div class="bar en"><i id="enBar"></i></div><span id="enVal">100</span></div>
+              <div class="statLine"><b>May mắn</b><div class="bar luck"><i id="luckBar"></i></div><span id="luckVal">50</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="hd"><b>Túi đồ</b><button class="warn" id="useSnackBtn">Dùng bánh</button></div>
+          <div class="bd"><div class="inventory"><div class="item"><div class="ico">🧀</div><div><b id="cheeseVal">0</b><br><small>Phô mai</small></div></div><div class="item"><div class="ico">🍪</div><div><b id="snackVal">1</b><br><small>Bánh hồi máu</small></div></div><div class="item"><div class="ico">⭐</div><div><b id="starVal">0</b><br><small>Sao thành tích</small></div></div><div class="item"><div class="ico">🪤</div><div><b id="trapVal">0</b><br><small>Bẫy vui</small></div></div></div></div>
+        </section>
+      </aside>
+
+      <main class="main">
+        <section class="card">
+          <div class="hd"><b>Bản đồ: Nhà bếp hoạt hình</b><span class="pill" id="turnVal">Lượt 1</span></div>
+          <div class="bd">
+            <div class="stage" id="stage">
+              <div class="cloud c1"></div><div class="cloud c2"></div>
+              <div class="bubble" id="bubble">Chọn nhân vật để bắt đầu cuộc rượt đuổi!</div>
+              <div class="cheese c1"></div><div class="cheese c2"></div>
+              <div class="sprite cat" id="catSprite"><div class="tail"></div><div class="catEar l"></div><div class="catEar r"></div><div class="catHead"><div class="eye l"></div><div class="eye r"></div><div class="catFace"></div><div class="nose"></div><div class="whisker l"></div><div class="whisker r"></div></div><div class="catBody"></div></div>
+              <div class="sprite mouse" id="mouseSprite"><div class="mTail"></div><div class="mouseEar l"></div><div class="mouseEar r"></div><div class="mouseHead"><div class="mEye l"></div><div class="mEye r"></div><div class="mouseFace"></div><div class="mNose"></div></div><div class="mouseBody"></div></div>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="primary" id="exploreBtn">Khám phá</button>
+              <button class="good" id="questBtn">Làm nhiệm vụ</button>
+              <button class="warn" id="sneakBtn">Lén lút</button>
+              <button class="danger" id="battleBtn">Đấu vui</button>
+              <button id="restBtn">Nghỉ ngơi</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="hd"><b>Nhật ký phiêu lưu</b><button id="clearLogBtn">Xóa nhật ký</button></div>
+          <div class="bd"><div class="log" id="log"></div></div>
+        </section>
+      </main>
+
+      <aside class="right">
+        <section class="card">
+          <div class="hd"><b>Nhiệm vụ</b><span class="pill" id="questDoneVal">0/4</span></div>
+          <div class="bd" id="questList"></div>
+        </section>
+        <section class="card">
+          <div class="hd"><b>Nâng cấp</b><span class="pill">Dùng phô mai</span></div>
+          <div class="bd" style="display:grid;gap:8px"><button id="upPowerBtn">+ Sức mạnh - 5 🧀</button><button id="upSpeedBtn">+ Tốc độ - 5 🧀</button><button id="upLuckBtn">+ May mắn - 5 🧀</button></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+const KEY='df_cartoon_chase_rpg_v1';
+const $=id=>document.getElementById(id);
+const quests=[
+  {id:'q1',name:'Thu thập 10 miếng phô mai',desc:'Tìm phô mai trong nhà bếp.',check:s=>s.cheese>=10},
+  {id:'q2',name:'Thắng 3 trận đấu vui',desc:'Dùng chiến thuật để chiến thắng.',check:s=>s.wins>=3},
+  {id:'q3',name:'Đạt cấp 3',desc:'Tích lũy kinh nghiệm qua nhiệm vụ.',check:s=>s.level>=3},
+  {id:'q4',name:'Có 3 ngôi sao',desc:'Hoàn thành thành tích đặc biệt.',check:s=>s.stars>=3}
+];
+let s;
+function fresh(){return{role:'',level:1,xp:0,hp:100,en:100,luck:50,power:50,speed:50,cheese:0,snack:1,stars:0,traps:0,wins:0,turn:1,done:{},log:[]}}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),1800)}
+function log(msg){s.log.unshift('• '+msg);s.log=s.log.slice(0,60);renderLog();save()}
+function save(){localStorage.setItem(KEY,JSON.stringify(s))}
+function load(){try{s=JSON.parse(localStorage.getItem(KEY)||'null')||fresh()}catch{s=fresh()}render();log('Đã mở dữ liệu lưu.')} 
+function pct(v,max=100){return Math.max(0,Math.min(100,Math.round(v/max*100)))}
+function gainXp(n){s.xp+=n;while(s.xp>=100){s.xp-=100;s.level++;s.hp=100;s.en=100;s.stars++;log('Lên cấp '+s.level+'! Nhận 1 sao thành tích.')}}
+function cost(n){if(s.cheese<n){toast('Chưa đủ phô mai');return false}s.cheese-=n;return true}
+function render(){
+  document.querySelectorAll('.heroCard').forEach(c=>c.classList.toggle('active',c.dataset.role===s.role));
+  $('rolePill').textContent=s.role==='cat'?'Mèo Xám':s.role==='mouse'?'Chuột Vàng':'Chưa chọn';
+  $('levelVal').textContent=s.level;$('hpVal').textContent=s.hp;$('enVal').textContent=s.en;$('luckVal').textContent=s.luck;
+  $('xpBar').style.width=pct(s.xp)+'%';$('hpBar').style.width=pct(s.hp)+'%';$('enBar').style.width=pct(s.en)+'%';$('luckBar').style.width=pct(s.luck)+'%';
+  $('cheeseVal').textContent=s.cheese;$('snackVal').textContent=s.snack;$('starVal').textContent=s.stars;$('trapVal').textContent=s.traps;$('turnVal').textContent='Lượt '+s.turn;
+  $('catSprite').classList.toggle('hide',s.role==='mouse');$('mouseSprite').classList.toggle('hide',s.role==='cat');
+  renderQuests();renderLog();save();
+}
+function renderLog(){$('log').innerHTML=s.log.map(x=>`<p>${x}</p>`).join('')||'<p>Nhật ký trống.</p>'}
+function renderQuests(){let done=0;$('questList').innerHTML=quests.map(q=>{const ok=s.done[q.id]||q.check(s);if(ok&&!s.done[q.id]){s.done[q.id]=true;s.stars++;s.cheese+=5;log('Hoàn thành nhiệm vụ: '+q.name+' (+5 phô mai, +1 sao)')}if(s.done[q.id])done++;return `<div class="quest"><b>${s.done[q.id]?'✅':'⬜'} ${q.name}</b><small>${q.desc}</small></div>`}).join('');$('questDoneVal').textContent=done+'/'+quests.length}
+function animate(id,cls){const el=$(id);el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),600)}
+function bubble(txt){$('bubble').textContent=txt}
+function requireRole(){if(!s.role){toast('Hãy chọn nhân vật trước');return false}return true}
+function spendEnergy(n){if(s.en<n){toast('Không đủ năng lượng, hãy nghỉ ngơi');return false}s.en-=n;return true}
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function explore(){if(!requireRole()||!spendEnergy(10))return;s.turn++;const found=rand(1,5)+Math.floor(s.luck/30);s.cheese+=found;gainXp(12);animate(s.role==='cat'?'catSprite':'mouseSprite','jump');bubble('Tìm thấy '+found+' miếng phô mai!');log('Khám phá nhà bếp và tìm được '+found+' phô mai.');render()}
+function quest(){if(!requireRole()||!spendEnergy(16))return;s.turn++;const roll=rand(1,100)+s.luck; if(roll>85){s.stars++;s.cheese+=8;gainXp(28);bubble('Nhiệm vụ hoàn hảo! +1 sao');log('Hoàn thành một pha xử lý xuất sắc, nhận 8 phô mai và 1 sao.')}else{s.cheese+=4;gainXp(18);bubble('Nhiệm vụ hoàn thành!');log('Hoàn thành nhiệm vụ nhỏ, nhận 4 phô mai.')}render()}
+function sneak(){if(!requireRole()||!spendEnergy(12))return;s.turn++;const chance=s.speed+s.luck+rand(1,70);if(chance>115){s.traps++;s.cheese+=6;gainXp(20);bubble('Lén lút thành công!');log('Lén qua bàn ăn, nhặt bẫy vui và 6 phô mai.')}else{s.hp-=rand(5,14);gainXp(8);bubble('Bị phát hiện rồi!');log('Lén lút thất bại, mất một ít máu.')}if(s.hp<0)s.hp=0;render()}
+function battle(){if(!requireRole()||!spendEnergy(18))return;s.turn++;const my=s.power+s.speed+s.luck+rand(1,80)+(s.traps>0?20:0);const foe=120+rand(1,60)+s.level*4;animate(s.role==='cat'?'catSprite':'mouseSprite','attack');setTimeout(()=>animate(s.role==='cat'?'mouseSprite':'catSprite','hit'),130);if(s.traps>0)s.traps--;if(my>=foe){s.wins++;s.cheese+=10;gainXp(35);bubble('Chiến thắng vui nhộn!');log('Bạn thắng trận đấu vui, nhận 10 phô mai.')}else{s.hp-=rand(14,28);gainXp(12);bubble('Thua keo này, bày keo khác!');log('Bạn thua trận, mất máu nhưng vẫn nhận kinh nghiệm.')}if(s.hp<0)s.hp=0;render()}
+function rest(){if(!requireRole())return;s.turn++;s.hp=Math.min(100,s.hp+28);s.en=Math.min(100,s.en+36);bubble('Nghỉ ngơi hồi sức.');log('Nghỉ ngơi: hồi máu và năng lượng.');render()}
+function useSnack(){if(s.snack<=0){toast('Không còn bánh');return}s.snack--;s.hp=Math.min(100,s.hp+45);bubble('Ăn bánh hồi máu!');log('Dùng bánh hồi 45 máu.');render()}
+function upgrade(type){if(!cost(5))return;if(type==='power')s.power+=8;if(type==='speed')s.speed+=8;if(type==='luck')s.luck=Math.min(100,s.luck+7);gainXp(8);log('Đã nâng cấp '+type+'.');render()}
+document.addEventListener('click',e=>{const c=e.target.closest('.heroCard');if(c){s.role=c.dataset.role;bubble(s.role==='cat'?'Bạn chọn Mèo Xám: bắt đầu truy bắt!':'Bạn chọn Chuột Vàng: bắt đầu né tránh!');log('Đã chọn nhân vật.');render()} });
+$('exploreBtn').onclick=explore;$('questBtn').onclick=quest;$('sneakBtn').onclick=sneak;$('battleBtn').onclick=battle;$('restBtn').onclick=rest;$('useSnackBtn').onclick=useSnack;$('upPowerBtn').onclick=()=>upgrade('power');$('upSpeedBtn').onclick=()=>upgrade('speed');$('upLuckBtn').onclick=()=>upgrade('luck');$('saveBtn').onclick=()=>{save();toast('Đã lưu game')};$('loadBtn').onclick=load;$('newGameBtn').onclick=()=>{if(confirm('Tạo game mới?')){s=fresh();render();log('Bắt đầu game mới.')}};$('clearLogBtn').onclick=()=>{s.log=[];renderLog();save()};
+s=fresh();load();
+</script>
+</body>
+</html>

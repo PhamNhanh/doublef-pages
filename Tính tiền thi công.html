@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tính tiền thi công Pro</title>
+  <link rel="icon" type="image/png" href="LOGODF.png" />
+  <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
+  <link rel="apple-touch-icon" href="LOGODF.png" />
   <style>
     :root{
       --bg:#f4f6f8;
@@ -69,8 +72,17 @@
       width:48px;height:48px;border-radius:16px;
       background:linear-gradient(135deg,var(--brand),#1e293b);
       display:grid;place-items:center;flex:none;
+      overflow:hidden;
       border:1px solid rgba(255,255,255,.25);
       box-shadow:0 14px 30px rgba(15,23,42,.18);
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:inherit;
+      display:block;
     }
     .logo svg path[fill]{fill:rgba(255,255,255,.96)}
     .logo svg path[stroke]{stroke:#dbeafe}
@@ -280,7 +292,7 @@
     <div class="topbar">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.5h14v15H5z" fill="rgba(255,255,255,.95)"/><path d="M8 8h8M8 11h8M8 14h5" stroke="#0284c7" stroke-width="1.8" stroke-linecap="round"/><path d="M17 16.2l1.2 1.2 2.4-3" stroke="#0284c7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <img src="LOGODF.png" alt="DF logo" />
         </div>
         <div>
           <h1>Tính tiền thi công Pro</h1>

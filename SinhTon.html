@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Survival Open World 3D MVP</title>
+  <style>
+    :root{--bg:#07111f;--panel:rgba(15,23,42,.78);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);--text:#f8fafc;--muted:#cbd5e1;--good:#22c55e;--warn:#f59e0b;--bad:#ef4444;--brand:#38bdf8;--accent:#a7f3d0}
+    *{box-sizing:border-box} html,body{margin:0;height:100%;overflow:hidden;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#030712;color:var(--text)}
+    #game{position:fixed;inset:0} canvas{display:block;width:100%;height:100%}
+    .hud{position:fixed;inset:0;pointer-events:none;z-index:5}.topbar{position:absolute;left:14px;right:14px;top:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px 14px;backdrop-filter:blur(14px);box-shadow:0 18px 50px rgba(0,0,0,.25)}.brand h1{font-size:16px;margin:0 0 5px}.brand p{font-size:12px;line-height:1.4;color:var(--muted);margin:0}.stats{display:grid;gap:8px;min-width:min(420px,calc(100vw - 28px))}.bar{height:13px;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.08)}.bar i{display:block;height:100%;width:50%;border-radius:999px;transition:.2s}.row{display:grid;grid-template-columns:70px 1fr 44px;gap:8px;align-items:center;font-size:12px}.row b{text-align:right}.hp i{background:linear-gradient(90deg,#ef4444,#fb7185)}.food i{background:linear-gradient(90deg,#f59e0b,#fde047)}.water i{background:linear-gradient(90deg,#0284c7,#38bdf8)}.energy i{background:linear-gradient(90deg,#22c55e,#a7f3d0)}.temp i{background:linear-gradient(90deg,#60a5fa,#f97316)}
+    .panel{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:12px;backdrop-filter:blur(14px);box-shadow:0 18px 50px rgba(0,0,0,.25)}.right{position:absolute;right:14px;top:132px;width:320px;max-width:calc(100vw - 28px);display:grid;gap:10px}.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;color:#bae6fd}.small{font-size:12px;color:var(--muted);line-height:1.55}.inventory{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.slot{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:9px 6px;text-align:center;font-size:12px}.slot b{display:block;font-size:16px;color:#fff}.log{height:118px;overflow:auto;font-size:12px;color:var(--muted);line-height:1.45;padding-right:4px}.log div{padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+    .bottom{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:space-between;gap:12px;align-items:flex-end}.controls{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:10px 12px;backdrop-filter:blur(14px);font-size:12px;color:var(--muted);line-height:1.55;max-width:680px}.actions{pointer-events:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}button{border:1px solid var(--line);background:rgba(255,255,255,.1);color:#fff;border-radius:13px;padding:10px 12px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18)}button:hover{background:rgba(255,255,255,.16)}button.primary{background:linear-gradient(135deg,#0284c7,#22c55e);border-color:transparent}button.danger{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.45)}.crosshair{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:2px solid rgba(255,255,255,.75);border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,.2)}.crosshair:before,.crosshair:after{content:"";position:absolute;background:rgba(255,255,255,.75)}.crosshair:before{width:2px;height:28px;left:7px;top:-6px}.crosshair:after{height:2px;width:28px;top:7px;left:-6px}
+    .mobile{display:none;position:absolute;inset:auto 0 0 0;pointer-events:none}.stick{pointer-events:auto;position:absolute;left:22px;bottom:96px;width:122px;height:122px;border-radius:999px;border:1px solid var(--line);background:rgba(15,23,42,.35);backdrop-filter:blur(8px)}.knob{position:absolute;left:39px;top:39px;width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.65)}.mBtns{pointer-events:auto;position:absolute;right:18px;bottom:88px;display:grid;grid-template-columns:repeat(2,68px);gap:10px}.mBtns button{height:58px;padding:0}.centerMsg{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);padding:14px 18px;border-radius:18px;background:rgba(15,23,42,.8);border:1px solid var(--line);display:none;text-align:center;max-width:520px}.centerMsg.show{display:block}.modal{position:fixed;inset:0;z-index:20;background:rgba(2,6,23,.72);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(10px)}.modal.show{display:flex}.modalCard{max-width:760px;background:#0f172a;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.45)}.modalCard h2{margin:0 0 10px}.modalCard p{color:var(--muted);line-height:1.6}.modalGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.pill{padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.06);font-size:13px;color:var(--muted)}
+    @media(max-width:860px){.right{display:none}.topbar{align-items:flex-start}.brand{max-width:calc(100vw - 28px)}.bottom{bottom:10px}.controls{display:none}.mobile{display:block}.actions{display:none}.crosshair{display:none}.stats{min-width:calc(100vw - 28px)}}
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+  <div id="loading3d" style="position:fixed;inset:0;display:grid;place-items:center;z-index:99999;background:#030712;color:#fff;font-family:system-ui,Arial;text-align:center;padding:20px"><div><div style="font-size:22px;font-weight:900;margin-bottom:8px">Đang tải game 3D...</div><div style="color:#cbd5e1;font-size:14px;line-height:1.6">Nếu đứng quá lâu, trình duyệt đang chặn thư viện 3D hoặc mạng chưa tải được Three.js.</div></div></div>
+  <div class="hud">
+    <div class="topbar">
+      <div class="brand"><h1>Survival Open World 3D MVP</h1><p>Thế giới sinh tồn 3D: chunk địa hình, ngày đêm, săn bắt, xây nhà, trồng trọt, loot tài nguyên.</p></div>
+      <div class="panel stats">
+        <div class="row hp"><span>Máu</span><div class="bar"><i id="hpBar"></i></div><b id="hpText">100</b></div>
+        <div class="row food"><span>Đói</span><div class="bar"><i id="foodBar"></i></div><b id="foodText">100</b></div>
+        <div class="row water"><span>Khát</span><div class="bar"><i id="waterBar"></i></div><b id="waterText">100</b></div>
+        <div class="row energy"><span>NL</span><div class="bar"><i id="energyBar"></i></div><b id="energyText">100</b></div>
+        <div class="row temp"><span>Nhiệt</span><div class="bar"><i id="tempBar"></i></div><b id="tempText">25°C</b></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="panel"><h2>Ba lô</h2><div class="inventory" id="inventory"></div><div class="small" style="margin-top:8px">Búa xây: <b id="buildMode">Tắt</b> • Vũ khí: Cung gỗ • Vòng đời cây: hạt → mầm → trưởng thành → thu hoạch.</div></div>
+      <div class="panel"><h2>Thế giới</h2><div class="small" id="worldInfo"></div></div>
+      <div class="panel"><h2>Nhật ký</h2><div class="log" id="log"></div></div>
+    </div>
+    <div class="crosshair"></div>
+    <div class="bottom">
+      <div class="controls">WASD: di chuyển • Chuột: xoay camera • Space: nhảy • Shift: chạy • E: nhặt/chặt cây/đào đá/thu hoạch • F: trồng cây • B: bật xây dựng • Click: bắn/đặt khối • R: ăn thức ăn • T: uống nước • P: tạm dừng</div>
+      <div class="actions"><button class="primary" id="startBtn">Bắt đầu / khóa chuột</button><button id="saveBtn">Lưu</button><button id="loadBtn">Tải</button><button class="danger" id="resetBtn">Reset</button></div>
+    </div>
+    <div class="mobile"><div class="stick" id="stick"><div class="knob" id="knob"></div></div><div class="mBtns"><button id="mJump">Nhảy</button><button id="mAction">E</button><button id="mShoot">Bắn</button><button id="mBuild">Xây</button></div></div>
+    <div class="centerMsg" id="centerMsg"></div>
+  </div>
+  <div class="modal show" id="intro">
+    <div class="modalCard"><h2>Survival Open World 3D</h2><p>Đây là bản MVP chạy 1 file HTML: có địa hình sinh theo chunk, tài nguyên, thú rừng AI đơn giản, hệ chỉ số sinh tồn, trồng trọt và xây dựng khối nhà.</p><div class="modalGrid"><div class="pill">Mục tiêu: sống sót càng lâu càng tốt.</div><div class="pill">Thu thập gỗ/đá, săn thú, trồng cây và xây nơi trú ẩn.</div><div class="pill">Ban đêm lạnh hơn, chỉ số tụt nhanh hơn.</div><div class="pill">Tất cả lưu bằng localStorage.</div></div><button class="primary" id="playBtn">Vào game</button></div>
+  </div>
+
+<script type="module">
+let THREE;
+const loading3d = document.getElementById('loading3d');
+async function loadThree(){
+  const sources=[
+    'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js',
+    'https://unpkg.com/three@0.160.0/build/three.module.js',
+    'https://esm.sh/three@0.160.0'
+  ];
+  let lastErr=null;
+  for(const src of sources){
+    try{return await import(src)}catch(e){lastErr=e}
+  }
+  throw lastErr || new Error('Không tải được Three.js');
+}
+try{
+  THREE = await loadThree();
+  if(loading3d) loading3d.style.display='none';
+}catch(e){
+  console.error(e);
+  if(loading3d){
+    loading3d.innerHTML='<div><div style="font-size:22px;font-weight:900;margin-bottom:8px;color:#fecaca">Không tải được game 3D</div><div style="color:#cbd5e1;font-size:14px;line-height:1.7;max-width:620px">Nguyên nhân thường gặp: chưa có Internet, trình duyệt chặn CDN, hoặc đang mở file trực tiếp không qua web server. Hãy upload lên Cloudflare/GitHub Pages rồi mở lại, hoặc bật mạng và tải lại trang.</div></div>';
+  }
+  throw e;
+}
+
+
+const STORAGE_KEY='zone_open_world_survival_3d_v1';
+const el=document.getElementById('game');
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x8ec5ff);
+scene.fog=new THREE.Fog(0x8ec5ff,60,280);
+const camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,700);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;el.appendChild(renderer.domElement);
+const hemi=new THREE.HemisphereLight(0xbde7ff,0x3b2a18,1.2);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffffff,1.2);sun.position.set(50,80,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.near=1;sun.shadow.camera.far=240;sun.shadow.camera.left=-120;sun.shadow.camera.right=120;sun.shadow.camera.top=120;sun.shadow.camera.bottom=-120;scene.add(sun);
+
+const mats={grass:new THREE.MeshStandardMaterial({color:0x4a9d45,roughness:.9}),sand:new THREE.MeshStandardMaterial({color:0xbfa86a,roughness:.95}),snow:new THREE.MeshStandardMaterial({color:0xe5f4ff,roughness:.85}),water:new THREE.MeshStandardMaterial({color:0x1d8fd1,roughness:.5,metalness:.1,transparent:true,opacity:.72}),wood:new THREE.MeshStandardMaterial({color:0x8b5a2b,roughness:.85}),leaf:new THREE.MeshStandardMaterial({color:0x1f7a3b,roughness:.9}),stone:new THREE.MeshStandardMaterial({color:0x7c8794,roughness:1}),player:new THREE.MeshStandardMaterial({color:0x38bdf8,roughness:.55}),animal:new THREE.MeshStandardMaterial({color:0x9a6b3a,roughness:.8}),wolf:new THREE.MeshStandardMaterial({color:0x6b7280,roughness:.8}),build:new THREE.MeshStandardMaterial({color:0xa16207,roughness:.75}),ghostGood:new THREE.MeshStandardMaterial({color:0x22c55e,transparent:true,opacity:.45}),ghostBad:new THREE.MeshStandardMaterial({color:0xef4444,transparent:true,opacity:.45}),crop:new THREE.MeshStandardMaterial({color:0x84cc16,roughness:.9}),pickup:new THREE.MeshStandardMaterial({color:0xfacc15,roughness:.3,emissive:0x3b2500})};
+
+function hash(x,z){let n=x*374761393+z*668265263;n=(n^(n>>13))*1274126177;return ((n^(n>>16))>>>0)/4294967295}
+function noise(x,z){const xi=Math.floor(x),zi=Math.floor(z),xf=x-xi,zf=z-zi;const u=xf*xf*(3-2*xf),v=zf*zf*(3-2*zf);const a=hash(xi,zi),b=hash(xi+1,zi),c=hash(xi,zi+1),d=hash(xi+1,zi+1);return (a*(1-u)+b*u)*(1-v)+(c*(1-u)+d*u)*v}
+function fbm(x,z){let amp=1,f=.018,s=0,n=0;for(let i=0;i<5;i++){s+=noise(x*f,z*f)*amp;n+=amp;amp*=.5;f*=2.1}return s/n}
+function heightAt(x,z){const h=(fbm(x,z)-.42)*34 + (fbm(x*.37+999,z*.37-444)-.5)*8;return Math.max(-3,h)}
+function biomeAt(x,z,h){const moist=fbm(x+4000,z-2000),temp=fbm(x-2000,z+6000)-h/70;if(h<.4)return 'water';if(h>16&&temp<.45)return 'snow';if(moist>.58)return 'forest';if(moist<.34)return 'dry';return 'plain'}
+
+const player=new THREE.Group();const body=new THREE.Mesh(new THREE.CapsuleGeometry(.55,1.5,6,12),mats.player);body.castShadow=true;player.add(body);const head=new THREE.Mesh(new THREE.SphereGeometry(.42,18,14),mats.player);head.position.y=1.25;head.castShadow=true;player.add(head);const nose=new THREE.Mesh(new THREE.BoxGeometry(.18,.16,.32),new THREE.MeshStandardMaterial({color:0xe0f2fe}));nose.position.set(0,1.28,-.42);nose.castShadow=true;player.add(nose);scene.add(player);
+const state={x:0,y:8,z:0,vx:0,vy:0,vz:0,yaw:0,pitch:-.25,hp:100,food:100,water:100,energy:100,temp:25,wood:0,stone:0,meat:0,seeds:2,arrows:18,day:0,time:8*60,score:0,build:false,paused:false,alive:true,onGround:false};
+const keys={};let pointerLocked=false;
+const chunks=new Map(),trees=[],rocks=[],animals=[],pickups=[],buildings=[],crops=[],arrows=[];
+const CHUNK=32,VIEW=3;
+
+function makeChunk(cx,cz){const key=`${cx},${cz}`;if(chunks.has(key))return;const group=new THREE.Group();group.userData={cx,cz};const seg=16;const geo=new THREE.PlaneGeometry(CHUNK,CHUNK,seg,seg);geo.rotateX(-Math.PI/2);const pos=geo.attributes.position;let waterCount=0,snowCount=0,dryCount=0;for(let i=0;i<pos.count;i++){const x=pos.getX(i)+cx*CHUNK,z=pos.getZ(i)+cz*CHUNK,h=heightAt(x,z);pos.setY(i,h);const b=biomeAt(x,z,h);if(b==='water')waterCount++;if(b==='snow')snowCount++;if(b==='dry')dryCount++}geo.computeVertexNormals();let mat=mats.grass;if(waterCount>pos.count*.55)mat=mats.sand;else if(snowCount>pos.count*.45)mat=mats.snow;else if(dryCount>pos.count*.55)mat=mats.sand;const mesh=new THREE.Mesh(geo,mat);mesh.receiveShadow=true;mesh.position.set(cx*CHUNK,0,cz*CHUNK);group.add(mesh);
+  const water=new THREE.Mesh(new THREE.PlaneGeometry(CHUNK,CHUNK),mats.water);water.rotateX(-Math.PI/2);water.position.set(cx*CHUNK,.18,cz*CHUNK);if(waterCount>pos.count*.2)group.add(water);
+  const rnd=hash(cx,cz);const objectCount=8+Math.floor(rnd*10);for(let i=0;i<objectCount;i++){const lx=(hash(cx*17+i,cz*31-i)-.5)*CHUNK,lz=(hash(cx*41-i,cz*19+i)-.5)*CHUNK;const wx=cx*CHUNK+lx,wz=cz*CHUNK+lz,h=heightAt(wx,wz),b=biomeAt(wx,wz,h);if(b==='water')continue;const r=hash(cx*103+i,cz*97-i);if((b==='forest'||r>.62)&&r>.18){const tree=makeTree(wx,h,wz);group.add(tree.mesh);trees.push(tree)}else if(r>.34){const rock=makeRock(wx,h,wz);group.add(rock.mesh);rocks.push(rock)}}
+  if(Math.abs(cx)+Math.abs(cz)<10&&rnd>.7){const a=makeAnimal(cx*CHUNK+(rnd-.5)*18,heightAt(cx*CHUNK,cz*CHUNK),cz*CHUNK+(hash(cz,cx)-.5)*18,rnd>.88?'wolf':'deer');scene.add(a.mesh);animals.push(a)}
+  scene.add(group);chunks.set(key,group)}
+function unloadFar(){for(const [key,g] of chunks){const dx=g.userData.cx-Math.floor(state.x/CHUNK),dz=g.userData.cz-Math.floor(state.z/CHUNK);if(Math.abs(dx)>VIEW+1||Math.abs(dz)>VIEW+1){scene.remove(g);chunks.delete(key)}}}
+function updateChunks(){const cx=Math.floor(state.x/CHUNK),cz=Math.floor(state.z/CHUNK);for(let dz=-VIEW;dz<=VIEW;dz++)for(let dx=-VIEW;dx<=VIEW;dx++)makeChunk(cx+dx,cz+dz);unloadFar()}
+function makeTree(x,y,z){const mesh=new THREE.Group();const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.22,.34,2.5,8),mats.wood);trunk.position.y=y+1.25;trunk.castShadow=true;mesh.add(trunk);const leaf=new THREE.Mesh(new THREE.ConeGeometry(1.3,3,9),mats.leaf);leaf.position.y=y+3.25;leaf.castShadow=true;mesh.add(leaf);mesh.position.set(x,0,z);return{mesh,x,y,z,hp:3,type:'tree'}}
+function makeRock(x,y,z){const mesh=new THREE.Mesh(new THREE.DodecahedronGeometry(.8+hash(x,z)*.8,0),mats.stone);mesh.position.set(x,y+.55,z);mesh.castShadow=true;return{mesh,x,y,z,hp:4,type:'rock'}}
+function makeAnimal(x,y,z,type){const mesh=new THREE.Group();const mat=type==='wolf'?mats.wolf:mats.animal;const b=new THREE.Mesh(new THREE.BoxGeometry(1.3,.7,.55),mat);b.position.y=y+.7;b.castShadow=true;mesh.add(b);const hd=new THREE.Mesh(new THREE.BoxGeometry(.45,.45,.45),mat);hd.position.set(0,y+.88,-.55);hd.castShadow=true;mesh.add(hd);mesh.position.set(x,0,z);return{mesh,x,y,z,type,hp:type==='wolf'?45:25,speed:type==='wolf'?7:5,state:'wander',dir:Math.random()*Math.PI*2,turn:0}}
+function makePickup(x,y,z,type){const colors={food:0xf97316,water:0x38bdf8,seeds:0x84cc16,arrows:0xfacc15};const mat=new THREE.MeshStandardMaterial({color:colors[type]||0xfacc15,emissive:colors[type]||0x000000,emissiveIntensity:.18});const mesh=new THREE.Mesh(new THREE.OctahedronGeometry(.42,0),mat);mesh.position.set(x,y+.65,z);mesh.castShadow=true;scene.add(mesh);pickups.push({mesh,x,y,z,type})}
+
+function nearObj(arr,maxD=3){let best=null,bd=maxD;for(const o of arr){const d=Math.hypot(o.x-state.x,o.z-state.z);if(d<bd){bd=d;best=o}}return best}
+function addLog(s){const log=document.getElementById('log');const d=document.createElement('div');d.textContent=s;log.prepend(d);while(log.children.length>24)log.lastChild.remove()}
+function center(s,ms=1800){const c=document.getElementById('centerMsg');c.textContent=s;c.classList.add('show');clearTimeout(window.__msg);window.__msg=setTimeout(()=>c.classList.remove('show'),ms)}
+
+function interact(){const p=nearObj(pickups,3);if(p){if(p.type==='food')state.meat+=1;if(p.type==='water')state.water=Math.min(100,state.water+25);if(p.type==='seeds')state.seeds+=2;if(p.type==='arrows')state.arrows+=6;scene.remove(p.mesh);pickups.splice(pickups.indexOf(p),1);addLog('Nhặt '+p.type);return}
+ const tr=nearObj(trees,3.2);if(tr){tr.hp--;state.wood+=2;addLog('Chặt cây +2 gỗ');if(tr.hp<=0){tr.mesh.parent&&tr.mesh.parent.remove(tr.mesh);trees.splice(trees.indexOf(tr),1);if(Math.random()<.55)makePickup(tr.x,tr.y,tr.z,'seeds')}return}
+ const ro=nearObj(rocks,3);if(ro){ro.hp--;state.stone+=2;addLog('Đào đá +2 đá');if(ro.hp<=0){ro.mesh.parent&&ro.mesh.parent.remove(ro.mesh);rocks.splice(rocks.indexOf(ro),1);if(Math.random()<.45)makePickup(ro.x,ro.y,ro.z,'arrows')}return}
+ const cr=nearObj(crops,3);if(cr&&cr.stage>=3){state.food=Math.min(100,state.food+25);state.seeds+=1;scene.remove(cr.mesh);crops.splice(crops.indexOf(cr),1);addLog('Thu hoạch cây trồng + thức ăn');return}
+ center('Không có gì để tương tác gần đây')}
+function plant(){if(state.seeds<=0){center('Bạn không có hạt giống');return}const x=state.x+Math.sin(state.yaw)*3,z=state.z+Math.cos(state.yaw)*3,y=heightAt(x,z);if(biomeAt(x,z,y)==='water'){center('Không thể trồng dưới nước');return}state.seeds--;const mesh=new THREE.Mesh(new THREE.ConeGeometry(.35,.7,6),mats.crop);mesh.position.set(x,y+.35,z);mesh.castShadow=true;scene.add(mesh);crops.push({mesh,x,y,z,stage:0,t:0});addLog('Đã gieo hạt')}
+function toggleBuild(){state.build=!state.build;document.getElementById('buildMode').textContent=state.build?'Bật':'Tắt';center(state.build?'Chế độ xây dựng: Click để đặt khối':'Tắt xây dựng')}
+const ghost=new THREE.Mesh(new THREE.BoxGeometry(2,2,2),mats.ghostGood);ghost.visible=false;scene.add(ghost);
+function updateGhost(){if(!state.build){ghost.visible=false;return}const x=Math.round((state.x+Math.sin(state.yaw)*4)/2)*2,z=Math.round((state.z+Math.cos(state.yaw)*4)/2)*2,y=heightAt(x,z)+1;ghost.position.set(x,y,z);ghost.visible=true;const ok=state.wood>=2&&state.stone>=1&&biomeAt(x,z,heightAt(x,z))!=='water';ghost.material=ok?mats.ghostGood:mats.ghostBad;ghost.userData.ok=ok}
+function placeBlock(){if(!state.build)return false;updateGhost();if(!ghost.userData.ok){center('Cần 2 gỗ + 1 đá và vị trí hợp lệ');return true}state.wood-=2;state.stone-=1;const block=new THREE.Mesh(new THREE.BoxGeometry(2,2,2),mats.build);block.position.copy(ghost.position);block.castShadow=true;block.receiveShadow=true;scene.add(block);buildings.push({mesh:block,x:block.position.x,y:block.position.y,z:block.position.z});addLog('Đã đặt khối xây dựng');return true}
+function shoot(){if(placeBlock())return;if(state.arrows<=0){center('Hết tên');return}state.arrows--;const dir=new THREE.Vector3(Math.sin(state.yaw)*Math.cos(state.pitch),-Math.sin(state.pitch),Math.cos(state.yaw)*Math.cos(state.pitch)).normalize();const mesh=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.9,8),new THREE.MeshStandardMaterial({color:0xfef3c7}));mesh.rotation.x=Math.PI/2;mesh.position.set(state.x,state.y+1.1,state.z);scene.add(mesh);arrows.push({mesh,pos:mesh.position.clone(),vel:dir.multiplyScalar(38),life:2.2});}
+function eat(){if(state.meat<=0){center('Không có thức ăn');return}state.meat--;state.food=Math.min(100,state.food+38);state.hp=Math.min(100,state.hp+7);addLog('Đã ăn thịt nướng')}
+function drink(){if(state.water>=95){center('Bạn chưa khát');return}state.water=Math.min(100,state.water+20);addLog('Uống nước từ bình dự trữ')}
+
+function save(){const data={state:{...state,build:false,paused:false,alive:true},buildings:buildings.map(b=>({x:b.x,y:b.y,z:b.z})),crops:crops.map(c=>({x:c.x,y:c.y,z:c.z,stage:c.stage,t:c.t}))};localStorage.setItem(STORAGE_KEY,JSON.stringify(data));addLog('Đã lưu game')}
+function load(){const raw=localStorage.getItem(STORAGE_KEY);if(!raw){center('Chưa có save');return}try{const data=JSON.parse(raw);Object.assign(state,data.state);player.position.set(state.x,state.y,state.z);for(const b of buildings)scene.remove(b.mesh);buildings.length=0;(data.buildings||[]).forEach(o=>{const block=new THREE.Mesh(new THREE.BoxGeometry(2,2,2),mats.build);block.position.set(o.x,o.y,o.z);block.castShadow=block.receiveShadow=true;scene.add(block);buildings.push({mesh:block,...o})});for(const c of crops)scene.remove(c.mesh);crops.length=0;(data.crops||[]).forEach(o=>{const mesh=new THREE.Mesh(new THREE.ConeGeometry(.35+.18*o.stage,.7+.35*o.stage,6),mats.crop);mesh.position.set(o.x,o.y+.35+.18*o.stage,o.z);mesh.castShadow=true;scene.add(mesh);crops.push({mesh,...o})});addLog('Đã tải game')}catch(e){alert('Save lỗi')}};
+function reset(){localStorage.removeItem(STORAGE_KEY);location.reload()}
+
+function updateStats(){const set=(id,v)=>{document.getElementById(id+'Text').textContent=id==='temp'?Math.round(v)+'°C':Math.round(v);document.getElementById(id+'Bar').style.width=Math.max(0,Math.min(100,v))+'%'};set('hp',state.hp);set('food',state.food);set('water',state.water);set('energy',state.energy);set('temp',Math.max(0,Math.min(100,state.temp+20)));document.getElementById('inventory').innerHTML=[['Gỗ',state.wood],['Đá',state.stone],['Thịt',state.meat],['Hạt',state.seeds],['Tên',state.arrows],['Điểm',Math.floor(state.score)],['Ngày',state.day+1],['Giờ',Math.floor(state.time/60).toString().padStart(2,'0')+':'+Math.floor(state.time%60).toString().padStart(2,'0')]].map(x=>`<div class="slot"><b>${x[1]}</b>${x[0]}</div>`).join('');document.getElementById('worldInfo').innerHTML=`Vị trí: ${state.x.toFixed(1)}, ${state.z.toFixed(1)}<br>Chunk đang tải: ${chunks.size}<br>Thú rừng: ${animals.length} • Cây: ${trees.length} • Đá: ${rocks.length}<br>Khối xây: ${buildings.length} • Cây trồng: ${crops.length}<br>Biome: ${biomeAt(state.x,state.z,heightAt(state.x,state.z))}`}
+
+function updatePlayer(dt){if(state.paused||!state.alive)return;const forward=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0);const strafe=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);let speed=keys.ShiftLeft||keys.ShiftRight?12:7;if((keys.ShiftLeft||keys.ShiftRight)&&state.energy>1){state.energy-=18*dt}else if(!(keys.ShiftLeft||keys.ShiftRight))state.energy=Math.min(100,state.energy+12*dt);if(state.energy<5)speed=5;const sy=Math.sin(state.yaw),cy=Math.cos(state.yaw);let dx=sy*forward+cy*strafe,dz=cy*forward-sy*strafe;const len=Math.hypot(dx,dz)||1;dx/=len;dz/=len;state.vx=dx*speed*Math.min(1,Math.abs(forward)+Math.abs(strafe));state.vz=dz*speed*Math.min(1,Math.abs(forward)+Math.abs(strafe));state.vy-=22*dt;if((keys.Space||mobile.jump)&&state.onGround){state.vy=8;state.onGround=false}state.x+=state.vx*dt;state.z+=state.vz*dt;state.y+=state.vy*dt;const ground=heightAt(state.x,state.z)+1.05;if(state.y<=ground){state.y=ground;state.vy=0;state.onGround=true}player.position.set(state.x,state.y,state.z);player.rotation.y=state.yaw;camera.position.set(state.x-Math.sin(state.yaw)*7,state.y+4.2,state.z-Math.cos(state.yaw)*7);camera.lookAt(state.x+Math.sin(state.yaw)*8,state.y+1.5-Math.sin(state.pitch)*5,state.z+Math.cos(state.yaw)*8)}
+function updateSurvival(dt){state.time+=dt*4;if(state.time>=1440){state.time-=1440;state.day++;addLog('Ngày mới bắt đầu')}const hour=state.time/60;const night=hour<6||hour>19;state.temp=night?8+Math.sin(performance.now()/2000)*3:24+Math.sin(hour/24*Math.PI)*8;const moving=Math.hypot(state.vx,state.vz)>1;state.food-=dt*(moving?.18:.08)*(night?1.2:1);state.water-=dt*(moving?.28:.13)*(state.temp>30?1.8:1);if(state.food<=0||state.water<=0)state.hp-=dt*5;if(night&&state.temp<10)state.hp-=dt*.8;state.score+=dt*(1+state.day*.12);if(state.hp<=0){state.hp=0;state.alive=false;center('Bạn đã gục ngã. Bấm Reset để chơi lại.',999999)}}
+function updateAnimals(dt){for(let i=animals.length-1;i>=0;i--){const a=animals[i];const d=Math.hypot(a.x-state.x,a.z-state.z);if(a.type==='wolf'&&d<22)a.state='chase';else if(a.type==='deer'&&d<15)a.state='flee';else if(a.turn<=0){a.state='wander';a.dir+=hash(a.x,a.z)*2-1;a.turn=1+Math.random()*3}a.turn-=dt;let dir=a.dir;if(a.state==='chase')dir=Math.atan2(state.x-a.x,state.z-a.z);if(a.state==='flee')dir=Math.atan2(a.x-state.x,a.z-state.z);a.x+=Math.sin(dir)*a.speed*dt;a.z+=Math.cos(dir)*a.speed*dt;a.y=heightAt(a.x,a.z);a.mesh.position.set(a.x,0,a.z);a.mesh.rotation.y=dir;if(a.type==='wolf'&&d<1.8){state.hp-=dt*14}if(a.hp<=0){makePickup(a.x,a.y,a.z,'food');scene.remove(a.mesh);animals.splice(i,1);state.score+=40;addLog('Săn được '+a.type)}}}
+function updateArrows(dt){for(let i=arrows.length-1;i>=0;i--){const a=arrows[i];a.life-=dt;a.vel.y-=12*dt;a.pos.addScaledVector(a.vel,dt);a.mesh.position.copy(a.pos);a.mesh.lookAt(a.pos.clone().add(a.vel));let hit=false;for(const an of animals){if(Math.hypot(an.x-a.pos.x,an.z-a.pos.z)<1.1&&Math.abs((an.y+.8)-a.pos.y)<1.4){an.hp-=25;hit=true;break}}if(a.life<=0||a.pos.y<heightAt(a.pos.x,a.pos.z)||hit){scene.remove(a.mesh);arrows.splice(i,1)}}}
+function updateCrops(dt){for(const c of crops){c.t+=dt;if(c.t>18&&c.stage<3){c.t=0;c.stage++;scene.remove(c.mesh);const mesh=new THREE.Mesh(new THREE.ConeGeometry(.35+.18*c.stage,.7+.35*c.stage,6),mats.crop);mesh.position.set(c.x,c.y+.35+.18*c.stage,c.z);mesh.castShadow=true;scene.add(mesh);c.mesh=mesh;if(c.stage===3)addLog('Một cây trồng đã sẵn sàng thu hoạch')}}}
+function updatePickups(dt){for(const p of pickups){p.mesh.rotation.y+=dt*2;p.mesh.position.y=p.y+.65+Math.sin(performance.now()/250)*.08}}
+function updateDayNight(){const hour=state.time/60;const k=Math.max(0,Math.sin((hour-5)/14*Math.PI));sun.intensity=.25+k*1.35;hemi.intensity=.55+k*.75;sun.position.set(Math.sin(hour/24*Math.PI*2)*80,25+k*80,Math.cos(hour/24*Math.PI*2)*80);const dayColor=new THREE.Color(0x8ec5ff),nightColor=new THREE.Color(0x061326);scene.background=dayColor.clone().lerp(nightColor,1-k);scene.fog.color.copy(scene.background)}
+function animate(t){requestAnimationFrame(animate);const now=t/1000;const dt=Math.min(.05,now-(animate.last||now));animate.last=now;if(!state.paused){updateChunks();updatePlayer(dt);updateSurvival(dt);updateAnimals(dt);updateArrows(dt);updateCrops(dt);updatePickups(dt);updateGhost();updateDayNight()}updateStats();renderer.render(scene,camera)}
+
+const mobile={x:0,z:0,jump:false};let stickActive=false;const stick=document.getElementById('stick'),knob=document.getElementById('knob');function setStick(e){const r=stick.getBoundingClientRect();const x=(e.clientX-r.left-r.width/2)/(r.width/2),y=(e.clientY-r.top-r.height/2)/(r.height/2);const l=Math.min(1,Math.hypot(x,y)),a=Math.atan2(y,x);mobile.x=Math.cos(a)*l;mobile.z=Math.sin(a)*l;knob.style.left=(39+mobile.x*34)+'px';knob.style.top=(39+mobile.z*34)+'px';keys.KeyW=mobile.z<-0.25;keys.KeyS=mobile.z>0.25;keys.KeyA=mobile.x<-0.25;keys.KeyD=mobile.x>0.25}stick.addEventListener('pointerdown',e=>{stickActive=true;stick.setPointerCapture(e.pointerId);setStick(e)});stick.addEventListener('pointermove',e=>{if(stickActive)setStick(e)});stick.addEventListener('pointerup',e=>{stickActive=false;mobile.x=mobile.z=0;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;knob.style.left='39px';knob.style.top='39px'});
+document.getElementById('mJump').onclick=()=>{mobile.jump=true;setTimeout(()=>mobile.jump=false,160)};document.getElementById('mAction').onclick=interact;document.getElementById('mShoot').onclick=shoot;document.getElementById('mBuild').onclick=toggleBuild;
+addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyF')plant();if(e.code==='KeyB')toggleBuild();if(e.code==='KeyR')eat();if(e.code==='KeyT')drink();if(e.code==='KeyP'){state.paused=!state.paused;center(state.paused?'Tạm dừng':'Tiếp tục')}});addEventListener('keyup',e=>keys[e.code]=false);
+renderer.domElement.addEventListener('click',()=>{if(!pointerLocked)renderer.domElement.requestPointerLock?.();else shoot()});document.addEventListener('pointerlockchange',()=>pointerLocked=document.pointerLockElement===renderer.domElement);document.addEventListener('mousemove',e=>{if(pointerLocked){state.yaw-=e.movementX*.0025;state.pitch=Math.max(-.8,Math.min(.65,state.pitch+e.movementY*.0018))}});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+document.getElementById('startBtn').onclick=()=>renderer.domElement.requestPointerLock?.();document.getElementById('playBtn').onclick=()=>{document.getElementById('intro').classList.remove('show');renderer.domElement.requestPointerLock?.()};document.getElementById('saveBtn').onclick=save;document.getElementById('loadBtn').onclick=load;document.getElementById('resetBtn').onclick=reset;
+updateChunks();addLog('Bạn tỉnh dậy ở vùng hoang dã. Hãy tìm gỗ, đá, thức ăn và nước.');animate();
+</script>
+</body>
+</html>

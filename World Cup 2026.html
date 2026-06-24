@@ -58,6 +58,23 @@ body{
   filter:drop-shadow(0 8px 18px rgba(245,179,1,.35));
 }
 
+.worldcup-trophy{
+  width:58px;
+  height:82px;
+  object-fit:cover;
+  object-position:center;
+  border-radius:8px;
+  filter:drop-shadow(0 10px 20px rgba(245,179,1,.28));
+  background:rgba(255,255,255,.08);
+}
+
+.fallback-trophy{
+  width:58px;
+  height:82px;
+  align-items:center;
+  justify-content:center;
+}
+
 .brand-title{
   font-size:19px;
   font-weight:900;
@@ -665,8 +682,14 @@ td.center,th.center{
 <div class="app">
   <aside class="sidebar">
     <div class="brand">
-      <div class="trophy">🏆</div>
-      <div class="brand-title">WORLD CUP<br>2026</div>
+      <img
+        class="worldcup-trophy"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.jpg/180px-FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.jpg"
+        alt="World Cup Trophy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      >
+      <div class="trophy fallback-trophy" style="display:none">🏆</div>
+      <div class="brand-title">WORLD<br>CUP<br>2026</div>
     </div>
 
     <nav class="menu">

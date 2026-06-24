@@ -1,0 +1,1023 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>World Cup 2026 - Quản lý đội hình</title>
+  <link rel="icon" type="image/png" href="LOGODF.png" />
+  <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
+  <link rel="apple-touch-icon" href="LOGODF.png" />
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root{
+      --bg:#07111f;
+      --surface:#ffffff;
+      --panel:#0f1b2d;
+      --line:rgba(255,255,255,.14);
+      --text:#eef6ff;
+      --muted:#a9bbd0;
+      --primary:#10b981;
+      --primary2:#059669;
+      --blue:#2563eb;
+      --danger:#dc2626;
+      --shadow:0 22px 70px rgba(0,0,0,.28);
+      --r2:26px;
+      --focus:0 0 0 4px rgba(16,185,129,.22);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(900px 520px at 10% -10%,rgba(16,185,129,.24),transparent 62%),
+        radial-gradient(900px 520px at 100% 0%,rgba(37,99,235,.18),transparent 58%),
+        linear-gradient(180deg,#07111f,#0a1424 44%,#07111f);
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1460px;margin:0 auto;padding:18px}
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius:var(--r2);
+      background:rgba(15,27,45,.86);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+    }
+    .brand{display:flex;gap:13px;align-items:center;min-width:280px}
+    .logo{
+      width:50px;height:50px;border-radius:17px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--blue));
+      box-shadow:0 16px 34px rgba(16,185,129,.22);
+      overflow:hidden;
+      font-weight:950;
+      color:#fff;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    h1{margin:0;font-size:22px;letter-spacing:-.02em}
+    .sub{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.45}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    button,input,select,textarea{font:inherit}
+    button{
+      border:1px solid rgba(255,255,255,.18);
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:750;
+      box-shadow:0 8px 20px rgba(0,0,0,.12);
+      transition:.15s ease;
+      white-space:nowrap;
+    }
+    button:hover{transform:translateY(-1px);background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.28)}
+    button.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));border-color:transparent;color:#fff}
+    button.blue{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:transparent;color:#fff}
+    button.danger{background:#fff5f5;border-color:#fecaca;color:#991b1b}
+    input,select,textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border-radius:14px;
+      padding:10px 11px;
+      min-height:42px;
+      outline:none;
+    }
+    textarea{min-height:78px;resize:vertical}
+    input:focus,select:focus,textarea:focus{box-shadow:var(--focus);border-color:rgba(16,185,129,.7)}
+    option{color:#0f172a;background:#fff}
+    .field label{display:block;font-size:12px;font-weight:850;color:#c7d7ea;margin:0 0 6px;text-transform:uppercase;letter-spacing:.45px}
+    .hint{font-size:12px;color:var(--muted);line-height:1.45}
+    .grid{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px;align-items:start;margin-top:14px}
+    @media(max-width:1120px){.grid{grid-template-columns:1fr}}
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--r2);
+      background:rgba(15,27,45,.82);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      backdrop-filter:blur(14px);
+      margin-bottom:14px;
+    }
+    .hd{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      padding:14px 16px;border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+    }
+    .hd b{font-size:15px;letter-spacing:.03em;text-transform:uppercase}
+    .bd{padding:16px}
+    .form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media(max-width:820px){.form-grid,.form-grid.two{grid-template-columns:1fr}}
+    .toolbar{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}
+    @media(max-width:900px){.toolbar{grid-template-columns:1fr 1fr}.toolbar .wide{grid-column:1/-1}}
+    @media(max-width:620px){.toolbar{grid-template-columns:1fr}}
+    .pitch-shell{padding:14px}
+    .pitch-wrap{
+      position:relative;
+      width:100%;
+      overflow:auto;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.16);
+      background:#04130d;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08), 0 18px 52px rgba(0,0,0,.25);
+    }
+    .pitch{
+      position:relative;
+      width:100%;
+      min-width:900px;
+      height:620px;
+      overflow:hidden;
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.055) 0 50%,rgba(255,255,255,.02) 50% 100%),
+        repeating-linear-gradient(90deg,#0f7a44 0 88px,#0e6f3f 88px 176px);
+      user-select:none;
+    }
+    .pitch:before{
+      content:"";
+      position:absolute;inset:18px;
+      border:3px solid rgba(255,255,255,.72);
+      border-radius:18px;
+      pointer-events:none;
+    }
+    .midline{position:absolute;left:50%;top:18px;bottom:18px;width:3px;background:rgba(255,255,255,.72);transform:translateX(-50%)}
+    .circle{position:absolute;left:50%;top:50%;width:155px;height:155px;border:3px solid rgba(255,255,255,.72);border-radius:999px;transform:translate(-50%,-50%)}
+    .spot{position:absolute;left:50%;top:50%;width:9px;height:9px;background:#fff;border-radius:50%;transform:translate(-50%,-50%)}
+    .box-left,.box-right{position:absolute;top:185px;width:128px;height:250px;border:3px solid rgba(255,255,255,.72);pointer-events:none}
+    .box-left{left:18px;border-left:0}.box-right{right:18px;border-right:0}
+    .small-left,.small-right{position:absolute;top:245px;width:58px;height:130px;border:3px solid rgba(255,255,255,.72);pointer-events:none}
+    .small-left{left:18px;border-left:0}.small-right{right:18px;border-right:0}
+    .slot{
+      position:absolute;
+      transform:translate(-50%,-50%);
+      width:132px;
+      min-height:112px;
+      border-radius:22px;
+      border:1px dashed rgba(255,255,255,.42);
+      background:rgba(255,255,255,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(255,255,255,.72);
+      font-size:12px;
+      font-weight:800;
+      text-align:center;
+      padding:8px;
+      transition:.15s ease;
+    }
+    .slot.drag-over{background:rgba(16,185,129,.24);border-color:#bbf7d0;box-shadow:0 0 0 4px rgba(16,185,129,.18)}
+    .player-card{
+      position:absolute;
+      transform:translate(-50%,-50%);
+      width:132px;
+      min-height:134px;
+      border-radius:22px;
+      background:rgba(255,255,255,.94);
+      color:#0f172a;
+      border:1px solid rgba(255,255,255,.85);
+      box-shadow:0 18px 35px rgba(0,0,0,.25);
+      overflow:hidden;
+      cursor:grab;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:9px 8px;
+      transition:box-shadow .15s ease, transform .15s ease;
+      touch-action:none;
+      z-index:6;
+    }
+    .player-card:active{cursor:grabbing}
+    .player-card.selected{box-shadow:0 0 0 4px rgba(245,158,11,.85),0 20px 40px rgba(0,0,0,.28)}
+    .player-card .avatar{
+      width:58px;height:58px;border-radius:999px;
+      object-fit:cover;
+      border:3px solid #fff;
+      box-shadow:0 8px 20px rgba(15,23,42,.18);
+      background:#e5e7eb;
+    }
+    .player-card .pname{
+      margin-top:7px;
+      font-weight:900;
+      font-size:13px;
+      line-height:1.12;
+      text-align:center;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .player-card .pmeta{
+      margin-top:5px;
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+      justify-content:center;
+      font-size:10px;
+      color:#475467;
+    }
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#1e3a8a;
+      padding:3px 6px;
+      font-weight:850;
+      font-size:10px;
+    }
+    .badge.gk{background:#fef3c7;color:#92400e}
+    .badge.df{background:#dcfce7;color:#166534}
+    .badge.mf{background:#dbeafe;color:#1d4ed8}
+    .badge.fw{background:#fee2e2;color:#991b1b}
+    .captain{background:#111827;color:#fff}
+    .bench{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;max-height:640px;overflow:auto;padding-right:4px}
+    .bench-item{
+      display:flex;align-items:center;gap:10px;
+      padding:10px;
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:18px;
+      background:rgba(255,255,255,.08);
+      cursor:grab;
+      transition:.15s ease;
+    }
+    .bench-item:hover{background:rgba(255,255,255,.13);transform:translateY(-1px)}
+    .bench-item.selected{box-shadow:0 0 0 3px rgba(245,158,11,.72)}
+    .bench-item img{width:44px;height:44px;border-radius:999px;object-fit:cover;background:#e5e7eb}
+    .bench-name{font-weight:900;font-size:13px;line-height:1.2}
+    .bench-sub{color:var(--muted);font-size:11px;margin-top:3px}
+    .empty{padding:18px;border:1px dashed rgba(255,255,255,.2);border-radius:18px;color:var(--muted);text-align:center}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:750;
+    }
+    .stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .stat{border:1px solid rgba(255,255,255,.13);border-radius:18px;background:rgba(255,255,255,.08);padding:12px}
+    .stat .k{font-size:12px;color:var(--muted);font-weight:850}
+    .stat .v{font-size:22px;font-weight:950;margin-top:5px}
+    .small{font-size:12px;color:var(--muted)}
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      z-index:9999;background:#fff;color:#0f172a;
+      padding:11px 15px;border-radius:999px;box-shadow:0 22px 60px rgba(0,0,0,.22);
+      display:none;font-size:13px;font-weight:750;
+    }
+    .toast.show{display:block}
+    .modal{
+      position:fixed;inset:0;z-index:999;
+      display:none;align-items:center;justify-content:center;
+      padding:16px;background:rgba(2,6,23,.66);backdrop-filter:blur(8px);
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      width:min(860px,100%);
+      max-height:92vh;overflow:auto;
+      background:#0f1b2d;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+    }
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .modal-body{padding:16px}
+    .file-input{display:none}
+    @media(max-width:720px){
+      .wrap{padding:10px}
+      .top{border-radius:20px;padding:13px}
+      .brand{align-items:flex-start;min-width:0;width:100%}
+      .logo{width:42px;height:42px;border-radius:14px}
+      h1{font-size:18px}
+      .actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+      .actions button{width:100%;padding:10px 8px;font-size:12px}
+      .bd{padding:12px}
+      .pitch-shell{padding:10px}
+      .pitch{min-width:780px;height:560px}
+      .player-card{width:118px;min-height:125px;border-radius:18px}
+      .slot{width:118px;min-height:100px}
+      .bench{grid-template-columns:1fr}
+    }
+    @media print{
+      body{background:#fff}
+      .no-print,.top,.side-panel{display:none!important}
+      .grid{display:block;margin:0}
+      .wrap{max-width:none;padding:0}
+      .card{border:none;box-shadow:none;margin:0}
+      .hd{display:none}
+      .pitch-wrap{border:none;border-radius:0;overflow:visible}
+      .pitch{min-width:0;width:100%;height:680px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top no-print">
+      <div class="brand">
+        <div class="logo"><img src="LOGODF.png" alt="Logo" onerror="this.remove();this.parentElement.textContent='WC';" /></div>
+        <div>
+          <h1>World Cup 2026 - Quản lý đội hình cầu thủ</h1>
+          <div class="sub">Chọn đội tuyển, bố trí đội hình chính, kéo thả cầu thủ, dự bị, vị trí, ảnh thật bằng URL ảnh và lưu/mở file JSON.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="primary" onclick="openPlayerModal()">+ Cầu thủ</button>
+        <button onclick="autoArrange()">Sắp xếp đội hình</button>
+        <button onclick="clearLineup()">Xóa đội hình</button>
+        <button class="blue" onclick="copyImage()">Copy ảnh</button>
+        <button class="blue" onclick="downloadImage()">Tải PNG</button>
+        <button onclick="saveFile()">Lưu file</button>
+        <button onclick="document.getElementById('openFile').click()">Mở file</button>
+        <button onclick="loadSample()">Dữ liệu mẫu</button>
+      </div>
+    </header>
+
+    <input id="openFile" class="file-input" type="file" accept=".json,.wc2026.json,application/json" onchange="openFile(event)" />
+
+    <section class="card no-print" style="margin-top:14px">
+      <div class="hd">
+        <b>Thông tin đội tuyển</b>
+        <span class="hint">Ảnh cầu thủ dùng URL thật. Nếu ảnh lỗi, hệ thống tự dùng ảnh chữ dự phòng.</span>
+      </div>
+      <div class="bd">
+        <div class="toolbar">
+          <div class="field">
+            <label>Đội tuyển</label>
+            <select id="teamSelect" onchange="switchTeam(this.value)"></select>
+          </div>
+          <div class="field">
+            <label>Sơ đồ</label>
+            <select id="formationSelect" onchange="setFormation(this.value)">
+              <option value="4-3-3">4-3-3</option>
+              <option value="4-2-3-1">4-2-3-1</option>
+              <option value="4-4-2">4-4-2</option>
+              <option value="3-5-2">3-5-2</option>
+              <option value="3-4-3">3-4-3</option>
+              <option value="5-3-2">5-3-2</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tìm cầu thủ</label>
+            <input id="searchInput" placeholder="Nhập tên, vị trí, CLB..." oninput="render()" />
+          </div>
+          <div class="field wide">
+            <label>&nbsp;</label>
+            <button class="primary" onclick="addTeam()">+ Đội tuyển mới</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="grid">
+      <section class="card">
+        <div class="hd">
+          <b id="pitchTitle">Đội hình</b>
+          <div class="row no-print">
+            <span class="pill">Kéo cầu thủ từ dự bị lên sân</span>
+            <span class="pill">Double click cầu thủ để sửa</span>
+          </div>
+        </div>
+        <div class="pitch-shell">
+          <div class="pitch-wrap" id="captureArea">
+            <div class="pitch" id="pitch">
+              <div class="midline"></div>
+              <div class="circle"></div>
+              <div class="spot"></div>
+              <div class="box-left"></div><div class="box-right"></div>
+              <div class="small-left"></div><div class="small-right"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="card no-print">
+          <div class="hd"><b>Thống kê</b><span class="hint" id="saveState">Chưa lưu</span></div>
+          <div class="bd">
+            <div class="stats-grid">
+              <div class="stat"><div class="k">Tổng cầu thủ</div><div class="v" id="statTotal">0</div></div>
+              <div class="stat"><div class="k">Đội hình chính</div><div class="v" id="statLineup">0</div></div>
+              <div class="stat"><div class="k">Dự bị</div><div class="v" id="statBench">0</div></div>
+              <div class="stat"><div class="k">Tuổi TB</div><div class="v" id="statAge">—</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card no-print">
+          <div class="hd">
+            <b>Danh sách dự bị / chưa xếp</b>
+            <button onclick="benchSelected()">Đưa về dự bị</button>
+          </div>
+          <div class="bd">
+            <div id="benchList" class="bench"></div>
+          </div>
+        </section>
+
+        <section class="card no-print">
+          <div class="hd"><b>Cầu thủ đang chọn</b></div>
+          <div class="bd">
+            <div id="selectedPanel" class="empty">Chưa chọn cầu thủ</div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal" id="playerModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <b id="modalTitle">Thêm cầu thủ</b>
+        <button onclick="closePlayerModal()">Đóng</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid two">
+          <div class="field"><label>Tên cầu thủ</label><input id="mName" placeholder="Lionel Messi"></div>
+          <div class="field"><label>Vị trí</label><select id="mPosition"><option>GK</option><option>DF</option><option>MF</option><option>FW</option></select></div>
+          <div class="field"><label>Vai trò cụ thể</label><input id="mRole" placeholder="ST, LW, RW, CM, CB, GK..."></div>
+          <div class="field"><label>Số áo</label><input id="mNumber" inputmode="numeric" placeholder="10"></div>
+          <div class="field"><label>Tuổi</label><input id="mAge" inputmode="numeric" placeholder="38"></div>
+          <div class="field"><label>CLB</label><input id="mClub" placeholder="Inter Miami"></div>
+          <div class="field"><label>Quốc gia CLB</label><input id="mClubCountry" placeholder="USA"></div>
+          <div class="field"><label>Trạng thái</label><select id="mStatus"><option value="bench">Dự bị / chưa xếp</option><option value="lineup">Đội hình chính</option></select></div>
+          <div class="field" style="grid-column:1/-1"><label>URL ảnh thật cầu thủ</label><input id="mPhoto" placeholder="https://...jpg/png/webp"></div>
+          <div class="field" style="grid-column:1/-1"><label>Ghi chú</label><textarea id="mNote" placeholder="Đội trưởng, chấn thương, phong độ..."></textarea></div>
+        </div>
+        <div class="row" style="margin-top:12px;justify-content:flex-end">
+          <button class="danger" id="deletePlayerBtn" onclick="deleteEditingPlayer()">Xóa cầu thủ</button>
+          <button class="primary" onclick="savePlayerFromModal()">Lưu cầu thủ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'wc2026_lineup_manager_v1';
+let state = { currentTeam: 'Argentina', teams: {} };
+let selectedPlayerId = null;
+let editingPlayerId = null;
+let drag = null;
+
+const $ = id => document.getElementById(id);
+const uid = () => 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const fallbackPhoto = name => `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'Player')}&background=0f172a&color=fff&bold=true&size=256`;
+
+const formations = {
+  '4-3-3': [['GK',8,50],['LB',27,18],['CB',24,39],['CB',24,61],['RB',27,82],['CM',49,28],['CM',45,50],['CM',49,72],['LW',73,22],['ST',80,50],['RW',73,78]],
+  '4-2-3-1': [['GK',8,50],['LB',27,18],['CB',24,39],['CB',24,61],['RB',27,82],['DM',44,38],['DM',44,62],['LW',62,24],['AM',61,50],['RW',62,76],['ST',80,50]],
+  '4-4-2': [['GK',8,50],['LB',27,18],['CB',24,39],['CB',24,61],['RB',27,82],['LM',52,20],['CM',48,40],['CM',48,60],['RM',52,80],['ST',76,40],['ST',76,60]],
+  '3-5-2': [['GK',8,50],['CB',25,32],['CB',22,50],['CB',25,68],['LWB',46,14],['CM',47,34],['DM',43,50],['CM',47,66],['RWB',46,86],['ST',76,40],['ST',76,60]],
+  '3-4-3': [['GK',8,50],['CB',25,32],['CB',22,50],['CB',25,68],['LM',48,22],['CM',47,43],['CM',47,57],['RM',48,78],['LW',73,25],['ST',80,50],['RW',73,75]],
+  '5-3-2': [['GK',8,50],['LWB',31,12],['CB',24,32],['CB',22,50],['CB',24,68],['RWB',31,88],['CM',49,32],['CM',45,50],['CM',49,68],['ST',76,40],['ST',76,60]]
+};
+
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__toast);
+  window.__toast = setTimeout(()=>t.classList.remove('show'), 2100);
+}
+
+function player(name, position, role, number, age, club, clubCountry, photo, status='bench', x=null, y=null, note=''){
+  return {id:uid(), name, position, role, number:String(number??''), age:String(age??''), club, clubCountry, photo, status, x, y, note};
+}
+
+function defaultTeams(){
+  return {
+    'Argentina': {
+      name:'Argentina', flag:'🇦🇷', formation:'4-3-3',
+      players:[
+        player('Emiliano Martínez','GK','GK',23,33,'Aston Villa','England','https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Emiliano_Martinez_2022.jpg/330px-Emiliano_Martinez_2022.jpg','lineup',8,50),
+        player('Nahuel Molina','DF','RB',26,28,'Atlético Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Nahuel_Molina_2022.jpg/330px-Nahuel_Molina_2022.jpg','lineup',27,82),
+        player('Cristian Romero','DF','CB',13,28,'Tottenham Hotspur','England','https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Cristian_Romero_2022.jpg/330px-Cristian_Romero_2022.jpg','lineup',24,61),
+        player('Nicolás Otamendi','DF','CB',19,38,'Benfica','Portugal','https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Nicolas_Otamendi_2018.jpg/330px-Nicolas_Otamendi_2018.jpg','lineup',24,39),
+        player('Nicolás Tagliafico','DF','LB',3,33,'Lyon','France','https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Nicolas_Tagliafico_2018.jpg/330px-Nicolas_Tagliafico_2018.jpg','lineup',27,18),
+        player('Rodrigo De Paul','MF','CM',7,32,'Atlético Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Rodrigo_De_Paul_2022.jpg/330px-Rodrigo_De_Paul_2022.jpg','lineup',49,72),
+        player('Enzo Fernández','MF','CM',24,25,'Chelsea','England','https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Enzo_Fernandez_2022.jpg/330px-Enzo_Fernandez_2022.jpg','lineup',45,50),
+        player('Alexis Mac Allister','MF','CM',20,27,'Liverpool','England','https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Alexis_Mac_Allister_2022.jpg/330px-Alexis_Mac_Allister_2022.jpg','lineup',49,28),
+        player('Lionel Messi','FW','RW',10,39,'Inter Miami','USA','https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Lionel_Messi_WC2022.jpg/330px-Lionel_Messi_WC2022.jpg','lineup',73,78,'Đội trưởng'),
+        player('Lautaro Martínez','FW','ST',22,28,'Inter Milan','Italy','https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Lautaro_Martinez_2018.jpg/330px-Lautaro_Martinez_2018.jpg','lineup',80,50),
+        player('Julián Álvarez','FW','LW',9,26,'Atlético Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Julian_Alvarez_2022.jpg/330px-Julian_Alvarez_2022.jpg','lineup',73,22),
+        player('Ángel Di María','FW','RW',11,38,'Benfica','Portugal','https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Angel_Di_Maria_2018.jpg/330px-Angel_Di_Maria_2018.jpg','bench'),
+        player('Paulo Dybala','FW','SS',21,32,'Roma','Italy','https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Paulo_Dybala_2017.jpg/330px-Paulo_Dybala_2017.jpg','bench')
+      ]
+    },
+    'France': {
+      name:'France', flag:'🇫🇷', formation:'4-2-3-1',
+      players:[
+        player('Mike Maignan','GK','GK',16,30,'AC Milan','Italy','https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Mike_Maignan_2022.jpg/330px-Mike_Maignan_2022.jpg','lineup',8,50),
+        player('Jules Koundé','DF','RB',5,27,'Barcelona','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Jules_Kounde_2022.jpg/330px-Jules_Kounde_2022.jpg','lineup',27,82),
+        player('William Saliba','DF','CB',17,25,'Arsenal','England','https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/William_Saliba_2022.jpg/330px-William_Saliba_2022.jpg','lineup',24,61),
+        player('Dayot Upamecano','DF','CB',4,27,'Bayern Munich','Germany','https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dayot_Upamecano_2022.jpg/330px-Dayot_Upamecano_2022.jpg','lineup',24,39),
+        player('Theo Hernández','DF','LB',22,28,'AC Milan','Italy','https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Theo_Hernandez_2022.jpg/330px-Theo_Hernandez_2022.jpg','lineup',27,18),
+        player('Aurélien Tchouaméni','MF','DM',8,26,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Aurelien_Tchouameni_2022.jpg/330px-Aurelien_Tchouameni_2022.jpg','lineup',44,38),
+        player('Eduardo Camavinga','MF','DM',6,23,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Eduardo_Camavinga_2022.jpg/330px-Eduardo_Camavinga_2022.jpg','lineup',44,62),
+        player('Kylian Mbappé','FW','LW',10,27,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Kylian_Mbapp%C3%A9_2019.jpg/330px-Kylian_Mbapp%C3%A9_2019.jpg','lineup',62,24,'Đội trưởng'),
+        player('Antoine Griezmann','MF','AM',7,35,'Atlético Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Antoine_Griezmann_2018.jpg/330px-Antoine_Griezmann_2018.jpg','lineup',61,50),
+        player('Ousmane Dembélé','FW','RW',11,29,'PSG','France','https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Ousmane_Dembele_2018.jpg/330px-Ousmane_Dembele_2018.jpg','lineup',62,76),
+        player('Marcus Thuram','FW','ST',15,28,'Inter Milan','Italy','https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Marcus_Thuram_2019.jpg/330px-Marcus_Thuram_2019.jpg','lineup',80,50)
+      ]
+    },
+    'Brazil': {
+      name:'Brazil', flag:'🇧🇷', formation:'4-3-3',
+      players:[
+        player('Alisson Becker','GK','GK',1,33,'Liverpool','England','https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Alisson_Becker_2018.jpg/330px-Alisson_Becker_2018.jpg','lineup',8,50),
+        player('Danilo','DF','RB',2,34,'Juventus','Italy','https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Danilo_2018.jpg/330px-Danilo_2018.jpg','lineup',27,82),
+        player('Marquinhos','DF','CB',4,32,'PSG','France','https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Marquinhos_2018.jpg/330px-Marquinhos_2018.jpg','lineup',24,61),
+        player('Éder Militão','DF','CB',3,28,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Eder_Militao_2018.jpg/330px-Eder_Militao_2018.jpg','lineup',24,39),
+        player('Guilherme Arana','DF','LB',16,29,'Atlético Mineiro','Brazil','https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Guilherme_Arana_2022.jpg/330px-Guilherme_Arana_2022.jpg','lineup',27,18),
+        player('Bruno Guimarães','MF','CM',5,28,'Newcastle United','England','https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bruno_Guimaraes_2022.jpg/330px-Bruno_Guimaraes_2022.jpg','lineup',49,28),
+        player('Lucas Paquetá','MF','CM',8,28,'West Ham United','England','https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Lucas_Paqueta_2018.jpg/330px-Lucas_Paqueta_2018.jpg','lineup',45,50),
+        player('Casemiro','MF','DM',18,34,'Manchester United','England','https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Casemiro_2018.jpg/330px-Casemiro_2018.jpg','lineup',49,72),
+        player('Vinícius Júnior','FW','LW',7,25,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Vinicius_Junior_2021.jpg/330px-Vinicius_Junior_2021.jpg','lineup',73,22),
+        player('Rodrygo','FW','RW',11,25,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Rodrygo_2020.jpg/330px-Rodrygo_2020.jpg','lineup',73,78),
+        player('Endrick','FW','ST',9,19,'Real Madrid','Spain','https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Endrick_Palmeiras.jpg/330px-Endrick_Palmeiras.jpg','lineup',80,50)
+      ]
+    }
+  };
+}
+
+function currentTeam(){
+  if(!state.teams[state.currentTeam]) {
+    const names = Object.keys(state.teams);
+    state.currentTeam = names[0] || '';
+  }
+  return state.teams[state.currentTeam];
+}
+
+function init(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{ state = JSON.parse(raw); }
+    catch(e){ state.teams = defaultTeams(); }
+  } else {
+    state.teams = defaultTeams();
+  }
+  if(!state.currentTeam) state.currentTeam = Object.keys(state.teams)[0];
+  renderTeamSelect();
+  render();
+}
+
+function saveLocal(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  $('saveState').textContent = 'Đã lưu tạm';
+}
+
+function renderTeamSelect(){
+  const sel = $('teamSelect');
+  sel.innerHTML = Object.keys(state.teams).map(name => `<option value="${esc(name)}" ${name===state.currentTeam?'selected':''}>${esc(state.teams[name].flag||'')} ${esc(name)}</option>`).join('');
+}
+
+function switchTeam(name){
+  state.currentTeam = name;
+  selectedPlayerId = null;
+  $('formationSelect').value = currentTeam().formation || '4-3-3';
+  render();
+  saveLocal();
+}
+
+function setFormation(f){
+  const t = currentTeam();
+  t.formation = f;
+  render();
+  saveLocal();
+}
+
+function addTeam(){
+  const name = prompt('Nhập tên đội tuyển mới:');
+  if(!name) return;
+  if(state.teams[name]) { toast('Đội tuyển đã tồn tại'); return; }
+  state.teams[name] = {name, flag:'🏳️', formation:'4-3-3', players:[]};
+  state.currentTeam = name;
+  renderTeamSelect();
+  render();
+  saveLocal();
+}
+
+function render(){
+  const t = currentTeam();
+  if(!t) return;
+  $('pitchTitle').textContent = `${t.flag || ''} ${t.name || state.currentTeam} - Sơ đồ ${t.formation || '4-3-3'}`;
+  $('formationSelect').value = t.formation || '4-3-3';
+  renderPitch();
+  renderBench();
+  renderStats();
+  renderSelectedPanel();
+  saveLocal();
+}
+
+function renderPitch(){
+  const pitch = $('pitch');
+  pitch.querySelectorAll('.slot,.player-card').forEach(x=>x.remove());
+  const t = currentTeam();
+  const slots = formations[t.formation || '4-3-3'] || formations['4-3-3'];
+
+  slots.forEach((s,idx)=>{
+    const [role,x,y] = s;
+    const div = document.createElement('div');
+    div.className = 'slot';
+    div.style.left = x + '%';
+    div.style.top = y + '%';
+    div.dataset.slot = idx;
+    div.dataset.x = x;
+    div.dataset.y = y;
+    div.innerHTML = `<div>${role}<br><span style="font-weight:600;opacity:.75">Thả cầu thủ</span></div>`;
+    div.addEventListener('dragover',ev=>{ev.preventDefault();div.classList.add('drag-over')});
+    div.addEventListener('dragleave',()=>div.classList.remove('drag-over'));
+    div.addEventListener('drop',ev=>{
+      ev.preventDefault();
+      div.classList.remove('drag-over');
+      const id = ev.dataTransfer.getData('text/player-id');
+      putPlayerOnPitch(id, Number(x), Number(y), role);
+    });
+    pitch.appendChild(div);
+  });
+
+  t.players.filter(p=>p.status==='lineup').forEach(p=>{
+    const card = makePlayerCard(p, true);
+    card.style.left = (p.x ?? 50) + '%';
+    card.style.top = (p.y ?? 50) + '%';
+    pitch.appendChild(card);
+  });
+}
+
+function makePlayerCard(p, onPitch=false){
+  const div = document.createElement('div');
+  div.className = 'player-card' + (selectedPlayerId===p.id?' selected':'');
+  div.draggable = true;
+  div.dataset.id = p.id;
+  div.innerHTML = `
+    <img class="avatar" src="${esc(p.photo || fallbackPhoto(p.name))}" onerror="this.src='${fallbackPhoto(p.name)}'" />
+    <div class="pname">${esc(p.name)}</div>
+    <div class="pmeta">
+      <span class="badge ${esc((p.position||'').toLowerCase())}">${esc(p.position||'')}</span>
+      <span class="badge">${esc(p.role||'')}</span>
+      ${p.number?`<span class="badge">#${esc(p.number)}</span>`:''}
+      ${p.note && /đội trưởng|captain/i.test(p.note)?`<span class="badge captain">C</span>`:''}
+    </div>
+  `;
+  div.addEventListener('click', e => {
+    e.stopPropagation();
+    selectedPlayerId = p.id;
+    render();
+  });
+  div.addEventListener('dblclick', e => {
+    e.stopPropagation();
+    openPlayerModal(p.id);
+  });
+  div.addEventListener('dragstart', ev=>{
+    ev.dataTransfer.setData('text/player-id', p.id);
+  });
+
+  if(onPitch) enablePitchDragging(div, p);
+  return div;
+}
+
+function enablePitchDragging(el, p){
+  el.addEventListener('pointerdown', ev=>{
+    if(ev.button !== 0) return;
+    if(ev.target.closest('button,input,textarea,select')) return;
+    selectedPlayerId = p.id;
+    const pitch = $('pitch');
+    const rect = pitch.getBoundingClientRect();
+    drag = {id:p.id, rect};
+    el.setPointerCapture(ev.pointerId);
+  });
+  el.addEventListener('pointermove', ev=>{
+    if(!drag || drag.id !== p.id) return;
+    const x = ((ev.clientX - drag.rect.left) / drag.rect.width) * 100;
+    const y = ((ev.clientY - drag.rect.top) / drag.rect.height) * 100;
+    p.x = Math.max(3, Math.min(97, x));
+    p.y = Math.max(5, Math.min(95, y));
+    el.style.left = p.x + '%';
+    el.style.top = p.y + '%';
+  });
+  el.addEventListener('pointerup', ev=>{
+    if(drag && drag.id === p.id){
+      drag = null;
+      saveLocal();
+      renderStats();
+      renderSelectedPanel();
+    }
+  });
+}
+
+function renderBench(){
+  const q = ($('searchInput').value || '').trim().toLowerCase();
+  const t = currentTeam();
+  const list = t.players.filter(p => p.status !== 'lineup').filter(p => {
+    const text = [p.name,p.position,p.role,p.club,p.clubCountry,p.note].join(' ').toLowerCase();
+    return !q || text.includes(q);
+  });
+  const box = $('benchList');
+  if(!list.length){
+    box.innerHTML = '<div class="empty">Không có cầu thủ dự bị / chưa xếp</div>';
+    return;
+  }
+  box.innerHTML = '';
+  list.forEach(p=>{
+    const div = document.createElement('div');
+    div.className = 'bench-item' + (selectedPlayerId===p.id?' selected':'');
+    div.draggable = true;
+    div.innerHTML = `
+      <img src="${esc(p.photo || fallbackPhoto(p.name))}" onerror="this.src='${fallbackPhoto(p.name)}'" />
+      <div style="min-width:0;flex:1">
+        <div class="bench-name">${esc(p.name)}</div>
+        <div class="bench-sub">${esc(p.position)} • ${esc(p.role||'')} • ${p.number ? '#'+esc(p.number)+' • ' : ''}${esc(p.club||'')}</div>
+      </div>
+    `;
+    div.addEventListener('click', ()=>{
+      selectedPlayerId = p.id;
+      render();
+    });
+    div.addEventListener('dblclick', ()=> openPlayerModal(p.id));
+    div.addEventListener('dragstart', ev=>{
+      ev.dataTransfer.setData('text/player-id', p.id);
+    });
+    box.appendChild(div);
+  });
+}
+
+function findPlayer(id){
+  const t = currentTeam();
+  return t.players.find(p=>p.id===id);
+}
+
+function putPlayerOnPitch(id, x, y, role=''){
+  const p = findPlayer(id);
+  if(!p) return;
+  p.status = 'lineup';
+  p.x = x;
+  p.y = y;
+  if(role && !p.role) p.role = role;
+  selectedPlayerId = p.id;
+  render();
+  toast('Đã đưa cầu thủ vào đội hình');
+}
+
+function benchSelected(){
+  const p = findPlayer(selectedPlayerId);
+  if(!p) return;
+  p.status = 'bench';
+  p.x = null;
+  p.y = null;
+  render();
+  toast('Đã đưa về dự bị');
+}
+
+function renderStats(){
+  const t = currentTeam();
+  const total = t.players.length;
+  const lineup = t.players.filter(p=>p.status==='lineup').length;
+  const bench = total - lineup;
+  const ages = t.players.map(p=>Number(p.age)).filter(n=>Number.isFinite(n)&&n>0);
+  const avg = ages.length ? (ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1) : '—';
+  $('statTotal').textContent = total;
+  $('statLineup').textContent = lineup;
+  $('statBench').textContent = bench;
+  $('statAge').textContent = avg;
+}
+
+function renderSelectedPanel(){
+  const p = findPlayer(selectedPlayerId);
+  const panel = $('selectedPanel');
+  if(!p){
+    panel.className = 'empty';
+    panel.innerHTML = 'Chưa chọn cầu thủ';
+    return;
+  }
+  panel.className = '';
+  panel.innerHTML = `
+    <div class="row" style="align-items:flex-start">
+      <img src="${esc(p.photo || fallbackPhoto(p.name))}" onerror="this.src='${fallbackPhoto(p.name)}'" style="width:76px;height:76px;border-radius:18px;object-fit:cover;background:#e5e7eb" />
+      <div style="min-width:0;flex:1">
+        <div style="font-weight:950;font-size:18px">${esc(p.name)}</div>
+        <div class="small">${esc(p.position)} • ${esc(p.role||'')} • ${p.number ? '#'+esc(p.number) : ''}</div>
+        <div class="small">${esc(p.club||'—')} ${p.clubCountry ? '('+esc(p.clubCountry)+')' : ''}</div>
+        <div class="small">Tuổi: ${esc(p.age||'—')} • Trạng thái: ${p.status==='lineup'?'Đội hình chính':'Dự bị'}</div>
+      </div>
+    </div>
+    <div class="small" style="margin-top:10px">${esc(p.note||'')}</div>
+    <div class="row" style="margin-top:12px">
+      <button class="primary" onclick="openPlayerModal('${p.id}')">Sửa</button>
+      <button onclick="benchSelected()">Đưa về dự bị</button>
+      <button class="danger" onclick="deletePlayer('${p.id}')">Xóa</button>
+    </div>
+  `;
+}
+
+function openPlayerModal(id=null){
+  editingPlayerId = id;
+  const p = id ? findPlayer(id) : null;
+  $('modalTitle').textContent = p ? 'Sửa cầu thủ' : 'Thêm cầu thủ';
+  $('deletePlayerBtn').style.display = p ? '' : 'none';
+  $('mName').value = p?.name || '';
+  $('mPosition').value = p?.position || 'MF';
+  $('mRole').value = p?.role || '';
+  $('mNumber').value = p?.number || '';
+  $('mAge').value = p?.age || '';
+  $('mClub').value = p?.club || '';
+  $('mClubCountry').value = p?.clubCountry || '';
+  $('mStatus').value = p?.status || 'bench';
+  $('mPhoto').value = p?.photo || '';
+  $('mNote').value = p?.note || '';
+  $('playerModal').classList.add('show');
+  setTimeout(()=>$('mName').focus(),80);
+}
+
+function closePlayerModal(){
+  $('playerModal').classList.remove('show');
+}
+
+function savePlayerFromModal(){
+  const t = currentTeam();
+  const name = $('mName').value.trim();
+  if(!name){ alert('Vui lòng nhập tên cầu thủ'); return; }
+  let p = editingPlayerId ? findPlayer(editingPlayerId) : null;
+  if(!p){
+    p = {id:uid(), x:null, y:null};
+    t.players.push(p);
+  }
+  p.name = name;
+  p.position = $('mPosition').value;
+  p.role = $('mRole').value.trim();
+  p.number = $('mNumber').value.trim();
+  p.age = $('mAge').value.trim();
+  p.club = $('mClub').value.trim();
+  p.clubCountry = $('mClubCountry').value.trim();
+  p.status = $('mStatus').value;
+  p.photo = $('mPhoto').value.trim();
+  p.note = $('mNote').value.trim();
+  if(p.status !== 'lineup'){ p.x = null; p.y = null; }
+  if(p.status === 'lineup' && (p.x==null || p.y==null)){ p.x=50; p.y=50; }
+  selectedPlayerId = p.id;
+  closePlayerModal();
+  render();
+  toast('Đã lưu cầu thủ');
+}
+
+function deleteEditingPlayer(){
+  if(!editingPlayerId) return;
+  deletePlayer(editingPlayerId);
+  closePlayerModal();
+}
+
+function deletePlayer(id){
+  if(!confirm('Xóa cầu thủ này?')) return;
+  const t = currentTeam();
+  t.players = t.players.filter(p=>p.id!==id);
+  if(selectedPlayerId===id) selectedPlayerId = null;
+  render();
+  toast('Đã xóa cầu thủ');
+}
+
+function autoArrange(){
+  const t = currentTeam();
+  const slots = formations[t.formation || '4-3-3'] || formations['4-3-3'];
+  let lineup = t.players.filter(p=>p.status==='lineup');
+  if(lineup.length < 11){
+    const need = 11 - lineup.length;
+    t.players.filter(p=>p.status!=='lineup').slice(0,need).forEach(p=>p.status='lineup');
+  }
+  lineup = t.players.filter(p=>p.status==='lineup').slice(0,11);
+  const orderPos = {GK:0,DF:1,MF:2,FW:3};
+  lineup.sort((a,b)=>(orderPos[a.position]??9)-(orderPos[b.position]??9));
+  lineup.forEach((p,i)=>{
+    const s = slots[i] || slots[slots.length-1];
+    p.x = s[1]; p.y = s[2];
+    if(!p.role) p.role = s[0];
+  });
+  t.players.filter(p=>p.status==='lineup').slice(11).forEach(p=>{p.status='bench';p.x=null;p.y=null});
+  render();
+  toast('Đã sắp xếp đội hình');
+}
+
+function clearLineup(){
+  if(!confirm('Đưa toàn bộ đội hình chính về dự bị?')) return;
+  currentTeam().players.forEach(p=>{p.status='bench';p.x=null;p.y=null});
+  render();
+}
+
+function loadSample(){
+  if(!confirm('Nạp lại dữ liệu mẫu? Dữ liệu hiện tại sẽ bị thay thế.')) return;
+  state.teams = defaultTeams();
+  state.currentTeam = 'Argentina';
+  selectedPlayerId = null;
+  renderTeamSelect();
+  render();
+  toast('Đã nạp dữ liệu mẫu');
+}
+
+function saveFile(){
+  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'world-cup-2026-lineup.wc2026.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1200);
+}
+
+function openFile(ev){
+  const file = ev.target.files && ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const obj = JSON.parse(reader.result);
+      if(!obj.teams) throw new Error('File không đúng định dạng');
+      state = obj;
+      if(!state.currentTeam) state.currentTeam = Object.keys(state.teams)[0];
+      selectedPlayerId = null;
+      renderTeamSelect();
+      render();
+      toast('Đã mở file đội hình');
+    }catch(e){
+      alert('Không mở được file: ' + e.message);
+    }
+  };
+  reader.readAsText(file);
+  ev.target.value = '';
+}
+
+async function renderCanvas(){
+  const el = $('captureArea');
+  return await html2canvas(el, {scale:2, backgroundColor:'#04130d', useCORS:true, logging:false});
+}
+
+function downloadBlob(blob,filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1200);
+}
+
+async function copyImage(){
+  try{
+    const canvas = await renderCanvas();
+    const blob = await new Promise(res=>canvas.toBlob(res,'image/png',1));
+    if(navigator.clipboard && window.ClipboardItem){
+      await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+      toast('Đã copy ảnh đội hình');
+      return;
+    }
+    downloadBlob(blob,'world-cup-2026-lineup.png');
+    toast('Trình duyệt không cho copy, đã tải PNG');
+  }catch(e){
+    alert('Không copy được ảnh: ' + e.message);
+  }
+}
+
+async function downloadImage(){
+  try{
+    const canvas = await renderCanvas();
+    const blob = await new Promise(res=>canvas.toBlob(res,'image/png',1));
+    downloadBlob(blob,'world-cup-2026-lineup.png');
+    toast('Đã tải PNG');
+  }catch(e){
+    alert('Không tải được ảnh: ' + e.message);
+  }
+}
+
+document.addEventListener('click', e=>{
+  if(e.target.id === 'pitch'){
+    selectedPlayerId = null;
+    renderSelectedPanel();
+    document.querySelectorAll('.player-card,.bench-item').forEach(x=>x.classList.remove('selected'));
+  }
+});
+
+$('playerModal').addEventListener('click', e=>{
+  if(e.target.id === 'playerModal') closePlayerModal();
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') closePlayerModal();
+  if(e.key === 'Delete' && selectedPlayerId && !document.activeElement.matches('input,textarea,select')){
+    deletePlayer(selectedPlayerId);
+  }
+});
+
+init();
+</script>
+</body>
+</html>

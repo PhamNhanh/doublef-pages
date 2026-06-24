@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Báo giá thi công</title>
+  <link rel="icon" type="image/png" href="LOGODF.png" />
+  <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
+  <link rel="apple-touch-icon" href="LOGODF.png" />
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     :root{
@@ -16,28 +19,28 @@
     body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(900px 500px at 0% -10%,rgba(15,159,143,.16),transparent 60%),radial-gradient(800px 450px at 100% 0%,rgba(37,99,235,.09),transparent 58%),var(--bg)}
     .wrap{max-width:1320px;margin:0 auto;padding:22px}
     .top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
-    .brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:grid;place-items:center;font-weight:900;box-shadow:0 16px 35px rgba(15,159,143,.22)}
+    .brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:grid;place-items:center;font-weight:900;box-shadow:0 16px 35px rgba(15,159,143,.22);overflow:hidden}.logo img{width:100%;height:100%;object-fit:cover;display:block}
     h1{margin:0;font-size:24px;letter-spacing:-.3px}.sub{margin-top:3px;color:var(--muted);font-size:13px}
     .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
     button,input,textarea,select{font:inherit}button{border:1px solid var(--line2);background:#fff;color:var(--text);padding:10px 13px;border-radius:14px;cursor:pointer;box-shadow:0 10px 24px rgba(15,23,42,.05);transition:.16s ease;white-space:nowrap;font-weight:650}button:hover{transform:translateY(-1px);border-color:rgba(15,159,143,.55);box-shadow:0 16px 34px rgba(15,23,42,.08)}button.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));border-color:transparent;color:#fff}button.danger{color:#991b1b;background:#fff7f7;border-color:#fecaca}.small-btn{padding:7px 10px;border-radius:12px;font-size:13px}
     input,textarea,select{width:100%;border:1px solid var(--line);background:#fff;color:var(--text);border-radius:13px;padding:10px 11px;outline:none;min-height:42px}textarea{min-height:46px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:rgba(15,159,143,.6);box-shadow:var(--focus)}
     .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:12px;font-weight:800;color:#475569;margin:0 0 6px;text-transform:uppercase;letter-spacing:.45px}
     .card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(12px);margin-bottom:14px}.hd{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line)}.hd b{font-size:17px}.bd{padding:16px}.hint{font-size:12px;color:var(--muted);line-height:1.45}
-    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff}table{width:100%;border-collapse:collapse;min-width:960px}th,td{border:1px solid var(--line);padding:8px;vertical-align:top}th{background:#f8fafc;color:#334155;text-align:center;text-transform:uppercase;font-size:13px;letter-spacing:.45px}td{font-size:14px}.stt{width:58px;text-align:center;font-weight:800}.hangmuc{width:210px}.mota{width:330px}.dvt{width:110px}.dongia{width:150px}.ghichu{width:210px}.thaotac{width:100px;text-align:center}.money{text-align:right;font-variant-numeric:tabular-nums}.row-input{border:none;box-shadow:none;border-radius:8px;padding:7px;background:#fff}.row-input:focus{box-shadow:0 0 0 3px rgba(15,159,143,.10);border:1px solid rgba(15,159,143,.35)}
-    .quote-paper{background:#fff;color:#111827;width:1120px;max-width:100%;margin:0 auto;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}.paper-inner{padding:28px}.paper-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #0f766e;padding-bottom:16px}.company h2{margin:0;font-size:20px}.company p,.paper-info p{margin:4px 0;color:#475569;font-size:13px}.quote-title{text-align:center;margin:22px 0 16px}.quote-title h2{margin:0;font-size:26px;letter-spacing:.6px;text-transform:uppercase}.quote-title p{margin:6px 0 0;color:#64748b}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 18px}.meta div{border:1px solid #e5e7eb;padding:10px 12px;border-radius:12px;background:#fafafa;font-size:14px}.quote-table{width:100%;min-width:0;border-collapse:collapse}.quote-table th{background:#0f766e;color:#fff;border:1px solid #0f766e;font-size:12px;padding:10px 8px}.quote-table td{border:1px solid #d1d5db;padding:9px 8px;font-size:13px;line-height:1.45}.quote-table .money{text-align:right;white-space:nowrap}.quote-note{margin-top:16px;border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb;line-height:1.55;font-size:13px}.signs{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:28px;text-align:center}.sign-box{min-height:120px}.sign-box b{display:block;text-transform:uppercase}.sign-box span{display:block;color:#6b7280;font-style:italic;font-size:12px;margin-top:5px}
+    .quote-paper{background:#fff;color:#111827;width:1120px;max-width:100%;margin:0 auto;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}.paper-inner{padding:28px}.paper-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #0f766e;padding-bottom:16px}.company h2{margin:0;font-size:20px}.company p,.paper-info p{margin:4px 0;color:#475569;font-size:13px}.quote-title{text-align:center;margin:22px 0 16px}.quote-title h2{margin:0;font-size:26px;letter-spacing:.6px;text-transform:uppercase}.quote-title p{margin:6px 0 0;color:#64748b}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 18px}.meta div{border:1px solid #e5e7eb;padding:10px 12px;border-radius:12px;background:#fafafa;font-size:14px}
+    .table-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin:0 0 10px}.table-tools .left,.table-tools .right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.table-tools .hint{margin-left:auto}
+    .quote-table-wrap{overflow:auto;border:1px solid #d1d5db;border-radius:12px}.quote-table{width:100%;min-width:820px;border-collapse:collapse}.quote-table th{background:#0f766e;color:#fff;border:1px solid #0f766e;font-size:12px;padding:10px 8px;text-transform:uppercase;letter-spacing:.35px}.quote-table td{border:1px solid #d1d5db;padding:0;font-size:13px;line-height:1.45;vertical-align:top}.quote-table td.stt-cell{width:55px;text-align:center;font-weight:800;padding:10px 6px;background:#f9fafb}.quote-table .money{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.quote-table input,.quote-table textarea{border:none;border-radius:0;box-shadow:none;min-height:42px;background:#fff;font-size:13px}.quote-table textarea{min-height:48px;resize:vertical;line-height:1.45}.quote-table input:focus,.quote-table textarea:focus{box-shadow:inset 0 0 0 2px rgba(15,159,143,.35);border:none}.quote-table .act-cell{width:130px;padding:6px;text-align:center;background:#fafafa}.quote-table .act-cell button{margin:2px;padding:6px 8px;font-size:12px;box-shadow:none}.quote-note{margin-top:16px;border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb;line-height:1.55;font-size:13px}.quote-note textarea{border:none;box-shadow:none;background:transparent;min-height:70px;padding:0;border-radius:0}.quote-note textarea:focus{box-shadow:inset 0 0 0 2px rgba(15,159,143,.20);padding:8px;border-radius:10px;background:#fff}
     .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99;background:#0f172a;color:white;padding:11px 15px;border-radius:999px;display:none;box-shadow:0 20px 60px rgba(15,23,42,.22);font-size:13px}.toast.show{display:block}
-    .mobile-row-actions{display:none}
+    .only-print{display:none}
     @media(max-width:820px){
-      .wrap{padding:12px}.grid,.grid2{grid-template-columns:1fr}.top{align-items:flex-start}.brand{align-items:flex-start}.logo{width:42px;height:42px;border-radius:14px}h1{font-size:19px}.sub{font-size:12px}.actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{width:100%;padding:11px 8px;font-size:13px}.card{border-radius:18px;margin-bottom:12px}.hd{padding:12px}.bd{padding:12px}.paper-inner{padding:18px}.paper-top,.meta,.signs{grid-template-columns:1fr;display:block}.paper-top{display:block}.paper-info{text-align:left!important;margin-top:10px}.quote-paper{border-radius:12px}.quote-title h2{font-size:21px}
-      .table-wrap{border:none;overflow:visible;background:transparent}.table-wrap table,.table-wrap thead,.table-wrap tbody,.table-wrap tr,.table-wrap td{display:block;width:100%;min-width:0}.table-wrap thead{display:none}.table-wrap tr{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px;box-shadow:0 8px 20px rgba(15,23,42,.05)}.table-wrap td{border:none;padding:7px 0}.table-wrap td.stt{width:auto;text-align:left;color:#0f766e;font-size:13px}.table-wrap td.stt::before{content:'Dòng ';}.table-wrap td:not(.stt):not(.thaotac)::before{content:attr(data-label);display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#64748b;margin-bottom:5px}.row-input{border:1px solid var(--line);padding:10px 11px;border-radius:12px}.thaotac{display:none!important}.mobile-row-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.mobile-row-actions button{width:100%}.quote-table{font-size:12px}.quote-table th:nth-child(3),.quote-table td:nth-child(3){min-width:180px}
+      .wrap{padding:12px}.grid,.grid2{grid-template-columns:1fr}.top{align-items:flex-start}.brand{align-items:flex-start}.logo{width:42px;height:42px;border-radius:14px}h1{font-size:19px}.sub{font-size:12px}.actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}.actions button{width:100%;padding:11px 8px;font-size:13px}.card{border-radius:18px;margin-bottom:12px}.hd{padding:12px}.bd{padding:12px}.paper-inner{padding:14px}.paper-top,.meta{grid-template-columns:1fr;display:block}.paper-top{display:block}.paper-info{text-align:left!important;margin-top:10px}.quote-paper{border-radius:12px}.quote-title{margin:16px 0 12px}.quote-title h2{font-size:21px}.meta div{margin-bottom:8px}.table-tools{display:grid;grid-template-columns:1fr;gap:8px}.table-tools .left,.table-tools .right{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px}.table-tools button{width:100%;font-size:13px;padding:10px 8px}.quote-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}.quote-table{min-width:760px}.quote-table th{font-size:11px;padding:8px 6px}.quote-table input,.quote-table textarea{font-size:16px;min-height:46px}.quote-table .act-cell{width:120px}.quote-table .act-cell button{font-size:12px;padding:7px 7px}.quote-note textarea{font-size:16px}
     }
-    @media print{body{background:#fff}.no-print{display:none!important}.wrap{max-width:none;padding:0}.card{box-shadow:none;border:none}.quote-paper{border:none;width:100%;max-width:none}.paper-inner{padding:18mm}}
+    @media print{body{background:#fff}.no-print,.export-hide{display:none!important}.wrap{max-width:none;padding:0}.card{box-shadow:none;border:none}.quote-paper{border:none;width:100%;max-width:none}.paper-inner{padding:18mm}.only-print{display:block}.quote-table-wrap{overflow:visible;border:none}.quote-table{min-width:0}.quote-table input,.quote-table textarea{border:none!important;box-shadow:none!important;padding:0!important;min-height:0!important;resize:none!important}.quote-note textarea{padding:0!important}}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top no-print">
-      <div class="brand"><div class="logo">BG</div><div><h1>Lập báo giá thi công</h1><div class="sub">Nhập hạng mục, mô tả, đơn vị tính, đơn giá, ghi chú • xuất ảnh/copy báo giá</div></div></div>
+      <div class="brand"><div class="logo"><img src="LOGODF.png" alt="DF" onerror="this.remove();this.parentElement.textContent='BG'"></div><div><h1>Lập báo giá thi công</h1><div class="sub">Nhập trực tiếp trên mẫu báo giá • copy ảnh FULL • tối ưu điện thoại</div></div></div>
       <div class="actions">
         <button onclick="addRow()">+ Thêm dòng</button>
         <button onclick="addSample()">Mẫu nhanh</button>
@@ -54,7 +57,7 @@
     <input class="no-print" id="fileJson" type="file" accept="application/json,.json" style="display:none" onchange="importJson(event)">
 
     <section class="card no-print">
-      <div class="hd"><b>Thông tin báo giá</b><span class="hint">Các thông tin này sẽ hiển thị trên ảnh báo giá xuất ra.</span></div>
+      <div class="hd"><b>Thông tin báo giá</b><span class="hint">Thông tin đầu trang của mẫu báo giá.</span></div>
       <div class="bd">
         <div class="grid">
           <div class="field"><label>Đơn vị báo giá</label><input id="companyName" placeholder="Nhập tên đơn vị báo giá" oninput="scheduleUpdate()"></div>
@@ -66,25 +69,13 @@
         </div>
         <div class="grid2" style="margin-top:12px">
           <div class="field"><label>Thông tin liên hệ đơn vị báo giá</label><div class="grid2" style="gap:8px"><input id="companyHotline" placeholder="Hotline" oninput="scheduleUpdate()"><input id="companyEmail" placeholder="Email" oninput="scheduleUpdate()"></div></div>
-          <div class="field"><label>Điều kiện/Ghi chú chung</label><textarea id="generalNote" oninput="scheduleUpdate()">Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.</textarea></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="card no-print">
-      <div class="hd"><b>Bảng nhập nội dung báo giá</b><span class="hint">Trên điện thoại, mỗi dòng sẽ thành một thẻ nhập liệu dễ bấm.</span></div>
-      <div class="bd">
-        <div class="table-wrap">
-          <table id="editTable">
-            <thead><tr><th class="stt">STT</th><th class="hangmuc">Hạng mục</th><th class="mota">Mô tả chi tiết</th><th class="dvt">Đơn vị tính</th><th class="dongia">Đơn giá</th><th class="ghichu">Ghi chú</th><th class="thaotac">Thao tác</th></tr></thead>
-            <tbody id="rows"></tbody>
-          </table>
+          <div class="field"><label>Ghi chú chung</label><textarea id="generalNoteTop" oninput="syncGeneralNoteFromTop()">Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.</textarea></div>
         </div>
       </div>
     </section>
 
     <section class="card">
-      <div class="hd no-print"><b>Xem trước báo giá</b><span class="hint">Khu vực này sẽ được xuất thành ảnh/copy vào clipboard.</span></div>
+      <div class="hd no-print"><b>Nhập trực tiếp trong bảng báo giá</b><span class="hint">Gõ trực tiếp vào bảng bên dưới; khi copy ảnh sẽ tự ẩn cột thao tác.</span></div>
       <div class="bd">
         <div class="quote-paper" id="quoteArea">
           <div class="paper-inner">
@@ -94,8 +85,20 @@
             </div>
             <div class="quote-title"><h2>Báo giá thi công</h2><p>Kính gửi: <b id="pCustomerName">—</b></p></div>
             <div class="meta"><div><b>Công trình/Dự án:</b> <span id="pProjectName">—</span></div><div><b>Địa điểm:</b> <span id="pProjectAddress">—</span></div></div>
-            <table class="quote-table"><thead><tr><th style="width:55px">STT</th><th>Hạng mục</th><th>Mô tả chi tiết</th><th style="width:95px">Đơn vị tính</th><th style="width:135px">Đơn giá</th><th>Ghi chú</th></tr></thead><tbody id="previewRows"></tbody></table>
-            <div class="quote-note" id="pGeneralNote"></div>
+
+            <div class="table-tools export-hide no-print">
+              <div class="left"><button type="button" class="primary" onclick="addRow()">+ Thêm dòng</button><button type="button" onclick="addSample()">Mẫu nhanh</button></div>
+              <div class="right"><button type="button" onclick="saveLocal()">Lưu tạm</button><button type="button" onclick="loadLocal()">Mở tạm</button></div>
+            </div>
+
+            <div class="quote-table-wrap">
+              <table class="quote-table" id="editQuoteTable">
+                <thead><tr><th style="width:55px">STT</th><th>Hạng mục</th><th>Mô tả chi tiết</th><th style="width:95px">Đơn vị tính</th><th style="width:135px">Đơn giá</th><th>Ghi chú</th><th class="export-hide no-print">Thao tác</th></tr></thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+
+            <div class="quote-note"><textarea id="generalNote" oninput="syncGeneralNoteFromPaper()"></textarea></div>
           </div>
         </div>
       </div>
@@ -105,7 +108,7 @@
   <div class="toast" id="toast"></div>
 
 <script>
-  const STORAGE_KEY='doublef_bao_gia_thi_cong_v3_mobile_fullcopy';
+  const STORAGE_KEY='doublef_bao_gia_thi_cong_v4_direct_table_logo';
   let data={rows:[]}; let updateTimer=null;
   const $=id=>document.getElementById(id);
   const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
@@ -115,26 +118,25 @@
   function today(){const d=new Date();return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear()}
   function formatDate(v){if(!v)return'';const s=String(v).trim();if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-');return `${d}/${m}/${y}`}return s}
   function scheduleUpdate(){clearTimeout(updateTimer);updateTimer=setTimeout(updatePreview,120)}
+  function syncGeneralNoteFromTop(){$('generalNote').value=$('generalNoteTop').value;scheduleUpdate()}
+  function syncGeneralNoteFromPaper(){$('generalNoteTop').value=$('generalNote').value;scheduleUpdate()}
   function collectMeta(){return{companyName:$('companyName').value,quoteNo:$('quoteNo').value,quoteDate:$('quoteDate').value,customerName:$('customerName').value,projectName:$('projectName').value,projectAddress:$('projectAddress').value,companyHotline:$('companyHotline').value,companyEmail:$('companyEmail').value,generalNote:$('generalNote').value}}
-  function applyMeta(m){$('companyName').value=m.companyName??'';$('quoteNo').value=m.quoteNo??'BG-001';$('quoteDate').value=m.quoteDate??today();$('customerName').value=m.customerName??'';$('projectName').value=m.projectName??'';$('projectAddress').value=m.projectAddress??'';$('companyHotline').value=m.companyHotline??'';$('companyEmail').value=m.companyEmail??'';$('generalNote').value=m.generalNote??'Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.'}
+  function applyMeta(m){const note=m.generalNote??'Đơn giá trên chưa bao gồm các hạng mục phát sinh ngoài phạm vi báo giá. Thời gian thi công và điều kiện thanh toán sẽ được thống nhất khi triển khai thực tế.';$('companyName').value=m.companyName??'';$('quoteNo').value=m.quoteNo??'BG-001';$('quoteDate').value=m.quoteDate??today();$('customerName').value=m.customerName??'';$('projectName').value=m.projectName??'';$('projectAddress').value=m.projectAddress??'';$('companyHotline').value=m.companyHotline??'';$('companyEmail').value=m.companyEmail??'';$('generalNoteTop').value=note;$('generalNote').value=note}
   function addRow(row, afterIndex){const item=row||{hangMuc:'',moTa:'',donVi:'',donGia:'',ghiChu:''}; if(Number.isInteger(afterIndex)){data.rows.splice(afterIndex+1,0,item)}else{data.rows.push(item)} renderRows();updatePreview()}
   function removeRow(i){data.rows.splice(i,1);renderRows();updatePreview()}
   function moveRow(i,dir){const j=i+dir;if(j<0||j>=data.rows.length)return;[data.rows[i],data.rows[j]]=[data.rows[j],data.rows[i]];renderRows();updatePreview()}
   function updateRow(i,key,val){data.rows[i][key]=val;scheduleUpdate()}
   function renderRows(){if(!data.rows.length){data.rows=[{hangMuc:'',moTa:'',donVi:'',donGia:'',ghiChu:''}]}
     $('rows').innerHTML=data.rows.map((r,i)=>`<tr>
-      <td class="stt">${i+1}</td>
-      <td data-label="Hạng mục"><textarea class="row-input" oninput="updateRow(${i},'hangMuc',this.value)">${esc(r.hangMuc)}</textarea></td>
-      <td data-label="Mô tả chi tiết"><textarea class="row-input" oninput="updateRow(${i},'moTa',this.value)">${esc(r.moTa)}</textarea></td>
-      <td data-label="Đơn vị tính"><input class="row-input" list="unitOptions" value="${esc(r.donVi)}" oninput="updateRow(${i},'donVi',this.value)" placeholder="Chọn hoặc tự nhập"></td>
-      <td data-label="Đơn giá"><input class="row-input money" value="${esc(r.donGia)}" oninput="updateRow(${i},'donGia',this.value)" placeholder="0"></td>
-      <td data-label="Ghi chú"><textarea class="row-input" oninput="updateRow(${i},'ghiChu',this.value)">${esc(r.ghiChu)}</textarea></td>
-      <td class="thaotac"><button class="small-btn" onclick="moveRow(${i},-1)">↑</button> <button class="small-btn" onclick="moveRow(${i},1)">↓</button><br><button class="small-btn" style="margin-top:6px" onclick="addRow(null,${i})">+ Dòng</button><br><button class="small-btn danger" style="margin-top:6px" onclick="removeRow(${i})">Xóa</button></td>
-      <td class="mobile-row-actions"><button type="button" onclick="moveRow(${i},-1)">↑ Lên</button><button type="button" onclick="moveRow(${i},1)">↓ Xuống</button><button type="button" onclick="addRow(null,${i})">+ Thêm sau dòng này</button><button type="button" class="danger" onclick="removeRow(${i})">Xóa dòng</button></td>
+      <td class="stt-cell">${i+1}</td>
+      <td><textarea oninput="updateRow(${i},'hangMuc',this.value)" placeholder="Nhập hạng mục">${esc(r.hangMuc)}</textarea></td>
+      <td><textarea oninput="updateRow(${i},'moTa',this.value)" placeholder="Nhập mô tả chi tiết">${esc(r.moTa)}</textarea></td>
+      <td><input list="unitOptions" value="${esc(r.donVi)}" oninput="updateRow(${i},'donVi',this.value)" placeholder="ĐVT"></td>
+      <td><input class="money" value="${esc(r.donGia)}" oninput="updateRow(${i},'donGia',this.value)" placeholder="0"></td>
+      <td><textarea oninput="updateRow(${i},'ghiChu',this.value)" placeholder="Ghi chú">${esc(r.ghiChu)}</textarea></td>
+      <td class="act-cell export-hide no-print"><button type="button" onclick="moveRow(${i},-1)">↑</button><button type="button" onclick="moveRow(${i},1)">↓</button><br><button type="button" onclick="addRow(null,${i})">+ Dòng</button><button type="button" class="danger" onclick="removeRow(${i})">Xóa</button></td>
     </tr>`).join('')}
-  function updatePreview(){const m=collectMeta();$('pCompanyName').textContent=m.companyName||'—';const contact=[];if(m.companyHotline)contact.push('Hotline: '+m.companyHotline);if(m.companyEmail)contact.push('Email: '+m.companyEmail);$('pCompanyInfo').innerHTML=contact.map(esc).join('<br>');$('pQuoteNo').textContent=m.quoteNo||'—';$('pQuoteDate').textContent=formatDate(m.quoteDate);$('pCustomerName').textContent=m.customerName||'—';$('pProjectName').textContent=m.projectName||'—';$('pProjectAddress').textContent=m.projectAddress||'—';$('pGeneralNote').innerHTML=esc(m.generalNote||'').replace(/\n/g,'<br>');
-    const rows=data.rows.filter(r=>r.hangMuc||r.moTa||r.donVi||r.donGia||r.ghiChu);
-    $('previewRows').innerHTML=(rows.length?rows:[{hangMuc:'—',moTa:'—',donVi:'—',donGia:'',ghiChu:'—'}]).map((r,i)=>{const dg=toNum(r.donGia);return `<tr><td style="text-align:center;font-weight:700">${i+1}</td><td>${esc(r.hangMuc||'—')}</td><td>${esc(r.moTa||'—').replace(/\n/g,'<br>')}</td><td style="text-align:center">${esc(r.donVi||'—')}</td><td class="money">${dg?money(dg):esc(r.donGia||'—')}</td><td>${esc(r.ghiChu||'—').replace(/\n/g,'<br>')}</td></tr>`}).join('')}
+  function updatePreview(){const m=collectMeta();$('pCompanyName').textContent=m.companyName||'—';const contact=[];if(m.companyHotline)contact.push('Hotline: '+m.companyHotline);if(m.companyEmail)contact.push('Email: '+m.companyEmail);$('pCompanyInfo').innerHTML=contact.map(esc).join('<br>');$('pQuoteNo').textContent=m.quoteNo||'—';$('pQuoteDate').textContent=formatDate(m.quoteDate);$('pCustomerName').textContent=m.customerName||'—';$('pProjectName').textContent=m.projectName||'—';$('pProjectAddress').textContent=m.projectAddress||'—'}
   function getState(){return{meta:collectMeta(),rows:data.rows}}
   function setState(state){applyMeta(state.meta||{});data.rows=Array.isArray(state.rows)?state.rows:[];renderRows();updatePreview()}
   function saveLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));toast('Đã lưu tạm trên trình duyệt')}
@@ -143,12 +145,19 @@
   function importJson(ev){const f=ev.target.files&&ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{setState(JSON.parse(rd.result));toast('Đã nhập file báo giá')}catch(e){alert('File JSON không hợp lệ')}};rd.readAsText(f);ev.target.value=''}
   function addSample(){setState({meta:{...collectMeta(),customerName:'Khách hàng A',projectName:'Thi công hoàn thiện căn hộ',projectAddress:'TP. Hồ Chí Minh'},rows:[{hangMuc:'Trần thạch cao',moTa:'Thi công trần phẳng khung xương chìm, hoàn thiện bề mặt theo hiện trạng công trình.',donVi:'m²',donGia:'185000',ghiChu:'Chưa bao gồm sơn nước'},{hangMuc:'Vách thạch cao',moTa:'Thi công vách ngăn khung xương, tấm thạch cao tiêu chuẩn.',donVi:'m²',donGia:'220000',ghiChu:'Theo bản vẽ thực tế'},{hangMuc:'Nhân công phát sinh',moTa:'Nhân công xử lý các vị trí phát sinh ngoài phạm vi ban đầu.',donVi:'công',donGia:'450000',ghiChu:'Tính theo xác nhận thực tế'}]});toast('Đã tạo mẫu nhanh')}
 
+  function prepareExportClone(src){
+    const clone=src.cloneNode(true);
+    clone.querySelectorAll('.export-hide,.no-print').forEach(el=>el.remove());
+    clone.querySelectorAll('textarea').forEach(t=>{const div=document.createElement('div');div.innerHTML=esc(t.value||'').replace(/\n/g,'<br>')||'—';div.style.whiteSpace='normal';div.style.minHeight='20px';div.style.padding='9px 8px';t.replaceWith(div)});
+    clone.querySelectorAll('input').forEach(inp=>{const div=document.createElement('div');let val=inp.value||'';if(inp.classList.contains('money')){const dg=toNum(val);val=dg?money(dg):val}div.textContent=val||'—';div.style.minHeight='20px';div.style.padding='9px 8px';div.style.textAlign=inp.classList.contains('money')?'right':'left';inp.replaceWith(div)});
+    return clone;
+  }
   async function renderQuoteCanvas(scale){
     const src=$('quoteArea');
     const stage=document.createElement('div');
     stage.style.position='fixed';stage.style.left='-100000px';stage.style.top='0';stage.style.background='#fff';stage.style.padding='24px';stage.style.width='1120px';stage.style.boxSizing='border-box';
     const frame=document.createElement('div');frame.style.background='#fff';frame.style.border='1px solid #e5e7eb';frame.style.borderRadius='14px';frame.style.overflow='hidden';
-    const clone=src.cloneNode(true);clone.style.width='100%';clone.style.maxWidth='none';clone.style.height='auto';clone.style.maxHeight='none';clone.style.overflow='visible';
+    const clone=prepareExportClone(src);clone.style.width='100%';clone.style.maxWidth='none';clone.style.height='auto';clone.style.maxHeight='none';clone.style.overflow='visible';
     frame.appendChild(clone);stage.appendChild(frame);document.body.appendChild(stage);
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const canvas=await html2canvas(stage,{backgroundColor:'#ffffff',scale, useCORS:true, logging:false, scrollX:0, scrollY:0, windowWidth:stage.scrollWidth, windowHeight:stage.scrollHeight});

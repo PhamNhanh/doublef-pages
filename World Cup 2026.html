@@ -1,561 +1,297 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>World Cup 2026 Live Dashboard</title>
-  <style>
-    :root{
-      --bg:#07111f;
-      --panel:#0f1b2d;
-      --card:#13243a;
-      --line:rgba(255,255,255,.12);
-      --text:#eef6ff;
-      --muted:#9fb4cc;
-      --green:#10b981;
-      --blue:#2563eb;
-      --red:#ef4444;
-      --yellow:#f59e0b;
-      --shadow:0 20px 60px rgba(0,0,0,.28);
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(900px 500px at 10% -10%,rgba(16,185,129,.22),transparent),
-        radial-gradient(900px 500px at 100% 0,rgba(37,99,235,.18),transparent),
-        var(--bg);
-    }
-
-    .wrap{
-      max-width:1600px;
-      margin:auto;
-      padding:18px;
-    }
-
-    .top{
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:center;
-      padding:18px;
-      border:1px solid var(--line);
-      border-radius:24px;
-      background:rgba(15,27,45,.88);
-      box-shadow:var(--shadow);
-      position:sticky;
-      top:10px;
-      z-index:20;
-      backdrop-filter:blur(14px);
-    }
-
-    h1{
-      margin:0;
-      font-size:24px;
-    }
-
-    .sub{
-      color:var(--muted);
-      font-size:13px;
-      margin-top:5px;
-    }
-
-    .controls{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    input,select,button{
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:rgba(255,255,255,.08);
-      color:var(--text);
-      padding:10px 12px;
-      font-weight:700;
-      outline:none;
-    }
-
-    input{
-      min-width:240px;
-    }
-
-    option{
-      color:#0f172a;
-      background:white;
-    }
-
-    button{
-      cursor:pointer;
-    }
-
-    button.primary{
-      background:linear-gradient(135deg,var(--green),#059669);
-      border:0;
-    }
-
-    .tabs{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin:14px 0;
-    }
-
-    .tab.active{
-      background:linear-gradient(135deg,var(--blue),#1d4ed8);
-    }
-
-    .section{
-      display:none;
-    }
-
-    .section.active{
-      display:block;
-    }
-
-    .kpis{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-      gap:12px;
-      margin:14px 0;
-    }
-
-    .kpi{
-      padding:14px;
-      border-radius:20px;
-      background:rgba(255,255,255,.08);
-      border:1px solid var(--line);
-    }
-
-    .kpi b{
-      font-size:24px;
-      display:block;
-    }
-
-    .kpi span{
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .group-row{
-      display:grid;
-      grid-template-columns:repeat(12,minmax(230px,1fr));
-      gap:12px;
-      overflow-x:auto;
-      padding-bottom:12px;
-    }
-
-    .group-card{
-      min-width:230px;
-      border:1px solid var(--line);
-      background:rgba(19,36,58,.88);
-      border-radius:20px;
-      padding:12px;
-      box-shadow:0 12px 35px rgba(0,0,0,.16);
-    }
-
-    .group-head{
-      font-size:18px;
-      font-weight:950;
-      margin-bottom:10px;
-      color:#bbf7d0;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-
-    .group-team{
-      display:grid;
-      grid-template-columns:26px 1fr auto;
-      gap:8px;
-      align-items:center;
-      padding:8px;
-      border-radius:12px;
-      background:rgba(255,255,255,.06);
-      margin-bottom:6px;
-      font-size:13px;
-    }
-
-    .rank-1{border-left:4px solid #10b981}
-    .rank-2{border-left:4px solid #3b82f6}
-    .rank-3{border-left:4px solid #f59e0b}
-    .rank-4{border-left:4px solid rgba(255,255,255,.15);opacity:.72}
-
-    .mini-stat{
-      color:var(--muted);
-      font-size:11px;
-      margin-top:2px;
-    }
-
-    .table-wrap{
-      overflow:auto;
-      border:1px solid var(--line);
-      border-radius:20px;
-      background:rgba(19,36,58,.78);
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:920px;
-    }
-
-    th,td{
-      padding:10px;
-      border-bottom:1px solid var(--line);
-      text-align:left;
-      font-size:13px;
-      white-space:nowrap;
-    }
-
-    th{
-      color:#bfdbfe;
-      background:rgba(255,255,255,.06);
-      position:sticky;
-      top:0;
-    }
-
-    .qualify{
-      background:rgba(16,185,129,.14);
-    }
-
-    .eliminated{
-      opacity:.55;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(255px,1fr));
-      gap:12px;
-    }
-
-    .card{
-      border:1px solid var(--line);
-      background:rgba(19,36,58,.86);
-      border-radius:22px;
-      padding:14px;
-      box-shadow:0 12px 35px rgba(0,0,0,.16);
-    }
-
-    .team{
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
-
-    .logo{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:white;
-      object-fit:contain;
-      padding:5px;
-    }
-
-    .flag{
-      font-size:32px;
-    }
-
-    .team-name{
-      font-size:17px;
-      font-weight:950;
-    }
-
-    .meta{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:4px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:6px;
-      margin-top:12px;
-    }
-
-    .stat{
-      text-align:center;
-      background:rgba(255,255,255,.07);
-      border-radius:12px;
-      padding:8px 4px;
-    }
-
-    .stat b{
-      display:block;
-      font-size:16px;
-    }
-
-    .stat span{
-      font-size:10px;
-      color:var(--muted);
-    }
-
-    .match{
-      display:grid;
-      grid-template-columns:1fr auto 1fr;
-      gap:12px;
-      align-items:center;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      border-radius:18px;
-      padding:12px;
-      margin-bottom:10px;
-    }
-
-    .side{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-
-    .side.away{
-      justify-content:flex-end;
-      text-align:right;
-    }
-
-    .score{
-      font-size:22px;
-      font-weight:950;
-      text-align:center;
-      min-width:82px;
-    }
-
-    .status{
-      font-size:11px;
-      color:var(--muted);
-      text-align:center;
-      margin-top:3px;
-      line-height:1.5;
-    }
-
-    .live{
-      color:#fff;
-      background:var(--red);
-      padding:3px 8px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:950;
-    }
-
-    .done{color:#bbf7d0}
-    .scheduled{color:#bfdbfe}
-    .today{color:#fde68a}
-
-    .group-title{
-      margin:18px 0 10px;
-      font-size:18px;
-      font-weight:950;
-    }
-
-    .empty{
-      text-align:center;
-      color:var(--muted);
-      padding:30px;
-      border:1px dashed var(--line);
-      border-radius:20px;
-    }
-
-    .rule-box{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:12px;
-      margin-top:14px;
-    }
-
-    .rule-item{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.07);
-      border-radius:18px;
-      padding:14px;
-      color:var(--muted);
-      line-height:1.5;
-    }
-
-    .rule-item b{
-      color:var(--text);
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding:3px 8px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:900;
-      background:rgba(255,255,255,.1);
-    }
-
-    .badge.green{
-      background:rgba(16,185,129,.18);
-      color:#bbf7d0;
-    }
-
-    .badge.blue{
-      background:rgba(37,99,235,.22);
-      color:#bfdbfe;
-    }
-
-    .badge.yellow{
-      background:rgba(245,158,11,.2);
-      color:#fde68a;
-    }
-
-    @media(max-width:720px){
-      .match{
-        grid-template-columns:1fr;
-      }
-
-      .side.away{
-        justify-content:flex-start;
-        text-align:left;
-      }
-
-      .score{
-        text-align:left;
-      }
-
-      .controls{
-        width:100%;
-      }
-
-      input,select,button{
-        width:100%;
-      }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>World Cup 2026 Dashboard</title>
+<style>
+:root{
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --card:#ffffff;
+  --line:#dbe5f1;
+  --text:#1e293b;
+  --muted:#64748b;
+  --green:#16a34a;
+  --blue:#2563eb;
+  --red:#dc2626;
+  --yellow:#d97706;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.wrap{max-width:1500px;margin:auto;padding:18px}
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:center;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  position:sticky;
+  top:10px;
+  z-index:20;
+}
+h1{margin:0;font-size:24px}
+.sub{color:var(--muted);font-size:13px;margin-top:5px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+input,select,button{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  color:var(--text);
+  padding:10px 12px;
+  font-weight:700;
+  outline:none;
+}
+input{min-width:240px}
+button{cursor:pointer}
+button.primary{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.tab{background:#fff}
+.tab.active{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:0}
+.section{display:none}
+.section.active{display:block}
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;
+  margin:14px 0;
+}
+.kpi{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.kpi b{font-size:24px;display:block}
+.kpi span{font-size:12px;color:var(--muted)}
+.group-title{
+  margin:22px 0 10px;
+  font-size:21px;
+  font-weight:950;
+}
+.table-wrap{
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+table{width:100%;border-collapse:collapse;min-width:940px}
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
+  text-align:left;
+  white-space:nowrap;
+}
+th{background:#f1f5f9;color:#334155;font-weight:950}
+td.center,th.center{text-align:center}
+.team-cell{display:flex;align-items:center;gap:9px;font-weight:850}
+.team-logo{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
+.rank-1{background:#dcfce7}
+.rank-2{background:#dbeafe}
+.rank-3{background:#fef3c7}
+.rank-out{background:#fff}
+.qualify{background:#dcfce7}
+.eliminated{background:#fee2e2;opacity:.75}
+.badge{
+  display:inline-flex;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.badge.green{background:#bbf7d0;color:#166534}
+.badge.blue{background:#bfdbfe;color:#1e40af}
+.badge.yellow{background:#fde68a;color:#92400e}
+.badge.red{background:#fecaca;color:#991b1b}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:12px;
+}
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.team{display:flex;align-items:center;gap:12px}
+.logo{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#f8fafc;
+  object-fit:contain;
+  padding:6px;
+  border:1px solid var(--line);
+}
+.team-name{font-size:17px;font-weight:950}
+.meta{font-size:12px;color:var(--muted);margin-top:4px}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  margin-top:12px;
+}
+.stat{
+  text-align:center;
+  background:#f8fafc;
+  border-radius:12px;
+  padding:8px 4px;
+}
+.stat b{display:block;font-size:16px}
+.stat span{font-size:10px;color:var(--muted)}
+.match{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:12px;
+  align-items:center;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px;
+  margin-bottom:10px;
+  box-shadow:var(--shadow);
+}
+.side{display:flex;gap:8px;align-items:center}
+.side.away{justify-content:flex-end;text-align:right}
+.score{font-size:24px;font-weight:950;text-align:center;min-width:90px}
+.status{
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.5;
+}
+.live{
+  color:#fff;
+  background:var(--red);
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:950;
+}
+.rule-box{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:12px;
+}
+.rule-item{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  line-height:1.55;
+  box-shadow:var(--shadow);
+}
+.rule-item b{color:var(--text)}
+.empty{
+  background:#fff;
+  border:1px dashed var(--line);
+  border-radius:20px;
+  padding:28px;
+  color:var(--muted);
+  text-align:center;
+}
+@media(max-width:720px){
+  .match{grid-template-columns:1fr}
+  .side.away{justify-content:flex-start;text-align:left}
+  .score{text-align:left}
+  .controls{width:100%}
+  input,select,button{width:100%}
+}
+</style>
 </head>
 
 <body>
 <div class="wrap">
-  <header class="top">
-    <div>
-      <h1>🏆 World Cup 2026 Live Dashboard</h1>
-      <div class="sub">48 đội • bảng đấu ngang • BXH • đội hạng 3 • lịch thi đấu • tỷ số tự động cập nhật</div>
-    </div>
-
-    <div class="controls">
-      <input id="search" placeholder="Tìm đội, bảng, trận..." oninput="render()" />
-
-      <select id="groupFilter" onchange="render()">
-        <option value="">Tất cả bảng</option>
-      </select>
-
-      <select id="teamFilter" onchange="render()">
-        <option value="">Tất cả đội</option>
-      </select>
-
-      <button class="primary" onclick="refreshAll(true)">Cập nhật ngay</button>
-    </div>
-  </header>
-
-  <div class="kpis">
-    <div class="kpi"><b id="kpiTeams">48</b><span>Đội tham dự</span></div>
-    <div class="kpi"><b id="kpiMatches">0</b><span>Trận đã tải</span></div>
-    <div class="kpi"><b id="kpiDone">0</b><span>Trận đã kết thúc</span></div>
-    <div class="kpi"><b id="kpiLive">0</b><span>Trận đang diễn ra</span></div>
-    <div class="kpi"><b id="kpiUpdate">—</b><span>Lần cập nhật gần nhất</span></div>
+<header class="top">
+  <div>
+    <h1>🏆 World Cup 2026 Dashboard</h1>
+    <div class="sub">48 đội • BXH từng bảng • 12 đội hạng 3 • lịch thi đấu • kết quả • live score</div>
   </div>
 
-  <nav class="tabs">
-    <button class="tab active" data-tab="groups" onclick="setTab('groups')">Bảng đấu ngang</button>
-    <button class="tab" data-tab="standings" onclick="setTab('standings')">BXH từng bảng</button>
-    <button class="tab" data-tab="thirds" onclick="setTab('thirds')">12 đội hạng 3</button>
-    <button class="tab" data-tab="teams" onclick="setTab('teams')">48 đội</button>
-    <button class="tab" data-tab="live" onclick="setTab('live')">Đang diễn ra / hôm nay</button>
-    <button class="tab" data-tab="schedule" onclick="setTab('schedule')">Lịch thi đấu</button>
-    <button class="tab" data-tab="history" onclick="setTab('history')">Lịch sử kết quả</button>
-    <button class="tab" data-tab="rules" onclick="setTab('rules')">Luật xếp hạng</button>
-  </nav>
+  <div class="controls">
+    <input id="search" placeholder="Tìm đội, bảng, trận..." oninput="render()" />
+    <select id="groupFilter" onchange="render()">
+      <option value="">Tất cả bảng</option>
+    </select>
+    <select id="teamFilter" onchange="render()">
+      <option value="">Tất cả đội</option>
+    </select>
+    <button class="primary" onclick="refreshAll(true)">Cập nhật ngay</button>
+  </div>
+</header>
 
-  <section id="groups" class="section active"></section>
-  <section id="standings" class="section"></section>
-  <section id="thirds" class="section"></section>
-  <section id="teams" class="section"></section>
-  <section id="live" class="section"></section>
-  <section id="schedule" class="section"></section>
-  <section id="history" class="section"></section>
-  <section id="rules" class="section"></section>
+<div class="kpis">
+  <div class="kpi"><b id="kpiTeams">48</b><span>Đội tham dự</span></div>
+  <div class="kpi"><b id="kpiMatches">0</b><span>Trận đã tải</span></div>
+  <div class="kpi"><b id="kpiDone">0</b><span>Trận đã kết thúc</span></div>
+  <div class="kpi"><b id="kpiLive">0</b><span>Trận đang diễn ra</span></div>
+  <div class="kpi"><b id="kpiUpdate">—</b><span>Lần cập nhật gần nhất</span></div>
+</div>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="standings" onclick="setTab('standings')">BXH từng bảng</button>
+  <button class="tab" data-tab="thirds" onclick="setTab('thirds')">12 đội hạng 3</button>
+  <button class="tab" data-tab="teams" onclick="setTab('teams')">48 đội</button>
+  <button class="tab" data-tab="live" onclick="setTab('live')">Đang diễn ra / hôm nay</button>
+  <button class="tab" data-tab="schedule" onclick="setTab('schedule')">Lịch thi đấu</button>
+  <button class="tab" data-tab="history" onclick="setTab('history')">Lịch sử kết quả</button>
+  <button class="tab" data-tab="rules" onclick="setTab('rules')">Luật xếp hạng</button>
+</nav>
+
+<section id="standings" class="section active"></section>
+<section id="thirds" class="section"></section>
+<section id="teams" class="section"></section>
+<section id="live" class="section"></section>
+<section id="schedule" class="section"></section>
+<section id="history" class="section"></section>
+<section id="rules" class="section"></section>
 </div>
 
 <script>
 const TEAMS = [
-  ['A','Mexico','MEX','🇲🇽','mex'],
-  ['A','South Africa','RSA','🇿🇦','rsa'],
-  ['A','South Korea','KOR','🇰🇷','kor'],
-  ['A','Czechia','CZE','🇨🇿','cze'],
-
-  ['B','Canada','CAN','🇨🇦','can'],
-  ['B','Bosnia and Herzegovina','BIH','🇧🇦','bih'],
-  ['B','Qatar','QAT','🇶🇦','qat'],
-  ['B','Switzerland','SUI','🇨🇭','sui'],
-
-  ['C','Brazil','BRA','🇧🇷','bra'],
-  ['C','Morocco','MAR','🇲🇦','mar'],
-  ['C','Haiti','HTI','🇭🇹','hti'],
-  ['C','Scotland','SCO','🏴󠁧󠁢󠁳󠁣󠁴󠁿','sco'],
-
-  ['D','United States','USA','🇺🇸','usa'],
-  ['D','Paraguay','PAR','🇵🇾','par'],
-  ['D','Australia','AUS','🇦🇺','aus'],
-  ['D','Turkey','TUR','🇹🇷','tur'],
-
-  ['E','Germany','GER','🇩🇪','ger'],
-  ['E','Curacao','CUW','🇨🇼','cuw'],
-  ['E','Ivory Coast','CIV','🇨🇮','civ'],
-  ['E','Ecuador','ECU','🇪🇨','ecu'],
-
-  ['F','Netherlands','NED','🇳🇱','ned'],
-  ['F','Japan','JPN','🇯🇵','jpn'],
-  ['F','Sweden','SWE','🇸🇪','swe'],
-  ['F','Tunisia','TUN','🇹🇳','tun'],
-
-  ['G','Belgium','BEL','🇧🇪','bel'],
-  ['G','Egypt','EGY','🇪🇬','egy'],
-  ['G','Iran','IRI','🇮🇷','irn'],
-  ['G','New Zealand','NZL','🇳🇿','nzl'],
-
-  ['H','Spain','ESP','🇪🇸','esp'],
-  ['H','Cape Verde','CPV','🇨🇻','cpv'],
-  ['H','Saudi Arabia','KSA','🇸🇦','ksa'],
-  ['H','Uruguay','URU','🇺🇾','uru'],
-
-  ['I','France','FRA','🇫🇷','fra'],
-  ['I','Senegal','SEN','🇸🇳','sen'],
-  ['I','Iraq','IRQ','🇮🇶','irq'],
-  ['I','Norway','NOR','🇳🇴','nor'],
-
-  ['J','Argentina','ARG','🇦🇷','arg'],
-  ['J','Algeria','DZA','🇩🇿','alg'],
-  ['J','Austria','AUT','🇦🇹','aut'],
-  ['J','Jordan','JOR','🇯🇴','jor'],
-
-  ['K','Portugal','POR','🇵🇹','por'],
-  ['K','DR Congo','COD','🇨🇩','cod'],
-  ['K','Uzbekistan','UZB','🇺🇿','uzb'],
-  ['K','Colombia','COL','🇨🇴','col'],
-
-  ['L','England','ENG','🏴󠁧󠁢󠁥󠁮󠁧󠁿','eng'],
-  ['L','Croatia','CRO','🇭🇷','cro'],
-  ['L','Ghana','GHA','🇬🇭','gha'],
-  ['L','Panama','PAN','🇵🇦','pan']
-].map(([group,name,code,flag,logo]) => ({
+  ['A','Mexico','MEX','mex'],['A','South Africa','RSA','rsa'],['A','South Korea','KOR','kor'],['A','Czechia','CZE','cze'],
+  ['B','Canada','CAN','can'],['B','Bosnia and Herzegovina','BIH','bih'],['B','Qatar','QAT','qat'],['B','Switzerland','SUI','sui'],
+  ['C','Brazil','BRA','bra'],['C','Morocco','MAR','mar'],['C','Haiti','HTI','hti'],['C','Scotland','SCO','sco'],
+  ['D','United States','USA','usa'],['D','Paraguay','PAR','par'],['D','Australia','AUS','aus'],['D','Turkey','TUR','tur'],
+  ['E','Germany','GER','ger'],['E','Curacao','CUW','cuw'],['E','Ivory Coast','CIV','civ'],['E','Ecuador','ECU','ecu'],
+  ['F','Netherlands','NED','ned'],['F','Japan','JPN','jpn'],['F','Sweden','SWE','swe'],['F','Tunisia','TUN','tun'],
+  ['G','Belgium','BEL','bel'],['G','Egypt','EGY','egy'],['G','Iran','IRI','irn'],['G','New Zealand','NZL','nzl'],
+  ['H','Spain','ESP','esp'],['H','Cape Verde','CPV','cpv'],['H','Saudi Arabia','KSA','ksa'],['H','Uruguay','URU','uru'],
+  ['I','France','FRA','fra'],['I','Senegal','SEN','sen'],['I','Iraq','IRQ','irq'],['I','Norway','NOR','nor'],
+  ['J','Argentina','ARG','arg'],['J','Algeria','DZA','alg'],['J','Austria','AUT','aut'],['J','Jordan','JOR','jor'],
+  ['K','Portugal','POR','por'],['K','DR Congo','COD','cod'],['K','Uzbekistan','UZB','uzb'],['K','Colombia','COL','col'],
+  ['L','England','ENG','eng'],['L','Croatia','CRO','cro'],['L','Ghana','GHA','gha'],['L','Panama','PAN','pan']
+].map(([group,name,code,logo]) => ({
   group,
   name,
   code,
-  flag,
   logo:`https://a.espncdn.com/i/teamlogos/countries/500/${logo}.png`
 }));
 
 const teamByCode = Object.fromEntries(TEAMS.map(t => [t.code, t]));
-
 let matches = [];
-let activeTab = 'groups';
+let activeTab = 'standings';
 
 const $ = id => document.getElementById(id);
 
@@ -571,13 +307,13 @@ function ymd(d){
 }
 
 function initFilters(){
-  for(const g of [...new Set(TEAMS.map(t => t.group))]){
+  [...new Set(TEAMS.map(t => t.group))].forEach(g => {
     $('groupFilter').innerHTML += `<option value="${g}">Bảng ${g}</option>`;
-  }
+  });
 
-  for(const t of TEAMS){
-    $('teamFilter').innerHTML += `<option value="${t.code}">${t.flag} ${t.name}</option>`;
-  }
+  TEAMS.forEach(t => {
+    $('teamFilter').innerHTML += `<option value="${t.code}">${t.name}</option>`;
+  });
 }
 
 function setTab(tab){
@@ -596,19 +332,16 @@ function setTab(tab){
 
 async function fetchESPNByDate(dateYmd){
   const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=${dateYmd}`;
-
   const res = await fetch(url);
 
-  if(!res.ok){
-    throw new Error('Không tải được dữ liệu ESPN');
-  }
+  if(!res.ok) throw new Error('Không tải được dữ liệu ESPN');
 
   const data = await res.json();
 
   return (data.events || [])
     .filter(e => {
       const text = JSON.stringify(e).toLowerCase();
-      return text.includes('fifa world cup') || text.includes('world cup');
+      return text.includes('world cup') || text.includes('fifa');
     })
     .map(parseESPNEvent);
 }
@@ -624,7 +357,7 @@ function parseESPNEvent(e){
   return {
     id:e.id,
     date:e.date || c.date,
-    group:c.altGameNote || e.season?.slug || '',
+    group:c.altGameNote || e.name || '',
     status:st.type?.state || 'pre',
     statusText:st.type?.shortDetail || st.type?.detail || st.type?.description || '',
     completed:!!st.type?.completed,
@@ -646,20 +379,16 @@ function parseESPNEvent(e){
 
 async function refreshAll(manual=false){
   try{
-    if(manual){
-      toast('Đang cập nhật dữ liệu...');
-    }
+    if(manual) toast('Đang cập nhật dữ liệu...');
 
     const start = new Date('2026-06-11T00:00:00');
     const end = new Date('2026-07-19T00:00:00');
     const today = new Date();
-
     const dates = [];
 
-    for(let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)){
+    for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
       const diff = Math.abs((d - today) / 86400000);
-
-      if(manual || diff <= 5 || matches.length === 0){
+      if(manual || diff <= 5 || matches.length === 0) {
         dates.push(ymd(new Date(d)));
       }
     }
@@ -668,10 +397,7 @@ async function refreshAll(manual=false){
     const fresh = chunks.flatMap(x => x.status === 'fulfilled' ? x.value : []);
 
     const map = new Map(matches.map(m => [m.id, m]));
-
-    fresh.forEach(m => {
-      if(m.id) map.set(m.id, m);
-    });
+    fresh.forEach(m => { if(m.id) map.set(m.id, m); });
 
     matches = [...map.values()].sort((a,b) => new Date(a.date) - new Date(b.date));
 
@@ -679,14 +405,61 @@ async function refreshAll(manual=false){
 
     render();
 
-    if(manual){
-      toast('Đã cập nhật');
-    }
+    if(manual) toast('Đã cập nhật');
   }catch(e){
     console.error(e);
-    toast('Không cập nhật được dữ liệu. Kiểm tra mạng hoặc nguồn ESPN.');
+    toast('Không cập nhật được dữ liệu.');
     render();
   }
+}
+
+function sortStanding(a,b){
+  return b.PTS - a.PTS ||
+         b.GD - a.GD ||
+         b.GF - a.GF ||
+         a.name.localeCompare(b.name);
+}
+
+function getGroupStandings(){
+  const result = {};
+
+  TEAMS.forEach(t => {
+    result[t.group] ||= [];
+    result[t.group].push({
+      ...t,
+      P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,PTS:0
+    });
+  });
+
+  const allTeams = Object.values(result).flat();
+
+  matches.filter(m => m.completed).forEach(m => {
+    const home = allTeams.find(t => t.code === m.home.code);
+    const away = allTeams.find(t => t.code === m.away.code);
+    if(!home || !away) return;
+
+    const hs = Number(m.home.score);
+    const as = Number(m.away.score);
+    if(!Number.isFinite(hs) || !Number.isFinite(as)) return;
+
+    home.P++; away.P++;
+    home.GF += hs; home.GA += as;
+    away.GF += as; away.GA += hs;
+
+    if(hs > as){
+      home.W++; away.L++; home.PTS += 3;
+    }else if(hs < as){
+      away.W++; home.L++; away.PTS += 3;
+    }else{
+      home.D++; away.D++; home.PTS++; away.PTS++;
+    }
+
+    home.GD = home.GF - home.GA;
+    away.GD = away.GF - away.GA;
+  });
+
+  Object.keys(result).forEach(g => result[g].sort(sortStanding));
+  return result;
 }
 
 function filteredTeams(){
@@ -709,7 +482,6 @@ function filteredMatches(list){
   return list.filter(m => {
     const h = teamByCode[m.home.code];
     const a = teamByCode[m.away.code];
-
     const text = `${m.home.name} ${m.away.name} ${m.home.code} ${m.away.code} ${m.group}`.toLowerCase();
 
     return (!q || text.includes(q)) &&
@@ -718,184 +490,87 @@ function filteredMatches(list){
   });
 }
 
-function sortStanding(a,b){
-  return b.PTS - a.PTS ||
-         b.GD - a.GD ||
-         b.GF - a.GF ||
-         a.name.localeCompare(b.name);
-}
-
-function getGroupStandings(){
-  const result = {};
-
-  for(const t of TEAMS){
-    result[t.group] ||= [];
-
-    result[t.group].push({
-      ...t,
-      P:0,
-      W:0,
-      D:0,
-      L:0,
-      GF:0,
-      GA:0,
-      GD:0,
-      PTS:0
-    });
-  }
-
-  const allTeams = Object.values(result).flat();
-
-  for(const m of matches.filter(x => x.completed)){
-    const home = allTeams.find(t => t.code === m.home.code);
-    const away = allTeams.find(t => t.code === m.away.code);
-
-    if(!home || !away) continue;
-
-    const hs = Number(m.home.score);
-    const as = Number(m.away.score);
-
-    if(!Number.isFinite(hs) || !Number.isFinite(as)) continue;
-
-    home.P++;
-    away.P++;
-
-    home.GF += hs;
-    home.GA += as;
-    away.GF += as;
-    away.GA += hs;
-
-    if(hs > as){
-      home.W++;
-      away.L++;
-      home.PTS += 3;
-    }else if(hs < as){
-      away.W++;
-      home.L++;
-      away.PTS += 3;
-    }else{
-      home.D++;
-      away.D++;
-      home.PTS++;
-      away.PTS++;
-    }
-
-    home.GD = home.GF - home.GA;
-    away.GD = away.GF - away.GA;
-  }
-
-  for(const g in result){
-    result[g].sort(sortStanding);
-  }
-
-  return result;
-}
-
 function teamStats(code){
-  const standings = getGroupStandings();
-  const all = Object.values(standings).flat();
-  return all.find(t => t.code === code) || {
+  return Object.values(getGroupStandings()).flat().find(t => t.code === code) || {
     P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,PTS:0
   };
 }
 
-function renderGroupsHorizontal(){
-  const standings = getGroupStandings();
-  const groups = Object.keys(standings).sort();
-
-  $('groups').innerHTML = `
-    <div class="group-row">
-      ${groups.map(g => `
-        <div class="group-card">
-          <div class="group-head">
-            <span>Bảng ${g}</span>
-            <span class="badge">${standings[g].length} đội</span>
-          </div>
-
-          ${standings[g].map((t,i) => `
-            <div class="group-team rank-${i+1}">
-              <b>${i+1}</b>
-              <div>
-                <div>${t.flag} ${t.name}</div>
-                <div class="mini-stat">${t.P} trận • HS ${t.GD} • BT ${t.GF}</div>
-              </div>
-              <b>${t.PTS}đ</b>
-            </div>
-          `).join('')}
-        </div>
-      `).join('')}
+function teamCell(t){
+  return `
+    <div class="team-cell">
+      <img class="team-logo" src="${t.logo}" onerror="this.style.display='none'">
+      <span>${t.name}</span>
     </div>
   `;
 }
 
 function renderStandings(){
   const standings = getGroupStandings();
+  const groupFilter = $('groupFilter').value;
 
-  $('standings').innerHTML = Object.keys(standings).sort().map(g => `
-    <div class="group-title">Bảng ${g}</div>
-
-    <div class="table-wrap" style="margin-bottom:14px">
-      <table>
-        <thead>
-          <tr>
-            <th>Hạng</th>
-            <th>Đội</th>
-            <th>Trận</th>
-            <th>Thắng</th>
-            <th>Hòa</th>
-            <th>Thua</th>
-            <th>BT</th>
-            <th>BB</th>
-            <th>HS</th>
-            <th>Điểm</th>
-            <th>Trạng thái</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${standings[g].map((t,i) => `
-            <tr class="${i < 2 ? 'qualify' : ''}">
-              <td>${i+1}</td>
-              <td>${t.flag} ${t.name}</td>
-              <td>${t.P}</td>
-              <td>${t.W}</td>
-              <td>${t.D}</td>
-              <td>${t.L}</td>
-              <td>${t.GF}</td>
-              <td>${t.GA}</td>
-              <td>${t.GD}</td>
-              <td><b>${t.PTS}</b></td>
-              <td>
-                ${
-                  i === 0 ? '<span class="badge green">Nhất bảng</span>' :
-                  i === 1 ? '<span class="badge blue">Nhì bảng</span>' :
-                  i === 2 ? '<span class="badge yellow">Hạng 3</span>' :
-                  '<span class="badge">Hạng 4</span>'
-                }
-              </td>
+  $('standings').innerHTML = Object.keys(standings)
+    .sort()
+    .filter(g => !groupFilter || groupFilter === g)
+    .map(g => `
+      <div class="group-title">🏆 Bảng ${g}</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Hạng</th>
+              <th>Đội</th>
+              <th class="center">Trận</th>
+              <th class="center">Thắng</th>
+              <th class="center">Hòa</th>
+              <th class="center">Thua</th>
+              <th class="center">BT</th>
+              <th class="center">BB</th>
+              <th class="center">HS</th>
+              <th class="center">Điểm</th>
+              <th>Trạng thái</th>
             </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
-  `).join('');
+          </thead>
+          <tbody>
+            ${standings[g].map((t,i) => `
+              <tr class="rank-${i+1}">
+                <td>${i+1}</td>
+                <td>${teamCell(t)}</td>
+                <td class="center">${t.P}</td>
+                <td class="center">${t.W}</td>
+                <td class="center">${t.D}</td>
+                <td class="center">${t.L}</td>
+                <td class="center">${t.GF}</td>
+                <td class="center">${t.GA}</td>
+                <td class="center">${t.GD > 0 ? '+'+t.GD : t.GD}</td>
+                <td class="center"><b>${t.PTS}</b></td>
+                <td>
+                  ${
+                    i === 0 ? '<span class="badge green">Nhất bảng</span>' :
+                    i === 1 ? '<span class="badge blue">Nhì bảng</span>' :
+                    i === 2 ? '<span class="badge yellow">Hạng 3</span>' :
+                    '<span class="badge red">Hạng 4</span>'
+                  }
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `).join('');
 }
 
 function renderThirdPlaceRanking(){
   const standings = getGroupStandings();
 
   const thirds = Object.keys(standings)
-    .map(g => ({
-      ...standings[g][2],
-      group:g
-    }))
+    .map(g => ({...standings[g][2], group:g}))
     .sort(sortStanding);
 
   $('thirds').innerHTML = `
-    <div class="group-title">Bảng xếp hạng 12 đội hạng 3</div>
-
+    <div class="group-title">🥉 Bảng xếp hạng 12 đội hạng 3</div>
     <div class="sub" style="margin-bottom:12px">
-      8 đội hạng 3 tốt nhất sẽ vào vòng 1/32. Thứ tự đang tính theo: điểm, hiệu số, bàn thắng, tên đội.
+      8 đội hạng 3 tốt nhất sẽ vào vòng 1/32.
     </div>
 
     <div class="table-wrap">
@@ -904,40 +579,33 @@ function renderThirdPlaceRanking(){
           <tr>
             <th>Hạng</th>
             <th>Đội</th>
-            <th>Bảng</th>
-            <th>Trận</th>
-            <th>Thắng</th>
-            <th>Hòa</th>
-            <th>Thua</th>
-            <th>BT</th>
-            <th>BB</th>
-            <th>HS</th>
-            <th>Điểm</th>
+            <th class="center">Bảng</th>
+            <th class="center">Trận</th>
+            <th class="center">Thắng</th>
+            <th class="center">Hòa</th>
+            <th class="center">Thua</th>
+            <th class="center">BT</th>
+            <th class="center">BB</th>
+            <th class="center">HS</th>
+            <th class="center">Điểm</th>
             <th>Trạng thái</th>
           </tr>
         </thead>
-
         <tbody>
           ${thirds.map((t,i) => `
             <tr class="${i < 8 ? 'qualify' : 'eliminated'}">
               <td>${i+1}</td>
-              <td>${t.flag} ${t.name}</td>
-              <td>${t.group}</td>
-              <td>${t.P}</td>
-              <td>${t.W}</td>
-              <td>${t.D}</td>
-              <td>${t.L}</td>
-              <td>${t.GF}</td>
-              <td>${t.GA}</td>
-              <td>${t.GD}</td>
-              <td><b>${t.PTS}</b></td>
-              <td>
-                ${
-                  i < 8
-                    ? '<span class="badge green">Vào vòng 1/32</span>'
-                    : '<span class="badge">Bị loại</span>'
-                }
-              </td>
+              <td>${teamCell(t)}</td>
+              <td class="center">${t.group}</td>
+              <td class="center">${t.P}</td>
+              <td class="center">${t.W}</td>
+              <td class="center">${t.D}</td>
+              <td class="center">${t.L}</td>
+              <td class="center">${t.GF}</td>
+              <td class="center">${t.GA}</td>
+              <td class="center">${t.GD > 0 ? '+'+t.GD : t.GD}</td>
+              <td class="center"><b>${t.PTS}</b></td>
+              <td>${i < 8 ? '<span class="badge green">Vào vòng 1/32</span>' : '<span class="badge red">Bị loại</span>'}</td>
             </tr>
           `).join('')}
         </tbody>
@@ -948,7 +616,6 @@ function renderThirdPlaceRanking(){
 
 function renderTeams(){
   const groups = {};
-
   filteredTeams().forEach(t => {
     groups[t.group] ||= [];
     groups[t.group].push(t);
@@ -956,22 +623,18 @@ function renderTeams(){
 
   $('teams').innerHTML = Object.keys(groups).sort().map(g => `
     <div class="group-title">Bảng ${g}</div>
-
     <div class="grid">
       ${groups[g].map(t => {
         const s = teamStats(t.code);
-
         return `
           <div class="card">
             <div class="team">
-              <img class="logo" src="${t.logo}" onerror="this.outerHTML='<div class=flag>${t.flag}</div>'">
-
+              <img class="logo" src="${t.logo}" onerror="this.style.display='none'">
               <div>
-                <div class="team-name">${t.flag} ${t.name}</div>
+                <div class="team-name">${t.name}</div>
                 <div class="meta">Bảng ${t.group} • ${t.code}</div>
               </div>
             </div>
-
             <div class="stats">
               <div class="stat"><b>${s.P}</b><span>Trận</span></div>
               <div class="stat"><b>${s.W}</b><span>Thắng</span></div>
@@ -987,17 +650,12 @@ function renderTeams(){
 }
 
 function renderMatch(m){
-  const state = m.completed ? 'done' : (m.status === 'in' ? 'live' : 'scheduled');
-
-  const score = m.status === 'pre'
-    ? 'vs'
-    : `${m.home.score ?? 0} - ${m.away.score ?? 0}`;
+  const score = m.status === 'pre' ? 'vs' : `${m.home.score ?? 0} - ${m.away.score ?? 0}`;
 
   return `
     <div class="match">
       <div class="side">
         <img class="logo" src="${m.home.logo || teamByCode[m.home.code]?.logo || ''}" onerror="this.style.display='none'">
-
         <div>
           <b>${m.home.name}</b>
           <div class="meta">${m.home.code}</div>
@@ -1006,8 +664,7 @@ function renderMatch(m){
 
       <div>
         <div class="score">${score}</div>
-
-        <div class="status ${state}">
+        <div class="status">
           ${m.status === 'in' ? `<span class="live">LIVE ${m.displayClock || ''}</span>` : ''}
           ${m.completed ? 'FT' : m.status === 'pre' ? fmtDate(m.date) : (m.statusText || '')}
           <br>${m.group || ''}
@@ -1019,7 +676,6 @@ function renderMatch(m){
           <b>${m.away.name}</b>
           <div class="meta">${m.away.code}</div>
         </div>
-
         <img class="logo" src="${m.away.logo || teamByCode[m.away.code]?.logo || ''}" onerror="this.style.display='none'">
       </div>
     </div>
@@ -1028,59 +684,20 @@ function renderMatch(m){
 
 function renderMatchList(id, list){
   const ms = filteredMatches(list);
-
-  $(id).innerHTML = ms.length
-    ? ms.map(renderMatch).join('')
-    : `<div class="empty">Chưa có dữ liệu phù hợp.</div>`;
+  $(id).innerHTML = ms.length ? ms.map(renderMatch).join('') : `<div class="empty">Chưa có dữ liệu phù hợp.</div>`;
 }
 
 function renderRules(){
   $('rules').innerHTML = `
     <div class="rule-box">
-      <div class="rule-item">
-        <b>1. Điểm số</b><br>
-        Thắng 3 điểm, hòa 1 điểm, thua 0 điểm.
-      </div>
-
-      <div class="rule-item">
-        <b>2. Hiệu số bàn thắng bại</b><br>
-        Nếu bằng điểm, ưu tiên đội có hiệu số bàn thắng bại tốt hơn.
-      </div>
-
-      <div class="rule-item">
-        <b>3. Tổng số bàn thắng</b><br>
-        Nếu hiệu số bằng nhau, ưu tiên đội ghi được nhiều bàn thắng hơn.
-      </div>
-
-      <div class="rule-item">
-        <b>4. Đối đầu trực tiếp</b><br>
-        Khi nhiều đội bằng nhau, xét kết quả đối đầu giữa các đội liên quan.
-      </div>
-
-      <div class="rule-item">
-        <b>5. Fair-play</b><br>
-        Nếu vẫn bằng nhau, xét điểm fair-play dựa trên số thẻ phạt.
-      </div>
-
-      <div class="rule-item">
-        <b>6. Bốc thăm</b><br>
-        Nếu tất cả tiêu chí vẫn bằng nhau, FIFA có thể xác định thứ hạng bằng bốc thăm.
-      </div>
-
-      <div class="rule-item">
-        <b>Cách vào vòng 1/32</b><br>
-        12 đội nhất bảng, 12 đội nhì bảng và 8 đội hạng ba tốt nhất sẽ đi tiếp.
-      </div>
-
-      <div class="rule-item">
-        <b>Bảng 12 đội hạng 3</b><br>
-        12 đội hạng ba được xếp chung theo điểm, hiệu số và bàn thắng để chọn 8 đội tốt nhất.
-      </div>
-
-      <div class="rule-item">
-        <b>Lưu ý kỹ thuật</b><br>
-        Trang này đang tự tính BXH từ dữ liệu tỷ số tải được. Trường hợp FIFA áp dụng thêm tiêu chí đối đầu/fair-play, cần bổ sung dữ liệu thẻ và đối đầu chi tiết.
-      </div>
+      <div class="rule-item"><b>1. Điểm số</b><br>Thắng 3 điểm, hòa 1 điểm, thua 0 điểm.</div>
+      <div class="rule-item"><b>2. Hiệu số bàn thắng bại</b><br>Nếu bằng điểm, ưu tiên đội có hiệu số tốt hơn.</div>
+      <div class="rule-item"><b>3. Tổng số bàn thắng</b><br>Nếu hiệu số bằng nhau, ưu tiên đội ghi nhiều bàn hơn.</div>
+      <div class="rule-item"><b>4. Đối đầu trực tiếp</b><br>Khi nhiều đội bằng nhau, xét kết quả đối đầu giữa các đội liên quan.</div>
+      <div class="rule-item"><b>5. Fair-play</b><br>Nếu vẫn bằng nhau, xét điểm fair-play dựa trên số thẻ phạt.</div>
+      <div class="rule-item"><b>6. Bốc thăm</b><br>Nếu vẫn bằng nhau, FIFA có thể xác định bằng bốc thăm.</div>
+      <div class="rule-item"><b>Cách vào vòng 1/32</b><br>12 đội nhất bảng, 12 đội nhì bảng và 8 đội hạng ba tốt nhất sẽ đi tiếp.</div>
+      <div class="rule-item"><b>12 đội hạng 3</b><br>Được xếp chung theo điểm, hiệu số, bàn thắng để chọn 8 đội tốt nhất.</div>
     </div>
   `;
 }
@@ -1091,7 +708,6 @@ function render(){
   $('kpiDone').textContent = matches.filter(m => m.completed).length;
   $('kpiLive').textContent = matches.filter(m => m.status === 'in').length;
 
-  renderGroupsHorizontal();
   renderStandings();
   renderThirdPlaceRanking();
   renderTeams();
@@ -1119,8 +735,8 @@ function toast(msg){
       left:50%;
       bottom:18px;
       transform:translateX(-50%);
-      background:white;
-      color:#0f172a;
+      background:#111827;
+      color:#fff;
       padding:11px 16px;
       border-radius:999px;
       font-weight:800;
@@ -1134,10 +750,7 @@ function toast(msg){
   t.style.display = 'block';
 
   clearTimeout(window.__toast);
-
-  window.__toast = setTimeout(() => {
-    t.style.display = 'none';
-  }, 2300);
+  window.__toast = setTimeout(() => t.style.display = 'none', 2300);
 }
 
 initFilters();

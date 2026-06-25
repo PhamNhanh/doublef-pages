@@ -946,14 +946,14 @@ body.cinematic .hero-cover{
 
 
 /* ===== ABSOLUTE FINAL HERO FIX - 100% IMAGE LAYER =====
-   Khung hero dùng tỷ lệ 19:6.
+   Khung hero dùng tỷ lệ 16:9.
    Ảnh nền không dùng CSS background nữa mà dùng thẻ <img> thật để tránh xung đột background/var/cache.
    Ảnh ưu tiên: /M10R7.jpg, fallback: GitHub raw.
 */
 section.hero-cover{
   position:relative !important;
   width:100% !important;
-  aspect-ratio:19 / 6 !important;
+  aspect-ratio:16 / 9 !important;
   min-height:0 !important;
   height:auto !important;
   display:grid !important;
@@ -1042,8 +1042,8 @@ section.hero-cover .hero-pill{
 
 @media(max-width:700px){
   section.hero-cover{
-    aspect-ratio:auto !important;
-    min-height:430px !important;
+    aspect-ratio:16 / 9 !important;
+    min-height:auto !important;
   }
 }
 

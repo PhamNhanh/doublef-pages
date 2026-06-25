@@ -1068,245 +1068,142 @@ section.hero-cover .hero-pill{
 }
 
 
-/* ===== PROFESSIONAL FOOTER ===== */
+/* ===== AUTHOR FOOTER - PHO HO NO ===== */
 .site-footer{
   margin-top:34px;
   border-radius:28px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.78);
-  background:
-    radial-gradient(circle at 16% 12%, rgba(56,189,248,.20), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(245,179,1,.18), transparent 24%),
-    linear-gradient(135deg, rgba(3,20,43,.96), rgba(8,47,92,.92) 52%, rgba(15,23,42,.96));
   color:#e5eefb;
-  box-shadow:0 28px 90px rgba(2,8,23,.22), inset 0 1px 0 rgba(255,255,255,.12);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(245,179,1,.24), transparent 26%),
+    radial-gradient(circle at 82% 10%, rgba(56,189,248,.18), transparent 28%),
+    linear-gradient(135deg,#061426,#082f5c 52%,#031b36);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 26px 80px rgba(2,8,23,.20);
   position:relative;
+  isolation:isolate;
 }
-
 .site-footer::before{
   content:"";
   position:absolute;
   inset:0;
-  pointer-events:none;
   background:
-    linear-gradient(115deg, transparent 0 42%, rgba(255,255,255,.12) 48%, transparent 54% 100%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 72px);
-  opacity:.78;
+    linear-gradient(115deg, transparent 0 40%, rgba(255,255,255,.10) 48%, transparent 56% 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 76px);
+  opacity:.9;
+  pointer-events:none;
 }
-
-.footer-inner{
+.footer-main{
   position:relative;
   z-index:1;
   display:grid;
-  grid-template-columns:1.2fr .85fr .95fr;
+  grid-template-columns:1.15fr .85fr 1fr;
   gap:24px;
-  padding:28px;
+  padding:30px;
 }
-
 .footer-brand{
   display:flex;
   gap:16px;
   align-items:flex-start;
 }
-
-.footer-cup{
-  width:62px;
-  height:62px;
+.footer-logo{
+  width:66px;
+  height:66px;
   object-fit:contain;
   border-radius:18px;
   padding:7px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 18px 44px rgba(245,179,1,.20);
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16);
+  filter:drop-shadow(0 10px 24px rgba(245,179,1,.30));
   flex:0 0 auto;
 }
-
-.footer-title{
-  font-size:22px;
-  font-weight:1000;
-  line-height:1.05;
+.site-footer h3,
+.site-footer h4{
+  margin:0 0 10px;
   color:#fff;
-  margin-bottom:9px;
+  font-weight:1000;
+  letter-spacing:-.2px;
 }
-
-.footer-desc{
-  color:#cbdaf0;
+.site-footer h3{font-size:21px}
+.site-footer h4{font-size:15px;text-transform:uppercase;letter-spacing:.7px;color:#fde68a}
+.site-footer p{
+  margin:6px 0;
+  color:#dbeafe;
   line-height:1.65;
   font-size:14px;
-  max-width:620px;
 }
-
-.footer-block h3{
-  margin:0 0 12px;
-  color:#fff;
-  font-size:15px;
-  letter-spacing:.3px;
-  text-transform:uppercase;
-}
-
-.footer-links{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-}
-
-.footer-link{
-  border:1px solid rgba(255,255,255,.16);
-  background:rgba(255,255,255,.09);
-  color:#eaf2ff;
-  border-radius:14px;
-  padding:10px 12px;
+.site-footer a{
+  color:#fde68a;
+  text-decoration:none;
   font-weight:900;
-  text-align:left;
-  box-shadow:none;
-  backdrop-filter:blur(10px);
 }
-
-.footer-link:hover{
-  transform:translateY(-2px);
-  background:rgba(255,255,255,.15);
-  border-color:rgba(125,211,252,.34);
-}
-
-.footer-meta{
-  display:grid;
-  gap:10px;
-}
-
-.footer-chip{
+.site-footer a:hover{text-decoration:underline}
+.footer-chip-row{
   display:flex;
-  justify-content:space-between;
-  gap:12px;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+.footer-chip{
+  display:inline-flex;
   align-items:center;
-  border:1px solid rgba(255,255,255,.16);
-  background:rgba(255,255,255,.08);
-  border-radius:16px;
-  padding:11px 13px;
-  color:#dbeafe;
-  font-size:13px;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.13);
+  color:#eff6ff;
+  font-size:12px;
+  font-weight:900;
 }
-
-.footer-chip b{
-  color:#fff;
+.footer-info-card{
+  padding:16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
 }
-
 .footer-bottom{
   position:relative;
   z-index:1;
   display:flex;
   justify-content:space-between;
   gap:14px;
-  align-items:center;
-  padding:16px 28px;
-  border-top:1px solid rgba(255,255,255,.13);
-  background:rgba(2,8,23,.22);
-  color:#cbdaf0;
+  flex-wrap:wrap;
+  padding:15px 30px;
+  border-top:1px solid rgba(255,255,255,.12);
+  background:rgba(2,8,23,.24);
+  color:#bfdbfe;
   font-size:13px;
+  font-weight:800;
 }
-
-.footer-bottom b{
-  color:#fff;
-}
-
 .footer-status{
   display:inline-flex;
   align-items:center;
   gap:8px;
-  border:1px solid rgba(34,197,94,.28);
-  background:rgba(34,197,94,.12);
-  color:#dcfce7;
-  padding:8px 11px;
-  border-radius:999px;
-  font-weight:900;
 }
-
 .footer-status::before{
   content:"";
-  width:8px;
-  height:8px;
+  width:9px;
+  height:9px;
   border-radius:999px;
   background:#22c55e;
-  box-shadow:0 0 16px rgba(34,197,94,.9);
+  box-shadow:0 0 18px rgba(34,197,94,.75);
 }
-
 body.cinematic .site-footer{
   background:
-    radial-gradient(circle at 16% 12%, rgba(56,189,248,.18), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(245,179,1,.14), transparent 24%),
-    linear-gradient(135deg, rgba(2,6,23,.96), rgba(8,23,55,.94) 58%, rgba(15,23,42,.98));
+    radial-gradient(circle at 12% 20%, rgba(245,179,1,.22), transparent 26%),
+    radial-gradient(circle at 82% 10%, rgba(56,189,248,.18), transparent 28%),
+    linear-gradient(135deg,#020617,#061426 55%,#111827);
   border-color:rgba(148,163,184,.24);
 }
-
-.footer-author-card{
-  margin-top:12px;
-  display:grid;
-  gap:9px;
-  border:1px solid rgba(255,255,255,.16);
-  background:rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:13px 14px;
+@media(max-width:980px){
+  .footer-main{grid-template-columns:1fr;padding:22px}
+  .footer-bottom{padding:14px 22px}
 }
-.footer-author-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:center;
-  color:#dbeafe;
-  font-size:13px;
-}
-.footer-author-row b,
-.footer-author-row a{
-  color:#fff;
-  font-weight:1000;
-  text-decoration:none;
-}
-.footer-author-row a:hover{
-  color:#fde68a;
-}
-.footer-side-note{
-  margin-top:12px;
-  color:#cbdaf0;
-  line-height:1.65;
-  font-size:13px;
-  border-left:3px solid rgba(245,179,1,.72);
-  padding:10px 12px;
-  background:rgba(255,255,255,.07);
-  border-radius:12px;
-}
-.footer-side-note b{
-  color:#fde68a;
-}
-@media(max-width:700px){
-  .footer-author-row{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-}
-
-@media(max-width:1100px){
-  .footer-inner{
-    grid-template-columns:1fr;
-  }
-}
-
-@media(max-width:700px){
-  .site-footer{
-    border-radius:22px;
-  }
-  .footer-inner{
-    padding:22px;
-  }
-  .footer-brand{
-    flex-direction:column;
-  }
-  .footer-links{
-    grid-template-columns:1fr;
-  }
-  .footer-bottom{
-    flex-direction:column;
-    align-items:flex-start;
-    padding:16px 22px;
-  }
+@media(max-width:560px){
+  .footer-brand{flex-direction:column}
+  .footer-logo{width:58px;height:58px}
 }
 
 </style>
@@ -1438,62 +1335,41 @@ body.cinematic .site-footer{
     <section id="history" class="section"></section>
     <section id="rules" class="section"></section>
 
-    <footer class="site-footer reveal">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <img class="footer-cup" src="/Cup.jpg?v=20260625" alt="World Cup Trophy" onerror="this.style.display='none'">
-          <div>
-            <div class="footer-title">World Cup 2026<br>Dashboard Center</div>
-            <div class="footer-desc">
-              Trang tổng hợp dữ liệu World Cup 2026: đội tuyển, bảng xếp hạng, lịch thi đấu, kết quả,
-              live score, FIFA Ranking và mô phỏng vòng knock-out. Giao diện được tối ưu cho theo dõi nhanh,
-              trình chiếu và cập nhật dữ liệu trong quá trình giải đấu.
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-block">
-          <h3>Truy cập nhanh</h3>
-          <div class="footer-links">
-            <button class="footer-link" onclick="setTab('overview')">Tổng quan</button>
-            <button class="footer-link" onclick="setTab('standings')">Bảng xếp hạng</button>
-            <button class="footer-link" onclick="setTab('schedule')">Lịch thi đấu</button>
-            <button class="footer-link" onclick="setTab('live')">Live Score</button>
-            <button class="footer-link" onclick="setTab('ranking')">FIFA Ranking</button>
-            <button class="footer-link" onclick="setTab('thirds')">Vòng đấu</button>
-          </div>
-        </div>
-
-        <div class="footer-block">
-          <h3>Thông tin hệ thống</h3>
-          <div class="footer-meta">
-            <div class="footer-chip"><span>Nước chủ nhà</span><b>USA • Canada • Mexico</b></div>
-            <div class="footer-chip"><span>Quy mô</span><b>48 đội • 12 bảng</b></div>
-            <div class="footer-chip"><span>Thời gian</span><b>11.06 - 19.07.2026</b></div>
-            <div class="footer-chip"><span>Nguồn cập nhật</span><b>ESPN / dữ liệu nhập</b></div>
-          </div>
-
-          <div class="footer-author-card">
-            <div class="footer-author-row"><span>Tác giả website</span><b>Phờ Hờ Nờ</b></div>
-            <div class="footer-author-row"><span>Email liên hệ</span><a href="mailto:nhanhtvt111@gmail.com">nhanhtvt111@gmail.com</a></div>
-            <div class="footer-author-row"><span>Năm thực hiện</span><b>2026</b></div>
-          </div>
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-brand">
+      <img src="/Cup.jpg?v=20260625" alt="World Cup Cup" class="footer-logo" onerror="this.style.display='none'">
+      <div>
+        <h3>World Cup 2026 Dashboard</h3>
+        <p>Trang dashboard cá nhân phục vụ theo dõi, trình chiếu, mô phỏng bảng đấu, lịch thi đấu, live score, FIFA Ranking và vòng knock-out World Cup 2026.</p>
+        <div class="footer-chip-row">
+          <span class="footer-chip">🏆 48 đội tuyển</span>
+          <span class="footer-chip">📊 FIFA Ranking</span>
+          <span class="footer-chip">📡 Live Score</span>
+          <span class="footer-chip">⚔ Knock-out</span>
         </div>
       </div>
+    </div>
 
-      <div class="footer-bottom">
-        <div>© 2026 <b>Phờ Hờ Nờ</b>. World Cup Dashboard được phát triển cho trang doublef.io.vn.</div>
-        <div class="footer-status">Dashboard sẵn sàng cập nhật</div>
-      </div>
+    <div class="footer-info-card">
+      <h4>Thông tin tác giả</h4>
+      <p><b>Tên tác giả web:</b> Phờ Hờ Nờ</p>
+      <p><b>Email:</b> <a href="mailto:nhanhtvt111@gmail.com">nhanhtvt111@gmail.com</a></p>
+      <p><b>Năm thực hiện:</b> 2026</p>
+    </div>
 
-      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.08);background:rgba(2,8,23,.16)">
-        <div class="footer-side-note">
-          <b>Nội dung ngoài lề:</b> Website là dự án cá nhân phục vụ theo dõi, trình chiếu và mô phỏng World Cup 2026.
-          Dữ liệu lịch thi đấu, tỷ số, bảng xếp hạng và ranking có thể được cập nhật từ nguồn bên ngoài hoặc nhập thủ công;
-          khi sử dụng cho mục đích chính thức, vui lòng đối chiếu lại với nguồn công bố của FIFA/đơn vị dữ liệu thể thao.
-        </div>
-      </div>
-    </footer>
+    <div class="footer-info-card">
+      <h4>Nội dung ngoài lề</h4>
+      <p>Website được xây dựng theo phong cách dashboard điện ảnh, phục vụ mục đích cá nhân, học tập, trình diễn giao diện và theo dõi thông tin giải đấu.</p>
+      <p>Dữ liệu, tỷ số, mô phỏng chia cặp và bảng xếp hạng trong trang chỉ mang tính tham khảo; khi sử dụng chính thức cần đối chiếu với FIFA hoặc nguồn dữ liệu thể thao hợp lệ.</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Phờ Hờ Nờ. All rights reserved.</span>
+    <span class="footer-status">Dashboard sẵn sàng hiển thị World Cup 2026</span>
+  </div>
+</footer>
 
   </main>
 </div>

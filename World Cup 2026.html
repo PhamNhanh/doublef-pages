@@ -652,6 +652,88 @@ td.center,th.center{
   margin:22px 0 12px;
 }
 
+
+.knockout-grid{
+  padding:18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:14px;
+}
+
+.ko-card{
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+}
+
+.ko-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  background:#f8fafc;
+  border-bottom:1px solid var(--line);
+  padding:12px 14px;
+  font-weight:900;
+  color:#071f45;
+}
+
+.ko-seed{
+  font-size:11px;
+  border-radius:999px;
+  padding:4px 8px;
+  background:#eaf2ff;
+  color:#0b5ed7;
+  font-weight:900;
+}
+
+.ko-body{
+  padding:12px 14px;
+}
+
+.ko-team{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:38px;
+  font-weight:800;
+}
+
+.ko-team + .ko-team{
+  border-top:1px dashed var(--line);
+  margin-top:8px;
+  padding-top:8px;
+}
+
+.ko-team img{
+  width:30px;
+  height:22px;
+  object-fit:contain;
+}
+
+.ko-vs{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:900;
+  margin:4px 0;
+}
+
+.bracket-note{
+  padding:0 18px 18px;
+  color:#475569;
+  line-height:1.6;
+}
+
+.bracket-note b{
+  color:#071f45;
+}
+
+.seed-table{
+  padding:18px;
+}
+
 @media(max-width:1200px){
   .kpis{grid-template-columns:repeat(3,1fr)}
   .dashboard-grid,.overview-bottom{grid-template-columns:1fr}
@@ -784,6 +866,20 @@ const TEAMS = [
 }));
 
 const teamByCode = Object.fromEntries(TEAMS.map(t => [t.code, t]));
+
+/*
+  Bảng xếp hạng FIFA giả lập để phục vụ cơ chế hạt giống trên giao diện.
+  Khi có dữ liệu thật, chỉ cần cập nhật lại số rank nhỏ hơn nghĩa là đội mạnh hơn.
+*/
+const FIFA_RANKING = {
+  ARG:1, FRA:2, ESP:3, ENG:4, BRA:5, POR:6, NED:7, BEL:8, GER:9, CRO:10,
+  MAR:12, USA:13, MEX:14, URU:15, COL:16, SUI:17, JPN:18, SEN:19, IRN:20,
+  KOR:21, ECU:22, AUT:23, AUS:24, TUR:25, CAN:26, SWE:27, NOR:28, SCO:29,
+  EGY:30, ALG:31, QAT:32, CIV:33, GHA:34, PAR:35, TUN:36, KSA:37, PAN:38,
+  UZB:39, CZE:40, RSA:41, NZL:42, JOR:43, IRQ:44, BIH:45, CPV:46, COD:47,
+  HTI:48, CUW:49
+};
+
 let matches = [];
 let activeTab = 'standings';
 
@@ -1063,12 +1159,201 @@ function renderStandings(){
     .join('');
 }
 
-function renderThirdPlaceRanking(){
+function getQualifiedTeams(){
   const standings = getGroupStandings();
+  const groupKeys = Object.keys(standings).sort();
 
-  const thirds = Object.keys(standings)
-    .map(g => ({...standings[g][2], group:g}))
+  const winners = groupKeys.map(g => ({...standings[g][0], group:g, qualifyType:'Nhất bảng'}));
+  const runners = groupKeys.map(g => ({...standings[g][1], group:g, qualifyType:'Nhì bảng'}));
+  const thirds = groupKeys
+    .map(g => ({...standings[g][2], group:g, qualifyType:'Hạng 3'}))
     .sort(sortStanding);
+
+  const bestThirds = thirds.slice(0,8);
+
+  const topSeeds = [...winners]
+    .sort((a,b) => (FIFA_RANKING[a.code] || 999) - (FIFA_RANKING[b.code] || 999))
+    .slice(0,4)
+    .map((t,i) => ({...t, seed:i+1}));
+
+  const normalWinners = winners.filter(t => !topSeeds.some(s => s.code === t.code));
+
+  return { standings, winners, runners, thirds, bestThirds, topSeeds, normalWinners };
+}
+
+function pickByGroup(list, group){
+  return list.find(t => t.group === group) || null;
+}
+
+function teamSlot(t, fallback){
+  if(!t){
+    return `<div class="ko-team"><span>${fallback}</span></div>`;
+  }
+
+  return `
+    <div class="ko-team">
+      <img src="${t.logo}" onerror="this.style.display='none'">
+      <span>${t.name}</span>
+      <span class="meta">Bảng ${t.group} • ${t.qualifyType || ''}</span>
+    </div>
+  `;
+}
+
+/*
+  Mô phỏng chia cặp vòng 1/32 theo nguyên tắc người dùng cung cấp:
+  - 32 đội: 12 nhất bảng, 12 nhì bảng, 8 đội hạng 3 tốt nhất.
+  - 4 đội nhất bảng có FIFA ranking cao nhất được tách vào 4 nhánh khác nhau.
+  - Ưu tiên tránh đội cùng bảng gặp lại ngay vòng 1/32.
+  - Các cặp còn lại ghép theo mô hình cố định, có nhóm nhì bảng gặp nhì bảng và nhất bảng gặp hạng 3.
+*/
+function buildRoundOf32Pairings(){
+  const q = getQualifiedTeams();
+  const topSeeds = q.topSeeds;
+  const bestThirds = [...q.bestThirds];
+  const normalWinners = [...q.normalWinners].sort((a,b) => a.group.localeCompare(b.group));
+  const runners = [...q.runners].sort((a,b) => a.group.localeCompare(b.group));
+
+  const pairings = [];
+
+  // 4 nhánh bảo vệ hạt giống hàng đầu
+  topSeeds.forEach((seedTeam, index) => {
+    let opponentIndex = bestThirds.findIndex(t => t.group !== seedTeam.group);
+    if(opponentIndex < 0) opponentIndex = 0;
+    const opponent = bestThirds.splice(opponentIndex,1)[0];
+
+    pairings.push({
+      title:`Nhánh hạt giống ${index + 1}`,
+      label:`Seed ${seedTeam.seed}`,
+      rule:'Đội hạt giống hàng đầu gặp đội hạng 3 tốt nhất khác bảng',
+      home:seedTeam,
+      away:opponent
+    });
+  });
+
+  // 4 cặp nhì bảng liền kề: A-B, C-D, E-F, G-H
+  const runnerPairs = [['A','B'],['C','D'],['E','F'],['G','H']];
+  runnerPairs.forEach(([g1,g2]) => {
+    const t1 = pickByGroup(runners,g1);
+    const t2 = pickByGroup(runners,g2);
+    if(t1 && t2){
+      pairings.push({
+        title:`Nhì bảng ${g1} vs Nhì bảng ${g2}`,
+        label:'R2-R2',
+        rule:'Cặp nhì bảng theo bảng liền kề',
+        home:t1,
+        away:t2
+      });
+    }
+  });
+
+  // 4 đội nhất bảng còn lại gặp 4 đội hạng 3 còn lại
+  while(pairings.length < 12 && normalWinners.length && bestThirds.length){
+    const winner = normalWinners.shift();
+    let opponentIndex = bestThirds.findIndex(t => t.group !== winner.group);
+    if(opponentIndex < 0) opponentIndex = 0;
+    const opponent = bestThirds.splice(opponentIndex,1)[0];
+
+    pairings.push({
+      title:`Nhất bảng ${winner.group} vs Hạng 3`,
+      label:'W-3rd',
+      rule:'Đội nhất bảng gặp đội hạng 3 khác bảng',
+      home:winner,
+      away:opponent
+    });
+  }
+
+  // Các cặp còn lại: nhì bảng từ các bảng khác
+  const usedCodes = new Set(pairings.flatMap(p => [p.home?.code, p.away?.code]).filter(Boolean));
+  const remainingRunners = runners.filter(t => !usedCodes.has(t.code));
+  const remainingWinners = normalWinners.filter(t => !usedCodes.has(t.code));
+
+  while(pairings.length < 16){
+    let home = remainingRunners.shift() || remainingWinners.shift() || null;
+    let pool = [...remainingRunners, ...remainingWinners];
+    if(!home || !pool.length) break;
+
+    let idx = pool.findIndex(t => t.group !== home.group);
+    if(idx < 0) idx = 0;
+
+    const away = pool[idx];
+
+    const rr = remainingRunners.findIndex(t => t.code === away.code);
+    const rw = remainingWinners.findIndex(t => t.code === away.code);
+    if(rr >= 0) remainingRunners.splice(rr,1);
+    if(rw >= 0) remainingWinners.splice(rw,1);
+
+    pairings.push({
+      title:`Cặp đấu ${pairings.length + 1}`,
+      label:'Khác bảng',
+      rule:'Ghép đội còn lại, ưu tiên khác bảng',
+      home,
+      away
+    });
+  }
+
+  return { ...q, pairings };
+}
+
+function renderKnockoutPairings(){
+  const data = buildRoundOf32Pairings();
+
+  return `
+    ${panel('Mô phỏng chia cặp vòng 1/32 theo nguyên tắc hạt giống', `
+      <div class="knockout-grid">
+        ${data.pairings.map((p,i) => `
+          <div class="ko-card">
+            <div class="ko-head">
+              <span>Trận ${i + 1}: ${p.title}</span>
+              <span class="ko-seed">${p.label}</span>
+            </div>
+            <div class="ko-body">
+              ${teamSlot(p.home,'Đội 1')}
+              <div class="ko-vs">VS</div>
+              ${teamSlot(p.away,'Đội 2')}
+              <div class="meta" style="margin-top:10px">${p.rule}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="bracket-note">
+        <b>Lưu ý:</b> Đây là mô phỏng logic chia cặp trên dashboard theo bộ nguyên tắc bạn cung cấp, không phải dữ liệu bốc thăm chính thức.
+        Khi có lịch/bảng đấu chính thức, chỉ cần thay mảng <b>TEAMS</b>, bảng <b>FIFA_RANKING</b> hoặc hàm <b>buildRoundOf32Pairings()</b>.
+      </div>
+    `,'16 cặp vòng 1/32 →')}
+
+    ${panel('4 đội hạt giống hàng đầu được tách nhánh', `
+      <div class="seed-table">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="center">Seed</th>
+                <th>Đội tuyển</th>
+                <th class="center">Bảng</th>
+                <th class="center">FIFA rank</th>
+                <th>Nguyên tắc bảo vệ</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.topSeeds.map(t => `
+                <tr>
+                  <td class="center"><span class="badge blue">${t.seed}</span></td>
+                  <td>${teamCell(t)}</td>
+                  <td class="center">${t.group}</td>
+                  <td class="center">${FIFA_RANKING[t.code] || '-'}</td>
+                  <td>Được phân bổ vào nhánh riêng, hạn chế gặp hạt giống khác trước các vòng sâu.</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `,'Cơ chế hạt giống →')}
+  `;
+}
+
+function renderThirdPlaceRanking(){
+  const { thirds } = getQualifiedTeams();
 
   $('thirds').innerHTML = panel('Bảng xếp hạng 12 đội hạng 3', `
     <div class="table-wrap">
@@ -1109,8 +1394,9 @@ function renderThirdPlaceRanking(){
         </tbody>
       </table>
     </div>
-  `,'8 đội hạng 3 tốt nhất →');
+  `,'8 đội hạng 3 tốt nhất →') + renderKnockoutPairings();
 }
+
 
 function renderTeams(){
   const groups = {};
@@ -1197,9 +1483,14 @@ function renderRules(){
       <div class="rule-item"><b>6. Bốc thăm</b><br>Nếu vẫn bằng nhau, FIFA có thể xác định bằng bốc thăm.</div>
       <div class="rule-item"><b>Cách vào vòng 1/32</b><br>12 đội nhất bảng, 12 đội nhì bảng và 8 đội hạng ba tốt nhất sẽ đi tiếp.</div>
       <div class="rule-item"><b>12 đội hạng 3</b><br>Được xếp chung theo điểm, hiệu số, bàn thắng để chọn 8 đội tốt nhất.</div>
+      <div class="rule-item"><b>Phân loại đội knock-out</b><br>Nhóm 1 gồm 12 đội nhất bảng; Nhóm 2 gồm 12 đội nhì bảng; Nhóm 3 gồm 8 đội hạng 3 tốt nhất.</div>
+      <div class="rule-item"><b>Hạt giống hàng đầu</b><br>4 đội nhất bảng có thứ hạng FIFA cao nhất được tách vào 4 nhánh khác nhau.</div>
+      <div class="rule-item"><b>Nguyên tắc ghép cặp</b><br>Mô phỏng gồm cặp nhì bảng liền kề, nhất bảng gặp hạng 3 và các cặp còn lại ưu tiên khác bảng.</div>
+      <div class="rule-item"><b>Lưu ý dữ liệu</b><br>Phần chia cặp hiện là mô phỏng theo nguyên tắc cài đặt trong code, có thể thay bằng dữ liệu chính thức khi FIFA công bố.</div>
     </div>
   `,'Xem chi tiết →');
 }
+
 
 function renderOverview(){
   const standings = getGroupStandings();

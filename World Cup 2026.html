@@ -1047,6 +1047,72 @@ section.hero-cover .hero-pill{
   }
 }
 
+
+
+/* ===== AI PREDICTION + PLAYER STATS UPGRADE ===== */
+.ai-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:20px;
+  padding:18px;
+}
+.chatbot-box,.predict-card,.leader-card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.82);
+  box-shadow:0 16px 42px rgba(15,23,42,.08);
+  overflow:hidden;
+}
+.chatbot-head{
+  padding:16px 18px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  background:linear-gradient(135deg,rgba(239,246,255,.92),rgba(255,255,255,.62));
+}
+.chatbot-title{font-weight:1000;color:#071f45;font-size:18px}
+.bot-badge{font-size:12px;font-weight:950;border-radius:999px;padding:6px 10px;color:#fff;background:linear-gradient(135deg,#0b5ed7,#8b5cf6)}
+.chat-log{height:360px;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(248,250,252,.92),rgba(255,255,255,.78))}
+.msg{max-width:86%;padding:12px 14px;border-radius:16px;font-weight:650;line-height:1.55;font-size:14px;box-shadow:0 10px 24px rgba(15,23,42,.06)}
+.msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-top-left-radius:5px}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,#071f45,#0b5ed7);color:#fff;border-top-right-radius:5px}
+.chat-input{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line);background:#fff}
+.chat-input input{width:100%}
+.predict-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;padding:16px;border-bottom:1px solid var(--line);background:#fbfcfe}
+.predict-result{padding:18px}
+.win-row{display:grid;grid-template-columns:110px 1fr 52px;gap:10px;align-items:center;margin:10px 0;font-weight:900}
+.win-bar{height:12px;border-radius:999px;background:#e2e8f0;overflow:hidden;box-shadow:inset 0 1px 4px rgba(15,23,42,.12)}
+.win-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#38bdf8,#10b981,#f59e0b)}
+.predict-score{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0 8px;font-size:32px;font-weight:1000;color:#071f45}
+.predict-note{color:var(--muted);font-size:13px;line-height:1.55;margin-top:10px}
+.match-prediction{
+  grid-column:1 / -1;
+  border-top:1px dashed var(--line);
+  padding-top:10px;
+  margin-top:2px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:12px;
+  align-items:center;
+  font-size:12px;
+  color:#334155;
+}
+.pred-mini-title{font-weight:950;color:#071f45;text-align:center}
+.pred-mini-bars{display:flex;flex-direction:column;gap:6px}
+.pred-mini-line{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center;font-weight:850}
+.pred-mini-bar{height:7px;background:#e2e8f0;border-radius:999px;overflow:hidden}.pred-mini-bar span{display:block;height:100%;background:linear-gradient(90deg,#0b5ed7,#10b981)}
+.pred-score-chip{display:inline-flex;justify-content:center;align-items:center;border-radius:999px;padding:7px 10px;font-weight:1000;color:#fff;background:linear-gradient(135deg,#071f45,#0b5ed7);box-shadow:0 10px 26px rgba(11,94,215,.20)}
+.leader-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.player-list{padding:14px 18px 18px;display:flex;flex-direction:column;gap:10px}
+.player-row{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:rgba(255,255,255,.82);transition:.22s ease}
+.player-row:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(15,23,42,.10)}
+.player-rank{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;font-weight:1000;color:#fff;background:linear-gradient(135deg,#071f45,#0b5ed7)}
+.player-main{min-width:0}.player-name{font-weight:1000;color:#071f45}.player-meta{font-size:12px;color:var(--muted);margin-top:3px}.player-value{font-size:22px;font-weight:1000;color:#071f45;text-align:center;min-width:38px}.player-value span{display:block;font-size:10px;color:var(--muted);font-weight:900;text-transform:uppercase}
+body.cinematic .chatbot-box,body.cinematic .predict-card,body.cinematic .leader-card{background:rgba(15,23,42,.58);border-color:rgba(148,163,184,.24);color:#e5eefb}body.cinematic .chatbot-head,body.cinematic .predict-form,body.cinematic .chat-input{background:rgba(15,23,42,.70);border-color:rgba(148,163,184,.24)}body.cinematic .msg.bot,body.cinematic .player-row{background:rgba(15,23,42,.70);border-color:rgba(148,163,184,.24)}body.cinematic .chat-log{background:rgba(2,8,23,.30)}body.cinematic .chatbot-title,body.cinematic .player-name,body.cinematic .player-value,body.cinematic .predict-score,body.cinematic .pred-mini-title{color:#e5eefb}
+@media(max-width:1050px){.ai-grid,.leader-grid{grid-template-columns:1fr}.predict-form{grid-template-columns:1fr}.match-prediction{grid-template-columns:1fr}.pred-mini-title{text-align:left}}
+
 </style>
 </head>
 
@@ -1078,6 +1144,8 @@ section.hero-cover .hero-pill{
       <button class="side-tab" data-tab="thirds" onclick="setTab('thirds')"><span class="ico">♛</span>Vòng đấu</button>
       <button class="side-tab" data-tab="ranking" onclick="setTab('ranking')"><span class="ico">★</span>FIFA Ranking</button>
       <button class="side-tab" data-tab="teams" onclick="setTab('teams')"><span class="ico">⚽</span>Đội tuyển</button>
+      <button class="side-tab" data-tab="ai" onclick="setTab('ai')"><span class="ico">🤖</span>AI dự đoán</button>
+      <button class="side-tab" data-tab="leaders" onclick="setTab('leaders')"><span class="ico">🥇</span>Vua phá lưới</button>
       <button class="side-tab" data-tab="rules" onclick="setTab('rules')"><span class="ico">▣</span>Thể thức</button>
     </nav>
 
@@ -1161,6 +1229,8 @@ section.hero-cover .hero-pill{
       <button class="tab" data-tab="ranking" onclick="setTab('ranking')">FIFA Ranking</button>
       <button class="tab" data-tab="teams" onclick="setTab('teams')">Đội tuyển</button>
       <button class="tab" data-tab="overview" onclick="setTab('overview')">Thống kê</button>
+      <button class="tab" data-tab="ai" onclick="setTab('ai')">AI dự đoán</button>
+      <button class="tab" data-tab="leaders" onclick="setTab('leaders')">Cầu thủ</button>
       <button class="tab" data-tab="rules" onclick="setTab('rules')">Thể thức</button>
     </nav>
 
@@ -1172,6 +1242,8 @@ section.hero-cover .hero-pill{
     <section id="live" class="section"></section>
     <section id="schedule" class="section"></section>
     <section id="history" class="section"></section>
+    <section id="ai" class="section"></section>
+    <section id="leaders" class="section"></section>
     <section id="rules" class="section"></section>
   </main>
 </div>
@@ -1243,6 +1315,57 @@ const TEAMS = [
 }));
 
 const teamByCode = Object.fromEntries(TEAMS.map(t => [t.code, t]));
+
+const PLAYER_STATS = [
+  {name:'Lionel Messi', team:'Argentina', code:'ARG', goals:0, assists:0},
+  {name:'Kylian Mbappé', team:'France', code:'FRA', goals:0, assists:0},
+  {name:'Harry Kane', team:'England', code:'ENG', goals:0, assists:0},
+  {name:'Vinícius Júnior', team:'Brazil', code:'BRA', goals:0, assists:0},
+  {name:'Cristiano Ronaldo', team:'Portugal', code:'POR', goals:0, assists:0},
+  {name:'Jamal Musiala', team:'Germany', code:'GER', goals:0, assists:0},
+  {name:'Lamine Yamal', team:'Spain', code:'ESP', goals:0, assists:0},
+  {name:'Álvaro Morata', team:'Spain', code:'ESP', goals:0, assists:0},
+  {name:'Memphis Depay', team:'Netherlands', code:'NED', goals:0, assists:0},
+  {name:'Christian Pulisic', team:'United States', code:'USA', goals:0, assists:0},
+  {name:'Lautaro Martínez', team:'Argentina', code:'ARG', goals:0, assists:0},
+  {name:'Neymar Jr', team:'Brazil', code:'BRA', goals:0, assists:0},
+  {name:'Bruno Fernandes', team:'Portugal', code:'POR', goals:0, assists:0},
+  {name:'Kevin De Bruyne', team:'Belgium', code:'BEL', goals:0, assists:0},
+  {name:'Jude Bellingham', team:'England', code:'ENG', goals:0, assists:0},
+  {name:'Antoine Griezmann', team:'France', code:'FRA', goals:0, assists:0}
+];
+
+function getPlayerStats(){
+  try{
+    const raw = localStorage.getItem('wc2026_player_stats');
+    if(raw){
+      const data = JSON.parse(raw);
+      if(Array.isArray(data)) return data;
+    }
+  }catch(e){console.warn(e)}
+  return PLAYER_STATS;
+}
+
+function savePlayerStatsFromJson(){
+  try{
+    const raw = $('playerStatsJson').value.trim();
+    if(!raw) return toast('Bạn chưa nhập JSON cầu thủ.');
+    const data = JSON.parse(raw);
+    if(!Array.isArray(data)) throw new Error('not array');
+    localStorage.setItem('wc2026_player_stats', JSON.stringify(data));
+    render();
+    toast('Đã cập nhật thống kê cầu thủ.');
+  }catch(e){
+    toast('JSON cầu thủ chưa đúng. Cần dạng mảng [{"name":"...","team":"...","code":"ARG","goals":1,"assists":2}]');
+  }
+}
+
+function resetPlayerStats(){
+  localStorage.removeItem('wc2026_player_stats');
+  render();
+  toast('Đã reset thống kê cầu thủ.');
+}
+
 
 /*
   FIFA Ranking dùng cho hạt giống và chỉ số sức mạnh.
@@ -1928,6 +2051,195 @@ function renderTeams(){
   `,'')).join('') || `<div class="empty">Không tìm thấy đội phù hợp.</div>`;
 }
 
+
+function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+
+function getTeamByAny(value){
+  if(!value) return null;
+  const v = value.toString().toLowerCase().trim();
+  return TEAMS.find(t => t.code.toLowerCase() === v || t.name.toLowerCase() === v || t.name.toLowerCase().includes(v));
+}
+
+function predictionForTeams(homeCode, awayCode){
+  const home = teamByCode[homeCode] || getTeamByAny(homeCode);
+  const away = teamByCode[awayCode] || getTeamByAny(awayCode);
+  if(!home || !away) return null;
+
+  const hs = teamStats(home.code);
+  const as = teamStats(away.code);
+  const homePower = powerIndex(home) + 3; // lợi thế danh nghĩa đội hiển thị bên trái
+  const awayPower = powerIndex(away);
+  const rankGap = rankOf(away.code) - rankOf(home.code);
+  const formGap = (hs.PTS - as.PTS) * 2 + (hs.GD - as.GD) * 1.4 + (hs.GF - as.GF) * .7;
+  const diff = clamp((homePower - awayPower) * .42 + rankGap * .45 + formGap, -34, 34);
+
+  let homeWin = clamp(36 + diff, 12, 74);
+  let awayWin = clamp(36 - diff, 12, 74);
+  let draw = clamp(100 - homeWin - awayWin, 14, 32);
+
+  const total = homeWin + draw + awayWin;
+  homeWin = Math.round(homeWin / total * 100);
+  draw = Math.round(draw / total * 100);
+  awayWin = 100 - homeWin - draw;
+
+  const homeGoals = clamp(Math.round(1.25 + (homePower-awayPower)/34 + Math.max(0, hs.GF/Math.max(1,hs.P))*.18),0,4);
+  const awayGoals = clamp(Math.round(1.05 + (awayPower-homePower)/36 + Math.max(0, as.GF/Math.max(1,as.P))*.18),0,4);
+  const winner = homeWin > awayWin ? home.name : away.name;
+  const confidence = clamp(Math.round(Math.abs(homeWin-awayWin)*1.25 + 48),45,88);
+
+  return {home,away,homeWin,draw,awayWin,homeGoals,awayGoals,winner,confidence,homePower,awayPower};
+}
+
+function predictionForMatch(m){
+  const h = m.home.code || getTeamByAny(m.home.name)?.code;
+  const a = m.away.code || getTeamByAny(m.away.name)?.code;
+  return predictionForTeams(h,a);
+}
+
+function renderMiniPrediction(m){
+  if(m.completed || m.status === 'in') return '';
+  const p = predictionForMatch(m);
+  if(!p) return '';
+  return `
+    <div class="match-prediction">
+      <div class="pred-mini-bars">
+        <div class="pred-mini-line"><span>${p.home.code}</span><div class="pred-mini-bar"><span style="width:${p.homeWin}%"></span></div><b>${p.homeWin}%</b></div>
+        <div class="pred-mini-line"><span>Hòa</span><div class="pred-mini-bar"><span style="width:${p.draw}%"></span></div><b>${p.draw}%</b></div>
+        <div class="pred-mini-line"><span>${p.away.code}</span><div class="pred-mini-bar"><span style="width:${p.awayWin}%"></span></div><b>${p.awayWin}%</b></div>
+      </div>
+      <div class="pred-mini-title">Tỷ lệ thắng AI<br><span class="pred-score-chip">Dự đoán ${p.homeGoals} - ${p.awayGoals}</span></div>
+      <div class="predict-note">Ưu thế: <b>${p.winner}</b> • Độ tin cậy ${p.confidence}% • Tính theo FIFA ranking, phong độ bảng và chỉ số sức mạnh.</div>
+    </div>`;
+}
+
+function renderPredictionResult(homeCode, awayCode){
+  const p = predictionForTeams(homeCode, awayCode);
+  if(!p) return `<div class="empty">Chọn đủ 2 đội để xem dự đoán.</div>`;
+  return `
+    <div class="predict-score">
+      <span>${p.home.code}</span><span>${p.homeGoals} - ${p.awayGoals}</span><span>${p.away.code}</span>
+    </div>
+    <div class="win-row"><span>${p.home.name}</span><div class="win-bar"><span style="width:${p.homeWin}%"></span></div><b>${p.homeWin}%</b></div>
+    <div class="win-row"><span>Hòa</span><div class="win-bar"><span style="width:${p.draw}%"></span></div><b>${p.draw}%</b></div>
+    <div class="win-row"><span>${p.away.name}</span><div class="win-bar"><span style="width:${p.awayWin}%"></span></div><b>${p.awayWin}%</b></div>
+    <div class="premium-grid" style="padding:10px 0 0">
+      <div class="premium-card"><div class="label">Đội có ưu thế</div><div class="value">${p.winner}</div><div class="copy-note">Độ tin cậy ${p.confidence}%</div></div>
+      <div class="premium-card"><div class="label">Power ${p.home.code}</div><div class="value">${p.homePower}</div><div class="copy-note">FIFA rank #${rankOf(p.home.code)}</div></div>
+      <div class="premium-card"><div class="label">Power ${p.away.code}</div><div class="value">${p.awayPower}</div><div class="copy-note">FIFA rank #${rankOf(p.away.code)}</div></div>
+    </div>
+    <div class="predict-note">Mô hình dự đoán chạy offline ngay trong trình duyệt, không cần API key. Công thức đang dùng: FIFA ranking + power index + kết quả bảng hiện tại + lợi thế đội hiển thị bên trái. Khi có dữ liệu thật, dashboard tự tính lại.</div>
+  `;
+}
+
+function updatePredictionPanel(){
+  const home = $('predictHome')?.value;
+  const away = $('predictAway')?.value;
+  const box = $('predictResult');
+  if(box) box.innerHTML = renderPredictionResult(home, away);
+}
+
+function teamOptions(selected=''){
+  return TEAMS.map(t => `<option value="${t.code}" ${t.code===selected?'selected':''}>${t.name} (${t.code})</option>`).join('');
+}
+
+function askBot(){
+  const input = $('chatQuestion');
+  if(!input) return;
+  const q = input.value.trim();
+  if(!q) return;
+  addChatMessage(q,'user');
+  input.value='';
+  setTimeout(()=>addChatMessage(botAnswer(q),'bot'),180);
+}
+
+function addChatMessage(text,type='bot'){
+  const log = $('chatLog');
+  if(!log) return;
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  div.innerHTML = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+function botAnswer(q){
+  const text = q.toLowerCase();
+  const found = TEAMS.filter(t => text.includes(t.name.toLowerCase()) || text.includes(t.code.toLowerCase()));
+  if(found.length >= 2){
+    const p = predictionForTeams(found[0].code, found[1].code);
+    return `Dự đoán <b>${p.home.name} vs ${p.away.name}</b>: tỷ số khoảng <b>${p.homeGoals} - ${p.awayGoals}</b>.<br>${p.home.name}: <b>${p.homeWin}%</b> • Hòa: <b>${p.draw}%</b> • ${p.away.name}: <b>${p.awayWin}%</b>.<br>Đội có ưu thế: <b>${p.winner}</b>.`;
+  }
+  if(text.includes('vua phá') || text.includes('ghi bàn') || text.includes('top scorer')){
+    const top = getPlayerStats().slice().sort((a,b)=>(b.goals||0)-(a.goals||0)).slice(0,5);
+    return `Top vua phá lưới hiện tại:<br>${top.map((p,i)=>`${i+1}. <b>${p.name}</b> - ${p.team}: <b>${p.goals||0}</b> bàn`).join('<br>')}`;
+  }
+  if(text.includes('kiến tạo') || text.includes('assist')){
+    const top = getPlayerStats().slice().sort((a,b)=>(b.assists||0)-(a.assists||0)).slice(0,5);
+    return `Top vua kiến tạo hiện tại:<br>${top.map((p,i)=>`${i+1}. <b>${p.name}</b> - ${p.team}: <b>${p.assists||0}</b> kiến tạo`).join('<br>')}`;
+  }
+  if(text.includes('ứng viên') || text.includes('vô địch')){
+    const elite = TEAMS.map(t=>({...t,power:powerIndex(t)})).sort((a,b)=>b.power-a.power).slice(0,6);
+    return `Nhóm ứng viên mạnh theo AI power:<br>${elite.map((t,i)=>`${i+1}. <b>${t.name}</b> - Power ${t.power}, FIFA rank #${rankOf(t.code)}`).join('<br>')}`;
+  }
+  return `Bạn có thể hỏi dạng: <b>"Argentina vs France tỷ lệ thắng?"</b>, <b>"ai là vua phá lưới"</b>, <b>"vua kiến tạo"</b>, hoặc <b>"ứng viên vô địch"</b>.`;
+}
+
+function renderAI(){
+  $('ai').innerHTML = panel('Chatbot AI dự đoán tỷ số & tỷ lệ thắng', `
+    <div class="ai-grid">
+      <div class="chatbot-box">
+        <div class="chatbot-head"><div class="chatbot-title">🤖 World Cup Predictor Bot</div><span class="bot-badge">OFFLINE AI</span></div>
+        <div id="chatLog" class="chat-log">
+          <div class="msg bot">Xin chào! Hãy hỏi tôi: <b>Argentina vs France tỷ lệ thắng?</b>, <b>ai là vua phá lưới?</b>, <b>vua kiến tạo?</b> hoặc <b>ứng viên vô địch?</b></div>
+        </div>
+        <div class="chat-input">
+          <input id="chatQuestion" placeholder="Nhập câu hỏi dự đoán..." onkeydown="if(event.key==='Enter') askBot()">
+          <button class="primary" onclick="askBot()">Gửi</button>
+        </div>
+      </div>
+      <div class="predict-card">
+        <div class="chatbot-head"><div class="chatbot-title">⚔ So sánh 2 đội</div><span class="bot-badge">WIN RATE</span></div>
+        <div class="predict-form">
+          <select id="predictHome" onchange="updatePredictionPanel()">${teamOptions('ARG')}</select>
+          <select id="predictAway" onchange="updatePredictionPanel()">${teamOptions('FRA')}</select>
+          <button class="primary" onclick="updatePredictionPanel()">Dự đoán</button>
+        </div>
+        <div id="predictResult" class="predict-result">${renderPredictionResult('ARG','FRA')}</div>
+      </div>
+    </div>
+  `,'AI dự đoán không cần API key →');
+}
+
+function renderLeaders(){
+  const stats = getPlayerStats();
+  const scorers = stats.slice().sort((a,b)=>(b.goals||0)-(a.goals||0) || (b.assists||0)-(a.assists||0)).slice(0,12);
+  const assists = stats.slice().sort((a,b)=>(b.assists||0)-(a.assists||0) || (b.goals||0)-(a.goals||0)).slice(0,12);
+  const list = (rows,field,label) => `<div class="player-list">${rows.map((p,i)=>`
+    <div class="player-row">
+      <div class="player-rank">${i+1}</div>
+      <div class="player-main"><div class="player-name">${p.name}</div><div class="player-meta">${p.team || teamByCode[p.code]?.name || ''} • ${p.code || ''}</div></div>
+      <div class="player-value">${Number(p[field]||0)}<span>${label}</span></div>
+    </div>`).join('')}</div>`;
+
+  $('leaders').innerHTML = `
+    ${panel('Thống kê cầu thủ: Vua phá lưới & Vua kiến tạo', `
+      <div class="rank-toolbar">
+        <div style="flex:1;min-width:280px">
+          <div class="source-chip">Dữ liệu cầu thủ: <b>local editable</b></div>
+          <div class="copy-note">Do không dùng API key, bạn có thể dán JSON thống kê cầu thủ vào ô bên cạnh. Khi có dữ liệu thật, chỉ cần cập nhật goals/assists, bảng sẽ tự sắp xếp.</div>
+        </div>
+        <textarea id="playerStatsJson" placeholder='[{"name":"Kylian Mbappé","team":"France","code":"FRA","goals":3,"assists":1}]'></textarea>
+        <button class="primary" onclick="savePlayerStatsFromJson()">Nạp cầu thủ</button>
+        <button onclick="resetPlayerStats()">Reset</button>
+      </div>
+      <div class="leader-grid" style="padding:18px">
+        <div class="leader-card"><div class="chatbot-head"><div class="chatbot-title">🥅 Vua phá lưới</div><span class="bot-badge">GOALS</span></div>${list(scorers,'goals','bàn')}</div>
+        <div class="leader-card"><div class="chatbot-head"><div class="chatbot-title">🎯 Vua kiến tạo</div><span class="bot-badge">ASSISTS</span></div>${list(assists,'assists','kiến tạo')}</div>
+      </div>
+    `,'Cập nhật thủ công bằng JSON →')}
+  `;
+}
+
 function renderMatch(m){
   const isLive = m.status === 'in';
   const score = m.status === 'pre' ? 'VS' : `${m.home.score ?? 0} - ${m.away.score ?? 0}`;
@@ -1960,6 +2272,7 @@ function renderMatch(m){
         </div>
         <img class="logo" src="${m.away.logo || teamByCode[m.away.code]?.logo || ''}" onerror="this.style.display='none'">
       </div>
+      ${renderMiniPrediction(m)}
     </div>
   `;
 }
@@ -2067,6 +2380,8 @@ function render(){
   renderMatchList('schedule', matches.filter(m => !m.completed), 'Lịch thi đấu');
   renderMatchList('history', matches.filter(m => m.completed).reverse(), 'Lịch sử kết quả');
 
+  renderAI();
+  renderLeaders();
   renderRules();
 }
 

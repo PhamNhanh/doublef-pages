@@ -4,6 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>World Cup 2026 Dashboard</title>
+<link rel="icon" type="image/jpeg" href="/Cup.jpg?v=20260625">
+<link rel="shortcut icon" type="image/jpeg" href="/Cup.jpg?v=20260625">
+<link rel="apple-touch-icon" href="/Cup.jpg?v=20260625">
+<meta name="theme-color" content="#062a52">
 
 <style>
 :root{
@@ -61,11 +65,12 @@ body{
 .worldcup-trophy{
   width:58px;
   height:82px;
-  object-fit:cover;
+  object-fit:contain;
   object-position:center;
-  border-radius:8px;
-  filter:drop-shadow(0 10px 20px rgba(245,179,1,.28));
-  background:rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:4px;
+  filter:drop-shadow(0 10px 20px rgba(245,179,1,.32));
+  background:rgba(255,255,255,.10);
 }
 
 .fallback-trophy{
@@ -836,7 +841,8 @@ body::after{
 .main{padding:30px 36px 48px}.top{padding:22px;border:1px solid rgba(255,255,255,.70);background:linear-gradient(135deg,rgba(255,255,255,.82),rgba(255,255,255,.54));border-radius:24px;box-shadow:var(--premium-shadow);backdrop-filter:blur(18px);position:relative;overflow:hidden}.top::after{content:"";position:absolute;right:-80px;top:-110px;width:280px;height:280px;border-radius:999px;background:radial-gradient(circle,rgba(56,189,248,.22),transparent 64%)}h1{font-size:clamp(30px,4vw,54px);font-weight:950;line-height:.95;letter-spacing:-1.8px;background:linear-gradient(92deg,#061426,#0b5ed7 45%,#8b5cf6 78%,#061426);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shineText 7s ease-in-out infinite}.sub{font-size:15.5px;color:#42526b}.controls{position:relative;z-index:2}input,select,button{border-radius:14px;border-color:rgba(148,163,184,.32);background:rgba(255,255,255,.82);backdrop-filter:blur(14px);transition:.24s ease}.search-box input{box-shadow:inset 0 0 0 1px rgba(255,255,255,.48),0 14px 30px rgba(15,23,42,.08)}input:focus,select:focus{border-color:rgba(56,189,248,.7);box-shadow:0 0 0 4px rgba(56,189,248,.14),0 18px 42px rgba(2,8,23,.10)}.primary{position:relative;overflow:hidden;background:linear-gradient(135deg,#071f45,#0b5ed7,#062a52);border:0;color:#fff;box-shadow:0 18px 44px rgba(11,94,215,.28)}.primary::after{content:"";position:absolute;inset:-2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.36),transparent);transform:translateX(-130%)}.primary:hover{transform:translateY(-2px);box-shadow:0 24px 60px rgba(11,94,215,.38)}.primary:hover::after{animation:sheen .8s ease}
 .theme-toggle,.view-toggle{border:0;background:linear-gradient(135deg,#fff,#eff6ff);box-shadow:0 14px 34px rgba(15,23,42,.10);font-weight:950}.theme-toggle:hover,.view-toggle:hover{transform:translateY(-2px);box-shadow:0 18px 46px rgba(15,23,42,.16)}
 @keyframes shineText{0%,100%{background-position:0% center}50%{background-position:100% center}}@keyframes sheen{to{transform:translateX(130%)}}
-.divine-hero{margin:0 0 24px;border-radius:28px;padding:28px;min-height:240px;display:grid;grid-template-columns:1.35fr .65fr;gap:24px;position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,rgba(3,20,43,.96),rgba(8,47,92,.92) 48%,rgba(72,31,120,.90));box-shadow:0 28px 90px rgba(2,8,23,.30),inset 0 1px 0 rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16)}.divine-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 22% 20%,rgba(56,189,248,.32),transparent 28%),radial-gradient(circle at 78% 18%,rgba(245,179,1,.22),transparent 22%),linear-gradient(120deg,transparent,rgba(255,255,255,.08),transparent);animation:heroAura 10s ease-in-out infinite alternate}.divine-hero::after{content:"";position:absolute;inset:auto 0 0 0;height:90px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 2px,transparent 2px 72px),linear-gradient(0deg,rgba(16,185,129,.28),transparent);clip-path:polygon(0 100%,100% 100%,88% 0,12% 0)}@keyframes heroAura{from{filter:hue-rotate(0deg);transform:scale(1)}to{filter:hue-rotate(18deg);transform:scale(1.04)}}.hero-content,.hero-visual{position:relative;z-index:1}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);font-weight:900;font-size:12px;letter-spacing:.9px;text-transform:uppercase}.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 18px #22c55e}.hero-title{margin:18px 0 12px;font-size:clamp(30px,5vw,64px);font-weight:1000;line-height:.90;letter-spacing:-2.4px}.hero-title span{background:linear-gradient(90deg,#fde68a,#fff,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-desc{max-width:760px;color:#dbeafe;font-size:16px;line-height:1.7}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.hero-pill{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:11px 14px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.15);font-weight:900;color:#fff}.hero-visual{min-height:200px;display:grid;place-items:center}.orbit{position:relative;width:210px;height:210px;border-radius:50%;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;animation:spinSlow 18s linear infinite}.orbit::before,.orbit::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(255,255,255,.22)}.orbit::before{inset:22px}.orbit::after{inset:48px}.orbit-core{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:radial-gradient(circle,#fde68a,#f59e0b 60%,#92400e);box-shadow:0 0 60px rgba(245,179,1,.55)}.orbit-dot{position:absolute;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(10px)}.d1{top:-15px}.d2{right:8px;bottom:22px}.d3{left:0;bottom:38px}@keyframes spinSlow{to{transform:rotate(360deg)}}
+.divine-hero{margin:0 0 24px;border-radius:28px;padding:28px;min-height:240px;display:grid;grid-template-columns:1.35fr .65fr;gap:24px;position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,rgba(3,20,43,.96),rgba(8,47,92,.92) 48%,rgba(72,31,120,.90));box-shadow:0 28px 90px rgba(2,8,23,.30),inset 0 1px 0 rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.16)}.divine-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 22% 20%,rgba(56,189,248,.32),transparent 28%),radial-gradient(circle at 78% 18%,rgba(245,179,1,.22),transparent 22%),linear-gradient(120deg,transparent,rgba(255,255,255,.08),transparent);animation:heroAura 10s ease-in-out infinite alternate}.divine-hero::after{content:"";position:absolute;inset:auto 0 0 0;height:90px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 2px,transparent 2px 72px),linear-gradient(0deg,rgba(16,185,129,.28),transparent);clip-path:polygon(0 100%,100% 100%,88% 0,12% 0)}@keyframes heroAura{from{filter:hue-rotate(0deg);transform:scale(1)}to{filter:hue-rotate(18deg);transform:scale(1.04)}}.hero-content,.hero-visual{position:relative;z-index:1}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);font-weight:900;font-size:12px;letter-spacing:.9px;text-transform:uppercase}.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 18px #22c55e}.hero-title{margin:18px 0 12px;font-size:clamp(30px,5vw,64px);font-weight:1000;line-height:.90;letter-spacing:-2.4px}.hero-title span{background:linear-gradient(90deg,#fde68a,#fff,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-desc{max-width:760px;color:#dbeafe;font-size:16px;line-height:1.7}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.hero-pill{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:11px 14px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.15);font-weight:900;color:#fff}.hero-visual{min-height:200px;display:grid;place-items:center}.orbit{position:relative;width:210px;height:210px;border-radius:50%;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;animation:spinSlow 18s linear infinite}.orbit::before,.orbit::after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(255,255,255,.22)}.orbit::before{inset:22px}.orbit::after{inset:48px}.orbit-core{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:48px;background:radial-gradient(circle,#fde68a,#f59e0b 60%,#92400e);box-shadow:0 0 60px rgba(245,179,1,.55);overflow:hidden}
+.orbit-core img{width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.24))}.orbit-dot{position:absolute;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(10px)}.d1{top:-15px}.d2{right:8px;bottom:22px}.d3{left:0;bottom:38px}@keyframes spinSlow{to{transform:rotate(360deg)}}
 .kpis{perspective:1200px}.kpi{border-radius:22px;border:1px solid rgba(255,255,255,.82);background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(255,255,255,.58));box-shadow:var(--premium-shadow);backdrop-filter:blur(18px);overflow:hidden;transition:.28s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}.kpi::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(56,189,248,.10),transparent);opacity:0;transition:.25s}.kpi:hover{transform:translateY(-8px) rotateX(2deg) rotateY(-2deg);box-shadow:0 30px 80px rgba(15,23,42,.18)}.kpi:hover::before{opacity:1}.kpi-icon{background:linear-gradient(135deg,#eff6ff,#dbeafe);box-shadow:inset 0 1px 0 #fff,0 12px 28px rgba(56,189,248,.18);animation:softBounce 4.5s ease-in-out infinite}.kpi b{font-weight:1000;background:linear-gradient(135deg,#071f45,#0b5ed7);-webkit-background-clip:text;background-clip:text;color:transparent}@keyframes softBounce{50%{transform:translateY(-2px) scale(1.03)}}.live-mini,.live,.live-label{animation:livePulse 1.4s ease-in-out infinite}@keyframes livePulse{50%{box-shadow:0 0 0 8px rgba(239,68,68,.12)}}
 .tabs{position:sticky;top:12px;z-index:10;padding:8px;border-radius:22px;background:rgba(255,255,255,.56);border:1px solid rgba(255,255,255,.70);backdrop-filter:blur(18px);box-shadow:0 16px 52px rgba(15,23,42,.10)}.tab{position:relative;border-radius:15px;overflow:hidden;transition:.25s ease}.tab:hover{transform:translateY(-2px)}.tab.active{background:linear-gradient(135deg,#061426,#0b5ed7);box-shadow:0 16px 34px rgba(11,94,215,.28)}.tab.active::after{content:"";position:absolute;left:18%;right:18%;bottom:5px;height:3px;border-radius:999px;background:#fde68a;box-shadow:var(--glow-gold)}
 .panel{border-radius:24px;border:1px solid rgba(255,255,255,.82);background:linear-gradient(135deg,rgba(255,255,255,.90),rgba(255,255,255,.62));box-shadow:var(--premium-shadow);backdrop-filter:blur(18px);transition:.28s ease;position:relative;overflow:hidden}.panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 0%,rgba(56,189,248,.12),transparent 24%);pointer-events:none}.panel:hover{transform:translateY(-4px);box-shadow:0 34px 90px rgba(15,23,42,.18)}.panel-head{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,255,255,.38));backdrop-filter:blur(12px)}.panel-title{font-size:19px;font-weight:1000}.panel-link{color:#0b5ed7}.card,.rule-item,.compare-team,.mini-card{border-radius:18px;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.78);box-shadow:0 16px 40px rgba(15,23,42,.08);transition:.25s ease}.card:hover,.rule-item:hover,.compare-team:hover,.mini-card:hover{transform:translateY(-7px);box-shadow:0 24px 64px rgba(15,23,42,.16)}
@@ -1047,6 +1053,20 @@ section.hero-cover .hero-pill{
   }
 }
 
+
+/* ===== REAL CUP IMAGE ICONS ===== */
+.real-cup-mini{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 8px 16px rgba(245,179,1,.32));
+}
+.kpi-icon .real-cup-mini{
+  width:38px;
+  height:38px;
+}
+
 </style>
 </head>
 
@@ -1061,8 +1081,10 @@ section.hero-cover .hero-pill{
     <div class="brand">
       <img
         class="worldcup-trophy"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.jpg/180px-FIFA_World_Cup_Trophy_%28Jules_Rimet_Trophy%29.jpg"
+        src="/Cup.jpg?v=20260625"
         alt="World Cup Trophy"
+        loading="eager"
+        decoding="async"
         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
       >
       <div class="trophy fallback-trophy" style="display:none">🏆</div>
@@ -1135,7 +1157,7 @@ section.hero-cover .hero-pill{
       </div>
       <div class="hero-visual">
         <div class="orbit">
-          <div class="orbit-core">🏆</div>
+          <div class="orbit-core"><img src="/Cup.jpg?v=20260625" alt="World Cup Trophy"></div>
           <div class="orbit-dot d1">⚽</div>
           <div class="orbit-dot d2">★</div>
           <div class="orbit-dot d3">📡</div>
@@ -1148,7 +1170,7 @@ section.hero-cover .hero-pill{
       <div class="kpi"><div class="kpi-icon">🥅</div><div><b id="kpiMatches">0</b><span>Trận đã tải</span></div></div>
       <div class="kpi"><div class="kpi-icon">✅</div><div><b id="kpiDone">0</b><span>Trận đã diễn ra</span></div></div>
       <div class="kpi"><span class="live-mini">LIVE</span><div class="kpi-icon">📡</div><div><b id="kpiLive">0</b><span>Đang diễn ra</span></div></div>
-      <div class="kpi"><div class="kpi-icon">🏆</div><div><b>1</b><span>Đội vô địch</span></div></div>
+      <div class="kpi"><div class="kpi-icon"><img class="real-cup-mini" src="/Cup.jpg?v=20260625" alt="Cup"></div><div><b>1</b><span>Đội vô địch</span></div></div>
       <div class="kpi"><div class="kpi-icon">🗓</div><div><b>11.06 - 19.07</b><span>Thời gian giải đấu</span></div></div>
     </div>
 
@@ -1177,6 +1199,15 @@ section.hero-cover .hero-pill{
 </div>
 
 <script>
+
+/* ===== FAVICON LOADER - Cup.jpg ===== */
+(function(){
+  const iconHref = '/Cup.jpg?v=20260625';
+  document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach(link => {
+    link.href = iconHref;
+  });
+})();
+
 
 /* ===== ABSOLUTE FINAL COVER LOADER - M10R7.jpg ===== */
 (function(){

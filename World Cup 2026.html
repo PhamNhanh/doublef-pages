@@ -1218,13 +1218,13 @@ body.cinematic .flashscore-paste{background:rgba(15,23,42,.72);color:#e5eefb;bor
     <div class="flashscore-modal-head">
       <div>
         <div class="flashscore-modal-title">⚡ Cập nhật dữ liệu từ Flashscore</div>
-        <div class="meta">Chế độ HTML-only: thử lấy trực tiếp, nếu trình duyệt chặn thì mở Flashscore để bạn copy dữ liệu và dán vào đây.</div>
+        <div class="meta">Chế độ API trung gian: nút Cập nhật ngay sẽ gọi /api/flashscore-worldcup; phần copy/dán chỉ là dự phòng.</div>
       </div>
       <button onclick="closeFlashscoreModal()">Đóng</button>
     </div>
     <div class="flashscore-modal-body">
       <div id="flashscoreStatus" class="flashscore-warning">
-        HTML tĩnh có thể mở Flashscore, nhưng việc đọc trực tiếp dữ liệu từ flashscore.com thường bị trình duyệt chặn do khác domain. Vì vậy nút này có 2 chế độ: thử tự động và cập nhật bằng nội dung copy từ Flashscore.
+        Website đang dùng API trung gian /api/flashscore-worldcup để cập nhật tự động. Nếu nguồn API bị lỗi, bạn vẫn có thể dùng chế độ copy/dán Flashscore dự phòng bên dưới.
       </div>
       <div class="flashscore-actions">
         <button class="flashscore-btn" onclick="tryDirectFlashscoreFetch()">1. Thử lấy trực tiếp</button>
@@ -1598,34 +1598,78 @@ function parseESPNEvent(e){
 
 async function refreshAll(manual=false){
   try{
-    if(manual) toast('Đang cập nhật dữ liệu...');
+    if(manual) toast('Đang cập nhật dữ liệu realtime...');
 
-    const start = new Date('2026-06-11T00:00:00');
-    const end = new Date('2026-07-19T00:00:00');
-    const today = new Date();
-    const dates = [];
+    const bridgeUrl = localStorage.getItem('wc2026_bridge_url') || '/api/flashscore-worldcup';
 
-    for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
-      const diff = Math.abs((d - today) / 86400000);
-      if(manual || diff <= 5 || matches.length === 0) {
-        dates.push(ymd(new Date(d)));
+    const res = await fetch(bridgeUrl, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {
+        'Accept': 'application/json'
       }
+    });
+
+    if(!res.ok){
+      throw new Error('Không gọi được API realtime: HTTP ' + res.status);
     }
 
-    const chunks = await Promise.allSettled(dates.map(fetchESPNByDate));
-    const fresh = chunks.flatMap(x => x.status === 'fulfilled' ? x.value : []);
+    const data = await res.json();
+
+    if(!data || data.ok === false){
+      throw new Error(data?.message || data?.error || 'API realtime trả về lỗi.');
+    }
+
+    const fresh = Array.isArray(data.matches) ? data.matches : [];
 
     const map = new Map(matches.map(m => [m.id, m]));
-    fresh.forEach(m => { if(m.id) map.set(m.id, m); });
+    fresh.forEach(m => {
+      if(m && m.id) map.set(m.id, m);
+    });
 
     matches = [...map.values()].sort((a,b) => new Date(a.date) - new Date(b.date));
 
+    if(Array.isArray(data.players) && data.players.length){
+      localStorage.setItem('wc2026_player_stats', JSON.stringify(data.players));
+    }
+
     render();
-    if(manual) toast('Đã cập nhật');
+
+    if(manual){
+      toast(`Đã cập nhật ${fresh.length} trận từ API realtime.`);
+    }
   }catch(e){
     console.error(e);
-    toast('Không cập nhật được dữ liệu.');
-    render();
+    toast('Không cập nhật được API realtime. Đang thử nguồn ESPN dự phòng...');
+
+    try{
+      const start = new Date('2026-06-11T00:00:00');
+      const end = new Date('2026-07-19T00:00:00');
+      const today = new Date();
+      const dates = [];
+
+      for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
+        const diff = Math.abs((d - today) / 86400000);
+        if(manual || diff <= 5 || matches.length === 0) {
+          dates.push(ymd(new Date(d)));
+        }
+      }
+
+      const chunks = await Promise.allSettled(dates.map(fetchESPNByDate));
+      const fresh = chunks.flatMap(x => x.status === 'fulfilled' ? x.value : []);
+
+      const map = new Map(matches.map(m => [m.id, m]));
+      fresh.forEach(m => { if(m.id) map.set(m.id, m); });
+
+      matches = [...map.values()].sort((a,b) => new Date(a.date) - new Date(b.date));
+
+      render();
+      if(manual) toast('Đã cập nhật bằng nguồn dự phòng.');
+    }catch(err){
+      console.error(err);
+      render();
+      if(manual) toast('Không cập nhật được dữ liệu.');
+    }
   }
 }
 

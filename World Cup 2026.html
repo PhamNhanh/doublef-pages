@@ -1047,197 +1047,10 @@ section.hero-cover .hero-pill{
   }
 }
 
-
-
-/* ===== AI PREDICTION + PLAYER STATS UPGRADE ===== */
-.ai-grid{
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:20px;
-  padding:18px;
-}
-.chatbot-box,.predict-card,.leader-card{
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(255,255,255,.82);
-  box-shadow:0 16px 42px rgba(15,23,42,.08);
-  overflow:hidden;
-}
-.chatbot-head{
-  padding:16px 18px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:center;
-  background:linear-gradient(135deg,rgba(239,246,255,.92),rgba(255,255,255,.62));
-}
-.chatbot-title{font-weight:1000;color:#071f45;font-size:18px}
-.bot-badge{font-size:12px;font-weight:950;border-radius:999px;padding:6px 10px;color:#fff;background:linear-gradient(135deg,#0b5ed7,#8b5cf6)}
-.chat-log{height:360px;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(248,250,252,.92),rgba(255,255,255,.78))}
-.msg{max-width:86%;padding:12px 14px;border-radius:16px;font-weight:650;line-height:1.55;font-size:14px;box-shadow:0 10px 24px rgba(15,23,42,.06)}
-.msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-top-left-radius:5px}
-.msg.user{align-self:flex-end;background:linear-gradient(135deg,#071f45,#0b5ed7);color:#fff;border-top-right-radius:5px}
-.chat-input{display:grid;grid-template-columns:1fr auto;gap:10px;padding:14px;border-top:1px solid var(--line);background:#fff}
-.chat-input input{width:100%}
-.predict-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;padding:16px;border-bottom:1px solid var(--line);background:#fbfcfe}
-.predict-result{padding:18px}
-.win-row{display:grid;grid-template-columns:110px 1fr 52px;gap:10px;align-items:center;margin:10px 0;font-weight:900}
-.win-bar{height:12px;border-radius:999px;background:#e2e8f0;overflow:hidden;box-shadow:inset 0 1px 4px rgba(15,23,42,.12)}
-.win-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#38bdf8,#10b981,#f59e0b)}
-.predict-score{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0 8px;font-size:32px;font-weight:1000;color:#071f45}
-.predict-note{color:var(--muted);font-size:13px;line-height:1.55;margin-top:10px}
-.match-prediction{
-  grid-column:1 / -1;
-  border-top:1px dashed var(--line);
-  padding-top:10px;
-  margin-top:2px;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  gap:12px;
-  align-items:center;
-  font-size:12px;
-  color:#334155;
-}
-.pred-mini-title{font-weight:950;color:#071f45;text-align:center}
-.pred-mini-bars{display:flex;flex-direction:column;gap:6px}
-.pred-mini-line{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center;font-weight:850}
-.pred-mini-bar{height:7px;background:#e2e8f0;border-radius:999px;overflow:hidden}.pred-mini-bar span{display:block;height:100%;background:linear-gradient(90deg,#0b5ed7,#10b981)}
-.pred-score-chip{display:inline-flex;justify-content:center;align-items:center;border-radius:999px;padding:7px 10px;font-weight:1000;color:#fff;background:linear-gradient(135deg,#071f45,#0b5ed7);box-shadow:0 10px 26px rgba(11,94,215,.20)}
-.leader-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.player-list{padding:14px 18px 18px;display:flex;flex-direction:column;gap:10px}
-.player-row{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:rgba(255,255,255,.82);transition:.22s ease}
-.player-row:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(15,23,42,.10)}
-.player-rank{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;font-weight:1000;color:#fff;background:linear-gradient(135deg,#071f45,#0b5ed7)}
-.player-main{min-width:0}.player-name{font-weight:1000;color:#071f45}.player-meta{font-size:12px;color:var(--muted);margin-top:3px}.player-value{font-size:22px;font-weight:1000;color:#071f45;text-align:center;min-width:38px}.player-value span{display:block;font-size:10px;color:var(--muted);font-weight:900;text-transform:uppercase}
-body.cinematic .chatbot-box,body.cinematic .predict-card,body.cinematic .leader-card{background:rgba(15,23,42,.58);border-color:rgba(148,163,184,.24);color:#e5eefb}body.cinematic .chatbot-head,body.cinematic .predict-form,body.cinematic .chat-input{background:rgba(15,23,42,.70);border-color:rgba(148,163,184,.24)}body.cinematic .msg.bot,body.cinematic .player-row{background:rgba(15,23,42,.70);border-color:rgba(148,163,184,.24)}body.cinematic .chat-log{background:rgba(2,8,23,.30)}body.cinematic .chatbot-title,body.cinematic .player-name,body.cinematic .player-value,body.cinematic .predict-score,body.cinematic .pred-mini-title{color:#e5eefb}
-@media(max-width:1050px){.ai-grid,.leader-grid{grid-template-columns:1fr}.predict-form{grid-template-columns:1fr}.match-prediction{grid-template-columns:1fr}.pred-mini-title{text-align:left}}
-
-
-/* ===== FLASHSCORE HTML-ONLY UPDATE BUTTON ===== */
-.flashscore-btn{
-  background:linear-gradient(135deg,#ff6b00,#ffb703) !important;
-  color:#111827 !important;
-  border:0 !important;
-  font-weight:1000 !important;
-  box-shadow:0 18px 44px rgba(255,107,0,.22) !important;
-}
-.flashscore-status-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  border-radius:999px;
-  padding:7px 11px;
-  font-size:12px;
-  font-weight:950;
-  background:#fff7ed;
-  color:#9a3412;
-  border:1px solid #fed7aa;
-}
-.flashscore-modal-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  background:rgba(2,8,23,.62);
-  backdrop-filter:blur(12px);
-}
-.flashscore-modal-backdrop.show{display:flex}
-.flashscore-modal{
-  width:min(920px,96vw);
-  max-height:92vh;
-  overflow:auto;
-  border-radius:24px;
-  background:#fff;
-  box-shadow:0 34px 120px rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.55);
-}
-.flashscore-modal-head{
-  display:flex;
-  justify-content:space-between;
-  gap:14px;
-  align-items:flex-start;
-  padding:20px 22px;
-  border-bottom:1px solid var(--line);
-  background:linear-gradient(135deg,#fff7ed,#ffffff);
-}
-.flashscore-modal-title{font-size:20px;font-weight:1000;color:#7c2d12}
-.flashscore-modal-body{padding:18px 22px 22px}
-.flashscore-warning{
-  line-height:1.6;
-  color:#334155;
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  border-radius:16px;
-  padding:14px 16px;
-  margin-bottom:14px;
-}
-.flashscore-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}
-.flashscore-paste{
-  width:100%;
-  min-height:190px;
-  resize:vertical;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:14px;
-  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
-  font-size:13px;
-  line-height:1.45;
-}
-.flashscore-preview{
-  margin-top:14px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  overflow:hidden;
-}
-.flashscore-preview-title{
-  padding:12px 14px;
-  font-weight:1000;
-  background:#f8fafc;
-  border-bottom:1px solid var(--line);
-}
-.flashscore-preview-list{padding:12px 14px;display:grid;gap:8px}
-.flashscore-preview-item{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}
-body.cinematic .flashscore-modal{background:#0f172a;color:#e5eefb}
-body.cinematic .flashscore-modal-head{background:linear-gradient(135deg,rgba(124,45,18,.5),rgba(15,23,42,.9));border-color:rgba(148,163,184,.24)}
-body.cinematic .flashscore-modal-title{color:#fed7aa}
-body.cinematic .flashscore-warning,body.cinematic .flashscore-preview-item{background:rgba(15,23,42,.72);border-color:rgba(148,163,184,.24);color:#e5eefb}
-body.cinematic .flashscore-paste{background:rgba(15,23,42,.72);color:#e5eefb;border-color:rgba(148,163,184,.24)}
-
 </style>
 </head>
 
 <body>
-
-
-<div id="flashscoreModal" class="flashscore-modal-backdrop" onclick="if(event.target.id==='flashscoreModal') closeFlashscoreModal()">
-  <div class="flashscore-modal">
-    <div class="flashscore-modal-head">
-      <div>
-        <div class="flashscore-modal-title">⚡ Cập nhật dữ liệu từ Flashscore</div>
-        <div class="meta">Chế độ API trung gian: nút Cập nhật ngay sẽ gọi /api/flashscore-worldcup; phần copy/dán chỉ là dự phòng.</div>
-      </div>
-      <button onclick="closeFlashscoreModal()">Đóng</button>
-    </div>
-    <div class="flashscore-modal-body">
-      <div id="flashscoreStatus" class="flashscore-warning">
-        Website đang dùng API trung gian /api/flashscore-worldcup để cập nhật tự động. Nếu nguồn API bị lỗi, bạn vẫn có thể dùng chế độ copy/dán Flashscore dự phòng bên dưới.
-      </div>
-      <div class="flashscore-actions">
-        <button class="flashscore-btn" onclick="tryDirectFlashscoreFetch()">1. Thử lấy trực tiếp</button>
-        <button class="primary" onclick="openFlashscoreWorldCup()">2. Mở Flashscore World Cup</button>
-        <button onclick="pasteClipboardToFlashscoreBox()">Dán từ clipboard</button>
-        <button class="primary" onclick="applyFlashscorePastedText()">3. Cập nhật từ nội dung đã dán</button>
-        <button onclick="clearFlashscoreText()">Xóa ô nhập</button>
-      </div>
-      <textarea id="flashscorePasteBox" class="flashscore-paste" placeholder="Cách dùng: mở Flashscore World Cup → chọn toàn bộ vùng lịch/kết quả → copy → dán vào đây. Ví dụ dòng có thể là:&#10;25.06. Ecuador - Germany&#10;26.06. Tunisia - Netherlands&#10;FT Argentina 2 1 France"></textarea>
-      <div id="flashscorePreview" class="flashscore-preview" style="display:none"></div>
-    </div>
-  </div>
-</div>
 
 <div class="bg-orb orb-1"></div>
 <div class="bg-orb orb-2"></div>
@@ -1265,8 +1078,6 @@ body.cinematic .flashscore-paste{background:rgba(15,23,42,.72);color:#e5eefb;bor
       <button class="side-tab" data-tab="thirds" onclick="setTab('thirds')"><span class="ico">♛</span>Vòng đấu</button>
       <button class="side-tab" data-tab="ranking" onclick="setTab('ranking')"><span class="ico">★</span>FIFA Ranking</button>
       <button class="side-tab" data-tab="teams" onclick="setTab('teams')"><span class="ico">⚽</span>Đội tuyển</button>
-      <button class="side-tab" data-tab="ai" onclick="setTab('ai')"><span class="ico">🤖</span>AI dự đoán</button>
-      <button class="side-tab" data-tab="leaders" onclick="setTab('leaders')"><span class="ico">🥇</span>Vua phá lưới</button>
       <button class="side-tab" data-tab="rules" onclick="setTab('rules')"><span class="ico">▣</span>Thể thức</button>
     </nav>
 
@@ -1297,7 +1108,6 @@ body.cinematic .flashscore-paste{background:rgba(15,23,42,.72);color:#e5eefb;bor
         <button class="view-toggle" onclick="toggleCinematic()">✦ Cinematic</button>
         <button class="theme-toggle" onclick="boostEffects()">⚡ Thần thánh</button>
         <button class="primary" onclick="refreshAll(true)">↻ Cập nhật ngay</button>
-        <button class="flashscore-btn" onclick="flashscoreUpdateFromButton()">⚡ Cập nhật Flashscore</button>
       </div>
     </header>
 
@@ -1351,8 +1161,6 @@ body.cinematic .flashscore-paste{background:rgba(15,23,42,.72);color:#e5eefb;bor
       <button class="tab" data-tab="ranking" onclick="setTab('ranking')">FIFA Ranking</button>
       <button class="tab" data-tab="teams" onclick="setTab('teams')">Đội tuyển</button>
       <button class="tab" data-tab="overview" onclick="setTab('overview')">Thống kê</button>
-      <button class="tab" data-tab="ai" onclick="setTab('ai')">AI dự đoán</button>
-      <button class="tab" data-tab="leaders" onclick="setTab('leaders')">Cầu thủ</button>
       <button class="tab" data-tab="rules" onclick="setTab('rules')">Thể thức</button>
     </nav>
 
@@ -1364,8 +1172,6 @@ body.cinematic .flashscore-paste{background:rgba(15,23,42,.72);color:#e5eefb;bor
     <section id="live" class="section"></section>
     <section id="schedule" class="section"></section>
     <section id="history" class="section"></section>
-    <section id="ai" class="section"></section>
-    <section id="leaders" class="section"></section>
     <section id="rules" class="section"></section>
   </main>
 </div>
@@ -1437,57 +1243,6 @@ const TEAMS = [
 }));
 
 const teamByCode = Object.fromEntries(TEAMS.map(t => [t.code, t]));
-
-const PLAYER_STATS = [
-  {name:'Lionel Messi', team:'Argentina', code:'ARG', goals:0, assists:0},
-  {name:'Kylian Mbappé', team:'France', code:'FRA', goals:0, assists:0},
-  {name:'Harry Kane', team:'England', code:'ENG', goals:0, assists:0},
-  {name:'Vinícius Júnior', team:'Brazil', code:'BRA', goals:0, assists:0},
-  {name:'Cristiano Ronaldo', team:'Portugal', code:'POR', goals:0, assists:0},
-  {name:'Jamal Musiala', team:'Germany', code:'GER', goals:0, assists:0},
-  {name:'Lamine Yamal', team:'Spain', code:'ESP', goals:0, assists:0},
-  {name:'Álvaro Morata', team:'Spain', code:'ESP', goals:0, assists:0},
-  {name:'Memphis Depay', team:'Netherlands', code:'NED', goals:0, assists:0},
-  {name:'Christian Pulisic', team:'United States', code:'USA', goals:0, assists:0},
-  {name:'Lautaro Martínez', team:'Argentina', code:'ARG', goals:0, assists:0},
-  {name:'Neymar Jr', team:'Brazil', code:'BRA', goals:0, assists:0},
-  {name:'Bruno Fernandes', team:'Portugal', code:'POR', goals:0, assists:0},
-  {name:'Kevin De Bruyne', team:'Belgium', code:'BEL', goals:0, assists:0},
-  {name:'Jude Bellingham', team:'England', code:'ENG', goals:0, assists:0},
-  {name:'Antoine Griezmann', team:'France', code:'FRA', goals:0, assists:0}
-];
-
-function getPlayerStats(){
-  try{
-    const raw = localStorage.getItem('wc2026_player_stats');
-    if(raw){
-      const data = JSON.parse(raw);
-      if(Array.isArray(data)) return data;
-    }
-  }catch(e){console.warn(e)}
-  return PLAYER_STATS;
-}
-
-function savePlayerStatsFromJson(){
-  try{
-    const raw = $('playerStatsJson').value.trim();
-    if(!raw) return toast('Bạn chưa nhập JSON cầu thủ.');
-    const data = JSON.parse(raw);
-    if(!Array.isArray(data)) throw new Error('not array');
-    localStorage.setItem('wc2026_player_stats', JSON.stringify(data));
-    render();
-    toast('Đã cập nhật thống kê cầu thủ.');
-  }catch(e){
-    toast('JSON cầu thủ chưa đúng. Cần dạng mảng [{"name":"...","team":"...","code":"ARG","goals":1,"assists":2}]');
-  }
-}
-
-function resetPlayerStats(){
-  localStorage.removeItem('wc2026_player_stats');
-  render();
-  toast('Đã reset thống kê cầu thủ.');
-}
-
 
 /*
   FIFA Ranking dùng cho hạt giống và chỉ số sức mạnh.
@@ -1598,78 +1353,34 @@ function parseESPNEvent(e){
 
 async function refreshAll(manual=false){
   try{
-    if(manual) toast('Đang cập nhật dữ liệu realtime...');
+    if(manual) toast('Đang cập nhật dữ liệu...');
 
-    const bridgeUrl = localStorage.getItem('wc2026_bridge_url') || '/api/flashscore-worldcup';
+    const start = new Date('2026-06-11T00:00:00');
+    const end = new Date('2026-07-19T00:00:00');
+    const today = new Date();
+    const dates = [];
 
-    const res = await fetch(bridgeUrl, {
-      method: 'GET',
-      cache: 'no-store',
-      headers: {
-        'Accept': 'application/json'
+    for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
+      const diff = Math.abs((d - today) / 86400000);
+      if(manual || diff <= 5 || matches.length === 0) {
+        dates.push(ymd(new Date(d)));
       }
-    });
-
-    if(!res.ok){
-      throw new Error('Không gọi được API realtime: HTTP ' + res.status);
     }
 
-    const data = await res.json();
-
-    if(!data || data.ok === false){
-      throw new Error(data?.message || data?.error || 'API realtime trả về lỗi.');
-    }
-
-    const fresh = Array.isArray(data.matches) ? data.matches : [];
+    const chunks = await Promise.allSettled(dates.map(fetchESPNByDate));
+    const fresh = chunks.flatMap(x => x.status === 'fulfilled' ? x.value : []);
 
     const map = new Map(matches.map(m => [m.id, m]));
-    fresh.forEach(m => {
-      if(m && m.id) map.set(m.id, m);
-    });
+    fresh.forEach(m => { if(m.id) map.set(m.id, m); });
 
     matches = [...map.values()].sort((a,b) => new Date(a.date) - new Date(b.date));
 
-    if(Array.isArray(data.players) && data.players.length){
-      localStorage.setItem('wc2026_player_stats', JSON.stringify(data.players));
-    }
-
     render();
-
-    if(manual){
-      toast(`Đã cập nhật ${fresh.length} trận từ API realtime.`);
-    }
+    if(manual) toast('Đã cập nhật');
   }catch(e){
     console.error(e);
-    toast('Không cập nhật được API realtime. Đang thử nguồn ESPN dự phòng...');
-
-    try{
-      const start = new Date('2026-06-11T00:00:00');
-      const end = new Date('2026-07-19T00:00:00');
-      const today = new Date();
-      const dates = [];
-
-      for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
-        const diff = Math.abs((d - today) / 86400000);
-        if(manual || diff <= 5 || matches.length === 0) {
-          dates.push(ymd(new Date(d)));
-        }
-      }
-
-      const chunks = await Promise.allSettled(dates.map(fetchESPNByDate));
-      const fresh = chunks.flatMap(x => x.status === 'fulfilled' ? x.value : []);
-
-      const map = new Map(matches.map(m => [m.id, m]));
-      fresh.forEach(m => { if(m.id) map.set(m.id, m); });
-
-      matches = [...map.values()].sort((a,b) => new Date(a.date) - new Date(b.date));
-
-      render();
-      if(manual) toast('Đã cập nhật bằng nguồn dự phòng.');
-    }catch(err){
-      console.error(err);
-      render();
-      if(manual) toast('Không cập nhật được dữ liệu.');
-    }
+    toast('Không cập nhật được dữ liệu.');
+    render();
   }
 }
 
@@ -2217,195 +1928,6 @@ function renderTeams(){
   `,'')).join('') || `<div class="empty">Không tìm thấy đội phù hợp.</div>`;
 }
 
-
-function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
-
-function getTeamByAny(value){
-  if(!value) return null;
-  const v = value.toString().toLowerCase().trim();
-  return TEAMS.find(t => t.code.toLowerCase() === v || t.name.toLowerCase() === v || t.name.toLowerCase().includes(v));
-}
-
-function predictionForTeams(homeCode, awayCode){
-  const home = teamByCode[homeCode] || getTeamByAny(homeCode);
-  const away = teamByCode[awayCode] || getTeamByAny(awayCode);
-  if(!home || !away) return null;
-
-  const hs = teamStats(home.code);
-  const as = teamStats(away.code);
-  const homePower = powerIndex(home) + 3; // lợi thế danh nghĩa đội hiển thị bên trái
-  const awayPower = powerIndex(away);
-  const rankGap = rankOf(away.code) - rankOf(home.code);
-  const formGap = (hs.PTS - as.PTS) * 2 + (hs.GD - as.GD) * 1.4 + (hs.GF - as.GF) * .7;
-  const diff = clamp((homePower - awayPower) * .42 + rankGap * .45 + formGap, -34, 34);
-
-  let homeWin = clamp(36 + diff, 12, 74);
-  let awayWin = clamp(36 - diff, 12, 74);
-  let draw = clamp(100 - homeWin - awayWin, 14, 32);
-
-  const total = homeWin + draw + awayWin;
-  homeWin = Math.round(homeWin / total * 100);
-  draw = Math.round(draw / total * 100);
-  awayWin = 100 - homeWin - draw;
-
-  const homeGoals = clamp(Math.round(1.25 + (homePower-awayPower)/34 + Math.max(0, hs.GF/Math.max(1,hs.P))*.18),0,4);
-  const awayGoals = clamp(Math.round(1.05 + (awayPower-homePower)/36 + Math.max(0, as.GF/Math.max(1,as.P))*.18),0,4);
-  const winner = homeWin > awayWin ? home.name : away.name;
-  const confidence = clamp(Math.round(Math.abs(homeWin-awayWin)*1.25 + 48),45,88);
-
-  return {home,away,homeWin,draw,awayWin,homeGoals,awayGoals,winner,confidence,homePower,awayPower};
-}
-
-function predictionForMatch(m){
-  const h = m.home.code || getTeamByAny(m.home.name)?.code;
-  const a = m.away.code || getTeamByAny(m.away.name)?.code;
-  return predictionForTeams(h,a);
-}
-
-function renderMiniPrediction(m){
-  if(m.completed || m.status === 'in') return '';
-  const p = predictionForMatch(m);
-  if(!p) return '';
-  return `
-    <div class="match-prediction">
-      <div class="pred-mini-bars">
-        <div class="pred-mini-line"><span>${p.home.code}</span><div class="pred-mini-bar"><span style="width:${p.homeWin}%"></span></div><b>${p.homeWin}%</b></div>
-        <div class="pred-mini-line"><span>Hòa</span><div class="pred-mini-bar"><span style="width:${p.draw}%"></span></div><b>${p.draw}%</b></div>
-        <div class="pred-mini-line"><span>${p.away.code}</span><div class="pred-mini-bar"><span style="width:${p.awayWin}%"></span></div><b>${p.awayWin}%</b></div>
-      </div>
-      <div class="pred-mini-title">Tỷ lệ thắng AI<br><span class="pred-score-chip">Dự đoán ${p.homeGoals} - ${p.awayGoals}</span></div>
-      <div class="predict-note">Ưu thế: <b>${p.winner}</b> • Độ tin cậy ${p.confidence}% • Tính theo FIFA ranking, phong độ bảng và chỉ số sức mạnh.</div>
-    </div>`;
-}
-
-function renderPredictionResult(homeCode, awayCode){
-  const p = predictionForTeams(homeCode, awayCode);
-  if(!p) return `<div class="empty">Chọn đủ 2 đội để xem dự đoán.</div>`;
-  return `
-    <div class="predict-score">
-      <span>${p.home.code}</span><span>${p.homeGoals} - ${p.awayGoals}</span><span>${p.away.code}</span>
-    </div>
-    <div class="win-row"><span>${p.home.name}</span><div class="win-bar"><span style="width:${p.homeWin}%"></span></div><b>${p.homeWin}%</b></div>
-    <div class="win-row"><span>Hòa</span><div class="win-bar"><span style="width:${p.draw}%"></span></div><b>${p.draw}%</b></div>
-    <div class="win-row"><span>${p.away.name}</span><div class="win-bar"><span style="width:${p.awayWin}%"></span></div><b>${p.awayWin}%</b></div>
-    <div class="premium-grid" style="padding:10px 0 0">
-      <div class="premium-card"><div class="label">Đội có ưu thế</div><div class="value">${p.winner}</div><div class="copy-note">Độ tin cậy ${p.confidence}%</div></div>
-      <div class="premium-card"><div class="label">Power ${p.home.code}</div><div class="value">${p.homePower}</div><div class="copy-note">FIFA rank #${rankOf(p.home.code)}</div></div>
-      <div class="premium-card"><div class="label">Power ${p.away.code}</div><div class="value">${p.awayPower}</div><div class="copy-note">FIFA rank #${rankOf(p.away.code)}</div></div>
-    </div>
-    <div class="predict-note">Mô hình dự đoán chạy offline ngay trong trình duyệt, không cần API key. Công thức đang dùng: FIFA ranking + power index + kết quả bảng hiện tại + lợi thế đội hiển thị bên trái. Khi có dữ liệu thật, dashboard tự tính lại.</div>
-  `;
-}
-
-function updatePredictionPanel(){
-  const home = $('predictHome')?.value;
-  const away = $('predictAway')?.value;
-  const box = $('predictResult');
-  if(box) box.innerHTML = renderPredictionResult(home, away);
-}
-
-function teamOptions(selected=''){
-  return TEAMS.map(t => `<option value="${t.code}" ${t.code===selected?'selected':''}>${t.name} (${t.code})</option>`).join('');
-}
-
-function askBot(){
-  const input = $('chatQuestion');
-  if(!input) return;
-  const q = input.value.trim();
-  if(!q) return;
-  addChatMessage(q,'user');
-  input.value='';
-  setTimeout(()=>addChatMessage(botAnswer(q),'bot'),180);
-}
-
-function addChatMessage(text,type='bot'){
-  const log = $('chatLog');
-  if(!log) return;
-  const div = document.createElement('div');
-  div.className = `msg ${type}`;
-  div.innerHTML = text;
-  log.appendChild(div);
-  log.scrollTop = log.scrollHeight;
-}
-
-function botAnswer(q){
-  const text = q.toLowerCase();
-  const found = TEAMS.filter(t => text.includes(t.name.toLowerCase()) || text.includes(t.code.toLowerCase()));
-  if(found.length >= 2){
-    const p = predictionForTeams(found[0].code, found[1].code);
-    return `Dự đoán <b>${p.home.name} vs ${p.away.name}</b>: tỷ số khoảng <b>${p.homeGoals} - ${p.awayGoals}</b>.<br>${p.home.name}: <b>${p.homeWin}%</b> • Hòa: <b>${p.draw}%</b> • ${p.away.name}: <b>${p.awayWin}%</b>.<br>Đội có ưu thế: <b>${p.winner}</b>.`;
-  }
-  if(text.includes('vua phá') || text.includes('ghi bàn') || text.includes('top scorer')){
-    const top = getPlayerStats().slice().sort((a,b)=>(b.goals||0)-(a.goals||0)).slice(0,5);
-    return `Top vua phá lưới hiện tại:<br>${top.map((p,i)=>`${i+1}. <b>${p.name}</b> - ${p.team}: <b>${p.goals||0}</b> bàn`).join('<br>')}`;
-  }
-  if(text.includes('kiến tạo') || text.includes('assist')){
-    const top = getPlayerStats().slice().sort((a,b)=>(b.assists||0)-(a.assists||0)).slice(0,5);
-    return `Top vua kiến tạo hiện tại:<br>${top.map((p,i)=>`${i+1}. <b>${p.name}</b> - ${p.team}: <b>${p.assists||0}</b> kiến tạo`).join('<br>')}`;
-  }
-  if(text.includes('ứng viên') || text.includes('vô địch')){
-    const elite = TEAMS.map(t=>({...t,power:powerIndex(t)})).sort((a,b)=>b.power-a.power).slice(0,6);
-    return `Nhóm ứng viên mạnh theo AI power:<br>${elite.map((t,i)=>`${i+1}. <b>${t.name}</b> - Power ${t.power}, FIFA rank #${rankOf(t.code)}`).join('<br>')}`;
-  }
-  return `Bạn có thể hỏi dạng: <b>"Argentina vs France tỷ lệ thắng?"</b>, <b>"ai là vua phá lưới"</b>, <b>"vua kiến tạo"</b>, hoặc <b>"ứng viên vô địch"</b>.`;
-}
-
-function renderAI(){
-  $('ai').innerHTML = panel('Chatbot AI dự đoán tỷ số & tỷ lệ thắng', `
-    <div class="ai-grid">
-      <div class="chatbot-box">
-        <div class="chatbot-head"><div class="chatbot-title">🤖 World Cup Predictor Bot</div><span class="bot-badge">OFFLINE AI</span></div>
-        <div id="chatLog" class="chat-log">
-          <div class="msg bot">Xin chào! Hãy hỏi tôi: <b>Argentina vs France tỷ lệ thắng?</b>, <b>ai là vua phá lưới?</b>, <b>vua kiến tạo?</b> hoặc <b>ứng viên vô địch?</b></div>
-        </div>
-        <div class="chat-input">
-          <input id="chatQuestion" placeholder="Nhập câu hỏi dự đoán..." onkeydown="if(event.key==='Enter') askBot()">
-          <button class="primary" onclick="askBot()">Gửi</button>
-        </div>
-      </div>
-      <div class="predict-card">
-        <div class="chatbot-head"><div class="chatbot-title">⚔ So sánh 2 đội</div><span class="bot-badge">WIN RATE</span></div>
-        <div class="predict-form">
-          <select id="predictHome" onchange="updatePredictionPanel()">${teamOptions('ARG')}</select>
-          <select id="predictAway" onchange="updatePredictionPanel()">${teamOptions('FRA')}</select>
-          <button class="primary" onclick="updatePredictionPanel()">Dự đoán</button>
-        </div>
-        <div id="predictResult" class="predict-result">${renderPredictionResult('ARG','FRA')}</div>
-      </div>
-    </div>
-  `,'AI dự đoán không cần API key →');
-}
-
-function renderLeaders(){
-  const stats = getPlayerStats();
-  const scorers = stats.slice().sort((a,b)=>(b.goals||0)-(a.goals||0) || (b.assists||0)-(a.assists||0)).slice(0,12);
-  const assists = stats.slice().sort((a,b)=>(b.assists||0)-(a.assists||0) || (b.goals||0)-(a.goals||0)).slice(0,12);
-  const list = (rows,field,label) => `<div class="player-list">${rows.map((p,i)=>`
-    <div class="player-row">
-      <div class="player-rank">${i+1}</div>
-      <div class="player-main"><div class="player-name">${p.name}</div><div class="player-meta">${p.team || teamByCode[p.code]?.name || ''} • ${p.code || ''}</div></div>
-      <div class="player-value">${Number(p[field]||0)}<span>${label}</span></div>
-    </div>`).join('')}</div>`;
-
-  $('leaders').innerHTML = `
-    ${panel('Thống kê cầu thủ: Vua phá lưới & Vua kiến tạo', `
-      <div class="rank-toolbar">
-        <div style="flex:1;min-width:280px">
-          <div class="source-chip">Dữ liệu cầu thủ: <b>local editable</b></div>
-          <div class="copy-note">Do không dùng API key, bạn có thể dán JSON thống kê cầu thủ vào ô bên cạnh. Khi có dữ liệu thật, chỉ cần cập nhật goals/assists, bảng sẽ tự sắp xếp.</div>
-        </div>
-        <textarea id="playerStatsJson" placeholder='[{"name":"Kylian Mbappé","team":"France","code":"FRA","goals":3,"assists":1}]'></textarea>
-        <button class="primary" onclick="savePlayerStatsFromJson()">Nạp cầu thủ</button>
-        <button onclick="resetPlayerStats()">Reset</button>
-      </div>
-      <div class="leader-grid" style="padding:18px">
-        <div class="leader-card"><div class="chatbot-head"><div class="chatbot-title">🥅 Vua phá lưới</div><span class="bot-badge">GOALS</span></div>${list(scorers,'goals','bàn')}</div>
-        <div class="leader-card"><div class="chatbot-head"><div class="chatbot-title">🎯 Vua kiến tạo</div><span class="bot-badge">ASSISTS</span></div>${list(assists,'assists','kiến tạo')}</div>
-      </div>
-    `,'Cập nhật thủ công bằng JSON →')}
-  `;
-}
-
 function renderMatch(m){
   const isLive = m.status === 'in';
   const score = m.status === 'pre' ? 'VS' : `${m.home.score ?? 0} - ${m.away.score ?? 0}`;
@@ -2438,7 +1960,6 @@ function renderMatch(m){
         </div>
         <img class="logo" src="${m.away.logo || teamByCode[m.away.code]?.logo || ''}" onerror="this.style.display='none'">
       </div>
-      ${renderMiniPrediction(m)}
     </div>
   `;
 }
@@ -2546,8 +2067,6 @@ function render(){
   renderMatchList('schedule', matches.filter(m => !m.completed), 'Lịch thi đấu');
   renderMatchList('history', matches.filter(m => m.completed).reverse(), 'Lịch sử kết quả');
 
-  renderAI();
-  renderLeaders();
   renderRules();
 }
 
@@ -2654,251 +2173,6 @@ function boostEffects(){
     el.style.setProperty('--my',(y*100+50)+'%');
   },{passive:true});
 })();
-
-
-/* ===== FLASHSCORE HTML-ONLY UPDATE ENGINE =====
-   Lưu ý quan trọng:
-   - Không dùng Cloudflare Worker, không dùng file cloud phụ.
-   - Trình duyệt thường chặn fetch trực tiếp đến Flashscore vì CORS/anti-bot.
-   - Vì vậy nút này có fallback mở Flashscore và cho phép dán nội dung copy để parser cập nhật vào dashboard.
-*/
-const FLASHSCORE_WORLD_CUP_URL = 'https://www.flashscore.com/football/world/world-cup/';
-const FLASHSCORE_HOME_URL = 'https://www.flashscore.com/';
-
-function flashscoreUpdateFromButton(){
-  openFlashscoreModal();
-  setFlashscoreStatus('Đang chuẩn bị cập nhật. Bấm "Thử lấy trực tiếp"; nếu bị chặn, bấm "Mở Flashscore World Cup", copy lịch/kết quả rồi dán vào ô nhập.');
-}
-
-function openFlashscoreModal(){
-  document.getElementById('flashscoreModal')?.classList.add('show');
-}
-
-function closeFlashscoreModal(){
-  document.getElementById('flashscoreModal')?.classList.remove('show');
-}
-
-function setFlashscoreStatus(msg){
-  const el = document.getElementById('flashscoreStatus');
-  if(el) el.innerHTML = msg;
-}
-
-function openFlashscoreWorldCup(){
-  window.open(FLASHSCORE_WORLD_CUP_URL, '_blank', 'noopener,noreferrer');
-  setFlashscoreStatus('Đã mở Flashscore World Cup ở tab mới. Hãy copy phần lịch/kết quả/trận đấu rồi quay lại dán vào ô bên dưới.');
-}
-
-async function tryDirectFlashscoreFetch(){
-  setFlashscoreStatus('Đang thử fetch trực tiếp từ Flashscore... Nếu trình duyệt chặn CORS, hệ thống sẽ chuyển sang chế độ copy/dán.');
-  try{
-    const res = await fetch(FLASHSCORE_WORLD_CUP_URL, {
-      method:'GET',
-      mode:'cors',
-      credentials:'omit',
-      cache:'no-store',
-      headers:{'Accept':'text/html,application/xhtml+xml'}
-    });
-    const text = await res.text();
-    if(!text || text.length < 500) throw new Error('Nội dung nhận được quá ngắn hoặc không hợp lệ.');
-    const parsed = parseFlashscoreText(text);
-    if(!parsed.length) throw new Error('Có nhận được HTML nhưng không nhận diện được trận World Cup.');
-    mergeFlashscoreMatches(parsed);
-    setFlashscoreStatus(`Đã lấy trực tiếp và cập nhật <b>${parsed.length}</b> trận từ Flashscore.`);
-    renderFlashscorePreview(parsed);
-  }catch(err){
-    console.warn('Flashscore direct fetch failed:', err);
-    setFlashscoreStatus('Trình duyệt đã chặn đọc trực tiếp Flashscore hoặc Flashscore không trả dữ liệu parse được. Đây là giới hạn CORS/anti-bot của HTML tĩnh. Bấm <b>Mở Flashscore World Cup</b>, copy dữ liệu rồi dán vào ô nhập để cập nhật ngay trong file HTML.');
-    openFlashscoreWorldCup();
-  }
-}
-
-async function pasteClipboardToFlashscoreBox(){
-  try{
-    const text = await navigator.clipboard.readText();
-    const box = document.getElementById('flashscorePasteBox');
-    if(box) box.value = text;
-    setFlashscoreStatus('Đã dán nội dung từ clipboard. Bấm "Cập nhật từ nội dung đã dán" để đưa vào dashboard.');
-  }catch(e){
-    setFlashscoreStatus('Trình duyệt không cho đọc clipboard tự động. Hãy dùng Ctrl+V để dán thủ công vào ô nhập.');
-  }
-}
-
-function clearFlashscoreText(){
-  const box = document.getElementById('flashscorePasteBox');
-  if(box) box.value = '';
-  const preview = document.getElementById('flashscorePreview');
-  if(preview) preview.style.display = 'none';
-}
-
-function applyFlashscorePastedText(){
-  const raw = document.getElementById('flashscorePasteBox')?.value || '';
-  const parsed = parseFlashscoreText(raw);
-  if(!parsed.length){
-    setFlashscoreStatus('Chưa nhận diện được trận đấu nào. Hãy copy phần lịch/kết quả từ Flashscore có dạng "Đội A - Đội B", hoặc dòng kết quả có tỷ số.');
-    renderFlashscorePreview([]);
-    return;
-  }
-  mergeFlashscoreMatches(parsed);
-  setFlashscoreStatus(`Đã cập nhật <b>${parsed.length}</b> trận từ nội dung Flashscore bạn dán vào.`);
-  renderFlashscorePreview(parsed);
-  toast(`Đã cập nhật ${parsed.length} trận từ Flashscore`);
-}
-
-function normalizeFlashscoreTeamName(name){
-  return String(name || '')
-    .replace(/\s+/g,' ')
-    .replace(/\(.*?\)/g,'')
-    .replace(/D\.R\. Congo/ig,'DR Congo')
-    .replace(/Congo DR/ig,'DR Congo')
-    .replace(/Ivory Coast/ig,'Ivory Coast')
-    .replace(/USA/ig,'United States')
-    .trim();
-}
-
-function findTeamFromFlashscoreName(name){
-  const n = normalizeFlashscoreTeamName(name).toLowerCase();
-  const aliases = {
-    'usa':'USA','united states':'USA','u.s.a.':'USA','u.s.':'USA',
-    'south korea':'KOR','korea republic':'KOR','rep. of korea':'KOR',
-    'czech republic':'CZE','czechia':'CZE',
-    'bosnia & herzegovina':'BIH','bosnia and herzegovina':'BIH',
-    'switzerland':'SUI','iran':'IRI','ir iran':'IRI',
-    'saudi arabia':'KSA','curacao':'CUW','curaçao':'CUW',
-    'cape verde':'CPV','d.r. congo':'COD','dr congo':'COD','congo dr':'COD',
-    'algeria':'DZA','ivory coast':'CIV','cote d\'ivoire':'CIV','côte d’ivoire':'CIV'
-  };
-  if(aliases[n]) return teamByCode[aliases[n]];
-  return TEAMS.find(t => t.name.toLowerCase() === n)
-      || TEAMS.find(t => t.name.toLowerCase().includes(n) || n.includes(t.name.toLowerCase()))
-      || null;
-}
-
-function parseFlashscoreDateToken(token){
-  const nowYear = 2026;
-  const m = String(token || '').match(/(\d{1,2})[\.\/-](\d{1,2})(?:[\.\/-](\d{2,4}))?/);
-  if(!m) return null;
-  const d = m[1].padStart(2,'0');
-  const mo = m[2].padStart(2,'0');
-  let y = m[3] ? m[3] : String(nowYear);
-  if(y.length === 2) y = '20' + y;
-  return `${y}-${mo}-${d}T00:00:00`;
-}
-
-function parseFlashscoreText(raw){
-  const text = String(raw || '')
-    .replace(/<script[\s\S]*?<\/script>/gi,' ')
-    .replace(/<style[\s\S]*?<\/style>/gi,' ')
-    .replace(/<[^>]+>/g,' ')
-    .replace(/&nbsp;/g,' ')
-    .replace(/&amp;/g,'&')
-    .replace(/\r/g,'\n');
-
-  const lines = text.split('\n')
-    .map(x => x.replace(/\s+/g,' ').trim())
-    .filter(Boolean);
-
-  const found = [];
-  let lastDate = null;
-
-  for(const line of lines){
-    const dateMatch = line.match(/\b(\d{1,2}[\.\/-]\d{1,2}(?:[\.\/-]\d{2,4})?)\b/);
-    if(dateMatch) lastDate = parseFlashscoreDateToken(dateMatch[1]) || lastDate;
-
-    // Dạng: 25.06. Ecuador - Germany hoặc Ecuador - Germany
-    let m = line.match(/(?:\d{1,2}[\.\/-]\d{1,2}(?:[\.\/-]\d{2,4})?\.?\s*)?([A-Za-zÀ-ỹ\. '&’\-]+?)\s+[-–]\s+([A-Za-zÀ-ỹ\. '&’\-]+?)(?:\s|$)/);
-    if(m){
-      const home = findTeamFromFlashscoreName(m[1]);
-      const away = findTeamFromFlashscoreName(m[2]);
-      if(home && away && home.code !== away.code){
-        found.push(makeFlashscoreMatch(home, away, lastDate, null, null, 'pre', line));
-        continue;
-      }
-    }
-
-    // Dạng kết quả copy: Argentina 2 1 France hoặc FT Argentina 2 1 France
-    m = line.match(/(?:FT|AET|Pen)?\s*([A-Za-zÀ-ỹ\. '&’\-]+?)\s+(\d{1,2})\s*[-:]?\s*(\d{1,2})\s+([A-Za-zÀ-ỹ\. '&’\-]+)$/i);
-    if(m){
-      const home = findTeamFromFlashscoreName(m[1]);
-      const away = findTeamFromFlashscoreName(m[4]);
-      if(home && away && home.code !== away.code){
-        found.push(makeFlashscoreMatch(home, away, lastDate, m[2], m[3], 'post', line));
-        continue;
-      }
-    }
-
-    // Dạng live: 57' Argentina 1 0 France
-    m = line.match(/(\d{1,3})['’]\s*([A-Za-zÀ-ỹ\. '&’\-]+?)\s+(\d{1,2})\s*[-:]?\s*(\d{1,2})\s+([A-Za-zÀ-ỹ\. '&’\-]+)/i);
-    if(m){
-      const home = findTeamFromFlashscoreName(m[2]);
-      const away = findTeamFromFlashscoreName(m[5]);
-      if(home && away && home.code !== away.code){
-        const item = makeFlashscoreMatch(home, away, lastDate, m[3], m[4], 'in', line);
-        item.displayClock = `${m[1]}'`;
-        found.push(item);
-      }
-    }
-  }
-
-  const unique = new Map();
-  for(const m of found){
-    unique.set(`${m.home.code}-${m.away.code}-${m.date || ''}`, m);
-  }
-  return [...unique.values()];
-}
-
-function makeFlashscoreMatch(home, away, date, homeScore, awayScore, status, sourceLine){
-  const baseDate = date || '2026-06-11T00:00:00';
-  return {
-    id:`flashscore-${home.code}-${away.code}-${baseDate.slice(0,10)}`,
-    date:baseDate,
-    group:`Flashscore • Bảng ${home.group || away.group || ''}`,
-    status,
-    statusText: status === 'post' ? 'FT' : (status === 'in' ? 'LIVE' : 'Scheduled'),
-    completed: status === 'post',
-    displayClock:'',
-    source:'flashscore-paste',
-    sourceLine,
-    home:{name:home.name, code:home.code, logo:home.logo, score:homeScore ?? ''},
-    away:{name:away.name, code:away.code, logo:away.logo, score:awayScore ?? ''}
-  };
-}
-
-function mergeFlashscoreMatches(items){
-  const map = new Map(matches.map(m => [m.id || `${m.home?.code}-${m.away?.code}-${m.date}`, m]));
-  for(const item of items){
-    map.set(item.id, item);
-  }
-  matches = [...map.values()].sort((a,b) => new Date(a.date || 0) - new Date(b.date || 0));
-  try{ localStorage.setItem('wc2026_flashscore_import', JSON.stringify(items)); }catch(e){}
-  render();
-}
-
-function loadFlashscoreImportedMatches(){
-  try{
-    const raw = localStorage.getItem('wc2026_flashscore_import');
-    if(!raw) return;
-    const items = JSON.parse(raw);
-    if(Array.isArray(items) && items.length){
-      const map = new Map(matches.map(m => [m.id || `${m.home?.code}-${m.away?.code}-${m.date}`, m]));
-      items.forEach(item => map.set(item.id, item));
-      matches = [...map.values()].sort((a,b) => new Date(a.date || 0) - new Date(b.date || 0));
-    }
-  }catch(e){console.warn(e)}
-}
-
-function renderFlashscorePreview(items){
-  const el = document.getElementById('flashscorePreview');
-  if(!el) return;
-  el.style.display = 'block';
-  if(!items.length){
-    el.innerHTML = '<div class="flashscore-preview-title">Không có trận nhận diện được</div><div class="flashscore-preview-list"><div class="flashscore-preview-item">Hãy copy vùng có dòng dạng: 25.06. Ecuador - Germany hoặc FT Argentina 2 1 France.</div></div>';
-    return;
-  }
-  el.innerHTML = `<div class="flashscore-preview-title">Đã nhận diện ${items.length} trận</div><div class="flashscore-preview-list">${items.slice(0,30).map(m => `<div class="flashscore-preview-item"><b>${m.home.name}</b> ${m.completed || m.status==='in' ? `${m.home.score} - ${m.away.score}` : 'vs'} <b>${m.away.name}</b><div class="meta">${m.date ? fmtDate(m.date) : ''} • ${m.statusText || ''}</div></div>`).join('')}</div>`;
-}
-
-// Nạp lại dữ liệu Flashscore đã paste khi refresh trang.
-setTimeout(()=>{ loadFlashscoreImportedMatches(); render(); }, 500);
 
 </script>
 </body>

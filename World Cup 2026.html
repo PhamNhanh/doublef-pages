@@ -757,6 +757,33 @@ td.center,th.center{
   .side.away{justify-content:flex-start;text-align:left}
   .format{grid-template-columns:1fr}
 }
+
+
+/* ===== PREMIUM FIFA RANKING / ANALYTICS UPGRADE ===== */
+.source-chip{
+  display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900;color:#334155;
+}
+.source-chip a{color:#0b5ed7;text-decoration:none}
+.rank-toolbar{
+  display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;padding:18px;border-bottom:1px solid var(--line);background:#fbfcfe;
+}
+.rank-toolbar textarea{
+  min-width:360px;min-height:74px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;font-weight:700;color:#0f172a;background:#fff;
+}
+.premium-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;padding:18px}
+.premium-card{border:1px solid var(--line);border-radius:10px;background:#fff;padding:16px;box-shadow:0 8px 24px rgba(15,23,42,.04)}
+.premium-card .label{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.4px}
+.premium-card .value{font-size:26px;font-weight:950;color:#071f45;margin-top:8px}
+.tier{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:950;color:#fff}
+.tier.s{background:#7c3aed}.tier.a{background:#2563eb}.tier.b{background:#16a34a}.tier.c{background:#f59e0b}.tier.d{background:#64748b}
+.powerbar{height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;min-width:110px}
+.powerbar span{display:block;height:100%;background:linear-gradient(90deg,#0b5ed7,#16a34a);border-radius:999px}
+.compare-box{display:grid;grid-template-columns:1fr 80px 1fr;gap:14px;align-items:center;padding:18px}
+.compare-team{border:1px solid var(--line);border-radius:10px;background:#fff;padding:16px;text-align:center}
+.compare-team img{width:58px;height:42px;object-fit:contain}
+.compare-score{font-size:28px;font-weight:950;color:#071f45;text-align:center}
+.copy-note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}
+
 </style>
 </head>
 
@@ -781,6 +808,7 @@ td.center,th.center{
       <button class="side-tab" data-tab="history" onclick="setTab('history')"><span class="ico">♕</span>Kết quả</button>
       <button class="side-tab" data-tab="live" onclick="setTab('live')"><span class="ico">◉</span>Live Score <span class="live">LIVE</span></button>
       <button class="side-tab" data-tab="thirds" onclick="setTab('thirds')"><span class="ico">♛</span>Vòng đấu</button>
+      <button class="side-tab" data-tab="ranking" onclick="setTab('ranking')"><span class="ico">★</span>FIFA Ranking</button>
       <button class="side-tab" data-tab="teams" onclick="setTab('teams')"><span class="ico">⚽</span>Đội tuyển</button>
       <button class="side-tab" data-tab="rules" onclick="setTab('rules')"><span class="ico">▣</span>Thể thức</button>
     </nav>
@@ -795,7 +823,7 @@ td.center,th.center{
     <header class="top">
       <div>
         <h1>World Cup 2026 Dashboard</h1>
-        <div class="sub">48 đội • BXH từng bảng • 12 đội hạng 3 • lịch thi đấu • kết quả • live score</div>
+        <div class="sub">48 đội • BXH từng bảng • FIFA Ranking • mô phỏng hạt giống • knock-out • live score</div>
       </div>
 
       <div class="controls">
@@ -828,6 +856,7 @@ td.center,th.center{
       <button class="tab" data-tab="history" onclick="setTab('history')">Kết quả</button>
       <button class="tab" data-tab="live" onclick="setTab('live')">Live Score <span class="live-dot"></span><span class="live-label">LIVE</span></button>
       <button class="tab" data-tab="thirds" onclick="setTab('thirds')">Vòng đấu</button>
+      <button class="tab" data-tab="ranking" onclick="setTab('ranking')">FIFA Ranking</button>
       <button class="tab" data-tab="teams" onclick="setTab('teams')">Đội tuyển</button>
       <button class="tab" data-tab="overview" onclick="setTab('overview')">Thống kê</button>
       <button class="tab" data-tab="rules" onclick="setTab('rules')">Thể thức</button>
@@ -837,6 +866,7 @@ td.center,th.center{
     <section id="standings" class="section active"></section>
     <section id="thirds" class="section"></section>
     <section id="teams" class="section"></section>
+    <section id="ranking" class="section"></section>
     <section id="live" class="section"></section>
     <section id="schedule" class="section"></section>
     <section id="history" class="section"></section>
@@ -868,16 +898,24 @@ const TEAMS = [
 const teamByCode = Object.fromEntries(TEAMS.map(t => [t.code, t]));
 
 /*
-  Bảng xếp hạng FIFA giả lập để phục vụ cơ chế hạt giống trên giao diện.
-  Khi có dữ liệu thật, chỉ cần cập nhật lại số rank nhỏ hơn nghĩa là đội mạnh hơn.
+  FIFA Ranking dùng cho hạt giống và chỉ số sức mạnh.
+  Dữ liệu top đầu cập nhật theo bài FIFA ngày 11/06/2026: Argentina #1, Spain #2, France #3,
+  Morocco #7, Netherlands #8, Mexico #14, Senegal #15, Uruguay #16, USA #17, IR Iran #20.
+  Các đội chưa có số chính thức trong code có thể nhập nhanh bằng ô JSON trên giao diện.
 */
+const RANKING_META = {
+  source:"Inside FIFA - FIFA/Coca-Cola Men's World Ranking",
+  url:'https://inside.fifa.com/fifa-world-ranking/men',
+  release:'11/06/2026',
+  next:'20/07/2026'
+};
+
 const FIFA_RANKING = {
-  ARG:1, FRA:2, ESP:3, ENG:4, BRA:5, POR:6, NED:7, BEL:8, GER:9, CRO:10,
-  MAR:12, USA:13, MEX:14, URU:15, COL:16, SUI:17, JPN:18, SEN:19, IRN:20,
-  KOR:21, ECU:22, AUT:23, AUS:24, TUR:25, CAN:26, SWE:27, NOR:28, SCO:29,
-  EGY:30, ALG:31, QAT:32, CIV:33, GHA:34, PAR:35, TUN:36, KSA:37, PAN:38,
-  UZB:39, CZE:40, RSA:41, NZL:42, JOR:43, IRQ:44, BIH:45, CPV:46, COD:47,
-  HTI:48, CUW:49
+  ARG:1, ESP:2, FRA:3, ENG:4, BRA:5, POR:6, MAR:7, NED:8, BEL:9, GER:10,
+  CRO:11, COL:12, SUI:13, MEX:14, SEN:15, URU:16, USA:17, JPN:18, KOR:19, IRN:20,
+  ECU:21, AUT:22, AUS:23, TUR:24, CAN:25, SWE:26, NOR:27, SCO:28, EGY:29, ALG:30,
+  QAT:31, CIV:32, GHA:33, PAR:34, TUN:35, KSA:36, PAN:37, UZB:38, CZE:39, RSA:40,
+  NZL:41, JOR:42, IRQ:43, BIH:44, CPV:45, COD:46, HTI:47, CUW:48
 };
 
 let matches = [];
@@ -1398,6 +1436,122 @@ function renderThirdPlaceRanking(){
 }
 
 
+
+function rankOf(code){
+  return Number(FIFA_RANKING[code] || 999);
+}
+
+function rankTier(rank){
+  if(rank <= 8) return {cls:'s', label:'S - Siêu hạt giống'};
+  if(rank <= 16) return {cls:'a', label:'A - Ứng viên mạnh'};
+  if(rank <= 24) return {cls:'b', label:'B - Cạnh tranh'};
+  if(rank <= 36) return {cls:'c', label:'C - Khó chịu'};
+  return {cls:'d', label:'D - Ẩn số'};
+}
+
+function powerIndex(team){
+  const s = teamStats(team.code);
+  const rankScore = Math.max(0, 100 - (rankOf(team.code) - 1) * 1.65);
+  const formScore = Math.min(100, 45 + s.PTS * 8 + s.GD * 4 + s.GF * 2);
+  return Math.round(rankScore * 0.65 + formScore * 0.35);
+}
+
+function loadRankingStorage(){
+  try{
+    const raw = localStorage.getItem('wc2026_fifa_ranking');
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(k => {
+      const code = k.toUpperCase().trim();
+      const val = Number(data[k]);
+      if(code && Number.isFinite(val)) FIFA_RANKING[code] = val;
+    });
+  }catch(e){console.warn(e)}
+}
+
+function importRanking(){
+  try{
+    const raw = $('rankingJson').value.trim();
+    if(!raw) return toast('Bạn chưa nhập JSON ranking.');
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(k => {
+      const code = k.toUpperCase().trim();
+      const val = Number(data[k]);
+      if(code && Number.isFinite(val)) FIFA_RANKING[code] = val;
+    });
+    localStorage.setItem('wc2026_fifa_ranking', JSON.stringify(FIFA_RANKING));
+    render();
+    toast('Đã cập nhật FIFA Ranking vào dashboard.');
+  }catch(e){
+    toast('JSON chưa đúng định dạng. Ví dụ: {"ARG":1,"ESP":2}');
+  }
+}
+
+function resetRanking(){
+  localStorage.removeItem('wc2026_fifa_ranking');
+  location.reload();
+}
+
+function exportRanking(){
+  navigator.clipboard?.writeText(JSON.stringify(FIFA_RANKING,null,2));
+  toast('Đã copy bảng FIFA Ranking JSON.');
+}
+
+function renderFifaRanking(){
+  const q = $('search').value.toLowerCase().trim();
+  const group = $('groupFilter').value;
+  const ranked = TEAMS
+    .filter(t => (!group || t.group === group) && (!q || `${t.name} ${t.code} ${t.group}`.toLowerCase().includes(q)))
+    .map(t => ({...t, rank:rankOf(t.code), tier:rankTier(rankOf(t.code)), power:powerIndex(t)}))
+    .sort((a,b) => a.rank - b.rank || a.name.localeCompare(b.name));
+
+  const elite = ranked.filter(t => t.rank <= 16).length;
+  const topSeedPreview = getQualifiedTeams().topSeeds;
+  const strongest = ranked[0];
+  const weakest = ranked[ranked.length-1];
+
+  $('ranking').innerHTML = panel('FIFA Ranking & Seed Engine', `
+    <div class="rank-toolbar">
+      <div style="flex:1;min-width:280px">
+        <div class="source-chip">Nguồn tham chiếu: <a href="${RANKING_META.url}" target="_blank">${RANKING_META.source}</a></div>
+        <div class="copy-note">Bản nâng cấp cho phép nhập/copy ranking dạng JSON để dashboard không phụ thuộc CORS của website FIFA. Ranking được dùng để tách hạt giống, so sánh sức mạnh và xử lý tie-break khi cần.</div>
+      </div>
+      <textarea id="rankingJson" placeholder='Dán JSON ranking, ví dụ: {"ARG":1,"ESP":2,"FRA":3,"BRA":5}'></textarea>
+      <button class="primary" onclick="importRanking()">Nạp ranking</button>
+      <button onclick="exportRanking()">Copy JSON</button>
+      <button onclick="resetRanking()">Reset</button>
+    </div>
+    <div class="premium-grid">
+      <div class="premium-card"><div class="label">Đội mạnh nhất theo FIFA rank</div><div class="value">${strongest ? strongest.name : '-'}</div><div class="copy-note">Rank #${strongest ? strongest.rank : '-'}</div></div>
+      <div class="premium-card"><div class="label">Nhóm elite top 16</div><div class="value">${elite}</div><div class="copy-note">Đội trong danh sách hiện tại</div></div>
+      <div class="premium-card"><div class="label">Ngày ranking tham chiếu</div><div class="value">${RANKING_META.release}</div><div class="copy-note">FIFA công bố kỳ tiếp theo: ${RANKING_META.next}</div></div>
+      <div class="premium-card"><div class="label">Đội thấp nhất trong danh sách</div><div class="value">${weakest ? weakest.name : '-'}</div><div class="copy-note">Rank #${weakest ? weakest.rank : '-'}</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="center">FIFA rank</th><th>Đội tuyển</th><th class="center">Bảng</th><th>Tier</th><th class="center">Power</th><th>Thanh sức mạnh</th><th>Vai trò knock-out</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${ranked.map(t => `
+            <tr>
+              <td class="center"><b>#${t.rank}</b></td>
+              <td>${teamCell(t)}</td>
+              <td class="center">${t.group}</td>
+              <td><span class="tier ${t.tier.cls}">${t.tier.label}</span></td>
+              <td class="center"><b>${t.power}</b></td>
+              <td><div class="powerbar"><span style="width:${Math.max(5,Math.min(100,t.power))}%"></span></div></td>
+              <td>${topSeedPreview.some(s => s.code === t.code) ? '<span class="badge blue">Seed bảo vệ</span>' : (t.rank <= 16 ? '<span class="badge green">Ứng viên seed</span>' : '<span class="badge yellow">Theo bảng đấu</span>')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `,'Xếp hạng FIFA + chỉ số sức mạnh →');
+}
+
 function renderTeams(){
   const groups = {};
   filteredTeams().forEach(t => {
@@ -1555,6 +1709,7 @@ function render(){
   renderStandings();
   renderThirdPlaceRanking();
   renderTeams();
+  renderFifaRanking();
 
   const today = new Date().toISOString().slice(0,10);
 
@@ -1597,6 +1752,7 @@ function toast(msg){
   window.__toast = setTimeout(() => t.style.display = 'none', 2300);
 }
 
+loadRankingStorage();
 initFilters();
 render();
 refreshAll(true);

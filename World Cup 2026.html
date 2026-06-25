@@ -885,6 +885,64 @@ body.cinematic{background:radial-gradient(circle at 20% 10%,rgba(56,189,248,.22)
   text-shadow:0 8px 28px rgba(0,0,0,.52);
 }
 
+
+/* ===== FINAL FIX: GITHUB COVER IMAGE AUTO-DETECT =====
+   Lưu ý: trong repo GitHub ảnh đang thấy là M10R7.jpg, không phải M10C7.jpg.
+   Code này tự thử cả M10R7.jpg và M10C7.jpg để tránh sai tên file.
+*/
+.hero-cover{
+  --hero-cover-image:url("/M10R7.jpg");
+  opacity:1 !important;
+  transform:none !important;
+  min-height:420px !important;
+  background-image:
+    linear-gradient(90deg, rgba(2,8,23,.88) 0%, rgba(2,8,23,.60) 42%, rgba(2,8,23,.18) 100%),
+    var(--hero-cover-image) !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-repeat:no-repeat !important;
+}
+
+.hero-cover::before{
+  background:
+    linear-gradient(120deg, rgba(255,255,255,.10), transparent 45%),
+    radial-gradient(circle at 70% 25%, rgba(245,179,1,.24), transparent 28%),
+    radial-gradient(circle at 20% 22%, rgba(56,189,248,.20), transparent 30%) !important;
+}
+
+.hero-cover::after{
+  background:
+    linear-gradient(0deg, rgba(2,8,23,.72), transparent),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.10) 0 2px, transparent 2px 72px) !important;
+}
+
+.hero-cover .hero-content,
+.hero-cover .hero-visual{
+  opacity:1 !important;
+  visibility:visible !important;
+  position:relative;
+  z-index:2;
+}
+
+.hero-cover .hero-content{
+  max-width:760px;
+  padding:10px 0;
+  text-shadow:0 8px 28px rgba(0,0,0,.55);
+}
+
+.hero-cover .hero-title,
+.hero-cover .hero-desc,
+.hero-cover .eyebrow,
+.hero-cover .hero-pill{
+  text-shadow:0 8px 28px rgba(0,0,0,.62);
+}
+
+body.cinematic .hero-cover{
+  background-image:
+    linear-gradient(90deg, rgba(2,8,23,.92) 0%, rgba(2,8,23,.58) 45%, rgba(2,8,23,.16) 100%),
+    var(--hero-cover-image) !important;
+}
+
 </style>
 </head>
 
@@ -1007,6 +1065,42 @@ body.cinematic{background:radial-gradient(circle at 20% 10%,rgba(56,189,248,.22)
 </div>
 
 <script>
+
+/* ===== AUTO LOAD COVER FROM GITHUB/CLOUDFLARE ===== */
+(function(){
+  const candidates = [
+    "/M10R7.jpg",
+    "./M10R7.jpg",
+    "M10R7.jpg",
+    "/M10C7.jpg",
+    "./M10C7.jpg",
+    "M10C7.jpg",
+    "/M10R7.jpeg",
+    "./M10R7.jpeg",
+    "/M10C7.jpeg",
+    "./M10C7.jpeg"
+  ];
+
+  function testImage(src){
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve(src);
+      img.onerror = () => resolve(null);
+      img.src = src + (src.includes("?") ? "&" : "?") + "v=" + Date.now();
+    });
+  }
+
+  Promise.all(candidates.map(testImage)).then(results => {
+    const found = results.find(Boolean);
+    if(found){
+      document.documentElement.style.setProperty("--hero-cover-image", `url("${found}")`);
+      console.log("Đã tải ảnh bìa:", found);
+    }else{
+      console.warn("Không tìm thấy ảnh bìa. Kiểm tra đúng tên file trong GitHub: M10R7.jpg hoặc M10C7.jpg");
+    }
+  });
+})();
+
 const TEAMS = [
   ['A','Mexico','MEX','mex'],['A','South Africa','RSA','rsa'],['A','South Korea','KOR','kor'],['A','Czechia','CZE','cze'],
   ['B','Canada','CAN','can'],['B','Bosnia and Herzegovina','BIH','bih'],['B','Qatar','QAT','qat'],['B','Switzerland','SUI','sui'],

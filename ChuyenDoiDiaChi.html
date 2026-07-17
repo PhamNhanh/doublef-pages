@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chuyển đổi địa chỉ sau sáp nhập</title>
+  <style>
+    :root{
+      --bg:#f4f6f8;
+      --surface:#ffffff;
+      --surface2:#f8fafc;
+      --ink:#111827;
+      --muted:#667085;
+      --subtle:#98a2b3;
+      --line:#e5e7eb;
+      --line2:#d0d5dd;
+      --brand:#0f172a;
+      --brand2:#1d4ed8;
+      --brand3:#0b5cab;
+      --success:#067647;
+      --warning:#b54708;
+      --danger:#b42318;
+      --shadow:0 18px 45px rgba(16,24,40,.08);
+      --shadow2:0 8px 22px rgba(16,24,40,.06);
+      --radius:16px;
+      --radius2:22px;
+      --focus:0 0 0 4px rgba(29,78,216,.16);
+      color-scheme:light;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100vh;color:var(--ink);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,0) 290px),
+        radial-gradient(760px 430px at 88% -10%,rgba(29,78,216,.11),transparent 64%),
+        radial-gradient(700px 410px at -8% 6%,rgba(183,121,31,.08),transparent 66%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    header,main{max-width:1320px;margin:0 auto;padding:18px;position:relative;z-index:1}
+    header{padding-top:20px;padding-bottom:4px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+      padding:16px;border:1px solid var(--line);border-radius:var(--radius2);
+      background:rgba(255,255,255,.95);box-shadow:var(--shadow)
+    }
+    .brand{display:flex;align-items:center;gap:14px;min-width:280px;max-width:830px}
+    .logo{
+      width:50px;height:50px;border-radius:16px;display:grid;place-items:center;flex:none;
+      color:#fff;font-weight:950;font-size:18px;letter-spacing:-.04em;
+      background:linear-gradient(135deg,var(--brand),#1e3a8a);
+      border:1px solid rgba(255,255,255,.25);box-shadow:0 14px 30px rgba(15,23,42,.18)
+    }
+    h1{margin:0;font-size:21px;letter-spacing:-.025em;font-weight:900;color:var(--brand)}
+    .sub{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5;max-width:88ch}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+    .chip,.pill,.tag{
+      display:inline-flex;align-items:center;gap:7px;border-radius:999px;border:1px solid var(--line);
+      background:var(--surface2);color:var(--muted);font-size:12px;padding:7px 10px;white-space:nowrap
+    }
+    .pill{font-size:13px;background:#fff}.pill b{color:var(--brand)}
+    .tag{font-weight:800;color:var(--brand3);background:#eff6ff;border-color:#bfdbfe}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--success);box-shadow:0 0 0 4px rgba(6,118,71,.10)}
+    .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr);gap:16px;align-items:start}
+    @media(max-width:1060px){.grid{grid-template-columns:1fr}}
+    .card{
+      border:1px solid var(--line);border-radius:var(--radius2);overflow:hidden;
+      background:rgba(255,255,255,.97);box-shadow:var(--shadow2);margin-top:14px
+    }
+    .hd{
+      padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+      justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(180deg,#fff,var(--surface2))
+    }
+    .title{font-weight:900;font-size:13px;letter-spacing:.045em;text-transform:uppercase;color:var(--brand)}
+    .bd{padding:16px}
+    button,input,select,textarea{font:inherit;color:inherit}
+    input,select,textarea{
+      width:100%;border:1px solid var(--line2);background:#fff;padding:10px 11px;border-radius:12px;
+      outline:none;transition:border-color .15s ease,box-shadow .15s ease;min-height:41px
+    }
+    input:focus,select:focus,textarea:focus{box-shadow:var(--focus);border-color:var(--brand2)}
+    textarea{min-height:96px;resize:vertical;line-height:1.5}
+    button{
+      border:1px solid var(--line2);background:#fff;padding:9px 12px;border-radius:12px;cursor:pointer;
+      box-shadow:0 1px 2px rgba(16,24,40,.05);transition:.14s ease;font-weight:700;color:var(--brand)
+    }
+    button:hover{background:#f8fafc;border-color:#94a3b8;transform:translateY(-1px);box-shadow:0 8px 18px rgba(16,24,40,.08)}
+    button:active{transform:none}
+    .primary{border-color:var(--brand);background:var(--brand);color:#fff}.primary:hover{background:#1e293b;border-color:#1e293b;color:#fff}
+    .blue{border-color:#93c5fd;background:#eff6ff;color:#1d4ed8}
+    .danger{border-color:#fecdca;background:#fff5f5;color:var(--danger)}
+    .ghost{border-color:var(--line);background:var(--surface2);color:var(--brand)}
+    .field label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin:0 0 6px}
+    .note{color:var(--muted);font-size:12px;line-height:1.6;margin-top:10px}
+    .hr{height:1px;background:var(--line);margin:14px 0}
+    .ok{color:var(--success)}.bad{color:var(--danger)}.warn{color:var(--warning)}
+    .form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media(max-width:860px){.form-grid,.form-grid.two,.form-grid.three{grid-template-columns:1fr}}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .tab{border-radius:999px;background:#fff;color:var(--muted);font-size:13px;padding:8px 12px}
+    .tab.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:850;box-shadow:0 10px 24px rgba(15,23,42,.12)}
+    .panel{display:none}.panel.active{display:block;animation:fadeUp .18s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .direction{
+      display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end;padding:12px;
+      border:1px solid var(--line);border-radius:18px;background:#fbfdff;margin-bottom:12px
+    }
+    .swap{width:44px;height:42px;border-radius:14px;padding:0;font-size:18px}
+    .result{
+      border:1px solid #bfdbfe;background:linear-gradient(180deg,#f8fbff,#eff6ff);
+      border-radius:18px;padding:15px;min-height:118px
+    }
+    .result .label{font-size:11px;color:#475467;text-transform:uppercase;font-weight:850;letter-spacing:.055em}
+    .result .value{font-size:19px;font-weight:950;line-height:1.45;color:#102a56;margin-top:7px;word-break:break-word}
+    .result .meta{font-size:12px;color:#475467;line-height:1.6;margin-top:7px}
+    .choice-list{display:grid;gap:8px;margin-top:10px}
+    .choice{
+      border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 11px;
+      display:flex;gap:10px;align-items:flex-start;cursor:pointer
+    }
+    .choice:hover{border-color:#93c5fd;background:#f8fbff}.choice input{width:auto;min-height:0;margin-top:3px;box-shadow:none}
+    .choice b{font-size:13px}.choice small{display:block;color:var(--muted);margin-top:2px;line-height:1.45}
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    th,td{border-top:1px solid var(--line);padding:9px;font-size:13px;vertical-align:top;background:#fff}
+    th{color:#475467;font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:#f8fafc;border-top:none;font-weight:850;position:sticky;top:0;z-index:2}
+    tbody tr:hover td{background:#fcfcfd}.num{text-align:right}.center{text-align:center}
+    .table-wrap{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:16px}
+    .metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    @media(max-width:560px){.metric-grid{grid-template-columns:1fr}}
+    .metric{border:1px solid var(--line);background:linear-gradient(180deg,#fff,#f8fafc);border-radius:16px;padding:13px}
+    .metric .m-label{color:var(--muted);font-size:12px;font-weight:800}
+    .metric .m-value{font-weight:950;font-size:20px;margin-top:5px;color:var(--brand)}
+    .metric .m-sub{font-size:11px;color:var(--subtle);margin-top:3px}
+    .status-box{border:1px solid var(--line);border-radius:16px;padding:12px;background:#fff}
+    .status-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:7px 0;border-top:1px dashed var(--line)}
+    .status-row:first-child{border-top:0;padding-top:0}.status-row:last-child{padding-bottom:0}
+    .status-row span{font-size:12px;color:var(--muted)}.status-row b{font-size:13px;text-align:right}
+    .upload-zone{border:1.5px dashed #93c5fd;background:#f8fbff;border-radius:18px;padding:16px;text-align:center}
+    .upload-zone strong{display:block;color:#1e3a8a;margin-bottom:4px}.upload-zone input{display:none}
+    .code-sample{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f172a;color:#e2e8f0;border-radius:14px;padding:12px;font-size:11px;line-height:1.55;overflow:auto;white-space:pre}
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:rgba(255,255,255,.97);
+      border:1px solid var(--line);box-shadow:0 18px 45px rgba(16,24,40,.12);border-radius:999px;
+      padding:10px 14px;font-size:13px;display:none;align-items:center;gap:10px;z-index:99999
+    }
+    .toast.show{display:flex;animation:toastIn .22s ease both}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    .ticon{width:22px;height:22px;border-radius:999px;background:#ecfdf3;color:var(--success);display:grid;place-items:center;border:1px solid #abefc6}
+    @media(max-width:720px){
+      header,main{padding:12px}.topbar{border-radius:18px;padding:14px}.brand{min-width:0;width:100%;align-items:flex-start}
+      .logo{width:44px;height:44px;border-radius:14px}h1{font-size:18px}.chips{justify-content:flex-start;width:100%}
+      .hd,.bd{padding:12px}.tabs{width:100%;overflow:auto;flex-wrap:nowrap;padding-bottom:2px}.tab{white-space:nowrap;flex:0 0 auto}
+      .direction{grid-template-columns:1fr}.swap{width:100%}.table-wrap{max-height:470px}th,td{font-size:12px;padding:8px}
+    }
+    @media print{header,.tabs,.actions,.upload-zone,.toast{display:none!important}body{background:#fff}main{max-width:none;padding:0}.card{box-shadow:none;border:0}.panel{display:block!important}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">ĐC</div>
+      <div>
+        <h1>Chuyển đổi địa chỉ sau sáp nhập</h1>
+        <p class="sub">Tra cứu và chuyển đổi địa chỉ hành chính hai chiều. Dữ liệu cấp tỉnh 63 → 34 đã được nạp sẵn; dữ liệu xã/phường có thể nhập bổ sung bằng CSV hoặc JSON.</p>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip"><span class="dot"></span> Chạy độc lập</span>
+      <span class="chip">Không gửi dữ liệu lên máy chủ</span>
+      <span class="chip">Lưu dữ liệu xã/phường trên trình duyệt</span>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+  <div>
+    <div class="card">
+      <div class="hd">
+        <div class="title">Công cụ xử lý địa chỉ</div>
+        <div class="tabs">
+          <button class="tab active" data-tab="convert">1. Chuyển đổi</button>
+          <button class="tab" data-tab="bulk">2. Chuyển đổi hàng loạt</button>
+          <button class="tab" data-tab="lookup">3. Tra cứu sáp nhập</button>
+          <button class="tab" data-tab="data">4. Dữ liệu xã/phường</button>
+        </div>
+      </div>
+      <div class="bd">
+        <section class="panel active" id="panel-convert">
+          <div class="direction">
+            <div class="field">
+              <label>Chiều chuyển đổi</label>
+              <select id="direction">
+                <option value="oldToNew">Địa chỉ cũ → địa chỉ mới</option>
+                <option value="newToOld">Địa chỉ mới → địa chỉ cũ</option>
+              </select>
+            </div>
+            <button class="swap blue" id="swapBtn" title="Đảo chiều">⇄</button>
+            <div class="field">
+              <label>Chế độ xử lý</label>
+              <select id="matchMode">
+                <option value="smart">Khớp thông minh</option>
+                <option value="strict">Khớp chính xác xã/phường</option>
+                <option value="provinceOnly">Chỉ chuyển cấp tỉnh</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid two">
+            <div class="field"><label>Số nhà / thôn / ấp</label><input id="houseNo" placeholder="Ví dụ: 360 hoặc Ấp 3"></div>
+            <div class="field"><label>Đường / tuyến / khu phố</label><input id="street" placeholder="Ví dụ: Phạm Hữu Lầu"></div>
+            <div class="field"><label id="wardLabel">Xã / phường cũ</label><input id="ward" list="wardSuggestions" placeholder="Nhập tên xã/phường"></div>
+            <div class="field"><label id="provinceLabel">Tỉnh / thành phố cũ</label><select id="province"></select></div>
+          </div>
+          <datalist id="wardSuggestions"></datalist>
+
+          <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <button class="primary" id="convertBtn">Chuyển đổi địa chỉ</button>
+            <button id="copyResultBtn">Sao chép kết quả</button>
+            <button class="ghost" id="clearBtn">Xóa dữ liệu nhập</button>
+          </div>
+
+          <div class="hr"></div>
+          <div class="result" id="resultBox">
+            <div class="label">Kết quả chuyển đổi</div>
+            <div class="value" id="resultText">Chưa có kết quả</div>
+            <div class="meta" id="resultMeta">Nhập địa chỉ và bấm “Chuyển đổi địa chỉ”.</div>
+            <div id="resultChoices"></div>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-bulk">
+          <div class="field">
+            <label>Danh sách địa chỉ — mỗi dòng một địa chỉ</label>
+            <textarea id="bulkInput" style="min-height:190px" placeholder="360 Phạm Hữu Lầu, xã Nhà Bè, Thành phố Hồ Chí Minh&#10;58 Nguyễn Thái Học, phường Bến Thành, Thành phố Hồ Chí Minh"></textarea>
+          </div>
+          <div class="form-grid two" style="margin-top:10px">
+            <div class="field"><label>Chiều chuyển đổi hàng loạt</label><select id="bulkDirection"><option value="oldToNew">Cũ → mới</option><option value="newToOld">Mới → cũ</option></select></div>
+            <div class="field"><label>Định dạng xuất</label><select id="bulkFormat"><option value="text">Văn bản</option><option value="csv">CSV</option></select></div>
+          </div>
+          <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <button class="primary" id="bulkConvertBtn">Xử lý danh sách</button>
+            <button id="bulkCopyBtn">Sao chép</button>
+            <button id="bulkDownloadBtn">Tải kết quả</button>
+          </div>
+          <div class="field" style="margin-top:12px"><label>Kết quả</label><textarea id="bulkOutput" style="min-height:260px" readonly></textarea></div>
+          <div class="note">Chế độ hàng loạt nhận diện tỉnh/thành phố ở cuối dòng. Khi chưa có dữ liệu xã/phường, hệ thống vẫn đổi được cấp tỉnh và giữ nguyên phần địa chỉ còn lại.</div>
+        </section>
+
+        <section class="panel" id="panel-lookup">
+          <div class="form-grid two" style="margin-bottom:10px">
+            <div class="field"><label>Tìm tỉnh cũ hoặc tỉnh mới</label><input id="lookupSearch" placeholder="Ví dụ: Bình Dương, Thành phố Hồ Chí Minh"></div>
+            <div class="field"><label>Bộ lọc</label><select id="lookupFilter"><option value="all">Tất cả 34 đơn vị</option><option value="merged">Có sáp nhập</option><option value="unchanged">Không sáp nhập</option></select></div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>STT</th><th>Tỉnh/thành mới</th><th>Các tỉnh/thành cũ</th><th>Trung tâm hành chính</th><th>Diện tích</th><th>Dân số</th></tr></thead>
+              <tbody id="mergeTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="panel-data">
+          <div class="upload-zone">
+            <strong>Nhập bảng ánh xạ xã/phường</strong>
+            <div class="note" style="margin:0 0 10px">Hỗ trợ tệp .csv hoặc .json. Dữ liệu được lưu cục bộ trên trình duyệt.</div>
+            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+              <button class="primary" id="chooseMappingBtn">Chọn tệp dữ liệu</button>
+              <button id="downloadTemplateBtn">Tải CSV mẫu</button>
+              <button class="danger" id="clearMappingBtn">Xóa dữ liệu xã/phường</button>
+            </div>
+            <input type="file" id="mappingFile" accept=".csv,.json,text/csv,application/json">
+          </div>
+          <div class="metric-grid" style="margin-top:12px">
+            <div class="metric"><div class="m-label">Bản ghi xã/phường</div><div class="m-value" id="mappingCount">0</div><div class="m-sub">Đã lưu trên trình duyệt</div></div>
+            <div class="metric"><div class="m-label">Tỉnh/thành có dữ liệu chi tiết</div><div class="m-value" id="mappingProvinceCount">0</div><div class="m-sub">Tính theo địa chỉ cũ</div></div>
+          </div>
+          <div class="hr"></div>
+          <div class="title" style="margin-bottom:8px">Cấu trúc dữ liệu CSV</div>
+          <div class="code-sample">oldProvince,oldDistrict,oldWard,newProvince,newWard,note
+Bình Dương,Thành phố Thuận An,Phường An Phú,Thành phố Hồ Chí Minh,Phường An Phú,Ghi chú tùy chọn
+Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div>
+          <div class="note"><b>Lưu ý:</b> oldDistrict là trường hỗ trợ phân biệt các xã/phường trùng tên; công cụ đầu ra mặc định chỉ ghép số nhà, đường, xã/phường và tỉnh/thành phố theo yêu cầu.</div>
+          <div class="table-wrap" style="max-height:340px;margin-top:12px">
+            <table><thead><tr><th>#</th><th>Tỉnh cũ</th><th>Quận/huyện cũ</th><th>Xã/phường cũ</th><th>Tỉnh mới</th><th>Xã/phường mới</th></tr></thead><tbody id="mappingTableBody"></tbody></table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="hd"><div class="title">Tổng quan dữ liệu</div><span class="tag">63 → 34</span></div>
+      <div class="bd">
+        <div class="metric-grid">
+          <div class="metric"><div class="m-label">Đơn vị cấp tỉnh cũ</div><div class="m-value">63</div><div class="m-sub">Tỉnh và thành phố</div></div>
+          <div class="metric"><div class="m-label">Đơn vị cấp tỉnh mới</div><div class="m-value">34</div><div class="m-sub">Theo danh sách đã nạp</div></div>
+          <div class="metric"><div class="m-label">Đơn vị mới do hợp nhất</div><div class="m-value">23</div><div class="m-sub">Có từ 2–3 đơn vị cũ</div></div>
+          <div class="metric"><div class="m-label">Đơn vị giữ nguyên</div><div class="m-value">11</div><div class="m-sub">Không sáp nhập</div></div>
+        </div>
+        <div class="hr"></div>
+        <div class="status-box">
+          <div class="status-row"><span>Dữ liệu cấp tỉnh</span><b class="ok">Đã sẵn sàng</b></div>
+          <div class="status-row"><span>Dữ liệu xã/phường</span><b id="wardStatus" class="warn">Chưa nhập</b></div>
+          <div class="status-row"><span>Chuyển cũ → mới</span><b class="ok">Xác định được cấp tỉnh</b></div>
+          <div class="status-row"><span>Chuyển mới → cũ</span><b class="warn">Có thể có nhiều kết quả</b></div>
+        </div>
+        <div class="hr"></div>
+        <div class="note" style="margin:0">
+          <b>Nguyên tắc xử lý:</b><br>
+          1. Số nhà và tên đường được giữ nguyên.<br>
+          2. Cấp tỉnh được đổi theo bảng 63 → 34.<br>
+          3. Xã/phường chỉ đổi chính xác khi đã nạp bảng ánh xạ chi tiết.<br>
+          4. Chiều mới → cũ có thể trả về nhiều địa chỉ lịch sử.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd"><div class="title">Thông tin tỉnh/thành đang chọn</div></div>
+      <div class="bd" id="provinceInfo">
+        <div class="note" style="margin:0">Chọn một tỉnh/thành trong biểu mẫu để xem thông tin.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"><span class="ticon">✓</span><span id="toastText">—</span></div>
+
+<script>
+  const MAPPING_STORAGE_KEY='address_merger_ward_mapping_v1';
+
+  const MERGERS = [
+    {id:1,newName:'Tuyên Quang',newType:'Tỉnh',old:['Tuyên Quang','Hà Giang'],center:'Tuyên Quang hiện nay',area:13795.6,population:1731600},
+    {id:2,newName:'Lào Cai',newType:'Tỉnh',old:['Lào Cai','Yên Bái'],center:'Yên Bái hiện nay',area:13257,population:1656500},
+    {id:3,newName:'Thái Nguyên',newType:'Tỉnh',old:['Bắc Kạn','Thái Nguyên'],center:'Thái Nguyên hiện nay',area:8375.3,population:1694500},
+    {id:4,newName:'Phú Thọ',newType:'Tỉnh',old:['Vĩnh Phúc','Phú Thọ','Hòa Bình'],center:'Phú Thọ hiện nay',area:9361.4,population:3663600},
+    {id:5,newName:'Bắc Ninh',newType:'Tỉnh',old:['Bắc Ninh','Bắc Giang'],center:'Bắc Giang hiện nay',area:4718.6,population:3509100},
+    {id:6,newName:'Hưng Yên',newType:'Tỉnh',old:['Hưng Yên','Thái Bình'],center:'Hưng Yên hiện nay',area:2514.8,population:3208400},
+    {id:7,newName:'Hải Phòng',newType:'Thành phố',old:['Hải Dương','Hải Phòng'],center:'Hải Phòng hiện nay',area:3194.7,population:4102700},
+    {id:8,newName:'Ninh Bình',newType:'Tỉnh',old:['Hà Nam','Ninh Bình','Nam Định'],center:'Ninh Bình hiện nay',area:3942.6,population:3818700},
+    {id:9,newName:'Quảng Trị',newType:'Tỉnh',old:['Quảng Bình','Quảng Trị'],center:'Quảng Bình hiện nay',area:12700,population:1584000},
+    {id:10,newName:'Đà Nẵng',newType:'Thành phố',old:['Quảng Nam','Đà Nẵng'],center:'Đà Nẵng hiện nay',area:11859.6,population:2819900},
+    {id:11,newName:'Quảng Ngãi',newType:'Tỉnh',old:['Kon Tum','Quảng Ngãi'],center:'Quảng Ngãi hiện nay',area:14832.6,population:1861700},
+    {id:12,newName:'Gia Lai',newType:'Tỉnh',old:['Gia Lai','Bình Định'],center:'Bình Định hiện nay',area:21576.5,population:3153300},
+    {id:13,newName:'Khánh Hòa',newType:'Tỉnh',old:['Ninh Thuận','Khánh Hòa'],center:'Khánh Hòa hiện nay',area:8555.9,population:1882000},
+    {id:14,newName:'Lâm Đồng',newType:'Tỉnh',old:['Lâm Đồng','Đắk Nông','Bình Thuận'],center:'Lâm Đồng hiện nay',area:24233.1,population:3324400},
+    {id:15,newName:'Đắk Lắk',newType:'Tỉnh',old:['Đắk Lắk','Phú Yên'],center:'Đắk Lắk hiện nay',area:18096.4,population:2831300},
+    {id:16,newName:'Hồ Chí Minh',newType:'Thành phố',old:['Bà Rịa - Vũng Tàu','Bình Dương','Hồ Chí Minh'],center:'Thành phố Hồ Chí Minh hiện nay',area:6772.6,population:13608800},
+    {id:17,newName:'Đồng Nai',newType:'Tỉnh',old:['Đồng Nai','Bình Phước'],center:'Đồng Nai hiện nay',area:12737.2,population:4427700},
+    {id:18,newName:'Tây Ninh',newType:'Tỉnh',old:['Tây Ninh','Long An'],center:'Long An hiện nay',area:8536.5,population:2959000},
+    {id:19,newName:'Cần Thơ',newType:'Thành phố',old:['Cần Thơ','Sóc Trăng','Hậu Giang'],center:'Cần Thơ hiện nay',area:6360.8,population:3207000},
+    {id:20,newName:'Vĩnh Long',newType:'Tỉnh',old:['Bến Tre','Vĩnh Long','Trà Vinh'],center:'Vĩnh Long hiện nay',area:6296.2,population:3367400},
+    {id:21,newName:'Đồng Tháp',newType:'Tỉnh',old:['Tiền Giang','Đồng Tháp'],center:'Tiền Giang hiện nay',area:5938.7,population:3397200},
+    {id:22,newName:'Cà Mau',newType:'Tỉnh',old:['Bạc Liêu','Cà Mau'],center:'Cà Mau hiện nay',area:7942.4,population:2140600},
+    {id:23,newName:'An Giang',newType:'Tỉnh',old:['An Giang','Kiên Giang'],center:'Kiên Giang hiện nay',area:9888.9,population:3679200},
+    {id:24,newName:'Hà Nội',newType:'Thành phố',old:['Hà Nội'],center:'Giữ nguyên',area:null,population:null},
+    {id:25,newName:'Huế',newType:'Thành phố',old:['Huế'],center:'Giữ nguyên',area:null,population:null},
+    {id:26,newName:'Lai Châu',newType:'Tỉnh',old:['Lai Châu'],center:'Giữ nguyên',area:null,population:null},
+    {id:27,newName:'Điện Biên',newType:'Tỉnh',old:['Điện Biên'],center:'Giữ nguyên',area:null,population:null},
+    {id:28,newName:'Sơn La',newType:'Tỉnh',old:['Sơn La'],center:'Giữ nguyên',area:null,population:null},
+    {id:29,newName:'Lạng Sơn',newType:'Tỉnh',old:['Lạng Sơn'],center:'Giữ nguyên',area:null,population:null},
+    {id:30,newName:'Quảng Ninh',newType:'Tỉnh',old:['Quảng Ninh'],center:'Giữ nguyên',area:null,population:null},
+    {id:31,newName:'Thanh Hóa',newType:'Tỉnh',old:['Thanh Hóa'],center:'Giữ nguyên',area:null,population:null},
+    {id:32,newName:'Nghệ An',newType:'Tỉnh',old:['Nghệ An'],center:'Giữ nguyên',area:null,population:null},
+    {id:33,newName:'Hà Tĩnh',newType:'Tỉnh',old:['Hà Tĩnh'],center:'Giữ nguyên',area:null,population:null},
+    {id:34,newName:'Cao Bằng',newType:'Tỉnh',old:['Cao Bằng'],center:'Giữ nguyên',area:null,population:null}
+  ];
+
+  const $=id=>document.getElementById(id);
+  const escapeHtml=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+  const stripPrefix=s=>String(s??'').replace(/^\s*(tỉnh|thành phố|tp\.?|tp)\s+/i,'').trim();
+  const normalize=s=>stripPrefix(String(s??'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').replace(/[^a-zA-Z0-9]+/g,' ').trim().toLowerCase();
+  const fullProvinceName=m=>`${m.newType} ${m.newName}`;
+  const fmtNumber=n=>n===null||n===undefined?'Chưa nhập':Number(n).toLocaleString('vi-VN');
+  const fmtArea=n=>n===null||n===undefined?'—':`${Number(n).toLocaleString('vi-VN',{maximumFractionDigits:1})} km²`;
+  const fmtPopulation=n=>n===null||n===undefined?'—':`${Number(n).toLocaleString('vi-VN')} người`;
+  let wardMappings=[];
+  let lastResult='';
+  let bulkBlobText='';
+  let bulkBlobExt='txt';
+
+  function toast(msg){
+    $('toastText').textContent=msg;$('toast').classList.add('show');
+    clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1800);
+  }
+
+  function unique(arr){return [...new Set(arr)]}
+  function allOldProvinces(){return unique(MERGERS.flatMap(m=>m.old)).sort((a,b)=>a.localeCompare(b,'vi'))}
+  function allNewProvinces(){return MERGERS.map(m=>m.newName).sort((a,b)=>a.localeCompare(b,'vi'))}
+  function findByOldProvince(name){const n=normalize(name);return MERGERS.find(m=>m.old.some(x=>normalize(x)===n))||null}
+  function findByNewProvince(name){const n=normalize(name);return MERGERS.find(m=>normalize(m.newName)===n||normalize(fullProvinceName(m))===n)||null}
+  function provinceLabel(name,isNew=false){
+    const m=isNew?findByNewProvince(name):findByOldProvince(name);
+    if(!m)return name;
+    if(isNew)return fullProvinceName(m);
+    if(normalize(name)==='ho chi minh'||normalize(name)==='hai phong'||normalize(name)==='da nang'||normalize(name)==='can tho'||normalize(name)==='ha noi'||normalize(name)==='hue') return `Thành phố ${stripPrefix(name)}`;
+    return `Tỉnh ${stripPrefix(name)}`;
+  }
+
+  function populateProvinceSelect(){
+    const dir=$('direction').value;
+    const values=dir==='oldToNew'?allOldProvinces():allNewProvinces();
+    const current=$('province').value;
+    $('province').innerHTML='<option value="">-- Chọn tỉnh/thành phố --</option>'+values.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(provinceLabel(v,dir==='newToOld'))}</option>`).join('');
+    if(values.includes(current))$('province').value=current;
+    $('wardLabel').textContent=dir==='oldToNew'?'Xã / phường cũ':'Xã / phường mới';
+    $('provinceLabel').textContent=dir==='oldToNew'?'Tỉnh / thành phố cũ':'Tỉnh / thành phố mới';
+    updateWardSuggestions();updateProvinceInfo();
+  }
+
+  function updateWardSuggestions(){
+    const dir=$('direction').value;const p=$('province').value;const pn=normalize(p);
+    const values=dir==='oldToNew'
+      ?wardMappings.filter(x=>!p||normalize(x.oldProvince)===pn).map(x=>x.oldWard)
+      :wardMappings.filter(x=>!p||normalize(x.newProvince)===pn).map(x=>x.newWard);
+    $('wardSuggestions').innerHTML=unique(values.filter(Boolean)).sort((a,b)=>a.localeCompare(b,'vi')).map(v=>`<option value="${escapeHtml(v)}"></option>`).join('');
+  }
+
+  function updateProvinceInfo(){
+    const dir=$('direction').value;const value=$('province').value;
+    const m=dir==='oldToNew'?findByOldProvince(value):findByNewProvince(value);
+    if(!m){$('provinceInfo').innerHTML='<div class="note" style="margin:0">Chọn một tỉnh/thành trong biểu mẫu để xem thông tin.</div>';return}
+    $('provinceInfo').innerHTML=`
+      <div style="font-weight:950;font-size:17px;color:var(--brand)">${escapeHtml(fullProvinceName(m))}</div>
+      <div class="note" style="margin-top:5px">${m.old.length===1?'Không sáp nhập':'Hợp nhất '+m.old.map(x=>provinceLabel(x,false)).join(', ')}</div>
+      <div class="status-box" style="margin-top:10px">
+        <div class="status-row"><span>Trung tâm hành chính</span><b>${escapeHtml(m.center)}</b></div>
+        <div class="status-row"><span>Diện tích</span><b>${fmtArea(m.area)}</b></div>
+        <div class="status-row"><span>Dân số</span><b>${fmtPopulation(m.population)}</b></div>
+      </div>`;
+  }
+
+  function composeAddress(house,street,ward,province){
+    return [house,street,ward,province].map(x=>String(x??'').trim()).filter(Boolean).join(', ');
+  }
+
+  function scoreWardMatch(input,target){
+    const a=normalize(input),b=normalize(target);if(!a||!b)return 0;if(a===b)return 100;
+    if(a.includes(b)||b.includes(a))return 82;
+    const aw=new Set(a.split(' ')),bw=new Set(b.split(' '));
+    const common=[...aw].filter(x=>bw.has(x)).length;return common/Math.max(aw.size,bw.size)*70;
+  }
+
+  function findOldToNewCandidates(province,ward,mode){
+    const merger=findByOldProvince(province);if(!merger)return {merger:null,candidates:[]};
+    if(mode==='provinceOnly'||!ward.trim())return {merger,candidates:[]};
+    const base=wardMappings.filter(x=>normalize(x.oldProvince)===normalize(province));
+    const scored=base.map(x=>({...x,_score:scoreWardMatch(ward,x.oldWard)})).filter(x=>mode==='strict'?x._score===100:x._score>=60).sort((a,b)=>b._score-a._score);
+    return {merger,candidates:scored};
+  }
+
+  function findNewToOldCandidates(province,ward,mode){
+    const merger=findByNewProvince(province);if(!merger)return {merger:null,candidates:[]};
+    if(mode==='provinceOnly'||!ward.trim())return {merger,candidates:[]};
+    const base=wardMappings.filter(x=>normalize(x.newProvince)===normalize(merger.newName));
+    const scored=base.map(x=>({...x,_score:scoreWardMatch(ward,x.newWard)})).filter(x=>mode==='strict'?x._score===100:x._score>=60).sort((a,b)=>b._score-a._score);
+    return {merger,candidates:scored};
+  }
+
+  function setResult(text,meta,choices=[]){
+    lastResult=text;$('resultText').textContent=text||'Không xác định được';$('resultMeta').innerHTML=meta;
+    $('resultChoices').innerHTML='';
+    if(choices.length){
+      const wrap=document.createElement('div');wrap.className='choice-list';
+      choices.forEach((c,i)=>{
+        const label=document.createElement('label');label.className='choice';
+        label.innerHTML=`<input type="radio" name="resultChoice" value="${i}" ${i===0?'checked':''}><div><b>${escapeHtml(c.address)}</b><small>${escapeHtml(c.note||'Phương án địa chỉ lịch sử')}</small></div>`;
+        wrap.appendChild(label);
+      });
+      wrap.addEventListener('change',e=>{const idx=Number(e.target.value);if(choices[idx]){lastResult=choices[idx].address;$('resultText').textContent=choices[idx].address}});
+      $('resultChoices').appendChild(wrap);
+    }
+  }
+
+  function convertSingle(){
+    const dir=$('direction').value,mode=$('matchMode').value,house=$('houseNo').value.trim(),street=$('street').value.trim(),ward=$('ward').value.trim(),province=$('province').value;
+    if(!province){setResult('Chưa chọn tỉnh/thành phố','<span class="bad">Vui lòng chọn tỉnh/thành phố nguồn.</span>');return}
+    if(dir==='oldToNew'){
+      const {merger,candidates}=findOldToNewCandidates(province,ward,mode);
+      if(!merger){setResult('Không tìm thấy dữ liệu cấp tỉnh','<span class="bad">Tên tỉnh/thành phố không có trong bảng 63 → 34.</span>');return}
+      let newWard=ward;let meta='';
+      if(candidates.length){newWard=candidates[0].newWard||ward;meta=`Đã khớp dữ liệu xã/phường với độ tin cậy ${Math.round(candidates[0]._score)}%.`}
+      else if(ward&&mode!=='provinceOnly')meta='Chưa có bản ghi xã/phường phù hợp; hệ thống giữ nguyên tên xã/phường và chỉ chuyển cấp tỉnh.';
+      else meta='Đã chuyển cấp tỉnh theo bảng sáp nhập.';
+      const output=composeAddress(house,street,newWard,fullProvinceName(merger));
+      setResult(output,`${escapeHtml(meta)}<br><b>Nguồn:</b> ${escapeHtml(provinceLabel(province,false))} → <b>Đích:</b> ${escapeHtml(fullProvinceName(merger))}`);
+    }else{
+      const {merger,candidates}=findNewToOldCandidates(province,ward,mode);
+      if(!merger){setResult('Không tìm thấy dữ liệu cấp tỉnh','<span class="bad">Tên tỉnh/thành phố không có trong danh sách 34 đơn vị mới.</span>');return}
+      let choices=[];
+      if(candidates.length){
+        choices=candidates.map(x=>({address:composeAddress(house,street,x.oldWard||ward,provinceLabel(x.oldProvince,false)),note:[x.oldDistrict,x.note].filter(Boolean).join(' • ')}));
+      }else{
+        choices=merger.old.map(oldP=>({address:composeAddress(house,street,ward,provinceLabel(oldP,false)),note:merger.old.length>1?'Chưa có dữ liệu xã/phường để xác định chính xác tỉnh cũ.':'Đơn vị không sáp nhập.'}));
+      }
+      lastResult=choices[0]?.address||'';
+      setResult(lastResult,merger.old.length>1?`Địa chỉ mới có thể thuộc <b>${merger.old.length}</b> tỉnh/thành phố cũ. Chọn phương án phù hợp bên dưới.`:'Đơn vị giữ nguyên, địa chỉ cũ và mới cùng cấp tỉnh.',choices);
+    }
+  }
+
+  function detectProvinceAtEnd(line,direction){
+    const list=direction==='oldToNew'?allOldProvinces():allNewProvinces();
+    const sorted=[...list].sort((a,b)=>normalize(b).length-normalize(a).length);
+    const norm=normalize(line);
+    return sorted.find(p=>norm.endsWith(normalize(p)))||sorted.find(p=>norm.includes(normalize(p)))||'';
+  }
+
+  function replaceProvinceInLine(line,source,target){
+    const variants=[`Thành phố ${source}`,`Tỉnh ${source}`,`TP. ${source}`,`TP ${source}`,source];
+    let out=line;
+    for(const v of variants){
+      const re=new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*$','i');
+      if(re.test(out))return out.replace(re,target);
+    }
+    return composeAddress(out,'','',''+target);
+  }
+
+  function bulkConvert(){
+    const lines=$('bulkInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);const dir=$('bulkDirection').value;const format=$('bulkFormat').value;
+    const rows=lines.map((line,index)=>{
+      const source=detectProvinceAtEnd(line,dir);let result=line;let status='Không nhận diện được tỉnh/thành phố';
+      if(source){
+        if(dir==='oldToNew'){
+          const m=findByOldProvince(source);if(m){result=replaceProvinceInLine(line,source,fullProvinceName(m));status='Đã chuyển cấp tỉnh'}
+        }else{
+          const m=findByNewProvince(source);if(m){
+            if(m.old.length===1){result=replaceProvinceInLine(line,source,provinceLabel(m.old[0],false));status='Giữ nguyên/1 kết quả'}
+            else{result=m.old.map(x=>replaceProvinceInLine(line,source,provinceLabel(x,false))).join(' | ');status=`${m.old.length} khả năng`}
+          }
+        }
+      }
+      return {stt:index+1,input:line,result,status};
+    });
+    if(format==='csv'){
+      bulkBlobText='STT,Địa chỉ đầu vào,Kết quả,Trạng thái\n'+rows.map(r=>[r.stt,r.input,r.result,r.status].map(csvEscape).join(',')).join('\n');bulkBlobExt='csv';
+    }else{
+      bulkBlobText=rows.map(r=>`${r.stt}. ${r.result} [${r.status}]`).join('\n');bulkBlobExt='txt';
+    }
+    $('bulkOutput').value=bulkBlobText;toast(`Đã xử lý ${rows.length} địa chỉ`);
+  }
+
+  function csvEscape(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replaceAll('"','""')+'"':s}
+  function parseCSV(text){
+    const rows=[];let row=[],cell='',quoted=false;
+    for(let i=0;i<text.length;i++){
+      const ch=text[i],next=text[i+1];
+      if(ch==='"'&&quoted&&next==='"'){cell+='"';i++;continue}
+      if(ch==='"'){quoted=!quoted;continue}
+      if(ch===','&&!quoted){row.push(cell);cell='';continue}
+      if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&next==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell='';continue}
+      cell+=ch;
+    }
+    row.push(cell);if(row.some(x=>x.trim()))rows.push(row);
+    if(!rows.length)return [];
+    const headers=rows.shift().map(x=>x.trim());
+    return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]??'').trim()])));
+  }
+
+  function normalizeMappingRecord(x){
+    return {
+      oldProvince:String(x.oldProvince??x.tinhCu??x['Tỉnh cũ']??'').trim(),
+      oldDistrict:String(x.oldDistrict??x.huyenCu??x['Quận/huyện cũ']??'').trim(),
+      oldWard:String(x.oldWard??x.xaCu??x['Xã/phường cũ']??'').trim(),
+      newProvince:String(x.newProvince??x.tinhMoi??x['Tỉnh mới']??'').trim(),
+      newWard:String(x.newWard??x.xaMoi??x['Xã/phường mới']??'').trim(),
+      note:String(x.note??x.ghiChu??x['Ghi chú']??'').trim()
+    };
+  }
+
+  function validateMappings(records){
+    return records.map(normalizeMappingRecord).filter(x=>x.oldProvince&&x.oldWard&&x.newProvince&&x.newWard);
+  }
+
+  function saveMappings(){localStorage.setItem(MAPPING_STORAGE_KEY,JSON.stringify(wardMappings))}
+  function loadMappings(){try{wardMappings=validateMappings(JSON.parse(localStorage.getItem(MAPPING_STORAGE_KEY)||'[]'))}catch{wardMappings=[]}renderMappingData()}
+  function renderMappingData(){
+    $('mappingCount').textContent=wardMappings.length.toLocaleString('vi-VN');
+    $('mappingProvinceCount').textContent=unique(wardMappings.map(x=>normalize(x.oldProvince))).length.toLocaleString('vi-VN');
+    $('wardStatus').textContent=wardMappings.length?`${wardMappings.length.toLocaleString('vi-VN')} bản ghi`:'Chưa nhập';
+    $('wardStatus').className=wardMappings.length?'ok':'warn';
+    const rows=wardMappings.slice(0,500).map((x,i)=>`<tr><td class="center">${i+1}</td><td>${escapeHtml(x.oldProvince)}</td><td>${escapeHtml(x.oldDistrict)}</td><td>${escapeHtml(x.oldWard)}</td><td>${escapeHtml(x.newProvince)}</td><td>${escapeHtml(x.newWard)}</td></tr>`).join('');
+    $('mappingTableBody').innerHTML=rows||'<tr><td colspan="6" class="center" style="color:var(--muted)">Chưa có dữ liệu xã/phường</td></tr>';
+    updateWardSuggestions();
+  }
+
+  async function importMappings(file){
+    const text=await file.text();let records=[];
+    if(file.name.toLowerCase().endsWith('.json')){
+      const obj=JSON.parse(text);records=Array.isArray(obj)?obj:(Array.isArray(obj.mappings)?obj.mappings:[]);
+    }else records=parseCSV(text);
+    const clean=validateMappings(records);
+    if(!clean.length)throw new Error('Không tìm thấy bản ghi hợp lệ. Kiểm tra tên cột và dữ liệu bắt buộc.');
+    const key=x=>[normalize(x.oldProvince),normalize(x.oldDistrict),normalize(x.oldWard),normalize(x.newProvince),normalize(x.newWard)].join('|');
+    const map=new Map(wardMappings.map(x=>[key(x),x]));clean.forEach(x=>map.set(key(x),x));wardMappings=[...map.values()];saveMappings();renderMappingData();toast(`Đã nhập ${clean.length} bản ghi xã/phường`);
+  }
+
+  function downloadText(filename,text,type='text/plain;charset=utf-8'){
+    const blob=new Blob(['\ufeff'+text],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  function downloadTemplate(){
+    const text='oldProvince,oldDistrict,oldWard,newProvince,newWard,note\nBình Dương,Thành phố Thuận An,Phường An Phú,Thành phố Hồ Chí Minh,Phường An Phú,Ghi chú tùy chọn\n';
+    downloadText('mau-anh-xa-xa-phuong.csv',text,'text/csv;charset=utf-8');
+  }
+
+  function renderMergeTable(){
+    const q=normalize($('lookupSearch').value),filter=$('lookupFilter').value;
+    const rows=MERGERS.filter(m=>{
+      const merged=m.old.length>1;if(filter==='merged'&&!merged)return false;if(filter==='unchanged'&&merged)return false;
+      if(!q)return true;return normalize([m.newName,...m.old,m.center].join(' ')).includes(q);
+    });
+    $('mergeTableBody').innerHTML=rows.map(m=>`<tr><td class="center">${m.id}</td><td><b>${escapeHtml(fullProvinceName(m))}</b></td><td>${escapeHtml(m.old.map(x=>provinceLabel(x,false)).join(', '))}</td><td>${escapeHtml(m.center)}</td><td class="num">${fmtArea(m.area)}</td><td class="num">${fmtPopulation(m.population)}</td></tr>`).join('')||'<tr><td colspan="6" class="center">Không tìm thấy dữ liệu</td></tr>';
+  }
+
+  function clearInputs(){['houseNo','street','ward'].forEach(id=>$(id).value='');$('province').value='';setResult('Chưa có kết quả','Nhập địa chỉ và bấm “Chuyển đổi địa chỉ”.');updateProvinceInfo();updateWardSuggestions()}
+
+  document.addEventListener('click',e=>{
+    const t=e.target;
+    if(t.matches('.tab')){
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('panel-'+t.dataset.tab).classList.add('active');return;
+    }
+    if(t.id==='swapBtn'){$('direction').value=$('direction').value==='oldToNew'?'newToOld':'oldToNew';populateProvinceSelect();clearInputs();return}
+    if(t.id==='convertBtn'){convertSingle();return}
+    if(t.id==='copyResultBtn'){if(!lastResult){toast('Chưa có kết quả để sao chép');return}navigator.clipboard?.writeText(lastResult).then(()=>toast('Đã sao chép kết quả')).catch(()=>toast('Không sao chép được'));return}
+    if(t.id==='clearBtn'){clearInputs();return}
+    if(t.id==='bulkConvertBtn'){bulkConvert();return}
+    if(t.id==='bulkCopyBtn'){if(!$('bulkOutput').value){toast('Chưa có kết quả');return}navigator.clipboard?.writeText($('bulkOutput').value).then(()=>toast('Đã sao chép')).catch(()=>toast('Không sao chép được'));return}
+    if(t.id==='bulkDownloadBtn'){if(!bulkBlobText){toast('Chưa có kết quả');return}downloadText(`ket-qua-chuyen-doi-dia-chi.${bulkBlobExt}`,bulkBlobText,bulkBlobExt==='csv'?'text/csv;charset=utf-8':'text/plain;charset=utf-8');return}
+    if(t.id==='chooseMappingBtn'){$('mappingFile').click();return}
+    if(t.id==='downloadTemplateBtn'){downloadTemplate();return}
+    if(t.id==='clearMappingBtn'){if(confirm('Xóa toàn bộ dữ liệu ánh xạ xã/phường đã lưu trên trình duyệt?')){wardMappings=[];saveMappings();renderMappingData();toast('Đã xóa dữ liệu xã/phường')}return}
+  });
+
+  $('direction').addEventListener('change',()=>{populateProvinceSelect();clearInputs()});
+  $('province').addEventListener('change',()=>{updateWardSuggestions();updateProvinceInfo()});
+  $('lookupSearch').addEventListener('input',renderMergeTable);
+  $('lookupFilter').addEventListener('change',renderMergeTable);
+  $('mappingFile').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{await importMappings(f)}catch(err){alert('Không nhập được dữ liệu: '+(err.message||err))}e.target.value=''});
+
+  populateProvinceSelect();renderMergeTable();loadMappings();
+</script>
+</body>
+</html>

@@ -166,13 +166,13 @@
       <div class="logo" aria-hidden="true">ĐC</div>
       <div>
         <h1>Chuyển đổi địa chỉ sau sáp nhập</h1>
-        <p class="sub">Tra cứu và chuyển đổi địa chỉ hành chính hai chiều. Dữ liệu cấp tỉnh 63 → 34 và danh sách xã/phường của 21 tỉnh/thành đã được nạp sẵn từ các nghị quyết năm 2025; vẫn có thể nhập bổ sung bằng CSV hoặc JSON.</p>
+        <p class="sub">Tra cứu và chuyển đổi địa chỉ hành chính hai chiều. Dữ liệu cấp tỉnh 63 → 34 và danh sách xã/phường của 34 tỉnh/thành đã được nạp sẵn từ các nghị quyết năm 2025; vẫn có thể nhập bổ sung bằng CSV hoặc JSON.</p>
       </div>
     </div>
     <div class="chips">
       <span class="chip"><span class="dot"></span> Chạy độc lập</span>
       <span class="chip">Không gửi dữ liệu lên máy chủ</span>
-      <span class="chip" id="headerMappingChip">21 tỉnh/thành đã có dữ liệu xã/phường</span><span class="chip">Dữ liệu bổ sung lưu trên trình duyệt</span>
+      <span class="chip" id="headerMappingChip">34 tỉnh/thành đã có dữ liệu xã/phường</span><span class="chip">Dữ liệu bổ sung lưu trên trình duyệt</span>
     </div>
   </div>
 </header>
@@ -210,15 +210,16 @@
             </div>
           </div>
 
-          <div class="form-grid two">
+          <div class="form-grid three" id="adminInputGrid">
+            <div class="field"><label id="provinceLabel">Tỉnh / thành phố cũ</label><select id="province"></select></div>
+            <div class="field" id="districtFieldWrap"><label id="districtLabel">Quận / huyện / thị xã / thành phố cũ</label><select id="district"><option value="">-- Chọn quận/huyện --</option></select></div>
+            <div class="field"><label id="wardLabel">Xã / phường cũ</label><select id="ward"><option value="">-- Chọn xã/phường --</option></select></div>
+          </div>
+          <div class="form-grid two" style="margin-top:10px">
             <div class="field"><label>Số nhà / thôn / ấp</label><input id="houseNo" placeholder="Ví dụ: 360 hoặc Ấp 3"></div>
             <div class="field"><label>Đường / tuyến / khu phố</label><input id="street" placeholder="Ví dụ: Phạm Hữu Lầu"></div>
-            <div class="field"><label id="wardLabel">Xã / phường cũ</label><input id="ward" list="wardSuggestions" placeholder="Nhập tên xã/phường"></div>
-            <div class="field" id="districtFieldWrap"><label id="districtLabel">Quận / huyện / thị xã / thành phố cũ</label><input id="district" list="districtSuggestions" placeholder="Ví dụ: Huyện Trần Văn Thời"></div>
-            <div class="field"><label id="provinceLabel">Tỉnh / thành phố cũ</label><select id="province"></select></div>
           </div>
-          <datalist id="wardSuggestions"></datalist>
-          <datalist id="districtSuggestions"></datalist>
+          <div class="note" id="adminSelectHint">Chọn lần lượt tỉnh/thành phố → quận/huyện → xã/phường.</div>
 
           <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
             <button class="primary" id="convertBtn">Chuyển đổi địa chỉ</button>
@@ -463,26 +464,40 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     if(values.includes(current))$('province').value=current;
     $('wardLabel').textContent=dir==='oldToNew'?'Xã / phường cũ':'Xã / phường mới';
     $('provinceLabel').textContent=dir==='oldToNew'?'Tỉnh / thành phố cũ':'Tỉnh / thành phố mới';
+    $('districtLabel').textContent='Quận / huyện / thị xã / thành phố cũ';
     $('districtFieldWrap').style.display=dir==='oldToNew'?'block':'none';
-    $('district').disabled=dir!=='oldToNew';
+    $('adminInputGrid').className=dir==='oldToNew'?'form-grid three':'form-grid two';
+    $('adminSelectHint').textContent=dir==='oldToNew'
+      ?'Chọn lần lượt tỉnh/thành phố → quận/huyện → xã/phường. Nếu dữ liệu nghị quyết không ghi huyện, có thể chọn “Tất cả/không xác định huyện”.'
+      :'Chọn tỉnh/thành phố mới → xã/phường mới.';
     if(dir!=='oldToNew')$('district').value='';
     updateDistrictSuggestions();updateWardSuggestions();updateProvinceInfo();
   }
 
   function updateDistrictSuggestions(){
     const dir=$('direction').value;const p=$('province').value;const pn=normalize(p);
-    const values=dir==='oldToNew'
-      ?wardMappings.filter(x=>!p||normalize(x.oldProvince)===pn).map(x=>x.oldDistrict)
-      :[];
-    $('districtSuggestions').innerHTML=unique(values.filter(Boolean)).sort((a,b)=>a.localeCompare(b,'vi')).map(v=>`<option value="${escapeHtml(v)}"></option>`).join('');
+    if(dir!=='oldToNew'){
+      $('district').innerHTML='<option value="">-- Không áp dụng cấp huyện --</option>';
+      return;
+    }
+    const current=$('district').value;
+    const values=unique(wardMappings.filter(x=>p&&normalize(x.oldProvince)===pn).map(x=>String(x.oldDistrict||'').trim()).filter(Boolean)).sort((a,b)=>a.localeCompare(b,'vi'));
+    $('district').innerHTML='<option value="">-- Tất cả / không xác định huyện --</option>'+values.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+    if(values.includes(current))$('district').value=current;
   }
 
   function updateWardSuggestions(){
-    const dir=$('direction').value;const p=$('province').value;const pn=normalize(p);const district=normalize($('district').value);
-    const values=dir==='oldToNew'
-      ?wardMappings.filter(x=>(!p||normalize(x.oldProvince)===pn)&&(!district||!String(x.oldDistrict||'').trim()||normalize(x.oldDistrict)===district)).map(x=>x.oldWard)
-      :wardMappings.filter(x=>!p||normalize(x.newProvince)===pn).map(x=>x.newWard);
-    $('wardSuggestions').innerHTML=unique(values.filter(Boolean)).sort((a,b)=>a.localeCompare(b,'vi')).map(v=>`<option value="${escapeHtml(v)}"></option>`).join('');
+    const dir=$('direction').value;const p=$('province').value;const pn=normalize(p);const district=normalize($('district').value);const current=$('ward').value;
+    let values=[];
+    if(p){
+      values=dir==='oldToNew'
+        ?wardMappings.filter(x=>normalize(x.oldProvince)===pn&&(!district||!String(x.oldDistrict||'').trim()||normalize(x.oldDistrict)===district)).map(x=>x.oldWard)
+        :wardMappings.filter(x=>normalize(x.newProvince)===pn).map(x=>x.newWard);
+    }
+    values=unique(values.filter(Boolean)).sort((a,b)=>a.localeCompare(b,'vi'));
+    const placeholder=dir==='oldToNew'?'-- Chọn xã/phường cũ --':'-- Chọn xã/phường mới --';
+    $('ward').innerHTML=`<option value="">${placeholder}</option>`+values.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+    if(values.includes(current))$('ward').value=current;
   }
 
   function updateProvinceInfo(){
@@ -832,8 +847,8 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   });
 
   $('direction').addEventListener('change',()=>{populateProvinceSelect();clearInputs()});
-  $('province').addEventListener('change',()=>{updateDistrictSuggestions();updateWardSuggestions();updateProvinceInfo()});
-  $('district').addEventListener('input',updateWardSuggestions);
+  $('province').addEventListener('change',()=>{$('district').value='';$('ward').value='';updateDistrictSuggestions();updateWardSuggestions();updateProvinceInfo()});
+  $('district').addEventListener('change',()=>{$('ward').value='';updateWardSuggestions()});
   $('lookupSearch').addEventListener('input',renderMergeTable);
   $('lookupFilter').addEventListener('change',renderMergeTable);
   $('mappingFile').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{await importMappings(f)}catch(err){alert('Không nhập được dữ liệu: '+(err.message||err))}e.target.value=''});

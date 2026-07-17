@@ -15,6 +15,11 @@
     "icon": "🔗"
   },
   {
+    "title": "Chuyển đổi địa chỉ sau sáp nhập",
+    "path": "ChuyenDoiDiaChi.html",
+    "icon": "🔗"
+  },
+  {
     "title": "Danh sách dự án thi công",
     "path": "Danh sach du an.html",
     "icon": "🔗"

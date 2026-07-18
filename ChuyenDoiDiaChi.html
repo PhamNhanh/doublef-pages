@@ -175,6 +175,8 @@
     }
 
     .map-card .bd{padding:12px}
+    .map-card{margin-top:14px}
+    .grid > div:first-child .map-card .map-shell{height:560px}
     .map-shell{
       position:relative;height:520px;overflow:hidden;border:1px solid var(--line);
       border-radius:18px;background:linear-gradient(180deg,#eaf3ff,#f8fbff 58%,#eef6ef);
@@ -348,6 +350,31 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
         </section>
       </div>
     </div>
+
+    <div class="card map-card">
+      <div class="hd">
+        <div class="title">Bản đồ Việt Nam 3D</div>
+        <span class="tag" id="mapProvinceTag">34 tỉnh/thành</span>
+      </div>
+      <div class="bd">
+        <div class="map-shell">
+          <div id="vietnam3DMap" aria-label="Bản đồ 3D các tỉnh, thành Việt Nam"></div>
+          <div class="map-overlay">
+            <strong id="mapSelectedName">Bản đồ 34 tỉnh/thành</strong>
+            <span id="mapStatusText">Đang tải dữ liệu địa giới hành chính…</span>
+          </div>
+          <div class="map-controls">
+            <button type="button" id="mapResetBtn" title="Xem toàn quốc">Toàn quốc</button>
+            <button type="button" id="mapTiltBtn" title="Đổi góc nhìn 3D">Đổi góc 3D</button>
+          </div>
+          <div class="map-legend">
+            <span><i class="legend-swatch legend-normal"></i>Tỉnh/thành khác</span>
+            <span><i class="legend-swatch legend-active"></i>Đang chọn</span>
+          </div>
+        </div>
+        <div class="note">Chọn tỉnh/thành trong biểu mẫu hoặc bấm trực tiếp trên bản đồ. Phần đang chọn sẽ được nâng khối và đưa vào trung tâm.</div>
+      </div>
+    </div>
   </div>
 
   <div>
@@ -385,30 +412,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       </div>
     </div>
 
-    <div class="card map-card">
-      <div class="hd">
-        <div class="title">Bản đồ Việt Nam 3D</div>
-        <span class="tag" id="mapProvinceTag">34 tỉnh/thành</span>
-      </div>
-      <div class="bd">
-        <div class="map-shell">
-          <div id="vietnam3DMap" aria-label="Bản đồ 3D các tỉnh, thành Việt Nam"></div>
-          <div class="map-overlay">
-            <strong id="mapSelectedName">Bản đồ 34 tỉnh/thành</strong>
-            <span id="mapStatusText">Đang tải dữ liệu địa giới hành chính…</span>
-          </div>
-          <div class="map-controls">
-            <button type="button" id="mapResetBtn" title="Xem toàn quốc">Toàn quốc</button>
-            <button type="button" id="mapTiltBtn" title="Đổi góc nhìn 3D">Đổi góc 3D</button>
-          </div>
-          <div class="map-legend">
-            <span><i class="legend-swatch legend-normal"></i>Tỉnh/thành khác</span>
-            <span><i class="legend-swatch legend-active"></i>Đang chọn</span>
-          </div>
-        </div>
-        <div class="note">Chọn tỉnh/thành trong biểu mẫu hoặc bấm trực tiếp trên bản đồ. Phần đang chọn sẽ được nâng khối và đưa vào trung tâm.</div>
-      </div>
-    </div>
+
   </div>
 </main>
 

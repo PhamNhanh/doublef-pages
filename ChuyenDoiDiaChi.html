@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chuyển đổi địa chỉ sau sáp nhập</title>
+  <link rel="icon" type="image/png" href="LOGODF.png" />
+  <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
+  <link rel="apple-touch-icon" href="LOGODF.png" />
   <!-- Bản dữ liệu đầy đủ 34 tỉnh/thành - cập nhật ngày 17/07/2026 -->
   <style>
     :root{
@@ -50,10 +53,22 @@
     .brand{display:flex;align-items:center;gap:14px;min-width:280px;max-width:830px}
     .logo{
       width:50px;height:50px;border-radius:16px;display:grid;place-items:center;flex:none;
-      color:#fff;font-weight:950;font-size:18px;letter-spacing:-.04em;
+      color:#fff;font-weight:950;font-size:18px;letter-spacing:-.04em;overflow:hidden;
       background:linear-gradient(135deg,var(--brand),#1e3a8a);
       border:1px solid rgba(255,255,255,.25);box-shadow:0 14px 30px rgba(15,23,42,.18)
     }
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    .province-summary{margin-top:12px;border:1px solid var(--line);border-radius:16px;padding:13px;background:linear-gradient(180deg,#fff,#f8fafc)}
+    .province-summary h3{margin:0 0 7px;font-size:13px;color:var(--brand);text-transform:uppercase;letter-spacing:.045em}
+    .province-summary p{margin:0;color:#475467;font-size:13px;line-height:1.65}
+    .landmark-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+    .landmark-item{display:inline-flex;align-items:center;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:800}
+    .ward-change{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:10px}
+    .ward-count{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff;text-align:center}
+    .ward-count span{display:block;font-size:11px;color:var(--muted);font-weight:800}
+    .ward-count b{display:block;margin-top:4px;font-size:20px;color:var(--brand)}
+    .ward-arrow{font-weight:950;color:var(--brand2);font-size:18px}
+    @media(max-width:560px){.ward-change{grid-template-columns:1fr}.ward-arrow{transform:rotate(90deg);text-align:center}}
     h1{margin:0;font-size:21px;letter-spacing:-.025em;font-weight:900;color:var(--brand)}
     .sub{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5;max-width:88ch}
     .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
@@ -163,7 +178,7 @@
 <header>
   <div class="topbar">
     <div class="brand">
-      <div class="logo" aria-hidden="true">ĐC</div>
+      <div class="logo"><img src="LOGODF.png" alt="CloudFirst" onerror="this.remove();this.parentElement.textContent='CF'"></div>
       <div>
         <h1>Chuyển đổi địa chỉ sau sáp nhập</h1>
         <p class="sub">Tra cứu và chuyển đổi địa chỉ hành chính hai chiều. Dữ liệu cấp tỉnh 63 → 34 và danh sách xã/phường của 34 tỉnh/thành đã được nạp sẵn từ các nghị quyết năm 2025; vẫn có thể nhập bổ sung bằng CSV hoặc JSON.</p>
@@ -424,6 +439,45 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     {id:34,newName:'Cao Bằng',newType:'Tỉnh',old:['Cao Bằng'],center:'Giữ nguyên',area:null,population:null}
   ];
 
+
+
+  const PROVINCE_FEATURES = {
+    'Tuyên Quang':{description:'Vùng đất giàu truyền thống cách mạng, nổi bật với cảnh quan núi đá, hồ và hệ sinh thái rừng đặc trưng của miền núi phía Bắc.',landmarks:['Khu di tích Tân Trào','Hồ Na Hang','Cột cờ Lũng Cú','Cao nguyên đá Đồng Văn']},
+    'Lào Cai':{description:'Cửa ngõ vùng Tây Bắc, hấp dẫn bởi núi cao, ruộng bậc thang, khí hậu mát mẻ và bản sắc văn hóa đa dân tộc.',landmarks:['Sa Pa','Đỉnh Fansipan','Mù Cang Chải','Hồ Thác Bà']},
+    'Thái Nguyên':{description:'Trung tâm vùng trung du và miền núi phía Bắc, nổi tiếng với văn hóa trà, hồ núi và các di tích lịch sử cách mạng.',landmarks:['Hồ Núi Cốc','ATK Định Hóa','Đồi chè Tân Cương','Hồ Ba Bể']},
+    'Phú Thọ':{description:'Vùng đất cội nguồn dân tộc, hội tụ không gian văn hóa trung du, hồ núi, suối khoáng và nhiều di sản lịch sử.',landmarks:['Đền Hùng','Tam Đảo','Hồ Hòa Bình','Suối khoáng Kim Bôi']},
+    'Bắc Ninh':{description:'Vùng văn hóa Kinh Bắc giàu truyền thống quan họ, đình chùa cổ, làng nghề và cảnh quan trung du đặc sắc.',landmarks:['Chùa Dâu','Đền Đô','Chùa Vĩnh Nghiêm','Tây Yên Tử']},
+    'Hưng Yên':{description:'Miền quê đồng bằng Bắc Bộ thanh bình, nổi bật với phố Hiến, làng cổ, đền chùa và hệ thống sông ngòi trù phú.',landmarks:['Phố Hiến','Đền Trần','Chùa Keo','Biển Đồng Châu']},
+    'Hải Phòng':{description:'Thành phố cảng năng động với biển đảo, vịnh đẹp, di sản lịch sử và nét văn hóa đặc trưng vùng duyên hải Bắc Bộ.',landmarks:['Vịnh Lan Hạ','Quần đảo Cát Bà','Đồ Sơn','Côn Sơn - Kiếp Bạc']},
+    'Ninh Bình':{description:'Vùng đất hội tụ di sản cố đô, núi đá vôi, sông nước và những công trình tâm linh nổi tiếng.',landmarks:['Tràng An','Tam Cốc - Bích Động','Cố đô Hoa Lư','Chùa Bái Đính']},
+    'Quảng Trị':{description:'Miền đất giàu truyền thống lịch sử, sở hữu bờ biển đẹp, hang động kỳ vĩ và nhiều di tích gắn với chiến tranh cách mạng.',landmarks:['Phong Nha - Kẻ Bàng','Động Thiên Đường','Thành cổ Quảng Trị','Địa đạo Vịnh Mốc']},
+    'Đà Nẵng':{description:'Đô thị biển hiện đại kết hợp hài hòa giữa bãi biển, bán đảo, núi rừng và di sản văn hóa miền Trung.',landmarks:['Bà Nà Hills','Bán đảo Sơn Trà','Phố cổ Hội An','Thánh địa Mỹ Sơn']},
+    'Quảng Ngãi':{description:'Vùng đất duyên hải gắn với biển đảo, núi rừng Tây Nguyên và những giá trị địa chất, văn hóa đặc sắc.',landmarks:['Đảo Lý Sơn','Núi Thiên Ấn','Măng Đen','Vườn quốc gia Chư Mom Ray']},
+    'Gia Lai':{description:'Không gian đại ngàn giàu bản sắc Tây Nguyên, kết hợp với dải duyên hải và nhiều cảnh quan biển, núi, thác đẹp.',landmarks:['Biển Hồ T’Nưng','Núi lửa Chư Đăng Ya','Kỳ Co','Eo Gió']},
+    'Khánh Hòa':{description:'Vùng duyên hải Nam Trung Bộ nổi tiếng với vịnh biển trong xanh, đảo đẹp, tháp Chăm và khí hậu nhiều nắng.',landmarks:['Vịnh Nha Trang','Vịnh Vĩnh Hy','Tháp Bà Ponagar','Hang Rái']},
+    'Lâm Đồng':{description:'Cao nguyên rộng lớn với khí hậu mát mẻ, rừng thông, thác nước, hồ và các cung đường cảnh quan đặc sắc.',landmarks:['Đà Lạt','Hồ Tà Đùng','Mũi Né','Thác Pongour']},
+    'Đắk Lắk':{description:'Vùng đất cà phê và văn hóa cồng chiêng, kết nối đại ngàn Tây Nguyên với bờ biển và thắng cảnh miền duyên hải.',landmarks:['Buôn Đôn','Hồ Lắk','Gành Đá Đĩa','Bãi Xép']},
+    'Hồ Chí Minh':{description:'Đô thị đầu tàu phía Nam, hội tụ không gian thành thị sôi động, vùng công nghiệp hiện đại và du lịch biển đảo.',landmarks:['Dinh Độc Lập','Địa đạo Củ Chi','Hồ Trị An','Bãi Sau Vũng Tàu']},
+    'Đồng Nai':{description:'Vùng kinh tế năng động với hệ sinh thái rừng, hồ, thác và nhiều khu du lịch sinh thái ở miền Đông Nam Bộ.',landmarks:['Vườn quốc gia Cát Tiên','Hồ Trị An','Núi Bà Rá','Thác Mơ']},
+    'Tây Ninh':{description:'Vùng đất cửa ngõ phía Tây Nam Bộ, nổi bật với núi, hồ, tín ngưỡng Cao Đài và hệ sinh thái sông nước.',landmarks:['Núi Bà Đen','Tòa Thánh Tây Ninh','Làng nổi Tân Lập','Nhà Trăm Cột']},
+    'Cần Thơ':{description:'Trung tâm vùng Đồng bằng sông Cửu Long, mang đậm nét chợ nổi, miệt vườn, sông nước và văn hóa cộng đồng.',landmarks:['Chợ nổi Cái Răng','Bến Ninh Kiều','Chùa Dơi','Khu bảo tồn Lung Ngọc Hoàng']},
+    'Vĩnh Long':{description:'Miền sông nước trù phú với cù lao, vườn cây ăn trái, làng nghề và nét văn hóa giao thoa đặc sắc.',landmarks:['Cù lao An Bình','Ao Bà Om','Cồn Phụng','Chùa Vàm Ray']},
+    'Đồng Tháp':{description:'Vùng đất sen hồng, nổi tiếng với cảnh quan mùa nước nổi, vườn cây trái và hệ sinh thái ngập nước.',landmarks:['Vườn quốc gia Tràm Chim','Khu di tích Xẻo Quýt','Chùa Vĩnh Tràng','Cù lao Thới Sơn']},
+    'Cà Mau':{description:'Cực Nam Tổ quốc với rừng ngập mặn, biển bãi bồi, hệ sinh thái U Minh và văn hóa sông nước đặc trưng.',landmarks:['Mũi Cà Mau','Vườn quốc gia U Minh Hạ','Hòn Đá Bạc','Nhà Công tử Bạc Liêu']},
+    'An Giang':{description:'Vùng biên giới Tây Nam đa dạng cảnh quan núi, đồng bằng, biển đảo và văn hóa tâm linh đặc sắc.',landmarks:['Núi Sam','Rừng tràm Trà Sư','Phú Quốc','Hà Tiên']},
+    'Hà Nội':{description:'Thủ đô nghìn năm văn hiến với khu phố cổ, hồ, di tích lịch sử và hệ thống làng nghề phong phú.',landmarks:['Hồ Hoàn Kiếm','Văn Miếu - Quốc Tử Giám','Hoàng thành Thăng Long','Chùa Hương']},
+    'Huế':{description:'Cố đô giàu bản sắc với quần thể di tích triều Nguyễn, sông Hương, núi Ngự và văn hóa cung đình.',landmarks:['Đại Nội Huế','Chùa Thiên Mụ','Lăng Khải Định','Vịnh Lăng Cô']},
+    'Lai Châu':{description:'Miền núi Tây Bắc hùng vĩ với đèo cao, thác nước, bản làng và nhiều nét văn hóa dân tộc nguyên sơ.',landmarks:['Đèo Ô Quy Hồ','Pu Ta Leng','Cao nguyên Sìn Hồ','Thác Tác Tình']},
+    'Điện Biên':{description:'Vùng đất lịch sử giữa núi rừng Tây Bắc, nổi bật với chiến trường Điện Biên Phủ và cảnh quan thung lũng rộng lớn.',landmarks:['Đồi A1','Hầm Đờ Cát','Cánh đồng Mường Thanh','Hồ Pá Khoang']},
+    'Sơn La':{description:'Cao nguyên Tây Bắc với khí hậu trong lành, đồi chè, rừng mận và những công trình thủy điện lớn.',landmarks:['Mộc Châu','Tà Xùa','Nhà tù Sơn La','Hồ thủy điện Sơn La']},
+    'Lạng Sơn':{description:'Vùng biên cương giàu cảnh quan núi đá, hang động, chợ vùng biên và các di tích lịch sử lâu đời.',landmarks:['Động Tam Thanh','Núi Tô Thị','Mẫu Sơn','Ải Chi Lăng']},
+    'Quảng Ninh':{description:'Vùng di sản biển đảo nổi tiếng quốc tế, kết hợp với không gian tâm linh, đô thị mỏ và biên giới sôi động.',landmarks:['Vịnh Hạ Long','Yên Tử','Đảo Cô Tô','Vịnh Bái Tử Long']},
+    'Thanh Hóa':{description:'Vùng đất địa linh nhân kiệt với biển, núi, di sản thành cổ và nhiều khu bảo tồn thiên nhiên.',landmarks:['Thành Nhà Hồ','Biển Sầm Sơn','Pù Luông','Suối cá Cẩm Lương']},
+    'Nghệ An':{description:'Quê hương Chủ tịch Hồ Chí Minh, có bờ biển dài, miền núi rộng lớn và nhiều di tích văn hóa lịch sử.',landmarks:['Làng Sen quê Bác','Biển Cửa Lò','Vườn quốc gia Pù Mát','Đảo chè Thanh Chương']},
+    'Hà Tĩnh':{description:'Miền đất giàu truyền thống văn hóa, sở hữu biển đẹp, núi rừng và nhiều di tích gắn với danh nhân, lịch sử.',landmarks:['Biển Thiên Cầm','Ngã ba Đồng Lộc','Chùa Hương Tích','Hồ Kẻ Gỗ']},
+    'Cao Bằng':{description:'Vùng non nước biên cương với thác lớn, hang động, hồ núi và Công viên địa chất toàn cầu.',landmarks:['Thác Bản Giốc','Động Ngườm Ngao','Hồ Thang Hen','Khu di tích Pác Bó']}
+  };
+
   const $=id=>document.getElementById(id);
   const escapeHtml=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
   const stripPrefix=s=>String(s??'').replace(/^\s*(tỉnh|thành phố|tp\.?|tp)\s+/i,'').trim();
@@ -500,17 +554,48 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     if(values.includes(current))$('ward').value=current;
   }
 
+  function countProvinceWards(m){
+    const oldProvinceSet=new Set(m.old.map(normalize));
+    const oldUnits=new Set();
+    const newUnits=new Set();
+    wardMappings.forEach(x=>{
+      if(oldProvinceSet.has(normalize(x.oldProvince))&&x.oldWard){
+        oldUnits.add([normalize(x.oldProvince),normalize(x.oldDistrict||''),normalize(x.oldWard)].join('|'));
+      }
+      if(normalize(x.newProvince)===normalize(m.newName)&&x.newWard){
+        newUnits.add(normalize(x.newWard));
+      }
+    });
+    return {oldCount:oldUnits.size,newCount:newUnits.size};
+  }
+
   function updateProvinceInfo(){
     const dir=$('direction').value;const value=$('province').value;
     const m=dir==='oldToNew'?findByOldProvince(value):findByNewProvince(value);
     if(!m){$('provinceInfo').innerHTML='<div class="note" style="margin:0">Chọn một tỉnh/thành trong biểu mẫu để xem thông tin.</div>';return}
+    const feature=PROVINCE_FEATURES[m.newName]||{description:'Thông tin giới thiệu đang được cập nhật.',landmarks:[]};
+    const counts=countProvinceWards(m);
     $('provinceInfo').innerHTML=`
-      <div style="font-weight:950;font-size:17px;color:var(--brand)">${escapeHtml(fullProvinceName(m))}</div>
-      <div class="note" style="margin-top:5px">${m.old.length===1?'Không sáp nhập':'Hợp nhất '+m.old.map(x=>provinceLabel(x,false)).join(', ')}</div>
+      <div style="font-weight:950;font-size:18px;color:var(--brand)">${escapeHtml(fullProvinceName(m))}</div>
+      <div class="note" style="margin-top:5px">${m.old.length===1?'Không sáp nhập cấp tỉnh':'Hợp nhất '+m.old.map(x=>provinceLabel(x,false)).join(', ')}</div>
       <div class="status-box" style="margin-top:10px">
         <div class="status-row"><span>Trung tâm hành chính</span><b>${escapeHtml(m.center)}</b></div>
         <div class="status-row"><span>Diện tích</span><b>${fmtArea(m.area)}</b></div>
         <div class="status-row"><span>Dân số</span><b>${fmtPopulation(m.population)}</b></div>
+      </div>
+      <div class="ward-change">
+        <div class="ward-count"><span>Đơn vị cấp xã cũ</span><b>${counts.oldCount.toLocaleString('vi-VN')}</b></div>
+        <div class="ward-arrow">→</div>
+        <div class="ward-count"><span>Đơn vị cấp xã mới</span><b>${counts.newCount.toLocaleString('vi-VN')}</b></div>
+      </div>
+      <div class="note" style="margin-top:7px">Số liệu xã/phường được tính trực tiếp từ bộ dữ liệu ánh xạ đang nạp trong ứng dụng.</div>
+      <div class="province-summary">
+        <h3>Vài nét tiêu biểu</h3>
+        <p>${escapeHtml(feature.description)}</p>
+      </div>
+      <div class="province-summary">
+        <h3>Danh lam, thắng cảnh nổi bật</h3>
+        <div class="landmark-list">${feature.landmarks.map(x=>`<span class="landmark-item">${escapeHtml(x)}</span>`).join('')}</div>
       </div>`;
   }
 

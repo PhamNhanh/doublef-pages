@@ -246,9 +246,19 @@
     .qr-upload-note{font-size:11px;color:var(--muted);line-height:1.55;text-align:center;margin-top:6px}
     .donate-info{margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.donate-row{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-top:1px dashed var(--line);font-size:12px}.donate-row:first-child{border-top:0}.donate-row span{color:var(--muted)}.donate-row b{text-align:right;color:var(--brand)}
     .donate-note{grid-column:1/-1;border:1px solid #fed7aa;background:#fff7ed;color:#9a3412;border-radius:15px;padding:12px 14px;font-size:12px;line-height:1.6}
+    .donate-thanks{grid-column:1/-1;border:1px solid #bfdbfe;background:linear-gradient(180deg,#eff6ff,#f8fbff);color:#1e3a8a;border-radius:15px;padding:14px 16px;font-size:13px;line-height:1.65;text-align:center;font-weight:700}
+    .donate-edit-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .donate-admin-form{display:none;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.donate-admin-form.show{display:block}
+    .donate-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.donate-admin-grid .full{grid-column:1/-1}.donate-admin-form label{display:block;font-size:11px;color:var(--muted);font-weight:800;margin-bottom:5px}.donate-admin-form input,.donate-admin-form textarea{font-size:12px;min-height:38px}.donate-admin-form textarea{min-height:72px}
+    .qr-editor{position:fixed;inset:0;z-index:6000;background:rgba(15,23,42,.72);display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(7px)}.qr-editor.show{display:flex}
+    .qr-editor-panel{width:min(620px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 28px 80px rgba(15,23,42,.38);padding:18px}
+    .qr-editor-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.qr-editor-head h3{margin:0;font-size:18px}.qr-editor-close{width:36px;height:36px;padding:0;border-radius:11px}
+    .qr-crop-stage{width:min(420px,100%);aspect-ratio:1;margin:0 auto;border-radius:18px;overflow:hidden;border:2px solid #93c5fd;background:#eaf2ff;position:relative}.qr-crop-stage canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}.qr-crop-stage canvas:active{cursor:grabbing}
+    .qr-editor-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}.qr-editor-controls label{font-size:11px;color:var(--muted);font-weight:800}.qr-editor-controls input{padding:0;min-height:32px}
+    .qr-editor-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:15px}
     .back-top{position:fixed;right:18px;bottom:18px;z-index:1200;width:42px;height:42px;border-radius:50%;padding:0;display:none;place-items:center;background:#0f172a;color:#fff;border:0;box-shadow:0 12px 30px rgba(15,23,42,.24)}.back-top.show{display:grid}
     @media(max-width:900px){.site-header{position:relative}.app-toolbar-wrap{position:sticky;top:0;padding:0 12px}.app-toolbar{overflow-x:auto;flex-wrap:nowrap}.toolbar-nav,.toolbar-actions{flex-wrap:nowrap}.tool-link{white-space:nowrap}.toolbar-sep{display:none}.hero-strip{padding:0 12px}.footer-inner{grid-template-columns:1fr 1fr}.donate-body{grid-template-columns:1fr}}
-    @media(max-width:620px){.footer-inner{grid-template-columns:1fr}.hero-strip-inner{align-items:flex-start;flex-direction:column}.hero-badges{justify-content:flex-start}.donate-head{padding:24px 20px}.donate-head h2{font-size:22px}.donate-body{padding:15px}.qr-placeholder{width:180px}.toolbar-actions .tool-link:not(.donate){display:none}}
+    @media(max-width:620px){.footer-inner{grid-template-columns:1fr}.hero-strip-inner{align-items:flex-start;flex-direction:column}.hero-badges{justify-content:flex-start}.donate-head{padding:24px 20px}.donate-head h2{font-size:22px}.donate-body{padding:15px}.qr-placeholder{width:180px}.toolbar-actions .tool-link:not(.donate){display:none}.donate-admin-grid,.qr-editor-controls{grid-template-columns:1fr}}
     @media print{.app-toolbar-wrap,.hero-strip,.site-footer,.donate-page,.back-top{display:none!important}}
 
   </style>
@@ -507,12 +517,14 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   <div class="donate-panel">
     <div class="donate-head"><button class="donate-close" type="button" id="donateClose" aria-label="Đóng">×</button><h2 id="donateTitle">Ủng hộ duy trì công cụ</h2><p>Sự hỗ trợ của bạn giúp duy trì dữ liệu, cải thiện bản đồ và tiếp tục hoàn thiện công cụ tra cứu miễn phí cho cộng đồng.</p></div>
     <div class="donate-body">
-      <div class="donate-card"><h3>Quét mã QR</h3><p>Ảnh QR chỉ được thay đổi sau khi nhập đúng mật khẩu quản trị.</p><div class="qr-placeholder" id="donateQrPreview"><span id="donateQrEmpty">CHƯA CÓ ẢNH QR<br>Nhấn “Tải ảnh QR lên” để cập nhật</span><img id="donateQrImage" alt="Mã QR ủng hộ" hidden></div><input type="file" id="donateQrFile" accept="image/png,image/jpeg,image/webp" hidden><div class="qr-upload-actions"><button class="blue" type="button" id="uploadDonateQrBtn">Tải ảnh QR lên</button><button class="danger" type="button" id="removeDonateQrBtn">Xóa ảnh QR</button></div><div class="qr-upload-note">Hỗ trợ PNG, JPG hoặc WEBP; dung lượng tối đa 3 MB. Ảnh được lưu cục bộ trên trình duyệt này.</div><div style="text-align:center;margin-top:12px"><button class="primary" type="button" id="copyDonateContent">Sao chép nội dung ủng hộ</button></div></div>
-      <div class="donate-card"><h3>Thông tin chuyển khoản</h3><p>Các trường đang để mẫu để tránh hiển thị nhầm thông tin thanh toán. Chỉnh trực tiếp trong mã HTML trước khi phát hành.</p><div class="donate-info"><div class="donate-row"><span>Ngân hàng</span><b>CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Số tài khoản</span><b>CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Chủ tài khoản</span><b>CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Nội dung</span><b>UNG HO CONG CU DIA CHI</b></div></div><div class="hr"></div><h3>Hình thức hỗ trợ khác</h3><p>Đóng góp dữ liệu, báo lỗi ánh xạ, đề xuất cải tiến giao diện hoặc chia sẻ công cụ tới người cần sử dụng.</p></div>
+      <div class="donate-card"><h3>Quét mã QR</h3><p>Ảnh QR chỉ được thay đổi sau khi nhập đúng mật khẩu quản trị. Sau khi chọn ảnh, bạn có thể phóng to, di chuyển và cắt thành ảnh vuông.</p><div class="qr-placeholder" id="donateQrPreview"><span id="donateQrEmpty">CHƯA CÓ ẢNH QR<br>Nhấn “Tải ảnh QR lên” để cập nhật</span><img id="donateQrImage" alt="Mã QR ủng hộ" hidden></div><input type="file" id="donateQrFile" accept="image/png,image/jpeg,image/webp" hidden><div class="qr-upload-actions"><button class="blue" type="button" id="uploadDonateQrBtn">Tải ảnh QR lên</button><button type="button" id="editDonateQrBtn">Chỉnh ảnh QR</button><button class="danger" type="button" id="removeDonateQrBtn">Xóa ảnh QR</button></div><div class="qr-upload-note">Hỗ trợ PNG, JPG hoặc WEBP; tối đa 3 MB. Ảnh sau khi cắt được lưu cục bộ trên trình duyệt này.</div><div style="text-align:center;margin-top:12px"><button class="primary" type="button" id="copyDonateContent">Sao chép nội dung ủng hộ</button></div></div>
+      <div class="donate-card"><h3>Thông tin chuyển khoản</h3><p>Thông tin được lưu cục bộ trên trình duyệt và chỉ chỉnh sửa được sau khi nhập đúng mật khẩu quản trị.</p><div class="donate-info"><div class="donate-row"><span>Ngân hàng</span><b id="donateBankView">CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Số tài khoản</span><b id="donateAccountView">CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Chủ tài khoản</span><b id="donateOwnerView">CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Nội dung</span><b id="donateContentView">UNG HO CONG CU DIA CHI</b></div></div><div class="donate-edit-actions"><button class="blue" type="button" id="editDonateInfoBtn">Điều chỉnh thông tin</button></div><div class="donate-admin-form" id="donateAdminForm"><div class="donate-admin-grid"><div><label>Ngân hàng</label><input id="donateBankInput" placeholder="Ví dụ: Vietcombank"></div><div><label>Số tài khoản</label><input id="donateAccountInput" placeholder="Nhập số tài khoản"></div><div><label>Chủ tài khoản</label><input id="donateOwnerInput" placeholder="Nhập tên chủ tài khoản"></div><div><label>Nội dung chuyển khoản</label><input id="donateContentInput" placeholder="Nội dung chuyển khoản"></div><div class="full"><label>Lời cảm ơn</label><textarea id="donateThanksInput" placeholder="Nhập lời cảm ơn gửi đến người ủng hộ"></textarea></div></div><div class="donate-edit-actions"><button class="primary" type="button" id="saveDonateInfoBtn">Lưu thông tin</button><button type="button" id="cancelDonateInfoBtn">Hủy</button></div></div><div class="hr"></div><h3>Hình thức hỗ trợ khác</h3><p>Đóng góp dữ liệu, báo lỗi ánh xạ, đề xuất cải tiến giao diện hoặc chia sẻ công cụ tới người cần sử dụng.</p></div>
+      <div class="donate-thanks" id="donateThanksView">Trân trọng cảm ơn sự đồng hành và hỗ trợ của bạn dành cho công cụ.</div>
       <div class="donate-note"><b>Lưu ý an toàn:</b> Chỉ công bố mã QR và tài khoản đã được xác minh. Không yêu cầu người dùng cung cấp mật khẩu, mã OTP hoặc thông tin đăng nhập ngân hàng.</div>
     </div>
   </div>
 </section>
+<section class="qr-editor" id="qrEditor" role="dialog" aria-modal="true" aria-labelledby="qrEditorTitle"><div class="qr-editor-panel"><div class="qr-editor-head"><h3 id="qrEditorTitle">Điều chỉnh ảnh QR</h3><button class="qr-editor-close" type="button" id="qrEditorClose">×</button></div><div class="qr-crop-stage"><canvas id="qrCropCanvas" width="600" height="600"></canvas></div><div class="qr-editor-controls"><label>Phóng to<input type="range" id="qrZoom" min="1" max="3" step="0.01" value="1"></label><label>Dịch ngang<input type="range" id="qrOffsetX" min="-100" max="100" step="1" value="0"></label><label>Dịch dọc<input type="range" id="qrOffsetY" min="-100" max="100" step="1" value="0"></label></div><div class="qr-editor-actions"><button type="button" id="qrEditorReset">Đặt lại</button><button type="button" id="qrEditorCancel">Hủy</button><button class="primary" type="button" id="qrEditorSave">Cắt và lưu ảnh vuông</button></div></div></section>
 <button class="back-top" id="backTopBtn" type="button" title="Lên đầu trang">↑</button>
 
 <div class="toast" id="toast"><span class="ticon">✓</span><span id="toastText">—</span></div>
@@ -1226,7 +1238,8 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     document.getElementById('donateClose')?.addEventListener('click',closeDonate);
     donatePage?.addEventListener('click',e=>{if(e.target===donatePage)closeDonate();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&donatePage?.classList.contains('show'))closeDonate();});
-    const DONATE_QR_STORAGE_KEY='address_merger_donate_qr_v1';
+    const DONATE_QR_STORAGE_KEY='address_merger_donate_qr_v2';
+    const DONATE_INFO_STORAGE_KEY='address_merger_donate_info_v1';
     const DONATE_QR_PASSWORD='Nhanhtvt1412@';
     const qrPreview=document.getElementById('donateQrPreview');
     const qrImage=document.getElementById('donateQrImage');
@@ -1255,9 +1268,91 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       }
       return true;
     }
+    const qrEditor=document.getElementById('qrEditor');
+    const cropCanvas=document.getElementById('qrCropCanvas');
+    const cropCtx=cropCanvas?.getContext('2d');
+    const zoomInput=document.getElementById('qrZoom');
+    const offsetXInput=document.getElementById('qrOffsetX');
+    const offsetYInput=document.getElementById('qrOffsetY');
+    let cropImage=null;
+    let cropSource='';
+
+    function openQrEditor(dataUrl){
+      const img=new Image();
+      img.onload=()=>{cropImage=img;cropSource=dataUrl;zoomInput.value='1';offsetXInput.value='0';offsetYInput.value='0';drawCrop();qrEditor.classList.add('show');};
+      img.onerror=()=>toast('Không đọc được ảnh QR');
+      img.src=dataUrl;
+    }
+    function closeQrEditor(){qrEditor.classList.remove('show');cropImage=null;cropSource='';}
+    function drawCrop(){
+      if(!cropImage||!cropCtx)return;
+      const w=cropCanvas.width,h=cropCanvas.height;
+      cropCtx.clearRect(0,0,w,h);
+      cropCtx.fillStyle='#ffffff';cropCtx.fillRect(0,0,w,h);
+      const cover=Math.max(w/cropImage.naturalWidth,h/cropImage.naturalHeight);
+      const scale=cover*Number(zoomInput.value||1);
+      const dw=cropImage.naturalWidth*scale,dh=cropImage.naturalHeight*scale;
+      const maxX=Math.max(0,(dw-w)/2),maxY=Math.max(0,(dh-h)/2);
+      const dx=(w-dw)/2+(Number(offsetXInput.value||0)/100)*maxX;
+      const dy=(h-dh)/2+(Number(offsetYInput.value||0)/100)*maxY;
+      cropCtx.imageSmoothingEnabled=true;cropCtx.imageSmoothingQuality='high';
+      cropCtx.drawImage(cropImage,dx,dy,dw,dh);
+    }
+    [zoomInput,offsetXInput,offsetYInput].forEach(el=>el?.addEventListener('input',drawCrop));
+    document.getElementById('qrEditorReset')?.addEventListener('click',()=>{zoomInput.value='1';offsetXInput.value='0';offsetYInput.value='0';drawCrop();});
+    document.getElementById('qrEditorClose')?.addEventListener('click',closeQrEditor);
+    document.getElementById('qrEditorCancel')?.addEventListener('click',closeQrEditor);
+    qrEditor?.addEventListener('click',e=>{if(e.target===qrEditor)closeQrEditor();});
+    document.getElementById('qrEditorSave')?.addEventListener('click',()=>{
+      if(!cropCanvas)return;
+      const dataUrl=cropCanvas.toDataURL('image/png',0.96);
+      try{localStorage.setItem(DONATE_QR_STORAGE_KEY,dataUrl);renderDonateQr(dataUrl);closeQrEditor();toast('Đã cắt và lưu ảnh QR vuông');}
+      catch(_){toast('Không thể lưu ảnh; hãy chọn ảnh nhỏ hơn');}
+    });
+
+    const defaultDonateInfo={bank:'CHƯA CẬP NHẬT',account:'CHƯA CẬP NHẬT',owner:'CHƯA CẬP NHẬT',content:'UNG HO CONG CU DIA CHI',thanks:'Trân trọng cảm ơn sự đồng hành và hỗ trợ của bạn dành cho công cụ.'};
+    let donateInfo={...defaultDonateInfo};
+    function renderDonateInfo(){
+      document.getElementById('donateBankView').textContent=donateInfo.bank||defaultDonateInfo.bank;
+      document.getElementById('donateAccountView').textContent=donateInfo.account||defaultDonateInfo.account;
+      document.getElementById('donateOwnerView').textContent=donateInfo.owner||defaultDonateInfo.owner;
+      document.getElementById('donateContentView').textContent=donateInfo.content||defaultDonateInfo.content;
+      document.getElementById('donateThanksView').textContent=donateInfo.thanks||defaultDonateInfo.thanks;
+    }
+    function loadDonateInfo(){try{donateInfo={...defaultDonateInfo,...JSON.parse(localStorage.getItem(DONATE_INFO_STORAGE_KEY)||'{}')}}catch(_){donateInfo={...defaultDonateInfo}}renderDonateInfo();}
+    function openDonateInfoEditor(){
+      if(!verifyDonatePassword('điều chỉnh thông tin chuyển khoản'))return;
+      document.getElementById('donateBankInput').value=donateInfo.bank==='CHƯA CẬP NHẬT'?'':donateInfo.bank;
+      document.getElementById('donateAccountInput').value=donateInfo.account==='CHƯA CẬP NHẬT'?'':donateInfo.account;
+      document.getElementById('donateOwnerInput').value=donateInfo.owner==='CHƯA CẬP NHẬT'?'':donateInfo.owner;
+      document.getElementById('donateContentInput').value=donateInfo.content;
+      document.getElementById('donateThanksInput').value=donateInfo.thanks;
+      document.getElementById('donateAdminForm').classList.add('show');
+    }
+    document.getElementById('editDonateInfoBtn')?.addEventListener('click',openDonateInfoEditor);
+    document.getElementById('cancelDonateInfoBtn')?.addEventListener('click',()=>document.getElementById('donateAdminForm').classList.remove('show'));
+    document.getElementById('saveDonateInfoBtn')?.addEventListener('click',()=>{
+      donateInfo={
+        bank:document.getElementById('donateBankInput').value.trim()||defaultDonateInfo.bank,
+        account:document.getElementById('donateAccountInput').value.trim()||defaultDonateInfo.account,
+        owner:document.getElementById('donateOwnerInput').value.trim()||defaultDonateInfo.owner,
+        content:document.getElementById('donateContentInput').value.trim()||defaultDonateInfo.content,
+        thanks:document.getElementById('donateThanksInput').value.trim()||defaultDonateInfo.thanks
+      };
+      try{localStorage.setItem(DONATE_INFO_STORAGE_KEY,JSON.stringify(donateInfo));renderDonateInfo();document.getElementById('donateAdminForm').classList.remove('show');toast('Đã lưu thông tin ủng hộ');}
+      catch(_){toast('Không thể lưu thông tin trên trình duyệt');}
+    });
+
     try{renderDonateQr(localStorage.getItem(DONATE_QR_STORAGE_KEY)||'');}catch(_){renderDonateQr('');}
+    loadDonateInfo();
     document.getElementById('uploadDonateQrBtn')?.addEventListener('click',()=>{
       if(verifyDonatePassword('tải ảnh QR lên'))qrFile.click();
+    });
+    document.getElementById('editDonateQrBtn')?.addEventListener('click',()=>{
+      if(!verifyDonatePassword('chỉnh ảnh QR'))return;
+      const current=qrImage?.src||'';
+      if(!current){toast('Chưa có ảnh QR để chỉnh');return;}
+      openQrEditor(current);
     });
     qrFile?.addEventListener('change',()=>{
       const file=qrFile.files&&qrFile.files[0];
@@ -1266,10 +1361,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){toast('Chỉ chấp nhận ảnh PNG, JPG hoặc WEBP');return;}
       if(file.size>3*1024*1024){toast('Ảnh QR vượt quá 3 MB');return;}
       const reader=new FileReader();
-      reader.onload=()=>{
-        try{localStorage.setItem(DONATE_QR_STORAGE_KEY,String(reader.result));renderDonateQr(String(reader.result));toast('Đã cập nhật ảnh QR');}
-        catch(e){toast('Không thể lưu ảnh; hãy chọn ảnh nhỏ hơn');}
-      };
+      reader.onload=()=>openQrEditor(String(reader.result));
       reader.onerror=()=>toast('Không đọc được tệp ảnh');
       reader.readAsDataURL(file);
     });
@@ -1281,7 +1373,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     });
 
     document.getElementById('copyDonateContent')?.addEventListener('click',async()=>{
-      const text='UNG HO CONG CU DIA CHI';
+      const text=donateInfo.content||defaultDonateInfo.content;
       try{await navigator.clipboard.writeText(text);toast('Đã sao chép nội dung chuyển khoản');}catch(_){toast('Nội dung: '+text);}
     });
     function activateTab(name){

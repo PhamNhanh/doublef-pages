@@ -257,6 +257,30 @@
     .qr-editor-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}.qr-editor-controls label{font-size:11px;color:var(--muted);font-weight:800}.qr-editor-controls input{padding:0;min-height:32px}
     .qr-editor-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:15px}
     .back-top{position:fixed;right:18px;bottom:18px;z-index:1200;width:42px;height:42px;border-radius:50%;padding:0;display:none;place-items:center;background:#0f172a;color:#fff;border:0;box-shadow:0 12px 30px rgba(15,23,42,.24)}.back-top.show{display:grid}
+
+    /* Hộp thư góp ý */
+    .feedback-page{position:fixed;inset:0;z-index:5100;background:rgba(15,23,42,.62);display:none;align-items:flex-start;justify-content:center;padding:28px 14px;overflow:auto;backdrop-filter:blur(8px)}
+    .feedback-page.show{display:flex;animation:donateFade .18s ease both}
+    .feedback-panel{width:min(900px,100%);border:1px solid rgba(255,255,255,.6);border-radius:26px;background:#fff;box-shadow:0 30px 90px rgba(15,23,42,.3);overflow:hidden}
+    .feedback-head{position:relative;padding:28px 30px;background:radial-gradient(600px 260px at 90% 0%,rgba(56,189,248,.24),transparent 65%),linear-gradient(135deg,#0f172a,#164e63);color:#fff}
+    .feedback-head h2{margin:0;font-size:26px}.feedback-head p{max-width:720px;margin:8px 0 0;color:#dbeafe;font-size:13px;line-height:1.65}
+    .feedback-close{position:absolute;right:18px;top:18px;width:38px;height:38px;padding:0;border-radius:12px;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;box-shadow:none;font-size:20px}
+    .feedback-body{padding:22px;display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+    .feedback-card{border:1px solid var(--line);border-radius:18px;padding:17px;background:linear-gradient(180deg,#fff,#f8fafc)}
+    .feedback-card h3{margin:0 0 8px;font-size:15px;color:var(--brand)}.feedback-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+    .feedback-form{display:grid;gap:10px;margin-top:12px}.feedback-form label{display:block;font-size:11px;color:var(--muted);font-weight:800;margin-bottom:5px}
+    .feedback-form textarea{min-height:150px}.feedback-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+    .feedback-list{display:grid;gap:10px;margin-top:12px;max-height:430px;overflow:auto;padding-right:3px}
+    .feedback-item{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+    .feedback-item-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:6px}.feedback-item-head b{font-size:13px}.feedback-item-head span{font-size:11px;color:var(--subtle);white-space:nowrap}
+    .feedback-item-body{font-size:12px;line-height:1.6;color:#334155;white-space:pre-wrap;word-break:break-word}
+    .feedback-empty{border:1px dashed var(--line2);border-radius:14px;padding:18px;text-align:center;color:var(--muted);font-size:12px}
+    .feedback-note{grid-column:1/-1;border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:15px;padding:12px 14px;font-size:12px;line-height:1.6}
+    .feedback-email{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-weight:800;color:#1d4ed8;text-decoration:none}
+    .tool-link.feedback{background:linear-gradient(135deg,#ecfeff,#cffafe);border-color:#a5f3fc;color:#0e7490}
+    @media(max-width:900px){.feedback-body{grid-template-columns:1fr}}
+    @media(max-width:620px){.feedback-head{padding:24px 20px}.feedback-head h2{font-size:22px}.feedback-body{padding:15px}.feedback-actions button{width:100%}}
+
     @media(max-width:900px){.site-header{position:relative}.app-toolbar-wrap{position:sticky;top:0;padding:0 12px}.app-toolbar{overflow-x:auto;flex-wrap:nowrap}.toolbar-nav,.toolbar-actions{flex-wrap:nowrap}.tool-link{white-space:nowrap}.toolbar-sep{display:none}.hero-strip{padding:0 12px}.footer-inner{grid-template-columns:1fr 1fr}.donate-body{grid-template-columns:1fr}}
     @media(max-width:620px){.footer-inner{grid-template-columns:1fr}.hero-strip-inner{align-items:flex-start;flex-direction:column}.hero-badges{justify-content:flex-start}.donate-head{padding:24px 20px}.donate-head h2{font-size:22px}.donate-body{padding:15px}.qr-placeholder{width:180px}.toolbar-actions .tool-link:not(.donate){display:none}.donate-admin-grid,.qr-editor-controls{grid-template-columns:1fr}}
     @media print{.app-toolbar-wrap,.hero-strip,.site-footer,.donate-page,.back-top{display:none!important}}
@@ -294,6 +318,7 @@
       <span class="toolbar-sep"></span>
       <button class="tool-link" type="button" id="toolbarPrint"><span class="tool-icon">▣</span>In/PDF</button>
       <button class="tool-link" type="button" id="toolbarTop"><span class="tool-icon">↑</span>Lên đầu</button>
+      <button class="tool-link feedback" type="button" data-open-feedback><span class="tool-icon">✉</span>Góp ý</button>
       <button class="tool-link donate" type="button" data-open-donate><span class="tool-icon">♥</span>Ủng hộ</button>
     </div>
   </nav>
@@ -508,7 +533,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       <div><div class="footer-title">Chuyển đổi địa chỉ sau sáp nhập</div><div class="footer-text">Công cụ hỗ trợ tra cứu địa chỉ hành chính hai chiều, tổng hợp dữ liệu 34 tỉnh/thành và bản đồ Việt Nam 3D. Kết quả nên được đối chiếu với văn bản chính thức khi sử dụng trong hồ sơ pháp lý.</div></div>
     </div>
     <div class="footer-col"><h4>Điều hướng</h4><a href="#top" class="footer-link">Trang đầu</a><a href="#" class="footer-link" data-footer-tab="convert">Chuyển đổi địa chỉ</a><a href="#" class="footer-link" data-footer-tab="lookup">Tra cứu sáp nhập</a><a href="#mapSection" class="footer-link">Bản đồ Việt Nam 3D</a></div>
-    <div class="footer-col"><h4>Hỗ trợ</h4><a href="#" class="footer-link" data-footer-tab="data">Dữ liệu xã/phường</a><a href="#" class="footer-link" data-open-donate>Ủng hộ dự án</a><a href="javascript:window.print()" class="footer-link">In hoặc lưu PDF</a><span class="footer-link">Phiên bản dữ liệu: 2026</span></div>
+    <div class="footer-col"><h4>Hỗ trợ</h4><a href="#" class="footer-link" data-footer-tab="data">Dữ liệu xã/phường</a><a href="#" class="footer-link" data-open-feedback>Hộp thư góp ý</a><a href="mailto:Nhanhtvt111@gmail.com?subject=G%C3%B3p%20%C3%BD%20c%C3%B4ng%20c%E1%BB%A5%20chuy%E1%BB%83n%20%C4%91%E1%BB%95i%20%C4%91%E1%BB%8Ba%20ch%E1%BB%89" class="footer-link">Gửi góp ý qua email</a><a href="#" class="footer-link" data-open-donate>Ủng hộ dự án</a><a href="javascript:window.print()" class="footer-link">In hoặc lưu PDF</a><span class="footer-link">Phiên bản dữ liệu: 2026</span></div>
   </div>
   <div class="footer-bottom"><span>© 2026 Công cụ chuyển đổi địa chỉ. Phục vụ mục đích tham khảo.</span><span>Thiết kế chạy trực tiếp trên trình duyệt • Không tự động gửi dữ liệu lên máy chủ</span></div>
 </footer>
@@ -524,6 +549,35 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     </div>
   </div>
 </section>
+
+<section class="feedback-page" id="feedbackPage" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+  <div class="feedback-panel">
+    <div class="feedback-head">
+      <button class="feedback-close" type="button" id="feedbackClose" aria-label="Đóng">×</button>
+      <h2 id="feedbackTitle">Hộp thư góp ý</h2>
+      <p>Mỗi ý tưởng của bạn đều có thể trở thành một công cụ hữu ích cho cộng đồng. Hãy chia sẻ đề xuất, báo lỗi hoặc nhu cầu hỗ trợ học tập, làm việc và giải trí.</p>
+    </div>
+    <div class="feedback-body">
+      <div class="feedback-card">
+        <h3>Gửi góp ý trực tiếp trên web</h3>
+        <p>Góp ý trực tiếp sẽ được ghi dưới tên <b>Người dùng ẩn danh</b> và lưu trên trình duyệt hiện tại.</p>
+        <div class="feedback-form">
+          <div><label>Chủ đề</label><select id="feedbackTopic"><option>Ý tưởng công cụ mới</option><option>Báo lỗi dữ liệu hoặc chuyển đổi</option><option>Góp ý giao diện</option><option>Đề xuất tính năng</option><option>Khác</option></select></div>
+          <div><label>Nội dung góp ý</label><textarea id="feedbackMessage" maxlength="2000" placeholder="Nhập nội dung góp ý của bạn..."></textarea></div>
+          <div class="feedback-actions"><button class="primary" type="button" id="feedbackSubmit">Gửi góp ý ẩn danh</button><button type="button" id="feedbackClear">Xóa nội dung</button></div>
+        </div>
+        <a class="feedback-email" id="feedbackMailLink" href="mailto:Nhanhtvt111@gmail.com?subject=G%C3%B3p%20%C3%BD%20c%C3%B4ng%20c%E1%BB%A5%20chuy%E1%BB%83n%20%C4%91%E1%BB%95i%20%C4%91%E1%BB%8Ba%20ch%E1%BB%89">✉ Gửi qua email: Nhanhtvt111@gmail.com</a>
+      </div>
+      <div class="feedback-card">
+        <h3>Góp ý đã gửi trên thiết bị này</h3>
+        <p>Các bình luận bên dưới chỉ hiển thị trên trình duyệt này vì trang hiện chưa kết nối máy chủ lưu trữ.</p>
+        <div class="feedback-list" id="feedbackList"></div>
+      </div>
+      <div class="feedback-note"><b>Lưu ý:</b> Góp ý trực tiếp được lưu cục bộ bằng localStorage và không tự động gửi đến hộp thư quản trị. Để chúng tôi chắc chắn nhận được nội dung, hãy sử dụng nút gửi qua email.</div>
+    </div>
+  </div>
+</section>
+
 <section class="qr-editor" id="qrEditor" role="dialog" aria-modal="true" aria-labelledby="qrEditorTitle"><div class="qr-editor-panel"><div class="qr-editor-head"><h3 id="qrEditorTitle">Điều chỉnh ảnh QR</h3><button class="qr-editor-close" type="button" id="qrEditorClose">×</button></div><div class="qr-crop-stage"><canvas id="qrCropCanvas" width="600" height="600"></canvas></div><div class="qr-editor-controls"><label>Phóng to<input type="range" id="qrZoom" min="1" max="3" step="0.01" value="1"></label><label>Dịch ngang<input type="range" id="qrOffsetX" min="-100" max="100" step="1" value="0"></label><label>Dịch dọc<input type="range" id="qrOffsetY" min="-100" max="100" step="1" value="0"></label></div><div class="qr-editor-actions"><button type="button" id="qrEditorReset">Đặt lại</button><button type="button" id="qrEditorCancel">Hủy</button><button class="primary" type="button" id="qrEditorSave">Cắt và lưu ảnh vuông</button></div></div></section>
 <button class="back-top" id="backTopBtn" type="button" title="Lên đầu trang">↑</button>
 
@@ -1392,5 +1446,49 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   })();
 
 </script>
+
+<script>
+(function(){
+  const FEEDBACK_STORAGE_KEY='address_merger_feedback_v1';
+  const feedbackPage=document.getElementById('feedbackPage');
+  const feedbackMessage=document.getElementById('feedbackMessage');
+  const feedbackTopic=document.getElementById('feedbackTopic');
+  const feedbackList=document.getElementById('feedbackList');
+  function readFeedback(){try{return JSON.parse(localStorage.getItem(FEEDBACK_STORAGE_KEY)||'[]')}catch(_){return []}}
+  function writeFeedback(items){localStorage.setItem(FEEDBACK_STORAGE_KEY,JSON.stringify(items.slice(0,50)))}
+  function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function formatTime(iso){try{return new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(new Date(iso))}catch(_){return iso}}
+  function renderFeedback(){
+    const items=readFeedback();
+    if(!items.length){feedbackList.innerHTML='<div class="feedback-empty">Chưa có góp ý nào được lưu trên thiết bị này.</div>';return;}
+    feedbackList.innerHTML=items.map(item=>`<div class="feedback-item"><div class="feedback-item-head"><b>Người dùng ẩn danh · ${escapeHtml(item.topic)}</b><span>${escapeHtml(formatTime(item.createdAt))}</span></div><div class="feedback-item-body">${escapeHtml(item.message)}</div></div>`).join('');
+  }
+  function openFeedback(e){e?.preventDefault();feedbackPage?.classList.add('show');document.body.style.overflow='hidden';renderFeedback();setTimeout(()=>feedbackMessage?.focus(),120)}
+  function closeFeedback(){feedbackPage?.classList.remove('show');document.body.style.overflow=''}
+  document.querySelectorAll('[data-open-feedback]').forEach(el=>el.addEventListener('click',openFeedback));
+  document.getElementById('feedbackClose')?.addEventListener('click',closeFeedback);
+  feedbackPage?.addEventListener('click',e=>{if(e.target===feedbackPage)closeFeedback()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&feedbackPage?.classList.contains('show'))closeFeedback()});
+  document.getElementById('feedbackClear')?.addEventListener('click',()=>{feedbackMessage.value='';feedbackMessage.focus()});
+  document.getElementById('feedbackSubmit')?.addEventListener('click',()=>{
+    const message=feedbackMessage.value.trim();
+    if(message.length<5){alert('Vui lòng nhập nội dung góp ý từ 5 ký tự trở lên.');feedbackMessage.focus();return;}
+    const items=readFeedback();items.unshift({topic:feedbackTopic.value,message,createdAt:new Date().toISOString(),author:'Người dùng ẩn danh'});
+    try{writeFeedback(items);feedbackMessage.value='';renderFeedback();if(typeof toast==='function')toast('Đã lưu góp ý ẩn danh trên trình duyệt');else alert('Đã lưu góp ý ẩn danh trên trình duyệt.');}
+    catch(_){alert('Không thể lưu góp ý trên trình duyệt này.');}
+  });
+  document.getElementById('feedbackMailLink')?.addEventListener('click',function(){
+    const topic=feedbackTopic.value||'Góp ý công cụ chuyển đổi địa chỉ';
+    const message=feedbackMessage.value.trim();
+    const subject=encodeURIComponent('[Góp ý] '+topic);
+    const body=encodeURIComponent((message||'Nhập nội dung góp ý tại đây')+'
+
+Người gửi: Người dùng ẩn danh');
+    this.href='mailto:Nhanhtvt111@gmail.com?subject='+subject+'&body='+body;
+  });
+  renderFeedback();
+})();
+</script>
+
 </body>
 </html>

@@ -7,6 +7,8 @@
   <link rel="icon" type="image/png" href="LOGODF.png" />
   <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
   <link rel="apple-touch-icon" href="LOGODF.png" />
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <!-- Bản dữ liệu đầy đủ 34 tỉnh/thành - cập nhật ngày 17/07/2026 -->
   <style>
     :root{
@@ -171,6 +173,33 @@
       .hd,.bd{padding:12px}.tabs{width:100%;overflow:auto;flex-wrap:nowrap;padding-bottom:2px}.tab{white-space:nowrap;flex:0 0 auto}
       .direction{grid-template-columns:1fr}.swap{width:100%}.table-wrap{max-height:470px}th,td{font-size:12px;padding:8px}
     }
+
+    .map-card .bd{padding:12px}
+    .map-shell{
+      position:relative;height:520px;overflow:hidden;border:1px solid var(--line);
+      border-radius:18px;background:linear-gradient(180deg,#eaf3ff,#f8fbff 58%,#eef6ef);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8)
+    }
+    #vietnam3DMap{position:absolute;inset:0}
+    .map-overlay{
+      position:absolute;left:12px;top:12px;z-index:4;max-width:calc(100% - 24px);
+      border:1px solid rgba(255,255,255,.75);border-radius:14px;padding:9px 11px;
+      background:rgba(255,255,255,.90);backdrop-filter:blur(10px);box-shadow:0 10px 24px rgba(15,23,42,.12)
+    }
+    .map-overlay strong{display:block;font-size:13px;color:var(--brand)}
+    .map-overlay span{display:block;margin-top:2px;font-size:11px;color:var(--muted);line-height:1.4}
+    .map-controls{position:absolute;right:12px;top:12px;z-index:4;display:flex;gap:6px}
+    .map-controls button{padding:7px 9px;border-radius:10px;font-size:12px;background:rgba(255,255,255,.94)}
+    .map-legend{
+      position:absolute;left:12px;bottom:12px;z-index:4;display:flex;gap:12px;align-items:center;
+      border:1px solid rgba(255,255,255,.75);border-radius:12px;padding:7px 10px;
+      background:rgba(255,255,255,.90);font-size:11px;color:var(--muted);box-shadow:0 8px 18px rgba(15,23,42,.10)
+    }
+    .legend-swatch{width:15px;height:10px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+    .legend-normal{background:#93b4dc}.legend-active{background:#1d4ed8;box-shadow:0 4px 0 #15376e}
+    .maplibregl-ctrl-attrib{font-size:9px!important;background:rgba(255,255,255,.72)!important}
+    .maplibregl-ctrl-bottom-right{bottom:3px;right:3px}
+    @media(max-width:720px){.map-shell{height:430px}.map-overlay{right:12px}.map-controls{top:auto;bottom:48px}.map-legend{max-width:calc(100% - 24px);flex-wrap:wrap}}
     @media print{header,.tabs,.actions,.upload-zone,.toast{display:none!important}body{background:#fff}main{max-width:none;padding:0}.card{box-shadow:none;border:0}.panel{display:block!important}}
   </style>
 </head>
@@ -353,6 +382,31 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       <div class="hd"><div class="title">Thông tin tỉnh/thành đang chọn</div></div>
       <div class="bd" id="provinceInfo">
         <div class="note" style="margin:0">Chọn một tỉnh/thành trong biểu mẫu để xem thông tin.</div>
+      </div>
+    </div>
+
+    <div class="card map-card">
+      <div class="hd">
+        <div class="title">Bản đồ Việt Nam 3D</div>
+        <span class="tag" id="mapProvinceTag">34 tỉnh/thành</span>
+      </div>
+      <div class="bd">
+        <div class="map-shell">
+          <div id="vietnam3DMap" aria-label="Bản đồ 3D các tỉnh, thành Việt Nam"></div>
+          <div class="map-overlay">
+            <strong id="mapSelectedName">Bản đồ 34 tỉnh/thành</strong>
+            <span id="mapStatusText">Đang tải dữ liệu địa giới hành chính…</span>
+          </div>
+          <div class="map-controls">
+            <button type="button" id="mapResetBtn" title="Xem toàn quốc">Toàn quốc</button>
+            <button type="button" id="mapTiltBtn" title="Đổi góc nhìn 3D">Đổi góc 3D</button>
+          </div>
+          <div class="map-legend">
+            <span><i class="legend-swatch legend-normal"></i>Tỉnh/thành khác</span>
+            <span><i class="legend-swatch legend-active"></i>Đang chọn</span>
+          </div>
+        </div>
+        <div class="note">Chọn tỉnh/thành trong biểu mẫu hoặc bấm trực tiếp trên bản đồ. Phần đang chọn sẽ được nâng khối và đưa vào trung tâm.</div>
       </div>
     </div>
   </div>
@@ -572,7 +626,8 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   function updateProvinceInfo(){
     const dir=$('direction').value;const value=$('province').value;
     const m=dir==='oldToNew'?findByOldProvince(value):findByNewProvince(value);
-    if(!m){$('provinceInfo').innerHTML='<div class="note" style="margin:0">Chọn một tỉnh/thành trong biểu mẫu để xem thông tin.</div>';return}
+    if(!m){$('provinceInfo').innerHTML='<div class="note" style="margin:0">Chọn một tỉnh/thành trong biểu mẫu để xem thông tin.</div>';resetVietnamMap();return}
+    highlightProvinceOnMap(m.newName);
     const feature=PROVINCE_FEATURES[m.newName]||{description:'Thông tin giới thiệu đang được cập nhật.',landmarks:[]};
     const counts=countProvinceWards(m);
     $('provinceInfo').innerHTML=`
@@ -597,6 +652,121 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
         <h3>Danh lam, thắng cảnh nổi bật</h3>
         <div class="landmark-list">${feature.landmarks.map(x=>`<span class="landmark-item">${escapeHtml(x)}</span>`).join('')}</div>
       </div>`;
+  }
+
+
+  const PROVINCE_GEOJSON_URL='https://raw.githubusercontent.com/adminvsrm/GISData/main/Vietnam%20Administrative%20Divisions%20%28Post-2025%29%20-%20%C4%90%C6%A1n%20v%E1%BB%8B%20h%C3%A0nh%20ch%C3%ADnh%20Vi%E1%BB%87t%20Nam%20%28T%E1%BB%AB%202025%29/Provinces.geojson';
+  let vietnamMap=null;
+  let provinceGeoJSON=null;
+  let mapTiltIndex=0;
+
+  function emptyFeatureCollection(){return {type:'FeatureCollection',features:[]}}
+  function featureDisplayName(feature){
+    const p=feature?.properties||{};
+    const preferred=['name','Name','NAME','ten_tinh','TEN_TINH','province','Province','PROVINCE','newName','Ten','TEN','ADM1_VI','VARNAME_1','NAME_1'];
+    for(const k of preferred){if(p[k]!==undefined&&String(p[k]).trim())return String(p[k]).trim()}
+    const values=Object.values(p).filter(v=>typeof v==='string'&&v.trim());
+    return values.find(v=>MERGERS.some(m=>normalize(v)===normalize(m.newName)||normalize(v).includes(normalize(m.newName))))||values[0]||'';
+  }
+  function resolveMergerFromFeature(feature){
+    const values=[featureDisplayName(feature),...Object.values(feature?.properties||{}).map(String)];
+    for(const value of values){
+      const n=normalize(value).replace(/^(tinh|thanh pho)\s+/,'');
+      const m=MERGERS.find(x=>{
+        const mn=normalize(x.newName).replace(/^(tinh|thanh pho)\s+/,'');
+        return n===mn||n.endsWith(' '+mn)||n.includes(mn);
+      });
+      if(m)return m;
+    }
+    return null;
+  }
+  function geometryCoords(geometry){
+    if(!geometry)return[];
+    const out=[];
+    (function walk(x){
+      if(!Array.isArray(x))return;
+      if(typeof x[0]==='number'&&typeof x[1]==='number'){out.push(x);return}
+      x.forEach(walk);
+    })(geometry.coordinates);
+    return out;
+  }
+  function featureBounds(feature){
+    const coords=geometryCoords(feature?.geometry);
+    if(!coords.length)return null;
+    let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+    coords.forEach(([x,y])=>{minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y)});
+    return [[minX,minY],[maxX,maxY]];
+  }
+  function allGeoBounds(fc){
+    const all=(fc?.features||[]).flatMap(f=>geometryCoords(f.geometry));
+    if(!all.length)return [[102,8],[110,24]];
+    let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+    all.forEach(([x,y])=>{minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y)});
+    return [[minX,minY],[maxX,maxY]];
+  }
+  function setMapMessage(name,status){
+    if($('mapSelectedName'))$('mapSelectedName').textContent=name||'Bản đồ 34 tỉnh/thành';
+    if($('mapStatusText'))$('mapStatusText').textContent=status||'';
+    if($('mapProvinceTag'))$('mapProvinceTag').textContent=name||'34 tỉnh/thành';
+  }
+  function resetVietnamMap(){
+    if(!vietnamMap||!provinceGeoJSON)return;
+    const src=vietnamMap.getSource('selected-province');if(src)src.setData(emptyFeatureCollection());
+    vietnamMap.fitBounds(allGeoBounds(provinceGeoJSON),{padding:38,duration:900,pitch:38,bearing:-8,maxZoom:5.2});
+    setMapMessage('Bản đồ 34 tỉnh/thành','Bấm vào một tỉnh hoặc chọn từ biểu mẫu để xem nổi khối 3D.');
+  }
+  function highlightProvinceOnMap(provinceName,animate=true){
+    if(!provinceName)return;
+    if(!vietnamMap||!provinceGeoJSON){setMapMessage(provinceName,'Bản đồ đang tải, vị trí sẽ tự hiển thị sau.');return}
+    const target=provinceGeoJSON.features.find(f=>{
+      const m=resolveMergerFromFeature(f);return m&&normalize(m.newName)===normalize(provinceName);
+    });
+    if(!target){setMapMessage(provinceName,'Chưa ghép được tên tỉnh với dữ liệu bản đồ.');return}
+    const src=vietnamMap.getSource('selected-province');
+    if(src)src.setData({type:'FeatureCollection',features:[target]});
+    const b=featureBounds(target);
+    if(b)vietnamMap.fitBounds(b,{padding:{top:92,bottom:82,left:46,right:46},duration:animate?1050:0,maxZoom:7.4,pitch:50,bearing:-14});
+    setMapMessage(fullProvinceName(findByNewProvince(provinceName)||{newName:provinceName,newType:'Tỉnh'}),'Đã làm nổi khối tỉnh/thành đang chọn.');
+  }
+  function chooseProvinceFromMap(feature){
+    const m=resolveMergerFromFeature(feature);if(!m)return;
+    const dir=$('direction').value;
+    const value=dir==='oldToNew'?(m.old[0]||m.newName):m.newName;
+    $('province').value=value;
+    $('district').value='';$('ward').value='';
+    updateDistrictSuggestions();updateWardSuggestions();updateProvinceInfo();
+    document.querySelector('.map-card')?.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  async function initVietnam3DMap(){
+    if(!window.maplibregl){setMapMessage('Không tải được bản đồ','Thiếu thư viện MapLibre. Kiểm tra kết nối Internet.');return}
+    try{
+      vietnamMap=new maplibregl.Map({
+        container:'vietnam3DMap',
+        style:{version:8,sources:{},layers:[{id:'background',type:'background',paint:{'background-color':'#eaf3ff'}}]},
+        center:[106.2,16.2],zoom:4.2,pitch:42,bearing:-8,antialias:true,attributionControl:true
+      });
+      vietnamMap.addControl(new maplibregl.NavigationControl({showCompass:true,showZoom:true}),'bottom-right');
+      const response=await fetch(PROVINCE_GEOJSON_URL,{cache:'force-cache'});
+      if(!response.ok)throw new Error('Không tải được GeoJSON: '+response.status);
+      provinceGeoJSON=await response.json();
+      await new Promise(resolve=>vietnamMap.loaded()?resolve():vietnamMap.once('load',resolve));
+      vietnamMap.addSource('vietnam-provinces',{type:'geojson',data:provinceGeoJSON});
+      vietnamMap.addSource('selected-province',{type:'geojson',data:emptyFeatureCollection()});
+      vietnamMap.addLayer({id:'provinces-shadow',type:'fill',source:'vietnam-provinces',paint:{'fill-color':'#294f7a','fill-opacity':.22,'fill-translate':[0,7],'fill-translate-anchor':'viewport'}});
+      vietnamMap.addLayer({id:'provinces-fill',type:'fill',source:'vietnam-provinces',paint:{'fill-color':'#8fb2dc','fill-opacity':.92}});
+      vietnamMap.addLayer({id:'provinces-line',type:'line',source:'vietnam-provinces',paint:{'line-color':'#ffffff','line-width':1.25,'line-opacity':.95}});
+      vietnamMap.addLayer({id:'selected-extrusion',type:'fill-extrusion',source:'selected-province',paint:{'fill-extrusion-color':'#1d4ed8','fill-extrusion-height':26000,'fill-extrusion-base':0,'fill-extrusion-opacity':.98,'fill-extrusion-vertical-gradient':true}});
+      vietnamMap.addLayer({id:'selected-line',type:'line',source:'selected-province',paint:{'line-color':'#fbbf24','line-width':3}});
+      vietnamMap.on('mouseenter','provinces-fill',()=>vietnamMap.getCanvas().style.cursor='pointer');
+      vietnamMap.on('mouseleave','provinces-fill',()=>vietnamMap.getCanvas().style.cursor='');
+      vietnamMap.on('click','provinces-fill',e=>{if(e.features?.[0])chooseProvinceFromMap(e.features[0])});
+      resetVietnamMap();
+      const current=$('province').value;
+      const selected=$('direction').value==='oldToNew'?findByOldProvince(current):findByNewProvince(current);
+      if(selected)highlightProvinceOnMap(selected.newName,false);
+    }catch(err){
+      console.error(err);setMapMessage('Không tải được bản đồ','Cần kết nối Internet để tải địa giới 34 tỉnh/thành. Các chức năng chuyển đổi địa chỉ vẫn hoạt động bình thường.');
+    }
   }
 
   function composeAddress(house,street,ward,district,province){
@@ -923,6 +1093,10 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     if(t.id==='convertBtn'){convertSingle();return}
     if(t.id==='copyResultBtn'){if(!lastResult){toast('Chưa có kết quả để sao chép');return}navigator.clipboard?.writeText(lastResult).then(()=>toast('Đã sao chép kết quả')).catch(()=>toast('Không sao chép được'));return}
     if(t.id==='clearBtn'){clearInputs();return}
+    if(t.id==='mapResetBtn'){resetVietnamMap();return}
+    if(t.id==='mapTiltBtn'){
+      if(vietnamMap){const presets=[{pitch:35,bearing:-8},{pitch:52,bearing:-18},{pitch:62,bearing:18}];mapTiltIndex=(mapTiltIndex+1)%presets.length;vietnamMap.easeTo({...presets[mapTiltIndex],duration:750})}return
+    }
     if(t.id==='bulkConvertBtn'){bulkConvert();return}
     if(t.id==='bulkCopyBtn'){if(!$('bulkOutput').value){toast('Chưa có kết quả');return}navigator.clipboard?.writeText($('bulkOutput').value).then(()=>toast('Đã sao chép')).catch(()=>toast('Không sao chép được'));return}
     if(t.id==='bulkDownloadBtn'){if(!bulkBlobText){toast('Chưa có kết quả');return}downloadText(`ket-qua-chuyen-doi-dia-chi.${bulkBlobExt}`,bulkBlobText,bulkBlobExt==='csv'?'text/csv;charset=utf-8':'text/plain;charset=utf-8');return}
@@ -938,7 +1112,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   $('lookupFilter').addEventListener('change',renderMergeTable);
   $('mappingFile').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{await importMappings(f)}catch(err){alert('Không nhập được dữ liệu: '+(err.message||err))}e.target.value=''});
 
-  populateProvinceSelect();renderMergeTable();loadMappings();
+  populateProvinceSelect();renderMergeTable();loadMappings();initVietnam3DMap();
 </script>
 </body>
 </html>

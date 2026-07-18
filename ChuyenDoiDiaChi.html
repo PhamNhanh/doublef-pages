@@ -759,7 +759,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       vietnamMap.addLayer({id:'provinces-shadow',type:'fill',source:'vietnam-provinces',paint:{'fill-color':'#294f7a','fill-opacity':.22,'fill-translate':[0,7],'fill-translate-anchor':'viewport'}});
       vietnamMap.addLayer({id:'provinces-fill',type:'fill',source:'vietnam-provinces',paint:{'fill-color':'#8fb2dc','fill-opacity':.92}});
       vietnamMap.addLayer({id:'provinces-line',type:'line',source:'vietnam-provinces',paint:{'line-color':'#ffffff','line-width':1.25,'line-opacity':.95}});
-      vietnamMap.addLayer({id:'selected-extrusion',type:'fill-extrusion',source:'selected-province',paint:{'fill-extrusion-color':'#1d4ed8','fill-extrusion-height':26000,'fill-extrusion-base':0,'fill-extrusion-opacity':.98,'fill-extrusion-vertical-gradient':true}});
+      vietnamMap.addLayer({id:'selected-extrusion',type:'fill-extrusion',source:'selected-province',paint:{'fill-extrusion-color':'#1d4ed8','fill-extrusion-height':5500,'fill-extrusion-base':0,'fill-extrusion-opacity':.98,'fill-extrusion-vertical-gradient':true}});
       vietnamMap.addLayer({id:'selected-line',type:'line',source:'selected-province',paint:{'line-color':'#fbbf24','line-width':3}});
       vietnamMap.on('mouseenter','provinces-fill',()=>vietnamMap.getCanvas().style.cursor='pointer');
       vietnamMap.on('mouseleave','provinces-fill',()=>vietnamMap.getCanvas().style.cursor='');

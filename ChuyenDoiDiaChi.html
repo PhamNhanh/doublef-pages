@@ -203,10 +203,58 @@
     .maplibregl-ctrl-bottom-right{bottom:3px;right:3px}
     @media(max-width:720px){.map-shell{height:430px}.map-overlay{right:12px}.map-controls{top:auto;bottom:48px}.map-legend{max-width:calc(100% - 24px);flex-wrap:wrap}}
     @media print{header,.tabs,.actions,.upload-zone,.toast{display:none!important}body{background:#fff}main{max-width:none;padding:0}.card{box-shadow:none;border:0}.panel{display:block!important}}
+
+
+    /* ===== Header, thanh công cụ, footer và trang ủng hộ ===== */
+    .site-header{position:sticky;top:0;z-index:1000;padding-top:10px;background:linear-gradient(180deg,rgba(244,246,248,.98),rgba(244,246,248,.86) 76%,transparent);backdrop-filter:blur(14px)}
+    .site-header .topbar{border-radius:20px 20px 10px 10px}
+    .app-toolbar-wrap{max-width:1320px;margin:0 auto;padding:0 18px;position:sticky;top:98px;z-index:999}
+    .app-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-top:0;border-radius:0 0 18px 18px;background:rgba(255,255,255,.96);box-shadow:0 12px 28px rgba(16,24,40,.08);backdrop-filter:blur(14px)}
+    .toolbar-nav,.toolbar-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .tool-link{display:inline-flex;align-items:center;gap:7px;border:1px solid transparent;background:transparent;color:#475467;padding:8px 10px;border-radius:11px;font-size:12px;font-weight:800;text-decoration:none;cursor:pointer;box-shadow:none}
+    .tool-link:hover,.tool-link.active{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;transform:none;box-shadow:none}
+    .tool-link.donate{background:linear-gradient(135deg,#fff7ed,#ffedd5);border-color:#fed7aa;color:#c2410c}
+    .tool-icon{width:17px;height:17px;display:inline-grid;place-items:center;font-size:15px}
+    .toolbar-sep{width:1px;height:25px;background:var(--line);margin:0 2px}
+    .hero-strip{max-width:1320px;margin:10px auto 0;padding:0 18px}
+    .hero-strip-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 14px;border:1px solid #c7d7fe;border-radius:15px;background:linear-gradient(100deg,#eff6ff,#fff 58%,#fff7ed);box-shadow:var(--shadow2)}
+    .hero-strip strong{font-size:13px;color:#102a56}.hero-strip span{font-size:12px;color:var(--muted)}
+    .hero-badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.hero-badge{font-size:11px;font-weight:800;color:#1d4ed8;border:1px solid #bfdbfe;background:#fff;border-radius:999px;padding:6px 9px}
+    section[id],.card[id]{scroll-margin-top:165px}
+
+    .site-footer{margin-top:30px;border-top:1px solid var(--line);background:linear-gradient(180deg,#fff,#f8fafc)}
+    .footer-inner{max-width:1320px;margin:0 auto;padding:28px 18px 20px;display:grid;grid-template-columns:1.25fr .75fr .75fr;gap:26px}
+    .footer-brand{display:flex;gap:12px;align-items:flex-start}.footer-logo{width:46px;height:46px;border-radius:14px;overflow:hidden;background:#0f172a;color:#fff;display:grid;place-items:center;font-weight:900;flex:none}.footer-logo img{width:100%;height:100%;object-fit:cover}
+    .footer-title{font-weight:950;color:var(--brand);font-size:15px}.footer-text{color:var(--muted);font-size:12px;line-height:1.65;margin-top:5px}
+    .footer-col h4{margin:0 0 9px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--brand)}
+    .footer-link{display:block;color:#475467;text-decoration:none;font-size:12px;padding:5px 0}.footer-link:hover{color:#1d4ed8}
+    .footer-bottom{max-width:1320px;margin:0 auto;padding:13px 18px 18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--subtle);font-size:11px}
+
+    .donate-page{position:fixed;inset:0;z-index:5000;background:rgba(15,23,42,.58);display:none;align-items:flex-start;justify-content:center;padding:28px 14px;overflow:auto;backdrop-filter:blur(8px)}
+    .donate-page.show{display:flex;animation:donateFade .18s ease both}@keyframes donateFade{from{opacity:0}to{opacity:1}}
+    .donate-panel{width:min(930px,100%);border:1px solid rgba(255,255,255,.6);border-radius:26px;background:#fff;box-shadow:0 30px 90px rgba(15,23,42,.3);overflow:hidden;animation:donateUp .24s ease both}@keyframes donateUp{from{transform:translateY(18px);opacity:.65}to{transform:none;opacity:1}}
+    .donate-head{position:relative;padding:30px;background:radial-gradient(600px 260px at 90% 0%,rgba(251,146,60,.26),transparent 65%),linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff}
+    .donate-head h2{margin:0;font-size:27px}.donate-head p{max-width:650px;margin:8px 0 0;color:#dbeafe;font-size:13px;line-height:1.65}
+    .donate-close{position:absolute;right:18px;top:18px;width:38px;height:38px;padding:0;border-radius:12px;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;box-shadow:none;font-size:20px}
+    .donate-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .donate-card{border:1px solid var(--line);border-radius:18px;padding:17px;background:linear-gradient(180deg,#fff,#f8fafc)}
+    .donate-card h3{margin:0 0 8px;font-size:14px;color:var(--brand)}.donate-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+    .qr-placeholder{margin:14px auto;width:210px;aspect-ratio:1;border:2px dashed #94a3b8;border-radius:18px;background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 8px,#eef2f7 8px,#eef2f7 16px);display:grid;place-items:center;text-align:center;padding:12px;color:#64748b;font-size:12px;font-weight:800;overflow:hidden;position:relative}
+    .qr-placeholder.has-image{border-style:solid;background:#fff;padding:8px}
+    .qr-placeholder img{width:100%;height:100%;object-fit:contain;display:block;border-radius:10px}
+    .qr-upload-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0 12px}
+    .qr-upload-note{font-size:11px;color:var(--muted);line-height:1.55;text-align:center;margin-top:6px}
+    .donate-info{margin-top:12px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.donate-row{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-top:1px dashed var(--line);font-size:12px}.donate-row:first-child{border-top:0}.donate-row span{color:var(--muted)}.donate-row b{text-align:right;color:var(--brand)}
+    .donate-note{grid-column:1/-1;border:1px solid #fed7aa;background:#fff7ed;color:#9a3412;border-radius:15px;padding:12px 14px;font-size:12px;line-height:1.6}
+    .back-top{position:fixed;right:18px;bottom:18px;z-index:1200;width:42px;height:42px;border-radius:50%;padding:0;display:none;place-items:center;background:#0f172a;color:#fff;border:0;box-shadow:0 12px 30px rgba(15,23,42,.24)}.back-top.show{display:grid}
+    @media(max-width:900px){.site-header{position:relative}.app-toolbar-wrap{position:sticky;top:0;padding:0 12px}.app-toolbar{overflow-x:auto;flex-wrap:nowrap}.toolbar-nav,.toolbar-actions{flex-wrap:nowrap}.tool-link{white-space:nowrap}.toolbar-sep{display:none}.hero-strip{padding:0 12px}.footer-inner{grid-template-columns:1fr 1fr}.donate-body{grid-template-columns:1fr}}
+    @media(max-width:620px){.footer-inner{grid-template-columns:1fr}.hero-strip-inner{align-items:flex-start;flex-direction:column}.hero-badges{justify-content:flex-start}.donate-head{padding:24px 20px}.donate-head h2{font-size:22px}.donate-body{padding:15px}.qr-placeholder{width:180px}.toolbar-actions .tool-link:not(.donate){display:none}}
+    @media print{.app-toolbar-wrap,.hero-strip,.site-footer,.donate-page,.back-top{display:none!important}}
+
   </style>
 </head>
 <body>
-<header>
+<header class="site-header" id="top">
   <div class="topbar">
     <div class="brand">
       <div class="logo"><img src="LOGODF.png" alt="CloudFirst" onerror="this.remove();this.parentElement.textContent='CF'"></div>
@@ -222,6 +270,31 @@
     </div>
   </div>
 </header>
+
+<div class="app-toolbar-wrap" aria-label="Thanh công cụ chính">
+  <nav class="app-toolbar">
+    <div class="toolbar-nav">
+      <button class="tool-link active" type="button" data-go-tab="convert"><span class="tool-icon">⌂</span>Chuyển đổi</button>
+      <button class="tool-link" type="button" data-go-tab="bulk"><span class="tool-icon">≣</span>Hàng loạt</button>
+      <button class="tool-link" type="button" data-go-tab="lookup"><span class="tool-icon">⌕</span>Tra cứu</button>
+      <button class="tool-link" type="button" data-go-tab="data"><span class="tool-icon">▦</span>Dữ liệu</button>
+      <button class="tool-link" type="button" data-scroll-to="mapSection"><span class="tool-icon">◇</span>Bản đồ 3D</button>
+    </div>
+    <div class="toolbar-actions">
+      <span class="toolbar-sep"></span>
+      <button class="tool-link" type="button" id="toolbarPrint"><span class="tool-icon">▣</span>In/PDF</button>
+      <button class="tool-link" type="button" id="toolbarTop"><span class="tool-icon">↑</span>Lên đầu</button>
+      <button class="tool-link donate" type="button" data-open-donate><span class="tool-icon">♥</span>Ủng hộ</button>
+    </div>
+  </nav>
+</div>
+<div class="hero-strip">
+  <div class="hero-strip-inner">
+    <div><strong>Công cụ chuyển đổi địa chỉ hành chính Việt Nam</strong><br><span>Tra cứu hai chiều, dữ liệu 34 tỉnh/thành và bản đồ trực quan 3D.</span></div>
+    <div class="hero-badges"><span class="hero-badge">63 → 34 tỉnh/thành</span><span class="hero-badge">9.526+ ánh xạ</span><span class="hero-badge">Dữ liệu cục bộ</span></div>
+  </div>
+</div>
+
 
 <main class="grid">
   <div>
@@ -351,7 +424,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       </div>
     </div>
 
-    <div class="card map-card">
+    <div class="card map-card" id="mapSection">
       <div class="hd">
         <div class="title">Bản đồ Việt Nam 3D</div>
         <span class="tag" id="mapProvinceTag">34 tỉnh/thành</span>
@@ -415,6 +488,32 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
 
   </div>
 </main>
+
+
+
+<footer class="site-footer" id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="LOGODF.png" alt="CloudFirst" onerror="this.remove();this.parentElement.textContent='CF'"></div>
+      <div><div class="footer-title">Chuyển đổi địa chỉ sau sáp nhập</div><div class="footer-text">Công cụ hỗ trợ tra cứu địa chỉ hành chính hai chiều, tổng hợp dữ liệu 34 tỉnh/thành và bản đồ Việt Nam 3D. Kết quả nên được đối chiếu với văn bản chính thức khi sử dụng trong hồ sơ pháp lý.</div></div>
+    </div>
+    <div class="footer-col"><h4>Điều hướng</h4><a href="#top" class="footer-link">Trang đầu</a><a href="#" class="footer-link" data-footer-tab="convert">Chuyển đổi địa chỉ</a><a href="#" class="footer-link" data-footer-tab="lookup">Tra cứu sáp nhập</a><a href="#mapSection" class="footer-link">Bản đồ Việt Nam 3D</a></div>
+    <div class="footer-col"><h4>Hỗ trợ</h4><a href="#" class="footer-link" data-footer-tab="data">Dữ liệu xã/phường</a><a href="#" class="footer-link" data-open-donate>Ủng hộ dự án</a><a href="javascript:window.print()" class="footer-link">In hoặc lưu PDF</a><span class="footer-link">Phiên bản dữ liệu: 2026</span></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Công cụ chuyển đổi địa chỉ. Phục vụ mục đích tham khảo.</span><span>Thiết kế chạy trực tiếp trên trình duyệt • Không tự động gửi dữ liệu lên máy chủ</span></div>
+</footer>
+
+<section class="donate-page" id="donatePage" role="dialog" aria-modal="true" aria-labelledby="donateTitle">
+  <div class="donate-panel">
+    <div class="donate-head"><button class="donate-close" type="button" id="donateClose" aria-label="Đóng">×</button><h2 id="donateTitle">Ủng hộ duy trì công cụ</h2><p>Sự hỗ trợ của bạn giúp duy trì dữ liệu, cải thiện bản đồ và tiếp tục hoàn thiện công cụ tra cứu miễn phí cho cộng đồng.</p></div>
+    <div class="donate-body">
+      <div class="donate-card"><h3>Quét mã QR</h3><p>Ảnh QR chỉ được thay đổi sau khi nhập đúng mật khẩu quản trị.</p><div class="qr-placeholder" id="donateQrPreview"><span id="donateQrEmpty">CHƯA CÓ ẢNH QR<br>Nhấn “Tải ảnh QR lên” để cập nhật</span><img id="donateQrImage" alt="Mã QR ủng hộ" hidden></div><input type="file" id="donateQrFile" accept="image/png,image/jpeg,image/webp" hidden><div class="qr-upload-actions"><button class="blue" type="button" id="uploadDonateQrBtn">Tải ảnh QR lên</button><button class="danger" type="button" id="removeDonateQrBtn">Xóa ảnh QR</button></div><div class="qr-upload-note">Hỗ trợ PNG, JPG hoặc WEBP; dung lượng tối đa 3 MB. Ảnh được lưu cục bộ trên trình duyệt này.</div><div style="text-align:center;margin-top:12px"><button class="primary" type="button" id="copyDonateContent">Sao chép nội dung ủng hộ</button></div></div>
+      <div class="donate-card"><h3>Thông tin chuyển khoản</h3><p>Các trường đang để mẫu để tránh hiển thị nhầm thông tin thanh toán. Chỉnh trực tiếp trong mã HTML trước khi phát hành.</p><div class="donate-info"><div class="donate-row"><span>Ngân hàng</span><b>CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Số tài khoản</span><b>CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Chủ tài khoản</span><b>CHƯA CẬP NHẬT</b></div><div class="donate-row"><span>Nội dung</span><b>UNG HO CONG CU DIA CHI</b></div></div><div class="hr"></div><h3>Hình thức hỗ trợ khác</h3><p>Đóng góp dữ liệu, báo lỗi ánh xạ, đề xuất cải tiến giao diện hoặc chia sẻ công cụ tới người cần sử dụng.</p></div>
+      <div class="donate-note"><b>Lưu ý an toàn:</b> Chỉ công bố mã QR và tài khoản đã được xác minh. Không yêu cầu người dùng cung cấp mật khẩu, mã OTP hoặc thông tin đăng nhập ngân hàng.</div>
+    </div>
+  </div>
+</section>
+<button class="back-top" id="backTopBtn" type="button" title="Lên đầu trang">↑</button>
 
 <div class="toast" id="toast"><span class="ticon">✓</span><span id="toastText">—</span></div>
 
@@ -1117,6 +1216,89 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   $('mappingFile').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{await importMappings(f)}catch(err){alert('Không nhập được dữ liệu: '+(err.message||err))}e.target.value=''});
 
   populateProvinceSelect();renderMergeTable();loadMappings();initVietnam3DMap();
+
+  // Header, thanh công cụ, footer và trang ủng hộ
+  (function initSiteChrome(){
+    const donatePage=document.getElementById('donatePage');
+    const openDonate=()=>{donatePage.classList.add('show');document.body.style.overflow='hidden';};
+    const closeDonate=()=>{donatePage.classList.remove('show');document.body.style.overflow='';};
+    document.querySelectorAll('[data-open-donate]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();openDonate();}));
+    document.getElementById('donateClose')?.addEventListener('click',closeDonate);
+    donatePage?.addEventListener('click',e=>{if(e.target===donatePage)closeDonate();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&donatePage?.classList.contains('show'))closeDonate();});
+    const DONATE_QR_STORAGE_KEY='address_merger_donate_qr_v1';
+    const DONATE_QR_PASSWORD='Nhanhtvt1412@';
+    const qrPreview=document.getElementById('donateQrPreview');
+    const qrImage=document.getElementById('donateQrImage');
+    const qrEmpty=document.getElementById('donateQrEmpty');
+    const qrFile=document.getElementById('donateQrFile');
+
+    function renderDonateQr(dataUrl){
+      if(dataUrl){
+        qrImage.src=dataUrl;
+        qrImage.hidden=false;
+        qrEmpty.hidden=true;
+        qrPreview.classList.add('has-image');
+      }else{
+        qrImage.removeAttribute('src');
+        qrImage.hidden=true;
+        qrEmpty.hidden=false;
+        qrPreview.classList.remove('has-image');
+      }
+    }
+    function verifyDonatePassword(actionText){
+      const entered=window.prompt('Nhập mật khẩu để '+actionText+':');
+      if(entered===null)return false;
+      if(entered!==DONATE_QR_PASSWORD){
+        toast('Mật khẩu không đúng');
+        return false;
+      }
+      return true;
+    }
+    try{renderDonateQr(localStorage.getItem(DONATE_QR_STORAGE_KEY)||'');}catch(_){renderDonateQr('');}
+    document.getElementById('uploadDonateQrBtn')?.addEventListener('click',()=>{
+      if(verifyDonatePassword('tải ảnh QR lên'))qrFile.click();
+    });
+    qrFile?.addEventListener('change',()=>{
+      const file=qrFile.files&&qrFile.files[0];
+      qrFile.value='';
+      if(!file)return;
+      if(!/^image\/(png|jpeg|webp)$/i.test(file.type)){toast('Chỉ chấp nhận ảnh PNG, JPG hoặc WEBP');return;}
+      if(file.size>3*1024*1024){toast('Ảnh QR vượt quá 3 MB');return;}
+      const reader=new FileReader();
+      reader.onload=()=>{
+        try{localStorage.setItem(DONATE_QR_STORAGE_KEY,String(reader.result));renderDonateQr(String(reader.result));toast('Đã cập nhật ảnh QR');}
+        catch(e){toast('Không thể lưu ảnh; hãy chọn ảnh nhỏ hơn');}
+      };
+      reader.onerror=()=>toast('Không đọc được tệp ảnh');
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('removeDonateQrBtn')?.addEventListener('click',()=>{
+      if(!verifyDonatePassword('xóa ảnh QR'))return;
+      try{localStorage.removeItem(DONATE_QR_STORAGE_KEY);}catch(_){}
+      renderDonateQr('');
+      toast('Đã xóa ảnh QR');
+    });
+
+    document.getElementById('copyDonateContent')?.addEventListener('click',async()=>{
+      const text='UNG HO CONG CU DIA CHI';
+      try{await navigator.clipboard.writeText(text);toast('Đã sao chép nội dung chuyển khoản');}catch(_){toast('Nội dung: '+text);}
+    });
+    function activateTab(name){
+      const tab=document.querySelector(`.tab[data-tab="${name}"]`);
+      if(tab){tab.click();document.querySelector('main')?.scrollIntoView({behavior:'smooth',block:'start'});}
+      document.querySelectorAll('[data-go-tab]').forEach(b=>b.classList.toggle('active',b.dataset.goTab===name));
+    }
+    document.querySelectorAll('[data-go-tab]').forEach(btn=>btn.addEventListener('click',()=>activateTab(btn.dataset.goTab)));
+    document.querySelectorAll('[data-footer-tab]').forEach(link=>link.addEventListener('click',e=>{e.preventDefault();activateTab(link.dataset.footerTab)}));
+    document.querySelectorAll('[data-scroll-to]').forEach(btn=>btn.addEventListener('click',()=>document.getElementById(btn.dataset.scrollTo)?.scrollIntoView({behavior:'smooth',block:'start'})));
+    document.getElementById('toolbarPrint')?.addEventListener('click',()=>window.print());
+    const goTop=()=>window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('toolbarTop')?.addEventListener('click',goTop);
+    const backTop=document.getElementById('backTopBtn');backTop?.addEventListener('click',goTop);
+    window.addEventListener('scroll',()=>backTop?.classList.toggle('show',window.scrollY>520),{passive:true});
+  })();
+
 </script>
 </body>
 </html>

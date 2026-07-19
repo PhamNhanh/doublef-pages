@@ -304,6 +304,8 @@
     .community-post{border:1px solid var(--line);border-radius:18px;background:#fff;padding:15px;box-shadow:0 5px 16px rgba(15,23,42,.04)}
     .community-post-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.community-user{display:flex;gap:10px;align-items:center}.community-avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#dbeafe,#cffafe);color:#1e3a8a;font-weight:950}.community-user b{display:block;font-size:13px}.community-user small{color:var(--subtle);font-size:11px}.community-topic{font-size:10px;font-weight:850;color:#1d4ed8;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:5px 8px;white-space:nowrap}
     .community-message{margin:12px 0 10px;font-size:13px;line-height:1.7;color:#334155;white-space:pre-wrap;word-break:break-word}
+    .community-message a,.community-reply-body a{color:#1d4ed8;font-weight:750;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;overflow-wrap:anywhere}
+    .community-message a:hover,.community-reply-body a:hover{color:#1e40af;text-decoration-thickness:2px}
     .community-post-actions{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:9px}.community-post-actions button{box-shadow:none;padding:6px 9px;font-size:11px;border-radius:10px}.community-post-actions .liked{background:#eff6ff;color:#1d4ed8;border-color:#93c5fd}
 
     .community-replies{margin-top:12px;display:grid;gap:8px}
@@ -1517,6 +1519,17 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   const searchInput=document.getElementById('communitySearch');
   const filterSelect=document.getElementById('communityFilter');
   function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function linkifyText(value){
+    const escaped=escapeHtml(value);
+    const urlPattern=/(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi;
+    return escaped.replace(urlPattern,raw=>{
+      let display=raw;
+      let trailing='';
+      while(/[.,!?;:)\]}>]$/.test(display)){trailing=display.slice(-1)+trailing;display=display.slice(0,-1)}
+      const href=display.toLowerCase().startsWith('www.')?'https://'+display:display;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer nofollow">${display}</a>${trailing}`;
+    });
+  }
   function readFeedback(){
     try{
       let items=JSON.parse(localStorage.getItem(FEEDBACK_STORAGE_KEY)||'[]');
@@ -1534,7 +1547,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
   function renderReplies(item){
     const replies=Array.isArray(item.replies)?item.replies:[];
     if(!replies.length)return '';
-    return `<div class="community-replies">${replies.map(r=>`<div class="community-reply ${r.role==='admin'?'admin':''}"><div class="community-reply-head"><b>${r.role==='admin'?'Admin':'Người dùng ẩn danh'}</b><span>${escapeHtml(formatTime(r.createdAt))}</span></div><div class="community-reply-body">${escapeHtml(r.message)}</div></div>`).join('')}</div>`;
+    return `<div class="community-replies">${replies.map(r=>`<div class="community-reply ${r.role==='admin'?'admin':''}"><div class="community-reply-head"><b>${r.role==='admin'?'Admin':'Người dùng ẩn danh'}</b><span>${escapeHtml(formatTime(r.createdAt))}</span></div><div class="community-reply-body">${linkifyText(r.message)}</div></div>`).join('')}</div>`;
   }
   function renderFeedback(){
     const all=readFeedback();updateStats(all);
@@ -1542,7 +1555,7 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     const f=filterSelect?.value||'all';
     const items=all.filter(x=>(f==='all'||x.topic===f)&&(!q||(x.message||'').toLowerCase().includes(q)||(x.topic||'').toLowerCase().includes(q)||((x.replies||[]).some(r=>(r.message||'').toLowerCase().includes(q)))));
     if(!items.length){feedbackList.innerHTML='<div class="community-empty">Chưa có bài góp ý phù hợp. Hãy là người đầu tiên chia sẻ ý tưởng.</div>';return;}
-    feedbackList.innerHTML=items.map(item=>`<article class="community-post" data-id="${escapeHtml(item.id)}"><div class="community-post-top"><div class="community-user"><div class="community-avatar">ẨD</div><div><b>Người dùng ẩn danh</b><small>${escapeHtml(formatTime(item.createdAt))}</small></div></div><span class="community-topic">${escapeHtml(item.topic)}</span></div><div class="community-message">${escapeHtml(item.message)}</div>${renderReplies(item)}<div class="community-post-actions"><button type="button" class="community-like ${item.liked?'liked':''}" data-like="${escapeHtml(item.id)}">👍 Đồng tình (${Number(item.likes)||0})</button><button type="button" data-reply-toggle="${escapeHtml(item.id)}">↩ Trả lời</button><button type="button" data-copy-post="${escapeHtml(item.id)}">Sao chép</button></div><div class="community-reply-form" data-reply-form="${escapeHtml(item.id)}"><div class="community-reply-grid"><div><label style="display:block;font-size:11px;font-weight:800;color:#667085;margin-bottom:5px">Vai trò trả lời</label><select data-reply-role="${escapeHtml(item.id)}"><option value="anonymous">Ẩn danh</option><option value="admin">Quản trị viên</option></select></div><div><label style="display:block;font-size:11px;font-weight:800;color:#667085;margin-bottom:5px">Nội dung trả lời</label><textarea data-reply-message="${escapeHtml(item.id)}" placeholder="Nhập nội dung trả lời..."></textarea></div></div><div class="community-reply-actions"><button type="button" data-reply-cancel="${escapeHtml(item.id)}">Hủy</button><button class="primary" type="button" data-reply-submit="${escapeHtml(item.id)}">Đăng trả lời</button></div></div></article>`).join('');
+    feedbackList.innerHTML=items.map(item=>`<article class="community-post" data-id="${escapeHtml(item.id)}"><div class="community-post-top"><div class="community-user"><div class="community-avatar">ẨD</div><div><b>Người dùng ẩn danh</b><small>${escapeHtml(formatTime(item.createdAt))}</small></div></div><span class="community-topic">${escapeHtml(item.topic)}</span></div><div class="community-message">${linkifyText(item.message)}</div>${renderReplies(item)}<div class="community-post-actions"><button type="button" class="community-like ${item.liked?'liked':''}" data-like="${escapeHtml(item.id)}">👍 Đồng tình (${Number(item.likes)||0})</button><button type="button" data-reply-toggle="${escapeHtml(item.id)}">↩ Trả lời</button><button type="button" data-copy-post="${escapeHtml(item.id)}">Sao chép</button></div><div class="community-reply-form" data-reply-form="${escapeHtml(item.id)}"><div class="community-reply-grid"><div><label style="display:block;font-size:11px;font-weight:800;color:#667085;margin-bottom:5px">Vai trò trả lời</label><select data-reply-role="${escapeHtml(item.id)}"><option value="anonymous">Ẩn danh</option><option value="admin">Quản trị viên</option></select></div><div><label style="display:block;font-size:11px;font-weight:800;color:#667085;margin-bottom:5px">Nội dung trả lời</label><textarea data-reply-message="${escapeHtml(item.id)}" placeholder="Nhập nội dung trả lời..."></textarea></div></div><div class="community-reply-actions"><button type="button" data-reply-cancel="${escapeHtml(item.id)}">Hủy</button><button class="primary" type="button" data-reply-submit="${escapeHtml(item.id)}">Đăng trả lời</button></div></div></article>`).join('');
   }
   function openFeedback(e){e?.preventDefault();feedbackPage?.classList.add('show');document.body.style.overflow='hidden';renderFeedback()}
   function closeFeedback(){feedbackPage?.classList.remove('show');document.body.style.overflow=''}

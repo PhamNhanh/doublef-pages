@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TempMail - Hộp thư tạm thời</title>
+  <meta name="description" content="Tạo địa chỉ email tạm thời để nhận thư nhanh chóng, riêng tư và không cần đăng ký." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect rx=%2216%22 width=%2264%22 height=%2264%22 fill=%22%23111827%22/><path d=%22M14 20h36v24H14z%22 fill=%22%23fff%22/><path d=%22m15 21 17 13 17-13%22 fill=%22none%22 stroke=%22%236366f1%22 stroke-width=%224%22/></svg>">
+  <style>
+    :root{
+      --bg:#f4f7fb;--surface:#ffffff;--surface2:#f8fafc;--ink:#111827;--muted:#64748b;
+      --line:#e2e8f0;--brand:#4f46e5;--brand2:#7c3aed;--ok:#059669;--danger:#dc2626;
+      --shadow:0 18px 50px rgba(15,23,42,.08);--radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:
+      radial-gradient(800px 420px at 12% -10%,rgba(99,102,241,.16),transparent 60%),
+      radial-gradient(760px 420px at 92% 0%,rgba(124,58,237,.12),transparent 60%),var(--bg)}
+    button,input{font:inherit}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(226,232,240,.8)}
+    .topbar-inner{max-width:1180px;margin:auto;height:72px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+    .brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#111827,#4f46e5);display:grid;place-items:center;box-shadow:0 12px 26px rgba(79,70,229,.25)}
+    .brand-mark svg{width:24px;height:24px}
+    .brand strong{display:block;font-size:18px;letter-spacing:-.02em}.brand span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+    .nav{display:flex;align-items:center;gap:8px}.nav a,.icon-btn{border:0;background:transparent;color:#475569;text-decoration:none;padding:9px 11px;border-radius:10px;cursor:pointer;font-weight:700;font-size:13px}.nav a:hover,.icon-btn:hover{background:#eef2ff;color:var(--brand)}
+    .hero{max-width:1180px;margin:0 auto;padding:64px 20px 28px;text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#eef2ff;border:1px solid #c7d2fe;color:#4338ca;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800}
+    .pulse{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 5px rgba(34,197,94,.12)}
+    h1{font-size:clamp(36px,6vw,66px);line-height:1.05;margin:20px auto 14px;max-width:900px;letter-spacing:-.045em}
+    .hero p{max-width:720px;margin:0 auto;color:var(--muted);font-size:17px;line-height:1.7}
+    .mail-card{max-width:860px;margin:34px auto 0;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:20px}
+    .mail-label{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;text-align:left}
+    .mail-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px}
+    .mail-box{min-height:58px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:16px;display:flex;align-items:center;padding:0 16px;font-size:18px;font-weight:850;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .btn{min-height:58px;border-radius:16px;border:1px solid var(--line);padding:0 18px;background:#fff;font-weight:850;cursor:pointer;transition:.15s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(15,23,42,.08)}
+    .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#fff}.btn.danger{color:var(--danger);background:#fff5f5;border-color:#fecaca}
+    .status-row{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);color:var(--muted);font-size:12px;flex-wrap:wrap}
+    .status-left,.status-right{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.status-item{display:flex;align-items:center;gap:7px}.status-dot{width:8px;height:8px;border-radius:50%;background:#22c55e}
+    .workspace{max-width:1180px;margin:0 auto;padding:16px 20px 64px;display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px}
+    .side,.inbox{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .side{padding:16px;height:max-content;position:sticky;top:92px}.side h3{font-size:13px;margin:4px 0 12px;text-transform:uppercase;letter-spacing:.08em;color:#475569}
+    .side-menu{display:grid;gap:6px}.side-menu button{border:0;background:transparent;padding:12px;border-radius:12px;text-align:left;display:flex;justify-content:space-between;gap:12px;cursor:pointer;font-weight:750;color:#475569}.side-menu button.active,.side-menu button:hover{background:#eef2ff;color:#4338ca}
+    .side-card{margin-top:16px;padding:14px;border-radius:16px;background:linear-gradient(145deg,#111827,#312e81);color:#fff}.side-card b{display:block;margin-bottom:6px}.side-card p{font-size:12px;color:#cbd5e1;line-height:1.55;margin:0}
+    .inbox{overflow:hidden}.inbox-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.inbox-head h2{font-size:18px;margin:0}.inbox-head p{margin:3px 0 0;color:var(--muted);font-size:12px}.head-actions{display:flex;gap:8px}.small-btn{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 11px;font-size:12px;font-weight:800;cursor:pointer}.small-btn:hover{background:#f8fafc}
+    .inbox-tools{display:grid;grid-template-columns:minmax(0,1fr) 160px;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);background:#fbfdff}.search{border:1px solid #cbd5e1;border-radius:12px;padding:11px 13px;outline:none}.search:focus{border-color:#818cf8;box-shadow:0 0 0 4px rgba(99,102,241,.12)}
+    .mail-list{min-height:420px}.mail-item{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:12px;align-items:center;padding:15px 20px;border-bottom:1px solid #eef2f7;cursor:pointer}.mail-item:hover{background:#f8fafc}.avatar{width:42px;height:42px;border-radius:14px;background:#eef2ff;color:#4338ca;display:grid;place-items:center;font-weight:900}.mail-meta b{display:block;font-size:13px}.mail-meta strong{display:block;margin-top:3px;font-size:14px}.mail-meta span{display:block;margin-top:3px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mail-time{font-size:11px;color:#94a3b8;white-space:nowrap}
+    .empty{display:grid;place-items:center;text-align:center;padding:70px 20px;color:var(--muted)}.empty svg{width:76px;height:76px;margin-bottom:14px}.empty b{color:#334155;font-size:16px}.empty p{max-width:420px;font-size:13px;line-height:1.6}
+    .features{max-width:1180px;margin:0 auto;padding:12px 20px 80px}.section-title{text-align:center;margin-bottom:24px}.section-title h2{font-size:32px;margin:0 0 8px}.section-title p{margin:0;color:var(--muted)}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(15,23,42,.05)}.feature-icon{width:42px;height:42px;border-radius:13px;background:#eef2ff;color:#4338ca;display:grid;place-items:center;font-size:20px}.feature h3{font-size:16px;margin:14px 0 7px}.feature p{color:var(--muted);font-size:13px;line-height:1.65;margin:0}
+    footer{border-top:1px solid var(--line);background:#fff}.footer-inner{max-width:1180px;margin:auto;padding:24px 20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    .reader{position:fixed;inset:0;z-index:50;background:rgba(15,23,42,.58);display:none;align-items:center;justify-content:center;padding:18px}.reader.show{display:flex}.reader-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:24px;box-shadow:0 30px 90px rgba(15,23,42,.35)}.reader-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.reader-body{padding:24px}.reader-close{border:0;background:#f1f5f9;width:38px;height:38px;border-radius:11px;cursor:pointer;font-size:20px}.reader-from{font-size:12px;color:var(--muted)}.reader-body h2{margin:8px 0 16px}.reader-content{font-size:14px;line-height:1.75;color:#334155}.notice{margin-top:14px;padding:12px 14px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:12px;line-height:1.6}
+    @media(max-width:900px){.workspace{grid-template-columns:1fr}.side{position:static}.feature-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){.nav a{display:none}.hero{padding-top:38px}.mail-row{grid-template-columns:1fr 1fr}.mail-box{grid-column:1/-1}.workspace{padding-left:12px;padding-right:12px}.inbox-tools{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr}.mail-item{grid-template-columns:42px minmax(0,1fr)}.mail-time{display:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 6.5h18v11H3z" stroke="white" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke="#a5b4fc" stroke-width="1.8"/></svg></span>
+        <span><strong>TempMail</strong><span>Email tạm thời, riêng tư hơn</span></span>
+      </a>
+      <nav class="nav"><a href="#inbox">Hộp thư</a><a href="#features">Tính năng</a><button class="icon-btn" id="themeBtn" title="Đổi giao diện">◐</button></nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="eyebrow"><span class="pulse"></span> Địa chỉ đang hoạt động</div>
+      <h1>Email tạm thời trong vài giây</h1>
+      <p>Tạo địa chỉ email dùng một lần để nhận mã xác minh, đăng ký dịch vụ và hạn chế thư rác. Không cần tài khoản, không lưu mật khẩu.</p>
+      <div class="mail-card">
+        <div class="mail-label">Địa chỉ email của bạn</div>
+        <div class="mail-row">
+          <div class="mail-box" id="mailAddress">dang-tao@tempmail.vn</div>
+          <button class="btn" id="copyBtn">Sao chép</button>
+          <button class="btn primary" id="newBtn">Tạo địa chỉ mới</button>
+        </div>
+        <div class="status-row">
+          <div class="status-left"><span class="status-item"><i class="status-dot"></i> Sẵn sàng nhận thư</span><span class="status-item">⏱ Còn lại: <b id="timer">10:00</b></span></div>
+          <div class="status-right"><span>Tự làm mới sau <b id="refreshCount">15</b> giây</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace" id="inbox">
+      <aside class="side">
+        <h3>Quản lý hộp thư</h3>
+        <div class="side-menu">
+          <button class="active"><span>📥 Hộp thư đến</span><b id="inboxCount">2</b></button>
+          <button id="refreshBtn"><span>↻ Làm mới</span><span></span></button>
+          <button id="extendBtn"><span>＋ Gia hạn 10 phút</span><span></span></button>
+          <button id="deleteBtn"><span>🗑 Xóa hộp thư</span><span></span></button>
+        </div>
+        <div class="side-card"><b>Riêng tư theo mặc định</b><p>Địa chỉ được tạo ngẫu nhiên và dữ liệu trong bản demo chỉ tồn tại trên trình duyệt hiện tại.</p></div>
+      </aside>
+
+      <section class="inbox">
+        <div class="inbox-head"><div><h2>Hộp thư đến</h2><p>Thư mới sẽ xuất hiện tự động</p></div><div class="head-actions"><button class="small-btn" id="markReadBtn">Đánh dấu đã đọc</button><button class="small-btn" id="clearInboxBtn">Xóa tất cả</button></div></div>
+        <div class="inbox-tools"><input class="search" id="searchInput" placeholder="Tìm theo người gửi hoặc tiêu đề..."><select class="search" id="filterSelect"><option value="all">Tất cả thư</option><option value="unread">Chưa đọc</option><option value="read">Đã đọc</option></select></div>
+        <div class="mail-list" id="mailList"></div>
+      </section>
+    </section>
+
+    <section class="features" id="features">
+      <div class="section-title"><h2>Nhanh, đơn giản và riêng tư</h2><p>Một trải nghiệm tối giản dành cho các tình huống cần email dùng ngắn hạn.</p></div>
+      <div class="feature-grid">
+        <article class="feature"><div class="feature-icon">⚡</div><h3>Tạo ngay lập tức</h3><p>Không cần đăng ký tài khoản. Chỉ một lần bấm là có địa chỉ email tạm thời mới.</p></article>
+        <article class="feature"><div class="feature-icon">🛡</div><h3>Hạn chế thư rác</h3><p>Dùng địa chỉ tạm thay cho email chính khi đăng ký các dịch vụ không quan trọng.</p></article>
+        <article class="feature"><div class="feature-icon">↻</div><h3>Tự động làm mới</h3><p>Hộp thư liên tục kiểm tra email mới và hiển thị ngay khi có thư đến.</p></article>
+      </div>
+      <div class="notice"><b>Lưu ý:</b> Đây là phiên bản giao diện chạy độc lập. Để nhận email thật, cần kết nối tên miền, máy chủ nhận thư và API backend. Không nên dùng email tạm cho tài khoản ngân hàng, hồ sơ pháp lý hoặc dịch vụ quan trọng.</div>
+    </section>
+  </main>
+
+  <footer><div class="footer-inner"><span>© 2026 TempMail Demo</span><span>Không yêu cầu đăng nhập • Không dùng cho dữ liệu nhạy cảm</span></div></footer>
+
+  <div class="reader" id="reader"><div class="reader-card"><div class="reader-head"><div><div class="reader-from" id="readerFrom"></div><strong id="readerSubject"></strong></div><button class="reader-close" id="readerClose">×</button></div><div class="reader-body"><div class="reader-content" id="readerContent"></div></div></div></div>
+
+  <script>
+    const domains=['tempmail.vn','mailnhanh.net','hopthutam.com'];
+    const first=['an','binh','minh','nhanh','viet','linh','huy','phuc','son','thao'];
+    const second=['user','box','mail','inbox','guest','verify'];
+    let seconds=600, refresh=15;
+    let mails=[
+      {id:1,from:'Google Accounts',email:'no-reply@accounts.google.com',subject:'Mã xác minh của bạn',preview:'Mã xác minh của bạn là 482913. Mã này có hiệu lực trong 10 phút.',time:'Vừa xong',read:false,content:'<p>Xin chào,</p><p>Mã xác minh của bạn là <b style="font-size:22px">482913</b>.</p><p>Mã này có hiệu lực trong 10 phút. Không chia sẻ mã này với người khác.</p>'},
+      {id:2,from:'Demo Service',email:'welcome@demo-service.com',subject:'Chào mừng bạn đến với Demo Service',preview:'Tài khoản thử nghiệm của bạn đã được tạo thành công.',time:'2 phút trước',read:true,content:'<p>Tài khoản thử nghiệm của bạn đã được tạo thành công.</p><p>Bạn có thể đóng hộp thư tạm này sau khi hoàn tất quá trình xác minh.</p>'}
+    ];
+    const $=s=>document.querySelector(s);
+    const mailAddress=$('#mailAddress'),mailList=$('#mailList'),inboxCount=$('#inboxCount');
+    function randomMail(){const name=`${first[Math.floor(Math.random()*first.length)]}.${second[Math.floor(Math.random()*second.length)]}${Math.floor(1000+Math.random()*9000)}`;mailAddress.textContent=`${name}@${domains[Math.floor(Math.random()*domains.length)]}`;seconds=600;render();}
+    function formatTime(v){const m=Math.floor(v/60).toString().padStart(2,'0');const s=(v%60).toString().padStart(2,'0');return `${m}:${s}`}
+    function render(){const q=$('#searchInput').value.toLowerCase().trim(),f=$('#filterSelect').value;const list=mails.filter(m=>(!q||`${m.from} ${m.subject} ${m.preview}`.toLowerCase().includes(q))&&(f==='all'||(f==='read'&&m.read)||(f==='unread'&&!m.read)));inboxCount.textContent=mails.length;mailList.innerHTML=list.length?list.map(m=>`<article class="mail-item" data-id="${m.id}"><div class="avatar">${m.from.slice(0,1)}</div><div class="mail-meta"><b>${m.from}${m.read?'':' •'}</b><strong>${m.subject}</strong><span>${m.preview}</span></div><time class="mail-time">${m.time}</time></article>`).join(''):`<div class="empty"><div><svg viewBox="0 0 80 80" fill="none"><rect x="12" y="20" width="56" height="40" rx="12" fill="#eef2ff"/><path d="m18 28 22 17 22-17" stroke="#6366f1" stroke-width="4"/></svg><b>Chưa có thư phù hợp</b><p>Hộp thư đang chờ thư mới. Thư đến sẽ được hiển thị tự động tại đây.</p></div></div>`;}
+    $('#copyBtn').onclick=async()=>{await navigator.clipboard.writeText(mailAddress.textContent);const b=$('#copyBtn');b.textContent='Đã sao chép';setTimeout(()=>b.textContent='Sao chép',1200)};
+    $('#newBtn').onclick=randomMail;$('#refreshBtn').onclick=()=>{refresh=15;render()};$('#extendBtn').onclick=()=>{seconds+=600};
+    $('#deleteBtn').onclick=()=>{mails=[];randomMail()};$('#clearInboxBtn').onclick=()=>{mails=[];render()};$('#markReadBtn').onclick=()=>{mails=mails.map(m=>({...m,read:true}));render()};
+    $('#searchInput').oninput=render;$('#filterSelect').onchange=render;
+    mailList.onclick=e=>{const item=e.target.closest('.mail-item');if(!item)return;const m=mails.find(x=>x.id==item.dataset.id);m.read=true;$('#readerFrom').textContent=`${m.from} <${m.email}>`;$('#readerSubject').textContent=m.subject;$('#readerContent').innerHTML=m.content;$('#reader').classList.add('show');render()};
+    $('#readerClose').onclick=()=>$('#reader').classList.remove('show');$('#reader').onclick=e=>{if(e.target.id==='reader')$('#reader').classList.remove('show')};
+    setInterval(()=>{if(seconds>0)seconds--;else randomMail();if(refresh>0)refresh--;else{refresh=15;render()}$('#timer').textContent=formatTime(seconds);$('#refreshCount').textContent=refresh;},1000);
+    $('#themeBtn').onclick=()=>{document.body.classList.toggle('dark');if(document.body.classList.contains('dark')){document.documentElement.style.setProperty('--bg','#0f172a');document.documentElement.style.setProperty('--surface','#111827');document.documentElement.style.setProperty('--surface2','#172033');document.documentElement.style.setProperty('--ink','#f8fafc');document.documentElement.style.setProperty('--muted','#94a3b8');document.documentElement.style.setProperty('--line','#273449')}else location.reload()};
+    randomMail();render();
+  </script>
+</body>
+</html>

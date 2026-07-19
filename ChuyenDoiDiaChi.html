@@ -334,6 +334,56 @@
     @media(max-width:620px){.footer-inner{grid-template-columns:1fr}.hero-strip-inner{align-items:flex-start;flex-direction:column}.hero-badges{justify-content:flex-start}.donate-head{padding:24px 20px}.donate-head h2{font-size:22px}.donate-body{padding:15px}.qr-placeholder{width:230px}.toolbar-actions .tool-link:not(.donate){display:none}.donate-admin-grid,.qr-editor-controls{grid-template-columns:1fr}}
     @media print{.app-toolbar-wrap,.hero-strip,.site-footer,.donate-page,.back-top{display:none!important}}
 
+  
+
+    /* ===== NÂNG CẤP GIAO DIỆN PRO 2026 ===== */
+    body{background:#f3f6fa}
+    .site-header{background:rgba(255,255,255,.92);border-bottom:1px solid rgba(226,232,240,.85);backdrop-filter:blur(18px)}
+    .site-header .topbar{border:0;border-radius:0;box-shadow:none;background:transparent;padding:11px 4px}
+    .site-header .logo{width:44px;height:44px;border-radius:13px}
+    .site-header h1{font-size:18px}.site-header .sub{font-size:11px;max-width:74ch}
+    .site-header .chips{gap:6px}.site-header .chip{padding:6px 9px;font-size:10px;background:#f8fafc}
+    .app-toolbar-wrap{top:69px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-bottom:1px solid #e5e7eb;padding-top:0;padding-bottom:0}
+    .app-toolbar{border:0;border-radius:0;box-shadow:none;background:transparent;padding:8px 0}
+    .tool-link{height:38px;padding:8px 12px;border-radius:10px;font-size:12px;letter-spacing:-.01em}
+    .tool-link:hover,.tool-link.active{background:#eef4ff;border-color:#d7e4ff;color:#174ea6}
+    .toolbar-search{position:relative;min-width:230px;max-width:340px;flex:1}
+    .toolbar-search input{height:38px;min-height:38px;padding:8px 38px 8px 35px;border-radius:11px;background:#f7f9fc;border-color:#e2e8f0;font-size:12px}
+    .toolbar-search .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#64748b}
+    .toolbar-search kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:9px;padding:3px 5px;border:1px solid #d9e0ea;border-bottom-width:2px;border-radius:5px;color:#64748b;background:#fff}
+    .hero-strip{margin-top:12px}.hero-strip-inner{padding:13px 16px;border-radius:18px;background:linear-gradient(100deg,#eef4ff,#fff 54%,#f0fdfa);border-color:#d8e3f5}
+
+    .left-rail{position:fixed;left:14px;top:92px;bottom:18px;width:70px;z-index:990;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 8px;border:1px solid rgba(226,232,240,.95);border-radius:20px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);box-shadow:0 16px 42px rgba(15,23,42,.10)}
+    .left-rail-logo{width:42px;height:42px;border-radius:13px;overflow:hidden;background:linear-gradient(135deg,#0f172a,#2563eb);display:grid;place-items:center;color:#fff;font-weight:900;margin-bottom:5px}.left-rail-logo img{width:100%;height:100%;object-fit:cover}
+    .rail-sep{width:36px;height:1px;background:#e5e7eb;margin:3px 0}
+    .rail-btn{width:52px;min-height:52px;border:0;box-shadow:none;background:transparent;border-radius:13px;padding:6px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#64748b;text-decoration:none;font-size:9px;font-weight:800;line-height:1.15;text-align:center}
+    .rail-btn i{font-style:normal;font-size:18px;line-height:1}.rail-btn:hover,.rail-btn.active{background:#eef4ff;color:#1d4ed8;transform:none;box-shadow:none}.rail-btn.accent{background:#fff7ed;color:#c2410c}
+    .rail-spacer{flex:1}
+
+    .content-showcase{max-width:1320px;margin:20px auto 0;padding:0 18px 8px}
+    .showcase-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:13px}.showcase-head h2{margin:0;font-size:22px;letter-spacing:-.035em;color:#0f172a}.showcase-head p{margin:5px 0 0;font-size:12px;color:#64748b}.showcase-head button{font-size:11px}
+    .featured-story{display:grid;grid-template-columns:1.12fr .88fr;min-height:330px;border:1px solid #dfe6ef;border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 20px 55px rgba(15,23,42,.08);margin-bottom:14px}
+    .featured-visual{position:relative;min-height:330px;background:linear-gradient(135deg,#102a56,#0e7490);overflow:hidden}.featured-visual svg{width:100%;height:100%;display:block}.featured-badge{position:absolute;left:20px;top:20px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.94);font-size:10px;font-weight:900;color:#1d4ed8}
+    .featured-copy{padding:30px;display:flex;flex-direction:column;justify-content:center}.featured-copy .eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:#2563eb}.featured-copy h3{font-size:27px;line-height:1.22;letter-spacing:-.04em;margin:10px 0;color:#0f172a}.featured-copy p{font-size:13px;line-height:1.75;color:#556274;margin:0}.story-meta{display:flex;gap:13px;flex-wrap:wrap;margin:17px 0;color:#7c8798;font-size:10px}.read-story{align-self:flex-start}
+    .story-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .story-card{border:1px solid #e1e7ef;border-radius:19px;overflow:hidden;background:#fff;box-shadow:0 8px 25px rgba(15,23,42,.05);cursor:pointer;transition:.18s ease}.story-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(15,23,42,.10);border-color:#c8d6ea}.story-thumb{height:145px;overflow:hidden;background:#eaf0f7}.story-thumb svg{width:100%;height:100%;display:block}.story-body{padding:15px}.story-cat{font-size:9px;text-transform:uppercase;letter-spacing:.1em;font-weight:900;color:#2563eb}.story-body h3{font-size:15px;line-height:1.4;margin:7px 0 6px;color:#0f172a}.story-body p{font-size:11px;line-height:1.6;color:#64748b;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.story-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #eef2f6;color:#8a94a3;font-size:9px}.story-footer b{color:#1d4ed8;font-size:10px}
+
+    .article-reader{position:fixed;inset:0;z-index:7000;background:rgba(15,23,42,.66);display:none;align-items:flex-start;justify-content:center;padding:22px 14px;overflow:auto;backdrop-filter:blur(9px)}.article-reader.show{display:flex}
+    .article-panel{width:min(1050px,100%);background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 36px 110px rgba(15,23,42,.38)}
+    .article-topbar{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-bottom:1px solid #e8edf3;background:rgba(255,255,255,.95);backdrop-filter:blur(15px)}.article-brand{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:900;color:#0f172a}.article-brand span{width:28px;height:28px;border-radius:9px;background:#1d4ed8;color:#fff;display:grid;place-items:center}.article-close{width:36px;height:36px;padding:0;border-radius:11px}
+    .article-hero{min-height:310px;position:relative;background:linear-gradient(135deg,#0f172a,#155e75);overflow:hidden}.article-hero svg{width:100%;height:310px;display:block}.article-hero-overlay{position:absolute;inset:auto 0 0;padding:75px 50px 34px;background:linear-gradient(transparent,rgba(15,23,42,.86));color:#fff}.article-hero-overlay .article-category{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:900;color:#bfdbfe}.article-hero-overlay h1{color:#fff;font-size:35px;max-width:820px;line-height:1.18;margin:9px 0 10px}.article-hero-overlay p{margin:0;color:#dbeafe;font-size:13px;max-width:760px;line-height:1.65}
+    .article-content-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:34px;padding:34px 48px 42px}.article-main{font-family:Georgia,'Times New Roman',serif;color:#273244}.article-main .lead{font-size:18px;line-height:1.78;color:#334155;border-left:4px solid #2563eb;padding-left:18px;margin:0 0 24px}.article-main h2{font-family:Inter,system-ui,sans-serif;font-size:23px;margin:30px 0 12px;color:#0f172a;letter-spacing:-.025em}.article-main h3{font-family:Inter,system-ui,sans-serif;font-size:18px;margin:24px 0 9px;color:#102a56}.article-main p,.article-main li{font-size:16px;line-height:1.82}.article-main ul{padding-left:22px}.article-main blockquote{margin:24px 0;padding:18px 20px;border-radius:14px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;font-style:italic}
+    .article-aside{font-size:11px}.article-aside-card{position:sticky;top:70px;border:1px solid #e1e7ef;border-radius:17px;padding:15px;background:#f8fafc}.article-aside-card h4{margin:0 0 11px;font-size:12px;color:#0f172a;text-transform:uppercase;letter-spacing:.06em}.article-toc a{display:block;padding:7px 0;color:#64748b;text-decoration:none;border-top:1px dashed #e2e8f0}.article-toc a:first-child{border:0}.article-toc a:hover{color:#1d4ed8}.related-article{display:block;padding:10px 0;border-top:1px solid #e2e8f0;text-decoration:none;color:#334155;cursor:pointer}.related-article b{display:block;font-size:11px;line-height:1.45}.related-article span{font-size:9px;color:#94a3b8}
+    .article-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 48px 30px;border-top:1px solid #e8edf3}.article-nav button{min-height:58px;text-align:left;padding:10px 13px}.article-nav button:last-child{text-align:right}.article-nav small{display:block;color:#94a3b8;font-size:9px;margin-bottom:4px}.article-nav b{font-size:11px;line-height:1.4}
+
+    @media(min-width:1180px){
+      .site-header,.app-toolbar-wrap,.hero-strip,main,.content-showcase,.footer-inner,.footer-bottom{max-width:none;margin-left:96px;margin-right:14px}
+      header.site-header{padding-left:18px;padding-right:18px}
+    }
+    @media(max-width:1179px){.left-rail{display:none}.toolbar-search{display:none}}
+    @media(max-width:900px){.featured-story{grid-template-columns:1fr}.featured-visual{min-height:240px}.featured-copy{padding:22px}.story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.article-content-layout{grid-template-columns:1fr;padding:25px}.article-aside{display:none}.article-hero-overlay{padding:60px 24px 24px}.article-hero-overlay h1{font-size:27px}.article-nav{padding:16px 24px 24px}}
+    @media(max-width:620px){.story-grid{grid-template-columns:1fr}.featured-copy h3{font-size:22px}.content-showcase{padding:0 12px}.article-reader{padding:0}.article-panel{border-radius:0;min-height:100vh}.article-hero,.article-hero svg{height:270px;min-height:270px}.article-hero-overlay h1{font-size:23px}.article-main p,.article-main li{font-size:15px}.article-nav{grid-template-columns:1fr}.showcase-head{align-items:flex-start;flex-direction:column}}
+
   </style>
 </head>
 <body>
@@ -363,6 +413,7 @@
       <button class="tool-link" type="button" data-go-tab="data"><span class="tool-icon">▦</span>Dữ liệu</button>
       <button class="tool-link" type="button" data-scroll-to="mapSection"><span class="tool-icon">◇</span>Bản đồ 3D</button>
     </div>
+    <div class="toolbar-search"><span class="search-icon">⌕</span><input id="globalQuickSearch" placeholder="Tìm chức năng, bài viết, tỉnh/thành..." autocomplete="off"><kbd>Ctrl K</kbd></div>
     <div class="toolbar-actions">
       <span class="toolbar-sep"></span>
       <button class="tool-link" type="button" id="toolbarPrint"><span class="tool-icon">▣</span>In/PDF</button>
@@ -379,6 +430,18 @@
   </div>
 </div>
 
+<aside class="left-rail" aria-label="Thanh công cụ bên trái">
+  <div class="left-rail-logo"><img src="LOGODF.png" alt="CF" onerror="this.remove();this.parentElement.textContent='CF'"></div>
+  <button class="rail-btn active" type="button" data-go-tab="convert"><i>⌂</i><span>Chuyển đổi</span></button>
+  <button class="rail-btn" type="button" data-go-tab="bulk"><i>≣</i><span>Hàng loạt</span></button>
+  <button class="rail-btn" type="button" data-go-tab="lookup"><i>⌕</i><span>Tra cứu</span></button>
+  <button class="rail-btn" type="button" data-scroll-to="mapSection"><i>◇</i><span>Bản đồ</span></button>
+  <button class="rail-btn" type="button" data-scroll-to="articlesSection"><i>▤</i><span>Bài viết</span></button>
+  <div class="rail-sep"></div>
+  <button class="rail-btn" type="button" data-open-feedback><i>✉</i><span>Góp ý</span></button>
+  <div class="rail-spacer"></div>
+  <button class="rail-btn accent" type="button" data-open-donate><i>♥</i><span>Ủng hộ</span></button>
+</aside>
 
 <main class="grid">
   <div>
@@ -575,6 +638,24 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
 
 
 
+<section class="content-showcase" id="articlesSection">
+  <div class="showcase-head"><div><h2>Kiến thức & hướng dẫn</h2><p>Các bài viết ngắn gọn giúp bạn hiểu và sử dụng công cụ hiệu quả hơn.</p></div><button type="button" id="viewAllArticles">Xem tất cả bài viết →</button></div>
+  <article class="featured-story" data-article-open="article-1">
+    <div class="featured-visual"><span class="featured-badge">Bài viết nổi bật</span>
+      <svg viewBox="0 0 800 460" role="img" aria-label="Minh họa chuyển đổi địa chỉ hành chính"><defs><linearGradient id="fg1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0f2f5f"/><stop offset="1" stop-color="#0891b2"/></linearGradient></defs><rect width="800" height="460" fill="url(#fg1)"/><circle cx="665" cy="85" r="120" fill="#fff" opacity=".08"/><circle cx="105" cy="390" r="180" fill="#38bdf8" opacity=".12"/><path d="M390 75c45 20 55 61 38 98-15 32-7 70 24 92 25 18 34 57 13 82-29 35-79 38-116 18-31-17-64-13-94 8-39 27-95 14-116-28-19-38-2-83 37-101 32-15 47-48 39-82-11-48 28-93 78-94 35 0 63-5 97 7z" fill="#bfdbfe" opacity=".9"/><path d="M369 102c23 19 31 48 20 75-10 25-4 53 18 70 21 16 25 46 9 65-22 26-61 28-90 13-26-14-52-9-74 7-28 20-70 10-84-23-13-29 1-63 31-77 25-12 36-38 29-64-8-36 22-69 61-70 28 0 52-5 80 4z" fill="#ffffff" opacity=".95"/><g fill="#1d4ed8"><circle cx="285" cy="195" r="13"/><circle cx="355" cy="275" r="13"/><circle cx="425" cy="210" r="13"/></g><path d="M285 195l70 80 70-65" fill="none" stroke="#1d4ed8" stroke-width="6" stroke-linecap="round" stroke-dasharray="11 13"/><rect x="520" y="230" width="210" height="120" rx="18" fill="#fff" opacity=".96"/><rect x="545" y="258" width="115" height="12" rx="6" fill="#1d4ed8"/><rect x="545" y="285" width="155" height="9" rx="5" fill="#cbd5e1"/><rect x="545" y="307" width="132" height="9" rx="5" fill="#cbd5e1"/></svg>
+    </div>
+    <div class="featured-copy"><div class="eyebrow">Hướng dẫn sử dụng</div><h3>Hiểu đúng cách chuyển đổi địa chỉ sau sáp nhập</h3><p>Tìm hiểu nguyên tắc giữ nguyên số nhà, tên đường; cách loại bỏ cấp huyện và cách xử lý trường hợp một đơn vị cũ được chia vào nhiều đơn vị mới.</p><div class="story-meta"><span>● 6 phút đọc</span><span>● Cập nhật 07/2026</span><span>● Dành cho mọi người</span></div><button class="primary read-story" type="button">Đọc toàn bộ bài viết</button></div>
+  </article>
+  <div class="story-grid">
+    <article class="story-card" data-article-open="article-2"><div class="story-thumb"><svg viewBox="0 0 500 260"><defs><linearGradient id="g2" x1="0" x2="1"><stop stop-color="#172554"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs><rect width="500" height="260" fill="url(#g2)"/><rect x="55" y="42" width="390" height="176" rx="18" fill="#fff" opacity=".96"/><rect x="80" y="70" width="110" height="18" rx="8" fill="#2563eb"/><rect x="80" y="108" width="300" height="12" rx="6" fill="#cbd5e1"/><rect x="80" y="137" width="245" height="12" rx="6" fill="#cbd5e1"/><circle cx="380" cy="168" r="28" fill="#dbeafe"/><path d="M370 168l8 8 16-20" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="story-body"><div class="story-cat">Dữ liệu hành chính</div><h3>Vì sao cần đối chiếu văn bản chính thức?</h3><p>Công cụ giúp tra cứu nhanh, nhưng hồ sơ pháp lý vẫn cần đối chiếu nghị quyết và dữ liệu địa giới được cơ quan có thẩm quyền công bố.</p><div class="story-footer"><span>4 phút đọc</span><b>Đọc bài →</b></div></div></article>
+    <article class="story-card" data-article-open="article-3"><div class="story-thumb"><svg viewBox="0 0 500 260"><rect width="500" height="260" fill="#ecfeff"/><path d="M70 190c50-90 105-130 165-92 45 29 62 103 126 79 32-12 49-52 69-94" fill="none" stroke="#0891b2" stroke-width="16" stroke-linecap="round"/><g fill="#0e7490"><circle cx="70" cy="190" r="15"/><circle cx="235" cy="98" r="15"/><circle cx="361" cy="177" r="15"/><circle cx="430" cy="83" r="15"/></g><path d="M250 54l31 24-31 24z" fill="#1d4ed8"/></svg></div><div class="story-body"><div class="story-cat">Bản đồ trực quan</div><h3>Khai thác bản đồ 3D để tra cứu nhanh hơn</h3><p>Chọn trực tiếp tỉnh/thành trên bản đồ, đưa khu vực vào trung tâm và đồng bộ lựa chọn với biểu mẫu chuyển đổi.</p><div class="story-footer"><span>3 phút đọc</span><b>Đọc bài →</b></div></div></article>
+    <article class="story-card" data-article-open="article-4"><div class="story-thumb"><svg viewBox="0 0 500 260"><defs><linearGradient id="g4" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#7c2d12"/><stop offset="1" stop-color="#fb923c"/></linearGradient></defs><rect width="500" height="260" fill="url(#g4)"/><rect x="72" y="48" width="356" height="164" rx="22" fill="#fff" opacity=".95"/><path d="M104 96h190M104 128h245M104 160h150" stroke="#fed7aa" stroke-width="13" stroke-linecap="round"/><circle cx="366" cy="155" r="38" fill="#ffedd5"/><path d="M366 136v38M347 155h38" stroke="#ea580c" stroke-width="8" stroke-linecap="round"/></svg></div><div class="story-body"><div class="story-cat">Cộng đồng</div><h3>Cách gửi góp ý và trao đổi với quản trị viên</h3><p>Đăng ý tưởng dưới tên ẩn danh, đồng tình với bài viết khác và nhận phản hồi trực tiếp từ Admin trong trang cộng đồng.</p><div class="story-footer"><span>3 phút đọc</span><b>Đọc bài →</b></div></div></article>
+    <article class="story-card" data-article-open="article-5"><div class="story-thumb"><svg viewBox="0 0 500 260"><rect width="500" height="260" fill="#f0fdf4"/><rect x="70" y="45" width="360" height="170" rx="22" fill="#fff" stroke="#bbf7d0" stroke-width="4"/><path d="M100 92h90M100 127h235M100 162h190" stroke="#86efac" stroke-width="12" stroke-linecap="round"/><path d="M362 82l28 28-28 28M390 110h-80" fill="none" stroke="#16a34a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="story-body"><div class="story-cat">Chuyển đổi hàng loạt</div><h3>Xử lý nhiều địa chỉ và xuất dữ liệu CSV</h3><p>Chuẩn hóa danh sách đầu vào, xử lý mỗi dòng một địa chỉ và xuất kết quả để tiếp tục sử dụng trong Excel hoặc phần mềm nghiệp vụ.</p><div class="story-footer"><span>5 phút đọc</span><b>Đọc bài →</b></div></div></article>
+    <article class="story-card" data-article-open="article-6"><div class="story-thumb"><svg viewBox="0 0 500 260"><defs><linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3b0764"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs><rect width="500" height="260" fill="url(#g6)"/><circle cx="250" cy="130" r="78" fill="#fff" opacity=".95"/><path d="M250 82v60l37 23" fill="none" stroke="#7e22ce" stroke-width="13" stroke-linecap="round"/><circle cx="250" cy="130" r="7" fill="#7e22ce"/></svg></div><div class="story-body"><div class="story-cat">Lịch sử địa giới</div><h3>Tra cứu chiều mới → cũ khi có nhiều kết quả</h3><p>Một xã/phường mới có thể hình thành từ nhiều đơn vị cũ. Hệ thống sẽ liệt kê các phương án để người dùng tiếp tục đối chiếu.</p><div class="story-footer"><span>4 phút đọc</span><b>Đọc bài →</b></div></div></article>
+    <article class="story-card" data-article-open="article-7"><div class="story-thumb"><svg viewBox="0 0 500 260"><rect width="500" height="260" fill="#f8fafc"/><path d="M250 40l145 55v70c0 42-52 77-145 99-93-22-145-57-145-99V95z" fill="#dbeafe" stroke="#2563eb" stroke-width="7"/><path d="M205 134l32 32 63-71" fill="none" stroke="#1d4ed8" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="story-body"><div class="story-cat">An toàn & riêng tư</div><h3>Dữ liệu nào được lưu trên trình duyệt?</h3><p>Tìm hiểu cách công cụ lưu dữ liệu tự nhập, bài góp ý, phản hồi và mã QR cục bộ mà không tự động gửi lên máy chủ.</p><div class="story-footer"><span>4 phút đọc</span><b>Đọc bài →</b></div></div></article>
+  </div>
+</section>
+
 <footer class="site-footer" id="footer">
   <div class="footer-inner">
     <div class="footer-brand">
@@ -636,6 +717,16 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
       </div>
     </main>
   </div>
+</section>
+
+
+<section class="article-reader" id="articleReader" role="dialog" aria-modal="true" aria-labelledby="articleReaderTitle">
+  <article class="article-panel">
+    <div class="article-topbar"><div class="article-brand"><span>CF</span> Trung tâm nội dung</div><button class="article-close" id="articleReaderClose" type="button" aria-label="Đóng">×</button></div>
+    <div class="article-hero" id="articleHero"></div>
+    <div class="article-content-layout"><div class="article-main" id="articleBody"></div><aside class="article-aside"><div class="article-aside-card"><h4>Trong bài viết</h4><nav class="article-toc" id="articleToc"></nav><h4 style="margin-top:20px">Bài viết liên quan</h4><div id="articleRelated"></div></div></aside></div>
+    <div class="article-nav"><button type="button" id="articlePrev"></button><button type="button" id="articleNext"></button></div>
+  </article>
 </section>
 
 <section class="qr-editor" id="qrEditor" role="dialog" aria-modal="true" aria-labelledby="qrEditorTitle"><div class="qr-editor-panel"><div class="qr-editor-head"><h3 id="qrEditorTitle">Điều chỉnh ảnh QR</h3><button class="qr-editor-close" type="button" id="qrEditorClose">×</button></div><div class="qr-crop-stage"><canvas id="qrCropCanvas" width="600" height="600"></canvas></div><div class="qr-editor-controls"><label>Phóng to<input type="range" id="qrZoom" min="1" max="3" step="0.01" value="1"></label><label>Dịch ngang<input type="range" id="qrOffsetX" min="-100" max="100" step="1" value="0"></label><label>Dịch dọc<input type="range" id="qrOffsetY" min="-100" max="100" step="1" value="0"></label></div><div class="qr-editor-actions"><button type="button" id="qrEditorReset">Đặt lại</button><button type="button" id="qrEditorCancel">Hủy</button><button class="primary" type="button" id="qrEditorSave">Cắt và lưu ảnh vuông</button></div></div></section>
@@ -1603,6 +1694,47 @@ Hà Giang,Huyện Vị Xuyên,Xã Việt Lâm,Tuyên Quang,Xã Việt Lâm,</div
     this.href='mailto:Nhanhtvt111@gmail.com?subject='+encodeURIComponent('[Góp ý] '+topic)+'&body='+encodeURIComponent((message||'Nhập nội dung góp ý tại đây')+'\n\nNgười gửi: Người dùng ẩn danh');
   });
   renderFeedback();
+})();
+</script>
+
+
+<script>
+(function(){
+  const svgHero=(tone,label)=>`<svg viewBox="0 0 1100 310" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="ahg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${tone[0]}"/><stop offset="1" stop-color="${tone[1]}"/></linearGradient></defs><rect width="1100" height="310" fill="url(#ahg)"/><circle cx="930" cy="55" r="180" fill="#fff" opacity=".08"/><circle cx="100" cy="290" r="210" fill="#fff" opacity=".06"/><path d="M620 48c70 25 102 82 80 143-17 47 4 81 42 104H340c46-35 59-82 31-123-36-54 4-124 73-125 70-1 115-21 176 1z" fill="#fff" opacity=".14"/><text x="550" y="170" text-anchor="middle" fill="#fff" opacity=".3" font-size="82" font-family="Inter,Arial" font-weight="900">${label}</text></svg>`;
+  const articles=[
+    {id:'article-1',cat:'Hướng dẫn sử dụng',title:'Hiểu đúng cách chuyển đổi địa chỉ sau sáp nhập',desc:'Nguyên tắc chuyển đổi, phạm vi dữ liệu và cách xử lý trường hợp địa giới phức tạp.',time:'6 phút đọc',tone:['#0f2f5f','#0891b2'],hero:'63 → 34',body:`<p class="lead">Chuyển đổi địa chỉ hành chính không đơn thuần là thay tên tỉnh. Một kết quả tốt cần giữ nguyên phần địa chỉ dân cư, loại bỏ đúng cấp trung gian và nhận diện những trường hợp địa giới cũ được chia vào nhiều đơn vị mới.</p><h2>1. Cấu trúc của một địa chỉ sau sáp nhập</h2><p>Thông thường, số nhà, tên đường, thôn, ấp hoặc khu phố vẫn được giữ nguyên. Phần thay đổi chủ yếu nằm ở tên xã/phường và tỉnh/thành phố. Trong mô hình chính quyền địa phương hai cấp, cấp quận, huyện, thị xã hoặc thành phố thuộc tỉnh không còn xuất hiện trong địa chỉ mới.</p><h2>2. Ba bước để chuyển đổi chính xác</h2><h3>Bước 1: Chọn đúng tỉnh hoặc thành phố cũ</h3><p>Việc lựa chọn đúng đơn vị cấp tỉnh cũ giúp thu hẹp dữ liệu và tránh nhầm các xã/phường trùng tên.</p><h3>Bước 2: Chọn cấp huyện và xã/phường cũ</h3><p>Cấp huyện được dùng như thông tin lịch sử để phân biệt. Sau khi chuyển đổi, hệ thống tự loại cấp huyện khỏi kết quả mới.</p><h3>Bước 3: Kiểm tra trường hợp nhiều phương án</h3><p>Một số đơn vị cũ được chia theo ranh giới, tuyến đường hoặc khu dân cư. Khi đó, hệ thống sẽ đưa ra nhiều lựa chọn thay vì tự động khẳng định một kết quả duy nhất.</p><blockquote>Đối với hồ sơ pháp lý, kết quả tra cứu nên được đối chiếu với nghị quyết sắp xếp và dữ liệu địa giới chính thức.</blockquote><h2>3. Khi nào nên dùng chế độ hàng loạt?</h2><p>Chế độ hàng loạt phù hợp khi cần xử lý danh sách khách hàng, hồ sơ nhân sự, danh sách thiết bị hoặc dữ liệu khảo sát. Mỗi dòng nên chứa một địa chỉ hoàn chỉnh để hệ thống nhận diện tốt hơn.</p>`},
+    {id:'article-2',cat:'Dữ liệu hành chính',title:'Vì sao cần đối chiếu văn bản chính thức?',desc:'Vai trò của nghị quyết, dữ liệu địa giới và trách nhiệm kiểm tra khi dùng trong hồ sơ pháp lý.',time:'4 phút đọc',tone:['#172554','#2563eb'],hero:'VĂN BẢN',body:`<p class="lead">Công cụ tra cứu giúp rút ngắn thời gian xử lý, nhưng không thay thế văn bản quy phạm pháp luật hoặc dữ liệu địa giới do cơ quan có thẩm quyền công bố.</p><h2>1. Dữ liệu tra cứu và giá trị pháp lý</h2><p>Dữ liệu trên công cụ được tổng hợp để hỗ trợ nhận diện nhanh. Trong trường hợp tên đơn vị trùng nhau, địa giới bị chia hoặc văn bản có mô tả theo ranh giới tự nhiên, người dùng vẫn cần kiểm tra nguồn chính thức.</p><h2>2. Những trường hợp phải kiểm tra kỹ</h2><ul><li>Địa chỉ nằm gần ranh giới giữa hai xã/phường mới.</li><li>Một đơn vị cũ được phân chia vào nhiều đơn vị mới.</li><li>Hồ sơ dùng để đăng ký, cấp phép, đấu thầu hoặc giao dịch có giá trị pháp lý.</li></ul><h2>3. Cách ghi chú trong hồ sơ</h2><p>Có thể ghi rõ địa chỉ mới và bổ sung địa chỉ cũ trong ngoặc để thuận tiện đối chiếu trong giai đoạn chuyển tiếp.</p>`},
+    {id:'article-3',cat:'Bản đồ trực quan',title:'Khai thác bản đồ 3D để tra cứu nhanh hơn',desc:'Đồng bộ lựa chọn trên bản đồ với biểu mẫu chuyển đổi.',time:'3 phút đọc',tone:['#083344','#0891b2'],hero:'BẢN ĐỒ',body:`<p class="lead">Bản đồ 3D không chỉ để minh họa. Đây là một cách chọn tỉnh/thành trực quan, đặc biệt hữu ích khi người dùng chưa quen với tên gọi mới sau sáp nhập.</p><h2>1. Chọn trực tiếp trên bản đồ</h2><p>Bấm vào một tỉnh/thành để đưa khu vực đó vào trung tâm. Tỉnh đang chọn được tô nổi và đồng bộ với biểu mẫu.</p><h2>2. Đổi góc nhìn</h2><p>Nút đổi góc 3D giúp quan sát khối địa giới rõ hơn. Nút Toàn quốc đưa bản đồ về trạng thái tổng quan.</p><h2>3. Kết hợp với thông tin tỉnh</h2><p>Sau khi chọn, hãy xem phần mô tả, số lượng đơn vị cấp xã cũ và mới, cùng các địa danh nổi bật ở cột thông tin bên phải.</p>`},
+    {id:'article-4',cat:'Cộng đồng',title:'Cách gửi góp ý và trao đổi với quản trị viên',desc:'Đăng ý tưởng ẩn danh, nhận phản hồi và chia sẻ liên kết.',time:'3 phút đọc',tone:['#7c2d12','#fb923c'],hero:'CỘNG ĐỒNG',body:`<p class="lead">Trang cộng đồng được thiết kế để mọi người chia sẻ ý tưởng mà không cần đăng nhập. Tất cả bài đăng thông thường đều hiển thị dưới tên Người dùng ẩn danh.</p><h2>1. Đăng một góp ý mới</h2><p>Chọn chủ đề, nhập nội dung và bấm Đăng lên cộng đồng. Bạn có thể dán đường dẫn; hệ thống sẽ tự biến đường dẫn thành liên kết có thể bấm.</p><h2>2. Trả lời bài đăng</h2><p>Người dùng có thể trả lời ẩn danh. Quản trị viên chọn vai trò Quản trị viên và xác thực mật khẩu để phản hồi dưới tên Admin.</p><h2>3. Đồng tình và tìm kiếm</h2><p>Nút Đồng tình giúp nhận diện ý tưởng được quan tâm. Thanh tìm kiếm hỗ trợ tìm trong cả bài đăng và phần trả lời.</p>`},
+    {id:'article-5',cat:'Chuyển đổi hàng loạt',title:'Xử lý nhiều địa chỉ và xuất dữ liệu CSV',desc:'Chuẩn hóa đầu vào và tiếp tục xử lý trong Excel.',time:'5 phút đọc',tone:['#14532d','#22c55e'],hero:'CSV',body:`<p class="lead">Khi có hàng chục hoặc hàng trăm địa chỉ, nhập từng địa chỉ là không hiệu quả. Chế độ hàng loạt giúp xử lý mỗi dòng một địa chỉ và xuất kết quả thành văn bản hoặc CSV.</p><h2>1. Chuẩn bị dữ liệu đầu vào</h2><p>Mỗi dòng nên là một địa chỉ độc lập. Nên đặt tỉnh/thành phố ở cuối dòng và hạn chế ký tự không cần thiết.</p><h2>2. Chọn chiều chuyển đổi</h2><p>Cũ → mới phù hợp để cập nhật dữ liệu hiện hành. Mới → cũ phục vụ đối chiếu lịch sử và có thể trả về nhiều phương án.</p><h2>3. Xuất kết quả</h2><p>Định dạng CSV thuận tiện để mở bằng Excel, nhập vào phần mềm hoặc tiếp tục lọc và kiểm tra.</p>`},
+    {id:'article-6',cat:'Lịch sử địa giới',title:'Tra cứu chiều mới → cũ khi có nhiều kết quả',desc:'Hiểu vì sao một địa chỉ mới có thể liên quan nhiều đơn vị cũ.',time:'4 phút đọc',tone:['#3b0764','#a855f7'],hero:'MỚI → CŨ',body:`<p class="lead">Chiều mới → cũ thường phức tạp hơn vì một xã/phường mới có thể được hình thành từ nhiều đơn vị cũ, thậm chí có phần địa giới được điều chỉnh từ nhiều nơi.</p><h2>1. Vì sao có nhiều kết quả?</h2><p>Tên xã/phường mới thể hiện đơn vị sau sắp xếp, nhưng không cho biết ngay vị trí cụ thể trước đây thuộc đơn vị nào.</p><h2>2. Cách lựa chọn đúng phương án</h2><p>Hãy dựa vào số nhà, tuyến đường, ấp, khu phố và các giấy tờ cũ. Nếu vẫn chưa đủ thông tin, cần đối chiếu bản đồ địa giới hoặc hỏi cơ quan địa phương.</p><h2>3. Ghi nhận dữ liệu lịch sử</h2><p>Trong hệ thống quản lý, nên lưu cả địa chỉ hiện tại và trường địa chỉ lịch sử để tránh mất thông tin truy vết.</p>`},
+    {id:'article-7',cat:'An toàn & riêng tư',title:'Dữ liệu nào được lưu trên trình duyệt?',desc:'Cách dữ liệu tùy chỉnh và cộng đồng được lưu cục bộ.',time:'4 phút đọc',tone:['#0f172a','#475569'],hero:'RIÊNG TƯ',body:`<p class="lead">Bản HTML độc lập ưu tiên quyền riêng tư: dữ liệu tự nhập được lưu trong localStorage của trình duyệt và không tự động gửi lên máy chủ.</p><h2>1. Những dữ liệu được lưu cục bộ</h2><ul><li>Dữ liệu ánh xạ xã/phường do người dùng tự nhập.</li><li>Ảnh QR và thông tin ủng hộ.</li><li>Bài góp ý, lượt đồng tình và câu trả lời.</li></ul><h2>2. Giới hạn của lưu trữ cục bộ</h2><p>Dữ liệu chỉ tồn tại trên trình duyệt đang dùng. Khi xóa dữ liệu trình duyệt hoặc đổi thiết bị, nội dung có thể không còn.</p><h2>3. Khi triển khai có máy chủ</h2><p>Có thể kết nối cơ sở dữ liệu để đồng bộ cộng đồng giữa nhiều người dùng, nhưng cần bổ sung xác thực, phân quyền và chính sách bảo vệ dữ liệu.</p>`}
+  ];
+  const reader=document.getElementById('articleReader'), hero=document.getElementById('articleHero'), body=document.getElementById('articleBody'), toc=document.getElementById('articleToc'), related=document.getElementById('articleRelated');
+  let currentIndex=0;
+  function renderArticle(index){
+    currentIndex=(index+articles.length)%articles.length; const a=articles[currentIndex];
+    hero.innerHTML=svgHero(a.tone,a.hero)+`<div class="article-hero-overlay"><div class="article-category">${a.cat} · ${a.time}</div><h1 id="articleReaderTitle">${a.title}</h1><p>${a.desc}</p></div>`;
+    body.innerHTML=a.body;
+    const headings=[...body.querySelectorAll('h2,h3')];
+    headings.forEach((h,i)=>h.id='article-section-'+i);
+    toc.innerHTML=headings.map(h=>`<a href="#${h.id}">${h.textContent}</a>`).join('');
+    related.innerHTML=articles.filter((_,i)=>i!==currentIndex).slice(0,3).map(r=>`<a class="related-article" data-related-id="${r.id}"><b>${r.title}</b><span>${r.cat} · ${r.time}</span></a>`).join('');
+    const prev=articles[(currentIndex-1+articles.length)%articles.length], next=articles[(currentIndex+1)%articles.length];
+    document.getElementById('articlePrev').innerHTML=`<small>← Bài trước</small><b>${prev.title}</b>`;
+    document.getElementById('articleNext').innerHTML=`<small>Bài tiếp theo →</small><b>${next.title}</b>`;
+    reader.scrollTop=0;
+  }
+  function openArticle(id){const idx=articles.findIndex(a=>a.id===id);renderArticle(idx<0?0:idx);reader.classList.add('show');document.body.style.overflow='hidden'}
+  function closeArticle(){reader.classList.remove('show');document.body.style.overflow=''}
+  document.querySelectorAll('[data-article-open]').forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('button')||el.classList.contains('story-card')||el.classList.contains('featured-story'))openArticle(el.dataset.articleOpen)}));
+  document.getElementById('viewAllArticles')?.addEventListener('click',()=>document.querySelector('.story-grid')?.scrollIntoView({behavior:'smooth',block:'center'}));
+  document.getElementById('articleReaderClose')?.addEventListener('click',closeArticle); reader?.addEventListener('click',e=>{if(e.target===reader)closeArticle()});
+  document.getElementById('articlePrev')?.addEventListener('click',()=>renderArticle(currentIndex-1)); document.getElementById('articleNext')?.addEventListener('click',()=>renderArticle(currentIndex+1));
+  related?.addEventListener('click',e=>{const link=e.target.closest('[data-related-id]');if(link)openArticle(link.dataset.relatedId)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&reader?.classList.contains('show'))closeArticle();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();document.getElementById('globalQuickSearch')?.focus()}});
+  const quick=document.getElementById('globalQuickSearch');
+  quick?.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const q=quick.value.trim().toLowerCase();if(!q)return;const a=articles.find(x=>(x.title+' '+x.cat+' '+x.desc).toLowerCase().includes(q));if(a){openArticle(a.id);return}const map=[['chuyển đổi','convert'],['hang loat','bulk'],['hàng loạt','bulk'],['tra cứu','lookup'],['dữ liệu','data']];const hit=map.find(x=>q.includes(x[0]));if(hit){document.querySelector(`[data-go-tab="${hit[1]}"]`)?.click();return}if(q.includes('bản đồ'))document.getElementById('mapSection')?.scrollIntoView({behavior:'smooth'});else if(q.includes('góp ý'))document.querySelector('[data-open-feedback]')?.click();else document.getElementById('articlesSection')?.scrollIntoView({behavior:'smooth'})});
 })();
 </script>
 

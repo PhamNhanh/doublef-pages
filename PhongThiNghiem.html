@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Phòng Thí Nghiệm Số - Bảng tuần hoàn, mô hình nguyên tử 3D và mô phỏng phản ứng hóa học." />
+  <title>Phòng Thí Nghiệm Số</title>
+  <style>
+    :root{
+      --bg:#07111f; --panel:#0d1b2b; --panel2:#102238; --text:#ecf6ff; --muted:#91a8be;
+      --cyan:#20d3d0; --blue:#4f8cff; --pink:#ff7195; --yellow:#ffd34d; --green:#58d68d;
+      --border:rgba(255,255,255,.10); --shadow:0 18px 60px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:
+      radial-gradient(circle at 10% 5%,rgba(32,211,208,.14),transparent 28%),
+      radial-gradient(circle at 90% 0%,rgba(79,140,255,.14),transparent 25%),var(--bg);color:var(--text)}
+    button,input,select{font:inherit}
+    .app{min-height:100vh}
+    header{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(7,17,31,.82);
+      border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:13px 22px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;white-space:nowrap}
+    .logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--blue));
+      display:grid;place-items:center;box-shadow:0 0 28px rgba(32,211,208,.28)}
+    nav{display:flex;gap:8px;overflow:auto}
+    nav button,.ghost,.primary{border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,.04);
+      padding:9px 13px;border-radius:11px;cursor:pointer;transition:.2s}
+    nav button:hover,.ghost:hover{background:rgba(255,255,255,.09)}
+    nav button.active{background:linear-gradient(135deg,rgba(32,211,208,.25),rgba(79,140,255,.25));border-color:rgba(32,211,208,.55)}
+    main{padding:22px;max-width:1700px;margin:auto}
+    .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}
+    h1{font-size:clamp(28px,4vw,54px);margin:0;line-height:1.02}
+    .sub{color:var(--muted);max-width:760px;margin-top:10px}
+    .statrow{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{padding:9px 12px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.04);color:#cfe4f7}
+    .view{display:none}.view.active{display:block}
+    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+    .search{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--border);color:var(--text);
+      padding:12px 14px;border-radius:13px;outline:none}
+    select{background:var(--panel);color:var(--text);border:1px solid var(--border);padding:12px;border-radius:13px}
+    .periodic-wrap{overflow:auto;padding-bottom:8px}
+    .periodic{min-width:1180px;display:grid;grid-template-columns:repeat(18,1fr);grid-auto-rows:78px;gap:5px}
+    .el{position:relative;border:1px solid rgba(255,255,255,.13);border-radius:9px;padding:5px;cursor:pointer;
+      transition:.18s;overflow:hidden;color:#06101c}
+    .el:hover{transform:translateY(-4px) scale(1.04);z-index:2;box-shadow:0 12px 25px rgba(0,0,0,.35)}
+    .el .z{font-size:11px;opacity:.72}.el .sym{font-size:25px;font-weight:900;text-align:center;line-height:28px}
+    .el .nm{font-size:9px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .alkali{background:#ff9c9c}.alkaline{background:#ffd197}.transition{background:#86d5d0}.post{background:#90d9b6}
+    .metalloid{background:#b7df83}.nonmetal{background:#f3a8bb}.halogen{background:#ffca72}.noble{background:#ffe15b}
+    .lanthanide{background:#aabfff}.actinide{background:#c5a9f5}.unknown{background:#b7c5d1}
+    .legend{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.legend span{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:13px}
+    .dot{width:13px;height:13px;border-radius:4px}
+    .grid2{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:18px}
+    .panel{background:linear-gradient(180deg,rgba(16,34,56,.93),rgba(11,25,41,.95));border:1px solid var(--border);
+      border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+    .panel-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--border)}
+    .panel-body{padding:17px}
+    canvas{display:block;width:100%;height:500px;background:
+      radial-gradient(circle at center,rgba(79,140,255,.14),transparent 36%),#050c16;border-radius:14px}
+    .element-title{display:flex;align-items:center;gap:15px}
+    .big-symbol{width:80px;height:80px;border-radius:17px;display:grid;place-items:center;font-weight:900;font-size:38px;color:#07111f}
+    .facts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+    .fact{padding:11px;border-radius:12px;background:rgba(255,255,255,.045);border:1px solid var(--border)}
+    .fact small{display:block;color:var(--muted);margin-bottom:5px}
+    .tabs{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}
+    .tabs button{border:1px solid var(--border);background:transparent;color:var(--text);padding:8px 10px;border-radius:9px;cursor:pointer}
+    .tabs button.active{background:rgba(32,211,208,.16);border-color:rgba(32,211,208,.5)}
+    .info-text{color:#c8d8e8;line-height:1.65}
+    .lab-layout{display:grid;grid-template-columns:300px minmax(0,1fr) 330px;gap:18px}
+    .shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:560px;overflow:auto}
+    .chemical{padding:10px 6px;border-radius:11px;border:1px solid var(--border);background:rgba(255,255,255,.05);
+      text-align:center;cursor:grab;user-select:none}
+    .chemical b{display:block;font-size:19px;color:var(--cyan)}.chemical small{color:var(--muted)}
+    .bench{min-height:560px;position:relative;background:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),#07101d;
+      background-size:30px 30px;border-radius:14px;border:1px dashed rgba(255,255,255,.18);overflow:hidden}
+    .drop-hint{position:absolute;top:20px;width:100%;text-align:center;color:var(--muted)}
+    .beaker{position:absolute;left:50%;top:50%;transform:translate(-50%,-45%);width:180px;height:230px;
+      border:7px solid rgba(194,229,255,.65);border-top:none;border-radius:0 0 35px 35px;filter:drop-shadow(0 18px 30px rgba(0,0,0,.4))}
+    .beaker:before{content:"";position:absolute;left:-20px;right:-20px;top:-8px;height:9px;border-radius:8px;background:rgba(194,229,255,.7)}
+    .liquid{position:absolute;left:0;right:0;bottom:0;height:22%;border-radius:0 0 27px 27px;
+      background:linear-gradient(rgba(32,211,208,.52),rgba(79,140,255,.72));transition:.5s}
+    .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.65);animation:rise 2.2s linear infinite}
+    @keyframes rise{from{transform:translateY(0);opacity:.1}50%{opacity:.8}to{transform:translateY(-150px);opacity:0}}
+    .mixture-list{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+    .mix-tag{padding:7px 9px;background:rgba(32,211,208,.12);border:1px solid rgba(32,211,208,.3);border-radius:9px}
+    .primary{background:linear-gradient(135deg,var(--cyan),var(--blue));border:0;color:#06101c;font-weight:800}
+    .wide{width:100%;margin-top:8px}
+    .result{margin-top:13px;padding:13px;border-radius:12px;background:rgba(88,214,141,.09);border:1px solid rgba(88,214,141,.28);min-height:90px;line-height:1.55}
+    .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+    .tool-card{padding:17px;border-radius:16px;background:var(--panel);border:1px solid var(--border)}
+    .tool-card input{width:100%;margin:6px 0 10px;background:#07111f;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px}
+    .tool-result{color:var(--cyan);font-weight:800;min-height:24px}
+    .footer-note{text-align:center;color:var(--muted);padding:24px;font-size:13px}
+    @media(max-width:1100px){.grid2,.lab-layout{grid-template-columns:1fr}.lab-layout{grid-template-columns:1fr}.shelf{grid-template-columns:repeat(6,1fr);max-height:none}.bench{min-height:460px}}
+    @media(max-width:650px){header{padding:10px}.brand span:last-child{display:none}main{padding:13px}.hero{display:block}.facts{grid-template-columns:1fr}
+      canvas{height:390px}.shelf{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">⚗</div><span>Phòng Thí Nghiệm Số</span></div>
+  <nav>
+    <button class="active" data-view="periodicView">Bảng tuần hoàn</button>
+    <button data-view="labView">Phòng thí nghiệm</button>
+    <button data-view="toolsView">Công cụ hóa học</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div><h1>Khám phá hóa học<br><span style="color:var(--cyan)">trong không gian số</span></h1>
+      <div class="sub">Bảng tuần hoàn 118 nguyên tố, mô hình nguyên tử 3D, thông tin chi tiết và phòng thí nghiệm phản ứng tương tác.</div>
+    </div>
+    <div class="statrow"><span class="chip">118 nguyên tố</span><span class="chip">Mô hình 3D</span><span class="chip">Mô phỏng an toàn</span></div>
+  </section>
+
+  <section id="periodicView" class="view active">
+    <div class="toolbar">
+      <input id="search" class="search" placeholder="Tìm theo tên, ký hiệu hoặc số hiệu nguyên tử..." />
+      <select id="categoryFilter"><option value="">Tất cả nhóm</option></select>
+      <button class="ghost" id="randomBtn">Nguyên tố ngẫu nhiên</button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="periodic-wrap"><div id="periodic" class="periodic"></div></div>
+
+    <div class="grid2" style="margin-top:18px">
+      <div class="panel">
+        <div class="panel-head"><b>Mô hình nguyên tử 3D</b><span id="modelLabel" class="chip">Carbon (C)</span></div>
+        <div class="panel-body"><canvas id="atomCanvas"></canvas>
+          <div class="toolbar"><button class="ghost" id="pauseBtn">Tạm dừng</button><button class="ghost" id="resetCam">Đặt lại góc nhìn</button>
+          <span class="chip">Kéo chuột để xoay · Cuộn để phóng to</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><b>Thông tin nguyên tố</b><button class="ghost" id="speakBtn">🔊 Đọc</button></div>
+        <div class="panel-body">
+          <div class="element-title"><div id="bigSymbol" class="big-symbol nonmetal">C</div><div><h2 id="elName" style="margin:0">Carbon</h2><div id="elMeta" class="sub"></div></div></div>
+          <div class="facts" id="facts"></div>
+          <div class="tabs"><button class="active" data-tab="overview">Tổng quan</button><button data-tab="applications">Ứng dụng</button><button data-tab="safety">An toàn</button></div>
+          <div id="infoText" class="info-text"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="labView" class="view">
+    <div class="lab-layout">
+      <div class="panel"><div class="panel-head"><b>Kệ hóa chất</b></div><div class="panel-body">
+        <div class="sub" style="margin:0 0 12px">Kéo hoặc bấm để thêm vào cốc.</div><div id="shelf" class="shelf"></div></div></div>
+      <div class="panel"><div class="panel-head"><b>Bàn thí nghiệm ảo</b><span class="chip">Mô phỏng giáo dục</span></div><div class="panel-body">
+        <div id="bench" class="bench"><div class="drop-hint">Thả hóa chất vào cốc</div><div class="beaker"><div id="liquid" class="liquid"></div></div></div>
+      </div></div>
+      <div class="panel"><div class="panel-head"><b>Bảng điều khiển</b></div><div class="panel-body">
+        <small style="color:var(--muted)">Hóa chất đã chọn</small><div id="mixture" class="mixture-list"></div>
+        <label>Nhiệt độ: <b id="tempLabel">25°C</b></label><input id="temp" type="range" min="0" max="300" value="25" style="width:100%">
+        <button class="primary wide" id="reactBtn">Tiến hành phản ứng</button><button class="ghost wide" id="clearMix">Làm sạch dụng cụ</button>
+        <div id="reactionResult" class="result">Chọn các chất để bắt đầu mô phỏng.</div>
+      </div></div>
+    </div>
+  </section>
+
+  <section id="toolsView" class="view">
+    <div class="tools">
+      <div class="tool-card"><h3>Tính số mol</h3><input id="mass" type="number" placeholder="Khối lượng m (g)"><input id="molarMass" type="number" placeholder="Khối lượng mol M (g/mol)"><button class="primary wide" onclick="calcMol()">Tính n = m/M</button><div id="molResult" class="tool-result"></div></div>
+      <div class="tool-card"><h3>Tính nồng độ mol</h3><input id="mol" type="number" placeholder="Số mol n"><input id="volume" type="number" placeholder="Thể tích V (lít)"><button class="primary wide" onclick="calcMolarity()">Tính C = n/V</button><div id="molarityResult" class="tool-result"></div></div>
+      <div class="tool-card"><h3>Tính pH axit mạnh</h3><input id="hConc" type="number" step="any" placeholder="Nồng độ H⁺ (mol/L)"><button class="primary wide" onclick="calcPH()">Tính pH</button><div id="phResult" class="tool-result"></div></div>
+      <div class="tool-card"><h3>Khối lượng phân tử</h3><input id="formula" placeholder="Ví dụ: H2O, CO2, NaCl"><button class="primary wide" onclick="calcFormulaMass()">Phân tích công thức</button><div id="formulaResult" class="tool-result"></div></div>
+    </div>
+  </section>
+</main>
+<div class="footer-note">Mô phỏng phục vụ học tập. Không dùng để thay thế hướng dẫn an toàn trong phòng thí nghiệm thực tế.</div>
+</div>
+
+<script>
+const names=`H Hydrogen 1 1 1 nonmetal|He Helium 2 18 1 noble|Li Lithium 3 1 2 alkali|Be Beryllium 4 2 2 alkaline|B Boron 5 13 2 metalloid|C Carbon 6 14 2 nonmetal|N Nitrogen 7 15 2 nonmetal|O Oxygen 8 16 2 nonmetal|F Fluorine 9 17 2 halogen|Ne Neon 10 18 2 noble|Na Sodium 11 1 3 alkali|Mg Magnesium 12 2 3 alkaline|Al Aluminium 13 13 3 post|Si Silicon 14 14 3 metalloid|P Phosphorus 15 15 3 nonmetal|S Sulfur 16 16 3 nonmetal|Cl Chlorine 17 17 3 halogen|Ar Argon 18 18 3 noble|K Potassium 19 1 4 alkali|Ca Calcium 20 2 4 alkaline|Sc Scandium 21 3 4 transition|Ti Titanium 22 4 4 transition|V Vanadium 23 5 4 transition|Cr Chromium 24 6 4 transition|Mn Manganese 25 7 4 transition|Fe Iron 26 8 4 transition|Co Cobalt 27 9 4 transition|Ni Nickel 28 10 4 transition|Cu Copper 29 11 4 transition|Zn Zinc 30 12 4 transition|Ga Gallium 31 13 4 post|Ge Germanium 32 14 4 metalloid|As Arsenic 33 15 4 metalloid|Se Selenium 34 16 4 nonmetal|Br Bromine 35 17 4 halogen|Kr Krypton 36 18 4 noble|Rb Rubidium 37 1 5 alkali|Sr Strontium 38 2 5 alkaline|Y Yttrium 39 3 5 transition|Zr Zirconium 40 4 5 transition|Nb Niobium 41 5 5 transition|Mo Molybdenum 42 6 5 transition|Tc Technetium 43 7 5 transition|Ru Ruthenium 44 8 5 transition|Rh Rhodium 45 9 5 transition|Pd Palladium 46 10 5 transition|Ag Silver 47 11 5 transition|Cd Cadmium 48 12 5 transition|In Indium 49 13 5 post|Sn Tin 50 14 5 post|Sb Antimony 51 15 5 metalloid|Te Tellurium 52 16 5 metalloid|I Iodine 53 17 5 halogen|Xe Xenon 54 18 5 noble|Cs Caesium 55 1 6 alkali|Ba Barium 56 2 6 alkaline|La Lanthanum 57 3 6 lanthanide|Ce Cerium 58 4 6 lanthanide|Pr Praseodymium 59 5 6 lanthanide|Nd Neodymium 60 6 6 lanthanide|Pm Promethium 61 7 6 lanthanide|Sm Samarium 62 8 6 lanthanide|Eu Europium 63 9 6 lanthanide|Gd Gadolinium 64 10 6 lanthanide|Tb Terbium 65 11 6 lanthanide|Dy Dysprosium 66 12 6 lanthanide|Ho Holmium 67 13 6 lanthanide|Er Erbium 68 14 6 lanthanide|Tm Thulium 69 15 6 lanthanide|Yb Ytterbium 70 16 6 lanthanide|Lu Lutetium 71 17 6 lanthanide|Hf Hafnium 72 4 6 transition|Ta Tantalum 73 5 6 transition|W Tungsten 74 6 6 transition|Re Rhenium 75 7 6 transition|Os Osmium 76 8 6 transition|Ir Iridium 77 9 6 transition|Pt Platinum 78 10 6 transition|Au Gold 79 11 6 transition|Hg Mercury 80 12 6 transition|Tl Thallium 81 13 6 post|Pb Lead 82 14 6 post|Bi Bismuth 83 15 6 post|Po Polonium 84 16 6 post|At Astatine 85 17 6 halogen|Rn Radon 86 18 6 noble|Fr Francium 87 1 7 alkali|Ra Radium 88 2 7 alkaline|Ac Actinium 89 3 7 actinide|Th Thorium 90 4 7 actinide|Pa Protactinium 91 5 7 actinide|U Uranium 92 6 7 actinide|Np Neptunium 93 7 7 actinide|Pu Plutonium 94 8 7 actinide|Am Americium 95 9 7 actinide|Cm Curium 96 10 7 actinide|Bk Berkelium 97 11 7 actinide|Cf Californium 98 12 7 actinide|Es Einsteinium 99 13 7 actinide|Fm Fermium 100 14 7 actinide|Md Mendelevium 101 15 7 actinide|No Nobelium 102 16 7 actinide|Lr Lawrencium 103 17 7 actinide|Rf Rutherfordium 104 4 7 transition|Db Dubnium 105 5 7 transition|Sg Seaborgium 106 6 7 transition|Bh Bohrium 107 7 7 transition|Hs Hassium 108 8 7 transition|Mt Meitnerium 109 9 7 unknown|Ds Darmstadtium 110 10 7 unknown|Rg Roentgenium 111 11 7 unknown|Cn Copernicium 112 12 7 transition|Nh Nihonium 113 13 7 unknown|Fl Flerovium 114 14 7 post|Mc Moscovium 115 15 7 unknown|Lv Livermorium 116 16 7 post|Ts Tennessine 117 17 7 halogen|Og Oganesson 118 18 7 noble`;
+const elements=names.split('|').map(x=>{let [symbol,name,z,group,period,category]=x.split(' ');return{symbol,name,z:+z,group:+group,period:+period,category}});
+const viNames={H:'Hiđro',He:'Heli',Li:'Liti',Be:'Berili',B:'Bo',C:'Cacbon',N:'Nitơ',O:'Oxi',F:'Flo',Ne:'Neon',Na:'Natri',Mg:'Magiê',Al:'Nhôm',Si:'Silic',P:'Photpho',S:'Lưu huỳnh',Cl:'Clo',Ar:'Argon',K:'Kali',Ca:'Canxi',Fe:'Sắt',Cu:'Đồng',Zn:'Kẽm',Ag:'Bạc',Sn:'Thiếc',I:'Iốt',Au:'Vàng',Hg:'Thủy ngân',Pb:'Chì',U:'Urani'};
+const categoryNames={alkali:'Kim loại kiềm',alkaline:'Kim loại kiềm thổ',transition:'Kim loại chuyển tiếp',post:'Kim loại sau chuyển tiếp',metalloid:'Á kim',nonmetal:'Phi kim',halogen:'Halogen',noble:'Khí hiếm',lanthanide:'Họ Lantan',actinide:'Họ Actini',unknown:'Chưa xác định'};
+const masses={H:1.008,He:4.003,Li:6.94,Be:9.012,B:10.81,C:12.011,N:14.007,O:15.999,F:18.998,Ne:20.180,Na:22.990,Mg:24.305,Al:26.982,Si:28.085,P:30.974,S:32.06,Cl:35.45,Ar:39.948,K:39.098,Ca:40.078,Fe:55.845,Cu:63.546,Zn:65.38,Ag:107.868,Sn:118.710,I:126.904,Au:196.967,Hg:200.592,Pb:207.2,U:238.029};
+const descriptions={
+ C:'Cacbon là nền tảng của hóa học hữu cơ và sự sống. Nguyên tố này tồn tại dưới nhiều dạng thù hình như kim cương, than chì và graphene.',
+ H:'Hiđro là nguyên tố nhẹ nhất và phổ biến nhất trong vũ trụ. Ở điều kiện thường, hiđro tồn tại chủ yếu dưới dạng phân tử H₂.',
+ O:'Oxi hỗ trợ hô hấp và quá trình cháy. Trong khí quyển Trái Đất, oxi phân tử chiếm khoảng một phần năm thể tích.',
+ Fe:'Sắt là kim loại quan trọng trong sản xuất thép, xây dựng, cơ khí và cũng là thành phần thiết yếu của hemoglobin.',
+ Au:'Vàng là kim loại quý có tính dẫn điện tốt, chống ăn mòn và được sử dụng trong trang sức, điện tử và tài chính.',
+ Na:'Natri là kim loại kiềm hoạt động mạnh. Trong tự nhiên, natri chủ yếu tồn tại dưới dạng hợp chất như natri clorua.'
+};
+let selected=elements.find(e=>e.symbol==='C'), paused=false, angleX=.45, angleY=.2, zoom=1, drag=false,lastX=0,lastY=0;
+
+function renderPeriodic(filter=''){
+ const q=document.getElementById('search').value.trim().toLowerCase(), cat=document.getElementById('categoryFilter').value;
+ const box=document.getElementById('periodic'); box.innerHTML='';
+ elements.filter(e=>(!q||e.symbol.toLowerCase().includes(q)||e.name.toLowerCase().includes(q)||(viNames[e.symbol]||'').toLowerCase().includes(q)||String(e.z)===q)&&(!cat||e.category===cat)).forEach(e=>{
+   const d=document.createElement('div');d.className='el '+e.category;
+   let col=e.group,row=e.period;
+   if(e.category==='lanthanide'){row=9;col=e.z-54}
+   if(e.category==='actinide'){row=10;col=e.z-86}
+   if((e.z>=57&&e.z<=71)||(e.z>=89&&e.z<=103)){} else {d.style.gridColumn=col;d.style.gridRow=row}
+   if(e.category==='lanthanide'||e.category==='actinide'){d.style.gridColumn=col;d.style.gridRow=row}
+   d.innerHTML=`<div class="z">${e.z}</div><div class="sym">${e.symbol}</div><div class="nm">${viNames[e.symbol]||e.name}</div>`;
+   d.onclick=()=>selectElement(e);box.appendChild(d);
+ });
+}
+function selectElement(e){selected=e;document.getElementById('modelLabel').textContent=`${viNames[e.symbol]||e.name} (${e.symbol})`;
+ document.getElementById('bigSymbol').className='big-symbol '+e.category;document.getElementById('bigSymbol').textContent=e.symbol;
+ document.getElementById('elName').textContent=viNames[e.symbol]||e.name;document.getElementById('elMeta').textContent=`${e.name} · Số hiệu nguyên tử ${e.z}`;
+ const shell=electronShells(e.z);document.getElementById('facts').innerHTML=`
+ <div class="fact"><small>Số hiệu nguyên tử</small><b>${e.z}</b></div>
+ <div class="fact"><small>Khối lượng nguyên tử</small><b>${masses[e.symbol]||'Đang cập nhật'}</b></div>
+ <div class="fact"><small>Nhóm / Chu kỳ</small><b>${e.group} / ${e.period}</b></div>
+ <div class="fact"><small>Phân bố electron</small><b>${shell.join(' – ')}</b></div>
+ <div class="fact"><small>Phân loại</small><b>${categoryNames[e.category]}</b></div>
+ <div class="fact"><small>Số electron</small><b>${e.z}</b></div>`;
+ updateInfo('overview');angleX=.45;angleY=.2;zoom=1;
+}
+function updateInfo(tab){let text='';
+ if(tab==='overview') text=descriptions[selected.symbol]||`${viNames[selected.symbol]||selected.name} là nguyên tố hóa học có ký hiệu ${selected.symbol}, số hiệu nguyên tử ${selected.z}, thuộc ${categoryNames[selected.category].toLowerCase()}.`;
+ if(tab==='applications') text=`Ứng dụng của ${selected.symbol} phụ thuộc vào độ tinh khiết và dạng hợp chất. Website có thể mở rộng để hiển thị dữ liệu ứng dụng trong công nghiệp, y học, năng lượng, vật liệu và đời sống.`;
+ if(tab==='safety') text=`Cần đánh giá an toàn theo từng dạng đơn chất hoặc hợp chất. Không tự ý tiếp xúc, đốt, trộn hoặc gia nhiệt hóa chất ngoài phòng thí nghiệm có giám sát.`;
+ document.getElementById('infoText').textContent=text;
+}
+function electronShells(z){const caps=[2,8,18,32,32,18,8];let a=[],r=z;for(const c of caps){if(r<=0)break;let n=Math.min(c,r);a.push(n);r-=n}return a}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');updateInfo(b.dataset.tab)});
+Object.entries(categoryNames).forEach(([k,v])=>{categoryFilter.innerHTML+=`<option value="${k}">${v}</option>`});
+legend.innerHTML=Object.entries(categoryNames).map(([k,v])=>`<span><i class="dot ${k}"></i>${v}</span>`).join('');
+search.oninput=renderPeriodic;categoryFilter.onchange=renderPeriodic;randomBtn.onclick=()=>selectElement(elements[Math.floor(Math.random()*elements.length)]);
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(b.dataset.view).classList.add('active')});
+speakBtn.onclick=()=>{speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(`${viNames[selected.symbol]||selected.name}. Số hiệu nguyên tử ${selected.z}. ${infoText.textContent}`))};
+
+const canvas=document.getElementById('atomCanvas'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=canvas.clientWidth*devicePixelRatio;canvas.height=canvas.clientHeight*devicePixelRatio}
+window.addEventListener('resize',resize);resize();
+canvas.onmousedown=e=>{drag=true;lastX=e.clientX;lastY=e.clientY};window.onmouseup=()=>drag=false;window.onmousemove=e=>{if(drag){angleY+=(e.clientX-lastX)*.008;angleX+=(e.clientY-lastY)*.008;lastX=e.clientX;lastY=e.clientY}};
+canvas.onwheel=e=>{e.preventDefault();zoom=Math.max(.55,Math.min(1.8,zoom-e.deltaY*.001))};
+pauseBtn.onclick=()=>{paused=!paused;pauseBtn.textContent=paused?'Tiếp tục':'Tạm dừng'};resetCam.onclick=()=>{angleX=.45;angleY=.2;zoom=1};
+function project(x,y,z,cx,cy,scale){let cyy=Math.cos(angleY),sy=Math.sin(angleY),cxx=Math.cos(angleX),sx=Math.sin(angleX);
+ let x1=x*cyy-z*sy,z1=x*sy+z*cyy,y1=y*cxx-z1*sx,z2=y*sx+z1*cxx;let p=480/(480+z2);return[cx+x1*p*scale,cy+y1*p*scale,p,z2]}
+let t=0;
+function draw(){
+ requestAnimationFrame(draw);if(!paused)t+=.012;
+ const w=canvas.width,h=canvas.height,cx=w/2,cy=h/2,s=Math.min(w,h)/620*zoom*devicePixelRatio;
+ ctx.clearRect(0,0,w,h);
+ const shells=electronShells(selected.z), max=Math.min(shells.length,7);
+ ctx.save();ctx.globalAlpha=.28;ctx.strokeStyle='#76d9ff';ctx.lineWidth=1.4*devicePixelRatio;
+ for(let i=0;i<max;i++){let r=75+i*43;ctx.beginPath();for(let a=0;a<=Math.PI*2+.04;a+=.04){let p=project(Math.cos(a)*r,Math.sin(a)*r,0,cx,cy,s);a===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1])}ctx.stroke()}ctx.restore();
+ let nucCount=Math.min(selected.z,42);for(let i=0;i<nucCount;i++){let a=i*2.399,rad=7*Math.sqrt(i),p=project(Math.cos(a)*rad,Math.sin(a)*rad,Math.sin(i)*12,cx,cy,s);ctx.beginPath();ctx.fillStyle=i%2?'#ff6f91':'#4f8cff';ctx.arc(p[0],p[1],7*p[2]*s,0,7);ctx.fill()}
+ shells.forEach((count,si)=>{let n=Math.min(count,18),r=75+si*43;for(let j=0;j<n;j++){let a=t*(1+.12*si)+j*Math.PI*2/n;let p=project(Math.cos(a)*r,Math.sin(a)*r,Math.sin(a*1.7)*10,cx,cy,s);ctx.beginPath();ctx.shadowBlur=15*s;ctx.shadowColor='#20d3d0';ctx.fillStyle='#b8ffff';ctx.arc(p[0],p[1],4.2*p[2]*s,0,7);ctx.fill();ctx.shadowBlur=0}})
+ ctx.fillStyle='rgba(255,255,255,.85)';ctx.font=`${16*devicePixelRatio}px Segoe UI`;ctx.fillText(`${selected.symbol} · ${selected.z} proton · ${selected.z} electron`,18*devicePixelRatio,30*devicePixelRatio);
+}draw();
+
+const chemicals=[
+ ['H2','Khí hiđro'],['O2','Khí oxi'],['H2O','Nước'],['Na','Natri'],['Cl2','Khí clo'],['HCl','Axit clohiđric'],
+ ['NaOH','Natri hiđroxit'],['Fe','Sắt'],['CuSO4','Đồng sunfat'],['CaCO3','Canxi cacbonat'],['AgNO3','Bạc nitrat'],['NaCl','Muối ăn']
+];
+let mix=[];
+shelf.innerHTML=chemicals.map(c=>`<div class="chemical" draggable="true" data-f="${c[0]}"><b>${c[0]}</b><small>${c[1]}</small></div>`).join('');
+document.querySelectorAll('.chemical').forEach(x=>{x.onclick=()=>addChem(x.dataset.f);x.ondragstart=e=>e.dataTransfer.setData('text/plain',x.dataset.f)});
+bench.ondragover=e=>e.preventDefault();bench.ondrop=e=>{e.preventDefault();addChem(e.dataTransfer.getData('text/plain'))};
+function addChem(f){mix.push(f);renderMix();liquid.style.height=Math.min(78,22+mix.length*10)+'%'}
+function renderMix(){mixture.innerHTML=mix.length?mix.map((x,i)=>`<span class="mix-tag" onclick="mix.splice(${i},1);renderMix()">${x} ×</span>`).join(''):'<span class="sub">Chưa có hóa chất</span>'}
+temp.oninput=()=>tempLabel.textContent=temp.value+'°C';
+clearMix.onclick=()=>{mix=[];renderMix();liquid.style.height='22%';reactionResult.textContent='Dụng cụ đã được làm sạch.';document.querySelectorAll('.bubble').forEach(x=>x.remove())};
+const reactions=[
+ {need:['H2','O2'],eq:'2H₂ + O₂ → 2H₂O',msg:'Tạo thành nước. Phản ứng tỏa nhiệt mạnh và cần năng lượng kích hoạt.'},
+ {need:['HCl','NaOH'],eq:'HCl + NaOH → NaCl + H₂O',msg:'Phản ứng trung hòa axit–bazơ, tạo muối và nước.'},
+ {need:['Fe','CuSO4'],eq:'Fe + CuSO₄ → FeSO₄ + Cu',msg:'Sắt đẩy đồng ra khỏi dung dịch đồng sunfat; đồng kim loại có thể bám màu đỏ nâu.'},
+ {need:['AgNO3','NaCl'],eq:'AgNO₃ + NaCl → AgCl↓ + NaNO₃',msg:'Xuất hiện kết tủa bạc clorua màu trắng.'},
+ {need:['CaCO3'],hot:true,eq:'CaCO₃ → CaO + CO₂↑',msg:'Khi nung ở nhiệt độ cao, canxi cacbonat phân hủy và giải phóng khí CO₂.'}
+];
+reactBtn.onclick=()=>{
+ let r=reactions.find(r=>r.need.every(n=>mix.includes(n))&&(!r.hot||+temp.value>=180));
+ if(r){reactionResult.innerHTML=`<b>${r.eq}</b><br>${r.msg}`;makeBubbles();liquid.style.background=r.eq.includes('AgCl')?'rgba(235,235,225,.85)':'linear-gradient(rgba(88,214,141,.6),rgba(32,211,208,.75))'}
+ else reactionResult.textContent='Chưa tìm thấy phản ứng phù hợp trong thư viện mô phỏng, hoặc điều kiện nhiệt độ chưa đạt.';
+};
+function makeBubbles(){for(let i=0;i<18;i++){let b=document.createElement('i');b.className='bubble';let z=4+Math.random()*10;b.style.width=b.style.height=z+'px';b.style.left=(25+Math.random()*130)+'px';b.style.bottom=(10+Math.random()*50)+'px';b.style.animationDelay=Math.random()*1.8+'s';document.querySelector('.beaker').appendChild(b)}}
+function calcMol(){let m=+mass.value,M=+molarMass.value;molResult.textContent=m>=0&&M>0?`n = ${(m/M).toFixed(4)} mol`:'Vui lòng nhập dữ liệu hợp lệ.'}
+function calcMolarity(){let n=+mol.value,V=+volume.value;molarityResult.textContent=n>=0&&V>0?`C = ${(n/V).toFixed(4)} mol/L`:'Vui lòng nhập dữ liệu hợp lệ.'}
+function calcPH(){let c=+hConc.value;phResult.textContent=c>0?`pH = ${(-Math.log10(c)).toFixed(3)}`:'Nồng độ H⁺ phải lớn hơn 0.'}
+function calcFormulaMass(){
+ const f=formula.value.trim(), re=/([A-Z][a-z]?)(\d*)/g;let m,total=0,parts=[],valid=true;
+ while((m=re.exec(f))){let e=elements.find(x=>x.symbol===m[1]),n=+(m[2]||1),massVal=e&&(masses[e.symbol]||e.z*2);
+ if(!e){valid=false;break}total+=massVal*n;parts.push(`${e.symbol}×${n}`)}
+ formulaResult.textContent=valid&&parts.length?`${parts.join(' + ')} ≈ ${total.toFixed(3)} g/mol`:'Không đọc được công thức.';
+}
+renderPeriodic();selectElement(selected);renderMix();
+</script>
+</body>
+</html>

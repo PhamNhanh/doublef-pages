@@ -93,6 +93,16 @@
     .tool-card input{width:100%;margin:6px 0 10px;background:#07111f;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px}
     .tool-result{color:var(--cyan);font-weight:800;min-height:24px}
     .footer-note{text-align:center;color:var(--muted);padding:24px;font-size:13px}
+
+    .particle-note{
+      position:absolute;z-index:20;min-width:210px;max-width:280px;padding:12px 13px;border-radius:13px;
+      background:rgba(7,17,31,.96);border:1px solid rgba(32,211,208,.45);box-shadow:0 14px 35px rgba(0,0,0,.4);
+      color:var(--text);pointer-events:none;transform:translate(12px,12px);display:none
+    }
+    .particle-note b{display:block;margin-bottom:5px;color:var(--cyan)}
+    .particle-note small{display:block;color:var(--muted);line-height:1.45}
+    .canvas-wrap{position:relative}
+
     @media(max-width:1100px){.grid2,.lab-layout{grid-template-columns:1fr}.lab-layout{grid-template-columns:1fr}.shelf{grid-template-columns:repeat(6,1fr);max-height:none}.bench{min-height:460px}}
     @media(max-width:650px){header{padding:10px}.brand span:last-child{display:none}main{padding:13px}.hero{display:block}.facts{grid-template-columns:1fr}
       canvas{height:390px}.shelf{grid-template-columns:repeat(3,1fr)}}
@@ -129,7 +139,8 @@
     <div class="grid2" style="margin-top:18px">
       <div class="panel">
         <div class="panel-head"><b>Mô hình nguyên tử 3D</b><span id="modelLabel" class="chip">Carbon (C)</span></div>
-        <div class="panel-body"><canvas id="atomCanvas"></canvas>
+        <div class="panel-body"><div class="canvas-wrap"><canvas id="atomCanvas"></canvas>
+          <div id="particleNote" class="particle-note"></div></div>
           <div class="toolbar"><button class="ghost" id="pauseBtn">Tạm dừng</button><button class="ghost" id="resetCam">Đặt lại góc nhìn</button>
           <span class="chip">Kéo chuột để xoay · Cuộn để phóng to</span></div>
         </div>
@@ -189,6 +200,7 @@ const descriptions={
  Na:'Natri là kim loại kiềm hoạt động mạnh. Trong tự nhiên, natri chủ yếu tồn tại dưới dạng hợp chất như natri clorua.'
 };
 let selected=elements.find(e=>e.symbol==='C'), paused=false, angleX=.45, angleY=.2, zoom=1, drag=false,lastX=0,lastY=0;
+let particleHits=[];
 
 function renderPeriodic(filter=''){
  const q=document.getElementById('search').value.trim().toLowerCase(), cat=document.getElementById('categoryFilter').value;
@@ -214,7 +226,7 @@ function selectElement(e){selected=e;document.getElementById('modelLabel').textC
  <div class="fact"><small>Phân bố electron</small><b>${shell.join(' – ')}</b></div>
  <div class="fact"><small>Phân loại</small><b>${categoryNames[e.category]}</b></div>
  <div class="fact"><small>Số electron</small><b>${e.z}</b></div>`;
- updateInfo('overview');angleX=.45;angleY=.2;zoom=1;
+ updateInfo('overview');angleX=.45;angleY=.2;zoom=1;document.getElementById('particleNote').style.display='none';
 }
 function updateInfo(tab){let text='';
  if(tab==='overview') text=descriptions[selected.symbol]||`${viNames[selected.symbol]||selected.name} là nguyên tố hóa học có ký hiệu ${selected.symbol}, số hiệu nguyên tử ${selected.z}, thuộc ${categoryNames[selected.category].toLowerCase()}.`;
@@ -233,8 +245,31 @@ speakBtn.onclick=()=>{speechSynthesis.cancel();speechSynthesis.speak(new SpeechS
 const canvas=document.getElementById('atomCanvas'),ctx=canvas.getContext('2d');
 function resize(){canvas.width=canvas.clientWidth*devicePixelRatio;canvas.height=canvas.clientHeight*devicePixelRatio}
 window.addEventListener('resize',resize);resize();
-canvas.onmousedown=e=>{drag=true;lastX=e.clientX;lastY=e.clientY};window.onmouseup=()=>drag=false;window.onmousemove=e=>{if(drag){angleY+=(e.clientX-lastX)*.008;angleX+=(e.clientY-lastY)*.008;lastX=e.clientX;lastY=e.clientY}};
+canvas.onmousedown=e=>{drag=true;lastX=e.clientX;lastY=e.clientY};
+window.onmouseup=()=>drag=false;
+window.onmousemove=e=>{if(drag){angleY+=(e.clientX-lastX)*.008;angleX+=(e.clientY-lastY)*.008;lastX=e.clientX;lastY=e.clientY}};
 canvas.onwheel=e=>{e.preventDefault();zoom=Math.max(.55,Math.min(1.8,zoom-e.deltaY*.001))};
+canvas.onclick=e=>{
+  const rect=canvas.getBoundingClientRect();
+  const x=(e.clientX-rect.left)*devicePixelRatio;
+  const y=(e.clientY-rect.top)*devicePixelRatio;
+  let hit=null,best=Infinity;
+  for(const p of particleHits){
+    const d=Math.hypot(x-p.x,y-p.y);
+    if(d<=p.r+8*devicePixelRatio && d<best){hit=p;best=d}
+  }
+  const note=document.getElementById('particleNote');
+  if(!hit){note.style.display='none';return}
+  const content={
+    proton:['Proton (p⁺)','Mang điện tích dương +1. Số proton quyết định số hiệu nguyên tử và danh tính của nguyên tố.'],
+    neutron:['Neutron (n⁰)','Không mang điện. Neutron góp phần tạo nên khối lượng hạt nhân; thay đổi số neutron sẽ tạo ra đồng vị.'],
+    electron:['Electron (e⁻)','Mang điện tích âm −1. Electron tham gia hình thành liên kết hóa học và quyết định phần lớn tính chất hóa học của nguyên tử.']
+  }[hit.type];
+  note.innerHTML=`<b>${content[0]}</b><small>${content[1]}</small>`;
+  note.style.left=((e.clientX-rect.left))+'px';
+  note.style.top=((e.clientY-rect.top))+'px';
+  note.style.display='block';
+};
 pauseBtn.onclick=()=>{paused=!paused;pauseBtn.textContent=paused?'Tiếp tục':'Tạm dừng'};resetCam.onclick=()=>{angleX=.45;angleY=.2;zoom=1};
 function project(x,y,z,cx,cy,scale){let cyy=Math.cos(angleY),sy=Math.sin(angleY),cxx=Math.cos(angleX),sx=Math.sin(angleX);
  let x1=x*cyy-z*sy,z1=x*sy+z*cyy,y1=y*cxx-z1*sx,z2=y*sx+z1*cxx;let p=480/(480+z2);return[cx+x1*p*scale,cy+y1*p*scale,p,z2]}
@@ -246,8 +281,9 @@ function draw(){
  const shells=electronShells(selected.z), max=Math.min(shells.length,7);
  ctx.save();ctx.globalAlpha=.28;ctx.strokeStyle='#76d9ff';ctx.lineWidth=1.4*devicePixelRatio;
  for(let i=0;i<max;i++){let r=75+i*43;ctx.beginPath();for(let a=0;a<=Math.PI*2+.04;a+=.04){let p=project(Math.cos(a)*r,Math.sin(a)*r,0,cx,cy,s);a===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1])}ctx.stroke()}ctx.restore();
- let nucCount=Math.min(selected.z,42);for(let i=0;i<nucCount;i++){let a=i*2.399,rad=7*Math.sqrt(i),p=project(Math.cos(a)*rad,Math.sin(a)*rad,Math.sin(i)*12,cx,cy,s);ctx.beginPath();ctx.fillStyle=i%2?'#ff6f91':'#4f8cff';ctx.arc(p[0],p[1],7*p[2]*s,0,7);ctx.fill()}
- shells.forEach((count,si)=>{let n=Math.min(count,18),r=75+si*43;for(let j=0;j<n;j++){let a=t*(1+.12*si)+j*Math.PI*2/n;let p=project(Math.cos(a)*r,Math.sin(a)*r,Math.sin(a*1.7)*10,cx,cy,s);ctx.beginPath();ctx.shadowBlur=15*s;ctx.shadowColor='#20d3d0';ctx.fillStyle='#b8ffff';ctx.arc(p[0],p[1],4.2*p[2]*s,0,7);ctx.fill();ctx.shadowBlur=0}})
+ particleHits=[];
+ let nucCount=Math.min(selected.z,42);for(let i=0;i<nucCount;i++){let a=i*2.399,rad=7*Math.sqrt(i),p=project(Math.cos(a)*rad,Math.sin(a)*rad,Math.sin(i)*12,cx,cy,s);let rr=7*p[2]*s;ctx.beginPath();ctx.fillStyle=i%2?'#ff6f91':'#4f8cff';ctx.arc(p[0],p[1],rr,0,7);ctx.fill();particleHits.push({x:p[0],y:p[1],r:rr,type:i%2?'proton':'neutron'})}
+ shells.forEach((count,si)=>{let n=Math.min(count,18),r=75+si*43;for(let j=0;j<n;j++){let a=t*(1+.12*si)+j*Math.PI*2/n;let p=project(Math.cos(a)*r,Math.sin(a)*r,Math.sin(a*1.7)*10,cx,cy,s);let rr=4.2*p[2]*s;ctx.beginPath();ctx.shadowBlur=15*s;ctx.shadowColor='#20d3d0';ctx.fillStyle='#b8ffff';ctx.arc(p[0],p[1],rr,0,7);ctx.fill();ctx.shadowBlur=0;particleHits.push({x:p[0],y:p[1],r:rr,type:'electron'})}})
  ctx.fillStyle='rgba(255,255,255,.85)';ctx.font=`${16*devicePixelRatio}px Segoe UI`;ctx.fillText(`${selected.symbol} · ${selected.z} proton · ${selected.z} electron`,18*devicePixelRatio,30*devicePixelRatio);
 }draw();
 

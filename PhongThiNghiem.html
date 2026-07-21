@@ -188,6 +188,172 @@
     .tool-card h3{margin-top:0}.tool-card input{width:100%;margin:6px 0 10px}
     .tool-result{min-height:28px;color:#0b8c70;font-weight:900}
     .footer{padding:26px;text-align:center;color:var(--muted);font-size:13px}
+
+    .score-card{
+      position:absolute;right:20px;top:24px;z-index:20;width:170px;padding:14px 15px;
+      background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 30px rgba(24,38,60,.12)
+    }
+    .score-card small{display:block;color:var(--muted);font-weight:800;letter-spacing:.06em}
+    .score-number{font-size:30px;font-weight:900;color:var(--teal);line-height:1.1;margin-top:3px}
+    .score-stars{color:#ffb02e;letter-spacing:2px;margin-top:4px}
+    .mission-box{
+      position:absolute;left:118px;top:24px;z-index:15;max-width:350px;padding:13px 15px;
+      border-radius:16px;background:#fff7e8;border:1px solid #ffd99b;color:#7d570d;
+      box-shadow:0 12px 28px rgba(24,38,60,.08)
+    }
+    .mission-box b{display:block;margin-bottom:4px}
+    .apparatus-tray{
+      position:absolute;left:18px;top:470px;z-index:14;width:190px;padding:12px;
+      background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 30px rgba(24,38,60,.1)
+    }
+    .apparatus-tray h4{margin:0 0 9px;font-size:12px;color:var(--muted);letter-spacing:.08em}
+    .apparatus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .apparatus-item{
+      padding:9px 6px;border:1px solid var(--line);border-radius:11px;background:#f8fafc;
+      text-align:center;font-size:12px;font-weight:800;cursor:grab;user-select:none
+    }
+    .apparatus-item span{display:block;font-size:24px;margin-bottom:3px}
+    .apparatus-item.active{outline:2px solid #67c9b3;background:#ecfbf6}
+    .drop-zone{
+      position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);
+      width:390px;height:390px;border:2px dashed transparent;border-radius:26px;transition:.2s
+    }
+    .drop-zone.dragover{border-color:#4acaa4;background:rgba(74,202,164,.06)}
+    .apparatus-label{
+      position:absolute;left:50%;top:6px;transform:translateX(-50%);
+      padding:6px 10px;border-radius:999px;background:#eef5ff;color:#3568b2;font-size:12px;font-weight:800
+    }
+    .reaction-library{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:12px
+    }
+    .reaction-card{
+      border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff;transition:.18s
+    }
+    .reaction-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(24,38,60,.09)}
+    .reaction-card code{display:block;margin:8px 0;padding:9px;border-radius:10px;background:#f4f7fa;color:#0b7f68;font-weight:800}
+    .reaction-card small{color:var(--muted);line-height:1.5}
+    .status-badge{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:900}
+    .status-gas{background:#e8f7ff;color:#277ea7}.status-precip{background:#f3f0e6;color:#756b43}
+    .status-heat{background:#fff0e6;color:#bd5f21}.status-color{background:#f0edff;color:#6a54b6}
+    .score-breakdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+    .score-breakdown div{padding:9px;border-radius:11px;background:#f6f8fb;border:1px solid var(--line);text-align:center}
+    .score-breakdown small{display:block;color:var(--muted);margin-bottom:3px}
+    @media(max-width:820px){
+      .mission-box{left:12px;right:12px;top:80px;max-width:none}
+      .score-card{right:12px;top:12px;width:145px}
+      .apparatus-tray{left:12px;right:12px;top:auto;bottom:400px;width:auto}
+      .apparatus-grid{grid-template-columns:repeat(4,1fr)}
+      .drop-zone{width:330px;height:330px;top:36%}
+      .score-breakdown{grid-template-columns:repeat(2,1fr)}
+    }
+
+
+    .element-modal{
+      position:fixed;inset:0;z-index:500;display:none;padding:18px;background:rgba(23,31,43,.36);
+      backdrop-filter:blur(10px)
+    }
+    .element-modal.open{display:block}
+    .element-modal-card{
+      width:100%;height:100%;background:#fbfbfa;border-radius:32px;overflow:hidden;
+      box-shadow:0 28px 80px rgba(20,30,45,.28);display:grid;grid-template-columns:37% 63%;
+      position:relative
+    }
+    .modal-close{
+      position:absolute;right:22px;top:22px;z-index:30;width:52px;height:52px;border-radius:50%;
+      border:0;background:#f2f3f5;color:#536177;font-size:26px;font-weight:700
+    }
+    .element-side{
+      border-right:1px solid #e4e6e8;background:#fcfaf5;display:flex;flex-direction:column;min-width:0
+    }
+    .element-modal-head{
+      height:138px;padding:24px 38px;display:flex;align-items:center;gap:30px;border-bottom:1px solid #e8e5df;
+      background:#faf7f1
+    }
+    .mass-atomic{font-size:46px;line-height:.88;font-weight:900;min-width:54px}
+    .modal-symbol{font-size:92px;line-height:.9;font-weight:900;letter-spacing:-4px}
+    .modal-name{font-size:44px;line-height:1;font-weight:900}
+    .element-page-wrap{flex:1;padding:38px 44px 18px;overflow:hidden}
+    .element-page{
+      height:100%;display:none;border-radius:30px;padding:26px;background:linear-gradient(145deg,#c9d7e8,#aebfd5);
+      overflow:auto;border:1px solid rgba(255,255,255,.8)
+    }
+    .element-page.active{display:block}
+    .element-page.theme-blue{background:linear-gradient(145deg,#bcd9ec,#9dc8e1)}
+    .element-page.theme-green{background:linear-gradient(145deg,#c8eee7,#9dd7cc)}
+    .element-page.theme-gold{background:linear-gradient(145deg,#ead8ae,#d9bd83)}
+    .page-row{
+      display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;padding:12px 0
+    }
+    .page-row .label{color:#68788d;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .page-row .value{font-size:22px;font-weight:900;text-align:right;color:#142036}
+    .ion-box,.sub-card{
+      margin-top:18px;padding:18px;border-radius:22px;background:rgba(255,255,255,.24);
+      border:1px solid rgba(255,255,255,.65)
+    }
+    .sub-title{text-align:center;color:#738093;font-weight:800;letter-spacing:.08em;margin-bottom:12px}
+    .ion-item,.isotope-item{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;margin-top:10px;
+      border-radius:18px;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.75)
+    }
+    .ion-item b,.isotope-item b{font-family:Georgia,serif;font-size:28px}
+    .isotope-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+    .isotope-stat{text-align:center}
+    .isotope-stat b{display:block;font-size:32px}.isotope-stat small{color:#68788d;font-weight:800}
+    .oxidation-list{display:flex;gap:8px;flex-wrap:wrap}
+    .oxidation-list span{
+      min-width:34px;height:34px;display:grid;place-items:center;border-radius:999px;background:rgba(255,255,255,.28);
+      border:1px solid rgba(91,115,130,.22);font-weight:800
+    }
+    .oxidation-list span.common{background:#b8d8d2;color:#183f39}
+    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+    .metric{padding:12px;border-bottom:1px solid rgba(78,101,115,.18)}
+    .metric small{display:block;color:#627687;font-weight:800;letter-spacing:.04em}
+    .metric b{font-size:23px}.metric em{font-style:normal;color:#617181}
+    .context-card{
+      margin-top:14px;padding:15px;border-radius:17px;background:rgba(111,188,151,.15);border:1px solid rgba(55,155,111,.3)
+    }
+    .context-card b{display:block;color:#23906b;font-size:12px;letter-spacing:.07em;margin-bottom:7px}
+    .context-card p{margin:0;line-height:1.45;font-weight:700}
+    .context-card.hazard{background:rgba(230,90,75,.1);border-color:rgba(220,80,70,.35)}
+    .context-card.hazard b,.context-card.hazard p{color:#a52f2b}
+    .page-dots{height:54px;display:flex;justify-content:center;align-items:center;gap:10px}
+    .page-dot{width:10px;height:10px;border-radius:50%;border:0;background:#d9d9d9;padding:0}
+    .page-dot.active{background:#111}
+    .modal-visual{
+      position:relative;background:
+        radial-gradient(circle at 50% 48%,rgba(167,190,218,.34),transparent 28%),
+        linear-gradient(180deg,#fcfdff,#f7f8fa);
+      overflow:hidden
+    }
+    #modalAtomCanvas{width:100%;height:100%;display:block}
+    .config-pill{
+      position:absolute;left:24px;top:22px;z-index:15;padding:11px 18px;border-radius:999px;background:#f1f3f6;
+      color:#4e607c;font-family:Consolas,monospace;font-size:20px;font-weight:800
+    }
+    .modal-controls{
+      position:absolute;left:28px;bottom:24px;z-index:15;display:flex;gap:12px
+    }
+    .round-control{
+      width:52px;height:52px;border-radius:50%;border:0;background:#f2f3f5;color:#4e6074;font-size:22px;
+      box-shadow:0 8px 20px rgba(24,38,60,.08)
+    }
+    .round-control.active{background:#222;color:#fff}
+    .modal-help{
+      position:absolute;right:26px;bottom:24px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+      background:#f4f5f6;color:#536177;font-size:26px;font-weight:900
+    }
+    .modal-particle-note{
+      position:absolute;display:none;z-index:25;max-width:300px;padding:13px 15px;border-radius:15px;
+      background:rgba(19,29,45,.94);color:#fff;box-shadow:0 14px 30px rgba(0,0,0,.25);pointer-events:none
+    }
+    .modal-particle-note b{display:block;color:#89eff7;margin-bottom:5px}
+    .modal-particle-note small{line-height:1.45;color:#d2dfeb}
+    @media(max-width:950px){
+      .element-modal{padding:0}.element-modal-card{border-radius:0;grid-template-columns:1fr;height:100%;overflow:auto}
+      .element-side{border-right:0}.element-modal-head{height:auto;padding:20px}.modal-symbol{font-size:68px}.modal-name{font-size:30px}
+      .element-page-wrap{height:520px;padding:20px}.modal-visual{height:620px}.modal-close{right:14px;top:14px}
+    }
+
     @media(max-width:1150px){
       .grid-2{grid-template-columns:1fr}
       .element-menu{right:5%;top:38%}
@@ -272,6 +438,8 @@
         <div class="lab-title"><h2>Virtual Lab</h2><span class="chip">Mô phỏng giáo dục</span></div>
         <div class="lab-stage">
           <div id="equationPill" class="equation-pill">Chọn chất để bắt đầu</div>
+          <div class="mission-box"><b id="missionTitle">Nhiệm vụ: Phản ứng kim loại kiềm</b><span id="missionText">Tạo phản ứng giữa kali và nước, bật gia nhiệt phù hợp và quan sát khí sinh ra.</span></div>
+          <div class="score-card"><small>ĐIỂM THÍ NGHIỆM</small><div id="scoreNumber" class="score-number">0</div><div id="scoreStars" class="score-stars">☆☆☆☆☆</div></div>
 
           <div class="temp-card">
             <div class="thermo"><div id="thermoFill" class="thermo-fill"></div></div>
@@ -279,6 +447,9 @@
             <div class="temp-lbl">TEMP</div>
           </div>
 
+          <div id="apparatusDrop" class="drop-zone">
+            <div id="apparatusLabel" class="apparatus-label">Cốc thủy tinh</div>
+          </div>
           <div class="beaker-zone">
             <div class="beaker">
               <div class="measure"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -287,6 +458,16 @@
             </div>
             <div id="flame" class="flame"></div>
             <div class="burner"><div class="cap"></div><div class="stem"></div><div class="base"></div></div>
+          </div>
+
+          <div class="apparatus-tray">
+            <h4>DỤNG CỤ THÍ NGHIỆM</h4>
+            <div id="apparatusGrid" class="apparatus-grid">
+              <div class="apparatus-item active" draggable="true" data-tool="Cốc thủy tinh"><span>🧪</span>Cốc</div>
+              <div class="apparatus-item" draggable="true" data-tool="Ống nghiệm"><span>🧫</span>Ống nghiệm</div>
+              <div class="apparatus-item" draggable="true" data-tool="Bình tam giác"><span>⚗️</span>Bình tam giác</div>
+              <div class="apparatus-item" draggable="true" data-tool="Chén nung"><span>🥣</span>Chén nung</div>
+            </div>
           </div>
 
           <div class="element-menu">
@@ -331,6 +512,24 @@
             </div>
           </div>
         </div>
+
+        <div class="panel" style="margin-top:18px">
+          <div class="panel-head"><b>Thư viện phản ứng</b><span class="chip">Chọn thẻ để nạp hóa chất</span></div>
+          <div class="panel-body"><div id="reactionLibrary" class="reaction-library"></div></div>
+        </div>
+
+        <div class="panel" style="margin-top:18px">
+          <div class="panel-head"><b>Kết quả chấm điểm</b><button id="newMission" class="btn">Nhiệm vụ mới</button></div>
+          <div class="panel-body">
+            <div id="scoreMessage" class="info-text">Hoàn thành phản ứng đúng để nhận điểm.</div>
+            <div class="score-breakdown">
+              <div><small>Chọn đúng chất</small><b id="scoreChemical">0/30</b></div>
+              <div><small>Dụng cụ phù hợp</small><b id="scoreTool">0/20</b></div>
+              <div><small>Điều kiện phản ứng</small><b id="scoreCondition">0/25</b></div>
+              <div><small>Quan sát kết quả</small><b id="scoreObservation">0/25</b></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -365,7 +564,85 @@
       </div>
     </section>
   </main>
-  <div class="footer">Mô phỏng phục vụ học tập. Không dùng để thay thế quy trình an toàn trong phòng thí nghiệm thực tế.</div>
+  
+<div id="elementModal" class="element-modal" aria-hidden="true">
+  <div class="element-modal-card">
+    <button id="modalClose" class="modal-close" aria-label="Đóng">×</button>
+
+    <aside class="element-side">
+      <div class="element-modal-head">
+        <div id="modalMassAtomic" class="mass-atomic">52<br>24</div>
+        <div id="modalSymbol" class="modal-symbol">Cr</div>
+        <div id="modalName" class="modal-name">Crom</div>
+      </div>
+
+      <div class="element-page-wrap">
+        <section class="element-page active" data-page="0">
+          <div class="page-row"><div class="label">Phân loại</div><div id="pType" class="value">Kim loại chuyển tiếp</div></div>
+          <div class="page-row"><div class="label">Nhóm / Chu kỳ</div><div id="pGroupPeriod" class="value">6 / 4</div></div>
+          <div class="page-row"><div class="label">Trạng thái ở ĐKTC</div><div id="pPhase" class="value">Rắn</div></div>
+          <div class="page-row"><div class="label">Khối electron</div><div id="pBlock" class="value">d</div></div>
+          <div class="ion-box">
+            <div class="sub-title">ION THƯỜNG GẶP</div>
+            <div id="pIons"></div>
+          </div>
+        </section>
+
+        <section class="element-page theme-blue" data-page="1">
+          <div class="page-row"><div class="label">Nguyên tử khối trung bình</div><div id="pMass" class="value">51,996</div></div>
+          <div class="page-row"><div class="label">Cấu hình electron</div><div id="pConfig" class="value">[Ar] 3d⁵ 4s¹</div></div>
+          <div class="page-row"><div class="label">Electron hóa trị</div><div id="pValence" class="value">1 (biến đổi)</div></div>
+          <div class="isotope-grid">
+            <div class="isotope-stat"><b id="pProtons">24</b><small>PROTON</small></div>
+            <div class="isotope-stat"><b id="pNeutrons">28</b><small>NEUTRON</small></div>
+            <div class="isotope-stat"><b id="pElectrons">24</b><small>ELECTRON</small></div>
+          </div>
+          <div class="sub-card">
+            <div class="sub-title">ĐỒNG VỊ TIÊU BIỂU</div>
+            <div id="pIsotopes"></div>
+          </div>
+        </section>
+
+        <section class="element-page theme-green" data-page="2">
+          <div class="sub-card" style="margin-top:0">
+            <div class="sub-title" style="text-align:left">SỐ OXI HÓA</div>
+            <div id="pOxidation" class="oxidation-list"></div>
+          </div>
+          <div id="pMetrics" class="metric-grid" style="margin-top:14px"></div>
+        </section>
+
+        <section class="element-page theme-gold" data-page="3">
+          <div class="page-row"><div class="label">Năm phát hiện</div><div id="pDiscoveryYear" class="value">1797</div></div>
+          <div class="page-row"><div class="label">Người phát hiện</div><div id="pDiscoveredBy" class="value">Louis-Nicolas Vauquelin</div></div>
+          <div class="page-row"><div class="label">Nguồn gốc tên gọi</div><div id="pNameOrigin" class="value">Từ tiếng Hy Lạp “chroma”</div></div>
+          <div class="context-card"><b>BỐI CẢNH ỨNG DỤNG</b><p id="pContext"></p></div>
+          <div class="context-card" style="background:rgba(255,255,255,.35);border-color:rgba(255,255,255,.6)"><b style="color:#5e6670">ỨNG DỤNG PHỔ BIẾN</b><p id="pUses" style="color:#293343"></p></div>
+          <div class="context-card hazard"><b>NGUY CƠ</b><p id="pHazards"></p></div>
+        </section>
+      </div>
+
+      <div class="page-dots">
+        <button class="page-dot active" data-page-target="0"></button>
+        <button class="page-dot" data-page-target="1"></button>
+        <button class="page-dot" data-page-target="2"></button>
+        <button class="page-dot" data-page-target="3"></button>
+      </div>
+    </aside>
+
+    <section class="modal-visual">
+      <div id="modalConfigPill" class="config-pill">[Ar] 3d⁵ 4s¹</div>
+      <canvas id="modalAtomCanvas"></canvas>
+      <div id="modalParticleNote" class="modal-particle-note"></div>
+      <div class="modal-controls">
+        <button id="modalPause" class="round-control">Ⅱ</button>
+        <button id="modalLayer" class="round-control">▱</button>
+      </div>
+      <div class="modal-help">?</div>
+    </section>
+  </div>
+</div>
+
+<div class="footer">Mô phỏng phục vụ học tập. Không dùng để thay thế quy trình an toàn trong phòng thí nghiệm thực tế.</div>
 </div>
 
 <script>
@@ -406,7 +683,7 @@ function renderPeriodic(){
     if(e.category==='actinide'){row=10;col=e.z-86}
     d.style.gridColumn=col;d.style.gridRow=row;
     d.innerHTML=`<div class="z">${e.z}</div><div class="sym">${e.symbol}</div><div class="nm">${vi[e.symbol]||e.name}</div>`;
-    d.onclick=()=>selectElement(e);periodic.appendChild(d);
+    d.onclick=()=>{selectElement(e);openElementModal(e)};periodic.appendChild(d);
   });
 }
 function selectElement(e){
@@ -547,25 +824,88 @@ resetLab.onclick=()=>{
   renderSelected();addLog('Đã đặt lại phòng thí nghiệm');
 };
 const reactions=[
- {need:['K','H2O'],eq:'2K + 2H₂O → 2KOH + H₂↑',msg:'Kali phản ứng mạnh với nước, tạo kali hiđroxit và khí hiđro.',color:['#e8f8ff','#65c5f4'],bubbles:true},
- {need:['Na','H2O'],eq:'2Na + 2H₂O → 2NaOH + H₂↑',msg:'Natri phản ứng với nước, tạo natri hiđroxit và khí hiđro.',color:['#eefbff','#78c8f1'],bubbles:true},
- {need:['Li','H2O'],eq:'2Li + 2H₂O → 2LiOH + H₂↑',msg:'Liti phản ứng với nước chậm hơn natri và kali.',color:['#eefbff','#8ad1f3'],bubbles:true},
- {need:['HCl','NaOH'],eq:'HCl + NaOH → NaCl + H₂O',msg:'Phản ứng trung hòa axit–bazơ tạo muối và nước.',color:['#effff9','#7adfbb']},
- {need:['Fe','CuSO4'],eq:'Fe + CuSO₄ → FeSO₄ + Cu',msg:'Sắt đẩy đồng ra khỏi dung dịch đồng sunfat.',color:['#dff3dc','#7abf79']},
- {need:['AgNO3','NaCl'],eq:'AgNO₃ + NaCl → AgCl↓ + NaNO₃',msg:'Xuất hiện kết tủa bạc clorua màu trắng.',color:['#f8f8f1','#e4e3d4'],precipitate:true},
- {need:['CaCO3'],hot:true,eq:'CaCO₃ → CaO + CO₂↑',msg:'Canxi cacbonat phân hủy khi được nung ở nhiệt độ cao.',color:['#f8f6ec','#d8d0b4'],bubbles:true}
+ {id:'k-water',title:'Kali và nước',need:['K','H2O'],tool:'Cốc thủy tinh',eq:'2K + 2H₂O → 2KOH + H₂↑',msg:'Kali phản ứng mạnh với nước, tạo kali hiđroxit và khí hiđro.',color:['#e8f8ff','#65c5f4'],bubbles:true,effects:['Khí','Nhiệt'],mission:'Tạo phản ứng giữa kali và nước, dùng cốc thủy tinh và nhận biết khí hiđro.'},
+ {id:'na-water',title:'Natri và nước',need:['Na','H2O'],tool:'Cốc thủy tinh',eq:'2Na + 2H₂O → 2NaOH + H₂↑',msg:'Natri phản ứng với nước, tạo natri hiđroxit và khí hiđro.',color:['#eefbff','#78c8f1'],bubbles:true,effects:['Khí','Nhiệt'],mission:'Cho natri phản ứng với nước và quan sát hiện tượng sủi khí.'},
+ {id:'li-water',title:'Liti và nước',need:['Li','H2O'],tool:'Cốc thủy tinh',eq:'2Li + 2H₂O → 2LiOH + H₂↑',msg:'Liti phản ứng với nước chậm hơn natri và kali.',color:['#eefbff','#8ad1f3'],bubbles:true,effects:['Khí'],mission:'So sánh mức độ phản ứng của liti với nước.'},
+ {id:'neutralization',title:'Trung hòa axit–bazơ',need:['HCl','NaOH'],tool:'Bình tam giác',eq:'HCl + NaOH → NaCl + H₂O',msg:'Phản ứng trung hòa axit–bazơ tạo muối và nước.',color:['#effff9','#7adfbb'],effects:['Màu','Nhiệt'],mission:'Dùng bình tam giác để mô phỏng phản ứng trung hòa HCl và NaOH.'},
+ {id:'displacement',title:'Sắt đẩy đồng',need:['Fe','CuSO4'],tool:'Ống nghiệm',eq:'Fe + CuSO₄ → FeSO₄ + Cu',msg:'Sắt đẩy đồng ra khỏi dung dịch đồng sunfat.',color:['#dff3dc','#7abf79'],effects:['Màu'],mission:'Dùng ống nghiệm, cho sắt vào dung dịch đồng sunfat và quan sát đổi màu.'},
+ {id:'precipitation',title:'Tạo kết tủa AgCl',need:['AgNO3','NaCl'],tool:'Ống nghiệm',eq:'AgNO₃ + NaCl → AgCl↓ + NaNO₃',msg:'Xuất hiện kết tủa bạc clorua màu trắng.',color:['#f8f8f1','#e4e3d4'],precipitate:true,effects:['Kết tủa'],mission:'Trộn AgNO₃ và NaCl trong ống nghiệm để tạo kết tủa trắng.'},
+ {id:'decomposition',title:'Nhiệt phân CaCO₃',need:['CaCO3'],tool:'Chén nung',hot:true,minTemp:180,eq:'CaCO₃ → CaO + CO₂↑',msg:'Canxi cacbonat phân hủy khi được nung ở nhiệt độ cao.',color:['#f8f6ec','#d8d0b4'],bubbles:true,effects:['Khí','Nhiệt'],mission:'Dùng chén nung, bật gia nhiệt tối thiểu 180°C để phân hủy CaCO₃.'}
 ];
+let currentTool='Cốc thủy tinh', currentMission=reactions[0], totalScore=0;
+function setMission(r){
+  currentMission=r;missionTitle.textContent='Nhiệm vụ: '+r.title;missionText.textContent=r.mission;
+  scoreMessage.textContent='Hãy chọn đúng hóa chất, dụng cụ và điều kiện phản ứng.';
+  scoreChemical.textContent='0/30';scoreTool.textContent='0/20';scoreCondition.textContent='0/25';scoreObservation.textContent='0/25';
+  totalScore=0;updateScore();
+}
+function updateScore(){
+  scoreNumber.textContent=totalScore;
+  const stars=Math.max(0,Math.min(5,Math.round(totalScore/20)));
+  scoreStars.textContent='★'.repeat(stars)+'☆'.repeat(5-stars);
+}
+function evaluateReaction(r){
+  let chem=0,tool=0,condition=0,observation=0;
+  const exact=r.need.every(n=>selectedLab.includes(n)) && selectedLab.filter(x=>r.need.includes(x)).length>=r.need.length;
+  if(exact)chem=30;
+  if(currentTool===r.tool)tool=20;
+  if(r.hot){if(heaterOn && +heaterRange.value>=(r.minTemp||180))condition=25}
+  else condition=25;
+  if(r.bubbles||r.precipitate||r.color)observation=25;
+  totalScore=chem+tool+condition+observation;
+  scoreChemical.textContent=chem+'/30';scoreTool.textContent=tool+'/20';scoreCondition.textContent=condition+'/25';scoreObservation.textContent=observation+'/25';
+  scoreMessage.textContent=totalScore>=90?'Xuất sắc! Bạn đã hoàn thành đúng quy trình thí nghiệm.':totalScore>=70?'Tốt! Cần điều chỉnh thêm dụng cụ hoặc điều kiện để đạt điểm tối đa.':'Phản ứng đã chạy nhưng quy trình chưa đúng nhiệm vụ.';
+  updateScore();
+}
 runReaction.onclick=()=>{
-  const r=reactions.find(r=>r.need.every(n=>selectedLab.includes(n))&&(!r.hot||(+heaterRange.value>=180&&heaterOn)));
-  if(!r){equationPill.textContent='Chưa đủ điều kiện phản ứng';addLog('Không tìm thấy phản ứng phù hợp hoặc chưa đạt nhiệt độ cần thiết');return}
+  const r=reactions.find(r=>r.need.every(n=>selectedLab.includes(n))&&(!r.hot||(+heaterRange.value>=(r.minTemp||180)&&heaterOn)));
+  if(!r){
+    equationPill.textContent='Chưa đủ điều kiện phản ứng';
+    addLog('Không tìm thấy phản ứng phù hợp hoặc chưa đạt nhiệt độ cần thiết');
+    totalScore=Math.max(0,totalScore-5);updateScore();scoreMessage.textContent='Trừ 5 điểm do tiến hành khi chưa đủ điều kiện.';
+    return;
+  }
   equationPill.textContent=r.eq;hazardBox.textContent=r.msg;liquid.style.background=`linear-gradient(180deg,${r.color[0]},${r.color[1]})`;
   if(r.bubbles)makeBubbles();if(r.precipitate)solid.innerHTML+='<div class="pellet" style="background:#f1f1ea;color:#aaa">↓</div>';
-  addLog(`Phản ứng xảy ra: ${r.eq}`);
+  addLog(`Phản ứng xảy ra: ${r.eq}`);evaluateReaction(r);
 };
 function makeBubbles(){
   document.querySelectorAll('.bubble').forEach(x=>x.remove());
   for(let i=0;i<20;i++){const b=document.createElement('i'),z=4+Math.random()*10;b.className='bubble';b.style.width=b.style.height=z+'px';b.style.left=(18+Math.random()*130)+'px';b.style.bottom=(10+Math.random()*45)+'px';b.style.animationDelay=Math.random()*1.8+'s';document.querySelector('.beaker').appendChild(b)}
 }
+
+
+reactionLibrary.innerHTML=reactions.map(r=>`
+  <div class="reaction-card" data-id="${r.id}">
+    <b>${r.title}</b>
+    <code>${r.eq}</code>
+    <div>${r.effects.map(e=>`<span class="status-badge ${e==='Khí'?'status-gas':e==='Kết tủa'?'status-precip':e==='Nhiệt'?'status-heat':'status-color'}">${e}</span>`).join(' ')}</div>
+    <small>${r.msg}<br>Dụng cụ đề xuất: <b>${r.tool}</b></small>
+  </div>`).join('');
+document.querySelectorAll('.reaction-card').forEach(card=>card.onclick=()=>{
+  const r=reactions.find(x=>x.id===card.dataset.id);
+  resetLab.click();setMission(r);
+  r.need.forEach(addChemical);
+  addLog('Đã nạp bài thực hành: '+r.title);
+});
+newMission.onclick=()=>setMission(reactions[Math.floor(Math.random()*reactions.length)]);
+
+document.querySelectorAll('.apparatus-item').forEach(item=>{
+  item.ondragstart=e=>e.dataTransfer.setData('text/tool',item.dataset.tool);
+  item.onclick=()=>selectTool(item.dataset.tool,item);
+});
+apparatusDrop.ondragover=e=>{e.preventDefault();apparatusDrop.classList.add('dragover')};
+apparatusDrop.ondragleave=()=>apparatusDrop.classList.remove('dragover');
+apparatusDrop.ondrop=e=>{
+  e.preventDefault();apparatusDrop.classList.remove('dragover');
+  const tool=e.dataTransfer.getData('text/tool');if(tool)selectTool(tool);
+};
+function selectTool(tool,el){
+  currentTool=tool;apparatusLabel.textContent=tool;
+  document.querySelectorAll('.apparatus-item').forEach(x=>x.classList.toggle('active',x.dataset.tool===tool));
+  addLog('Đã chọn dụng cụ: '+tool);
+}
+setMission(reactions[0]);
 
 function calcMol(){const m=+mass.value,M=+molarMass.value;molResult.textContent=m>=0&&M>0?`n = ${(m/M).toFixed(4)} mol`:'Vui lòng nhập dữ liệu hợp lệ.'}
 function calcMolarity(){const n=+mol.value,V=+volume.value;molarityResult.textContent=n>=0&&V>0?`C = ${(n/V).toFixed(4)} mol/L`:'Vui lòng nhập dữ liệu hợp lệ.'}
@@ -575,6 +915,155 @@ function calcFormulaMass(){
   while((m=re.exec(f))){const e=elements.find(x=>x.symbol===m[1]),n=+(m[2]||1),mv=e&&(masses[e.symbol]||e.z*2);if(!e){valid=false;break}total+=mv*n;parts.push(`${e.symbol}×${n}`)}
   formulaResult.textContent=valid&&parts.length?`${parts.join(' + ')} ≈ ${total.toFixed(3)} g/mol`:'Không đọc được công thức.';
 }
+
+
+const elementDetailData={
+  Cr:{
+    massNumber:52,phase:'Rắn',block:'d',config:'[Ar] 3d⁵ 4s¹',valence:'1 (biến đổi)',
+    ions:[['Cr³⁺','Crom(III)'],['Cr⁶⁺','Crom(VI)']],
+    isotopes:[['⁵⁰Cr','26 n⁰','Bền'],['⁵²Cr','28 n⁰','Bền'],['⁵³Cr','29 n⁰','Bền'],['⁵⁴Cr','30 n⁰','Bền']],
+    oxidation:['+3','+6','-4','-2','-1','0','+1','+2','+4','+5'],commonOx:['+3','+6'],
+    ionization:'653 kJ/mol',affinity:'64,3 kJ/mol',electronegativity:'1,66 Pauling',density:'7,19 g/cm³',
+    melting:'1907 °C',boiling:'2671 °C',radius:'166 pm',specificHeat:'0,4480 J/(g·°C)',
+    year:'1797',discoverer:'Louis-Nicolas Vauquelin',origin:'Từ tiếng Hy Lạp “chroma” (màu sắc)',
+    context:'Chống ăn mòn và thụ động hóa thép không gỉ; độc chất học môi trường liên quan đến crom hóa trị sáu.',
+    uses:'Thép không gỉ, mạ crom, hợp kim chịu nhiệt, chất màu và xử lý bề mặt.',
+    hazards:'Crom(VI) có độc tính cao và có khả năng gây ung thư; crom(III) ít độc hơn nhưng vẫn phải kiểm soát phơi nhiễm.'
+  },
+  H:{massNumber:1,phase:'Khí',block:'s',config:'1s¹',valence:'1',ions:[['H⁺','Ion hiđro'],['H⁻','Hiđrua']],isotopes:[['¹H','0 n⁰','Bền'],['²H','1 n⁰','Bền'],['³H','2 n⁰','Phóng xạ']],oxidation:['-1','0','+1'],commonOx:['-1','+1'],ionization:'1312 kJ/mol',affinity:'72,8 kJ/mol',electronegativity:'2,20 Pauling',density:'0,0899 g/L',melting:'−259,2 °C',boiling:'−252,9 °C',radius:'53 pm',specificHeat:'14,304 J/(g·°C)',year:'1766',discoverer:'Henry Cavendish',origin:'Từ tiếng Hy Lạp, nghĩa là “tạo ra nước”',context:'Năng lượng sạch, công nghiệp hóa chất và nghiên cứu vật lý.',uses:'Sản xuất amoniac, pin nhiên liệu, hydro hóa dầu thực vật và nhiên liệu tên lửa.',hazards:'Khí rất dễ cháy; hỗn hợp với không khí có thể gây nổ.'},
+  O:{massNumber:16,phase:'Khí',block:'p',config:'[He] 2s² 2p⁴',valence:'6',ions:[['O²⁻','Oxit']],isotopes:[['¹⁶O','8 n⁰','Bền'],['¹⁷O','9 n⁰','Bền'],['¹⁸O','10 n⁰','Bền']],oxidation:['-2','-1','0','+1','+2'],commonOx:['-2'],ionization:'1313,9 kJ/mol',affinity:'141 kJ/mol',electronegativity:'3,44 Pauling',density:'1,429 g/L',melting:'−218,8 °C',boiling:'−183,0 °C',radius:'48 pm',specificHeat:'0,918 J/(g·°C)',year:'1774',discoverer:'Joseph Priestley và Carl Wilhelm Scheele',origin:'Tên gọi liên quan đến quan niệm “tạo axit” thời kỳ đầu',context:'Hô hấp, y tế, luyện kim và xử lý nước.',uses:'Oxy y tế, luyện thép, hàn cắt kim loại và xử lý nước thải.',hazards:'Không cháy nhưng hỗ trợ cháy mạnh; oxy tinh khiết làm tăng nguy cơ cháy.'},
+  Fe:{massNumber:56,phase:'Rắn',block:'d',config:'[Ar] 3d⁶ 4s²',valence:'2 hoặc 3',ions:[['Fe²⁺','Sắt(II)'],['Fe³⁺','Sắt(III)']],isotopes:[['⁵⁴Fe','28 n⁰','Bền'],['⁵⁶Fe','30 n⁰','Bền'],['⁵⁷Fe','31 n⁰','Bền'],['⁵⁸Fe','32 n⁰','Bền']],oxidation:['-2','0','+2','+3','+6'],commonOx:['+2','+3'],ionization:'762,5 kJ/mol',affinity:'15,7 kJ/mol',electronegativity:'1,83 Pauling',density:'7,874 g/cm³',melting:'1538 °C',boiling:'2862 °C',radius:'156 pm',specificHeat:'0,449 J/(g·°C)',year:'Thời tiền sử',discoverer:'Không xác định',origin:'Tên cổ trong nhiều ngôn ngữ',context:'Vật liệu kết cấu chủ đạo của công nghiệp hiện đại.',uses:'Thép xây dựng, cơ khí, phương tiện giao thông, nam châm và thiết bị điện.',hazards:'Bụi sắt mịn có thể gây kích ứng và có nguy cơ cháy bụi trong điều kiện thích hợp.'}
+};
+
+function fallbackDetail(e){
+  const m=Math.round(masses[e.symbol]||e.z*2);
+  const shell=electronShells(e.z);
+  const block=e.group<=2?'s':(e.category==='transition'?'d':(e.category==='lanthanide'||e.category==='actinide'?'f':'p'));
+  return{
+    massNumber:m,phase:['noble','nonmetal','halogen'].includes(e.category)&&e.period<=3?'Khí':'Rắn',block,
+    config:shell.map((n,i)=>`${i+1}s${n}`).join(' '),valence:String(shell[shell.length-1]||0),
+    ions:[[e.symbol+'⁺','Ion dương phổ biến'],[e.symbol+'⁻','Ion âm hoặc trạng thái đặc biệt']],
+    isotopes:[[`${m-1}${e.symbol}`,`${Math.max(0,m-1-e.z)} n⁰`,'Tham khảo'],[`${m}${e.symbol}`,`${Math.max(0,m-e.z)} n⁰`,'Tiêu biểu'],[`${m+1}${e.symbol}`,`${Math.max(0,m+1-e.z)} n⁰`,'Tham khảo']],
+    oxidation:['-2','-1','0','+1','+2','+3'],commonOx:['0'],
+    ionization:'Đang cập nhật',affinity:'Đang cập nhật',electronegativity:'Đang cập nhật',density:'Đang cập nhật',
+    melting:'Đang cập nhật',boiling:'Đang cập nhật',radius:'Đang cập nhật',specificHeat:'Đang cập nhật',
+    year:'Đang cập nhật',discoverer:'Đang cập nhật',origin:'Đang cập nhật',
+    context:`Dữ liệu học tập tổng quan cho nguyên tố ${vi[e.symbol]||e.name}.`,
+    uses:'Ứng dụng phụ thuộc vào dạng đơn chất, hợp chất, độ tinh khiết và điều kiện sử dụng.',
+    hazards:'Cần tham khảo phiếu an toàn hóa chất (SDS) của đúng dạng chất trước khi thao tác thực tế.'
+  }
+}
+
+let modalSelected=selected,modalPage=0,modalPaused=false,modalLayered=false;
+let modalAngleX=.48,modalAngleY=.12,modalZoom=1,modalDrag=false,modalLastX=0,modalLastY=0,modalHits=[];
+const modalCanvas=document.getElementById('modalAtomCanvas'),modalCtx=modalCanvas.getContext('2d');
+
+function superNum(s){return s}
+function openElementModal(e){
+  modalSelected=e;
+  const d=elementDetailData[e.symbol]||fallbackDetail(e);
+  document.getElementById('modalMassAtomic').innerHTML=`${d.massNumber}<br>${e.z}`;
+  modalSymbol.textContent=e.symbol;modalName.textContent=vi[e.symbol]||e.name;
+  pType.textContent=categories[e.category];pGroupPeriod.textContent=`${e.group} / ${e.period}`;pPhase.textContent=d.phase;pBlock.textContent=d.block;
+  pIons.innerHTML=d.ions.map(x=>`<div class="ion-item"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
+  pMass.textContent=String(masses[e.symbol]||d.massNumber).replace('.',',');pConfig.textContent=d.config;pValence.textContent=d.valence;
+  pProtons.textContent=e.z;pNeutrons.textContent=Math.max(0,d.massNumber-e.z);pElectrons.textContent=e.z;
+  pIsotopes.innerHTML=d.isotopes.map(x=>`<div class="isotope-item"><b>${x[0]}</b><span style="text-align:right"><strong>${x[1]}</strong><br><small>${x[2]}</small></span></div>`).join('');
+  pOxidation.innerHTML=d.oxidation.map(x=>`<span class="${d.commonOx.includes(x)?'common':''}">${x}</span>`).join('');
+  const metrics=[
+    ['Năng lượng ion hóa lần 1',d.ionization],['Ái lực electron',d.affinity],['Độ âm điện',d.electronegativity],['Khối lượng riêng',d.density],
+    ['Nhiệt độ nóng chảy',d.melting],['Nhiệt độ sôi',d.boiling],['Bán kính nguyên tử',d.radius],['Nhiệt dung riêng',d.specificHeat]
+  ];
+  pMetrics.innerHTML=metrics.map(x=>`<div class="metric"><small>${x[0]}</small><b>${x[1]}</b></div>`).join('');
+  pDiscoveryYear.textContent=d.year;pDiscoveredBy.textContent=d.discoverer;pNameOrigin.textContent=d.origin;
+  pContext.textContent=d.context;pUses.textContent=d.uses;pHazards.textContent=d.hazards;
+  modalConfigPill.textContent=d.config;
+  modalAngleX=.48;modalAngleY=.12;modalZoom=1;modalPaused=false;modalLayered=false;
+  modalPause.textContent='Ⅱ';modalLayer.classList.remove('active');
+  showModalPage(0);
+  elementModal.classList.add('open');elementModal.setAttribute('aria-hidden','false');
+  resizeModalCanvas();
+}
+function closeElementModal(){elementModal.classList.remove('open');elementModal.setAttribute('aria-hidden','true');modalParticleNote.style.display='none'}
+function showModalPage(n){
+  modalPage=n;
+  document.querySelectorAll('.element-page').forEach(p=>p.classList.toggle('active',+p.dataset.page===n));
+  document.querySelectorAll('.page-dot').forEach(p=>p.classList.toggle('active',+p.dataset.pageTarget===n));
+}
+document.querySelectorAll('.page-dot').forEach(x=>x.onclick=()=>showModalPage(+x.dataset.pageTarget));
+modalClose.onclick=closeElementModal;
+elementModal.onclick=e=>{if(e.target===elementModal)closeElementModal()};
+window.addEventListener('keydown',e=>{if(e.key==='Escape')closeElementModal()});
+
+function resizeModalCanvas(){
+  modalCanvas.width=modalCanvas.clientWidth*devicePixelRatio;
+  modalCanvas.height=modalCanvas.clientHeight*devicePixelRatio;
+}
+window.addEventListener('resize',resizeModalCanvas);
+modalCanvas.onmousedown=e=>{modalDrag=true;modalLastX=e.clientX;modalLastY=e.clientY};
+window.addEventListener('mouseup',()=>modalDrag=false);
+window.addEventListener('mousemove',e=>{if(modalDrag){modalAngleY+=(e.clientX-modalLastX)*.007;modalAngleX+=(e.clientY-modalLastY)*.007;modalLastX=e.clientX;modalLastY=e.clientY}});
+modalCanvas.onwheel=e=>{e.preventDefault();modalZoom=Math.max(.55,Math.min(1.8,modalZoom-e.deltaY*.001))};
+modalPause.onclick=()=>{modalPaused=!modalPaused;modalPause.textContent=modalPaused?'▶':'Ⅱ'};
+modalLayer.onclick=()=>{modalLayered=!modalLayered;modalLayer.classList.toggle('active',modalLayered)};
+modalCanvas.onclick=e=>{
+  const r=modalCanvas.getBoundingClientRect(),x=(e.clientX-r.left)*devicePixelRatio,y=(e.clientY-r.top)*devicePixelRatio;
+  let hit=null,best=Infinity;
+  for(const p of modalHits){const d=Math.hypot(x-p.x,y-p.y);if(d<=p.r+10*devicePixelRatio&&d<best){hit=p;best=d}}
+  if(!hit){modalParticleNote.style.display='none';return}
+  const text={
+    proton:['Proton (p⁺)','Mang điện tích dương. Số proton quyết định số hiệu nguyên tử.'],
+    neutron:['Neutron (n⁰)','Không mang điện. Số neutron thay đổi tạo nên các đồng vị.'],
+    electron:['Electron (e⁻)','Mang điện tích âm và tham gia tạo liên kết hóa học.']
+  }[hit.type];
+  modalParticleNote.innerHTML=`<b>${text[0]}</b><small>${text[1]}</small>`;
+  modalParticleNote.style.left=(e.clientX-r.left+12)+'px';modalParticleNote.style.top=(e.clientY-r.top+12)+'px';modalParticleNote.style.display='block';
+};
+
+function modalProject(x,y,z,cx,cy,scale){
+  const cyy=Math.cos(modalAngleY),sy=Math.sin(modalAngleY),cxx=Math.cos(modalAngleX),sx=Math.sin(modalAngleX);
+  const x1=x*cyy-z*sy,z1=x*sy+z*cyy,y1=y*cxx-z1*sx,z2=y*sx+z1*cxx,p=560/(560+z2);
+  return[cx+x1*p*scale,cy+y1*p*scale,p,z2]
+}
+let modalT=0;
+function drawModalAtom(){
+  requestAnimationFrame(drawModalAtom);if(!modalPaused)modalT+=.011;
+  if(!elementModal.classList.contains('open'))return;
+  const w=modalCanvas.width,h=modalCanvas.height,cx=w/2,cy=h/2,s=Math.min(w,h)/720*modalZoom*devicePixelRatio;
+  modalCtx.clearRect(0,0,w,h);modalHits=[];
+  const shells=electronShells(modalSelected.z);
+  const shellColors=['#f49ca3','#8db8ef','#f0d56d','#f49ca3','#8db8ef','#bfa1ef','#82d5ca'];
+  shells.forEach((_,i)=>{
+    const r=100+i*58;
+    modalCtx.beginPath();
+    modalCtx.strokeStyle=modalLayered?shellColors[i%shellColors.length]:'rgba(170,170,170,.5)';
+    modalCtx.lineWidth=(modalLayered?16:3)*devicePixelRatio;
+    modalCtx.globalAlpha=modalLayered?.48:1;
+    for(let a=0;a<=Math.PI*2+.035;a+=.035){
+      const p=modalProject(Math.cos(a)*r,Math.sin(a)*r,0,cx,cy,s);
+      a===0?modalCtx.moveTo(p[0],p[1]):modalCtx.lineTo(p[0],p[1]);
+    }
+    modalCtx.stroke();modalCtx.globalAlpha=1;
+  });
+  const detail=elementDetailData[modalSelected.symbol]||fallbackDetail(modalSelected);
+  const protons=modalSelected.z,neutrons=Math.max(0,detail.massNumber-modalSelected.z),nucCount=Math.min(protons+neutrons,58);
+  for(let i=0;i<nucCount;i++){
+    const a=i*2.399,rad=8*Math.sqrt(i),p=modalProject(Math.cos(a)*rad,Math.sin(a)*rad,Math.sin(i)*14,cx,cy,s);
+    const isP=i<Math.min(protons,nucCount),rr=9*p[2]*s;
+    modalCtx.beginPath();modalCtx.fillStyle=isP?'#ff1f1f':'#707070';modalCtx.arc(p[0],p[1],rr,0,Math.PI*2);modalCtx.fill();
+    modalHits.push({x:p[0],y:p[1],r:rr,type:isP?'proton':'neutron'});
+  }
+  shells.forEach((count,si)=>{
+    const n=Math.min(count,20),r=100+si*58;
+    for(let j=0;j<n;j++){
+      const a=modalT*(1+.1*si)+j*Math.PI*2/n,p=modalProject(Math.cos(a)*r,Math.sin(a)*r,0,cx,cy,s),rr=7*p[2]*s;
+      modalCtx.beginPath();modalCtx.fillStyle='#0619a8';modalCtx.shadowBlur=12*s;modalCtx.shadowColor='#4057ff';
+      modalCtx.arc(p[0],p[1],rr,0,Math.PI*2);modalCtx.fill();modalCtx.shadowBlur=0;
+      modalHits.push({x:p[0],y:p[1],r:rr,type:'electron'});
+    }
+  });
+}
+drawModalAtom();
 
 renderPeriodic();selectElement(selected);renderSelected();addLog('Phòng thí nghiệm đã sẵn sàng');
 </script>

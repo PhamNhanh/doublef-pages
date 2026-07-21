@@ -326,6 +326,14 @@
       overflow:hidden
     }
     #modalAtomCanvas{width:100%;height:100%;display:block}
+
+    .data-source-pill{
+      position:absolute;right:88px;top:25px;z-index:16;padding:8px 12px;border-radius:999px;
+      background:#edf8f5;border:1px solid #bde3d9;color:#18745f;font-size:12px;font-weight:800
+    }
+    .data-source-pill.loading{background:#fff6df;border-color:#f0d59a;color:#8c6516}
+    .data-source-pill.error{background:#fff0f0;border-color:#efb8b8;color:#a33c3c}
+
     .config-pill{
       position:absolute;left:24px;top:22px;z-index:15;padding:11px 18px;border-radius:999px;background:#f1f3f6;
       color:#4e607c;font-family:Consolas,monospace;font-size:20px;font-weight:800
@@ -631,6 +639,7 @@
 
     <section class="modal-visual">
       <div id="modalConfigPill" class="config-pill">[Ar] 3d⁵ 4s¹</div>
+      <div id="dataSourcePill" class="data-source-pill loading">Đang tải dữ liệu PubChem…</div>
       <canvas id="modalAtomCanvas"></canvas>
       <div id="modalParticleNote" class="modal-particle-note"></div>
       <div class="modal-controls">
@@ -917,6 +926,107 @@ function calcFormulaMass(){
 }
 
 
+
+const PUBCHEM_PERIODIC_URL='https://pubchem.ncbi.nlm.nih.gov/rest/pug/periodictable/JSON?response_type=display';
+let pubChemElements={};
+let pubChemReady=false;
+let pubChemLoadError=false;
+
+function normalizePubChemTable(payload){
+  const table=payload && payload.Table;
+  if(!table || !table.Columns || !table.Row)return {};
+  const columns=table.Columns.Column;
+  const result={};
+  table.Row.forEach(row=>{
+    const cells=row.Cell||[];
+    const obj={};
+    columns.forEach((name,i)=>obj[name]=cells[i]??'');
+    if(obj.Symbol)result[obj.Symbol]=obj;
+  });
+  return result;
+}
+function valueOrUnavailable(value,unit=''){
+  const text=String(value??'').trim();
+  if(!text || text==='-' || text==='N/A')return 'Chưa có dữ liệu thực nghiệm';
+  return unit && !text.toLowerCase().includes(unit.toLowerCase()) ? `${text} ${unit}` : text;
+}
+function translateStandardState(value){
+  const map={Solid:'Rắn',Liquid:'Lỏng',Gas:'Khí','Expected to be a Solid':'Dự đoán là chất rắn',
+    'Expected to be a Gas':'Dự đoán là chất khí','Expected to be a Liquid':'Dự đoán là chất lỏng'};
+  return map[value]||valueOrUnavailable(value);
+}
+function translateGroupBlock(value){
+  const map={
+    'Alkali metal':'Kim loại kiềm','Alkaline earth metal':'Kim loại kiềm thổ',
+    'Transition metal':'Kim loại chuyển tiếp','Post-transition metal':'Kim loại sau chuyển tiếp',
+    Metalloid:'Á kim',Nonmetal:'Phi kim',Halogen:'Halogen','Noble gas':'Khí hiếm',
+    Lanthanide:'Họ Lantan',Actinide:'Họ Actini'
+  };
+  return map[value]||value;
+}
+function approximateMassNumber(atomicMass,fallback){
+  const m=String(atomicMass??'').match(/\d+(?:\.\d+)?/);
+  return m?Math.round(parseFloat(m[0])):fallback;
+}
+function pubChemMergedDetail(e,base){
+  const p=pubChemElements[e.symbol];
+  if(!p)return base;
+  const oxidation=String(p.OxidationStates||'')
+    .split(',').map(x=>x.trim()).filter(Boolean);
+  const commonOx=oxidation.slice(0,Math.min(3,oxidation.length));
+  const blockText=String(p.GroupBlock||'').toLowerCase();
+  const block=blockText.includes('transition')?'d':
+    blockText.includes('lanthanide')||blockText.includes('actinide')?'f':
+    e.group<=2?'s':'p';
+  return {
+    ...base,
+    massNumber:approximateMassNumber(p.AtomicMass,base.massNumber),
+    phase:translateStandardState(p.StandardState),
+    block,
+    config:valueOrUnavailable(p.ElectronConfiguration),
+    oxidation:oxidation.length?oxidation:base.oxidation,
+    commonOx:commonOx.length?commonOx:base.commonOx,
+    ionization:valueOrUnavailable(p.IonizationEnergy,'eV'),
+    affinity:valueOrUnavailable(p.ElectronAffinity,'eV'),
+    electronegativity:valueOrUnavailable(p.Electronegativity,'Pauling'),
+    density:valueOrUnavailable(p.Density),
+    melting:valueOrUnavailable(p.MeltingPoint),
+    boiling:valueOrUnavailable(p.BoilingPoint),
+    radius:valueOrUnavailable(p.AtomicRadius,'pm'),
+    year:valueOrUnavailable(p.YearDiscovered),
+    pubChemAtomicMass:valueOrUnavailable(p.AtomicMass),
+    pubChemGroupBlock:translateGroupBlock(p.GroupBlock)
+  };
+}
+async function loadPubChemPeriodicData(){
+  dataSourcePill.textContent='Đang tải dữ liệu PubChem…';
+  dataSourcePill.className='data-source-pill loading';
+  try{
+    const cached=localStorage.getItem('digitalLabPubChemPeriodicV1');
+    if(cached){
+      pubChemElements=JSON.parse(cached);
+      pubChemReady=true;
+      dataSourcePill.textContent='Dữ liệu: PubChem';
+      dataSourcePill.className='data-source-pill';
+      return;
+    }
+    const response=await fetch(PUBCHEM_PERIODIC_URL,{cache:'force-cache'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const payload=await response.json();
+    pubChemElements=normalizePubChemTable(payload);
+    pubChemReady=Object.keys(pubChemElements).length>=118;
+    try{localStorage.setItem('digitalLabPubChemPeriodicV1',JSON.stringify(pubChemElements))}catch(_){}
+    dataSourcePill.textContent=pubChemReady?'Dữ liệu: PubChem (118 nguyên tố)':'Dữ liệu: PubChem';
+    dataSourcePill.className='data-source-pill';
+    if(elementModal.classList.contains('open'))openElementModal(modalSelected);
+  }catch(err){
+    pubChemLoadError=true;
+    dataSourcePill.textContent='Không tải được PubChem – dùng dữ liệu nhúng';
+    dataSourcePill.className='data-source-pill error';
+    console.warn('PubChem periodic table load failed:',err);
+  }
+}
+
 const elementDetailData={
   Cr:{
     massNumber:52,phase:'Rắn',block:'d',config:'[Ar] 3d⁵ 4s¹',valence:'1 (biến đổi)',
@@ -945,9 +1055,9 @@ function fallbackDetail(e){
     ions:[[e.symbol+'⁺','Ion dương phổ biến'],[e.symbol+'⁻','Ion âm hoặc trạng thái đặc biệt']],
     isotopes:[[`${m-1}${e.symbol}`,`${Math.max(0,m-1-e.z)} n⁰`,'Tham khảo'],[`${m}${e.symbol}`,`${Math.max(0,m-e.z)} n⁰`,'Tiêu biểu'],[`${m+1}${e.symbol}`,`${Math.max(0,m+1-e.z)} n⁰`,'Tham khảo']],
     oxidation:['-2','-1','0','+1','+2','+3'],commonOx:['0'],
-    ionization:'Đang cập nhật',affinity:'Đang cập nhật',electronegativity:'Đang cập nhật',density:'Đang cập nhật',
-    melting:'Đang cập nhật',boiling:'Đang cập nhật',radius:'Đang cập nhật',specificHeat:'Đang cập nhật',
-    year:'Đang cập nhật',discoverer:'Đang cập nhật',origin:'Đang cập nhật',
+    ionization:'Chưa có dữ liệu thực nghiệm',affinity:'Chưa có dữ liệu thực nghiệm',electronegativity:'Chưa có dữ liệu thực nghiệm',density:'Chưa có dữ liệu thực nghiệm',
+    melting:'Chưa có dữ liệu thực nghiệm',boiling:'Chưa có dữ liệu thực nghiệm',radius:'Chưa có dữ liệu thực nghiệm',specificHeat:'Chưa có dữ liệu thực nghiệm',
+    year:'Không rõ / không áp dụng',discoverer:'Không có trong nguồn dữ liệu',origin:'Không có trong nguồn dữ liệu',
     context:`Dữ liệu học tập tổng quan cho nguyên tố ${vi[e.symbol]||e.name}.`,
     uses:'Ứng dụng phụ thuộc vào dạng đơn chất, hợp chất, độ tinh khiết và điều kiện sử dụng.',
     hazards:'Cần tham khảo phiếu an toàn hóa chất (SDS) của đúng dạng chất trước khi thao tác thực tế.'
@@ -961,12 +1071,15 @@ const modalCanvas=document.getElementById('modalAtomCanvas'),modalCtx=modalCanva
 function superNum(s){return s}
 function openElementModal(e){
   modalSelected=e;
-  const d=elementDetailData[e.symbol]||fallbackDetail(e);
+  if(pubChemReady){dataSourcePill.textContent='Dữ liệu: PubChem (118 nguyên tố)';dataSourcePill.className='data-source-pill'}
+  else if(pubChemLoadError){dataSourcePill.textContent='Dùng dữ liệu nhúng';dataSourcePill.className='data-source-pill error'}
+  else{dataSourcePill.textContent='Đang tải dữ liệu PubChem…';dataSourcePill.className='data-source-pill loading'}
+  const d=pubChemMergedDetail(e,elementDetailData[e.symbol]||fallbackDetail(e));
   document.getElementById('modalMassAtomic').innerHTML=`${d.massNumber}<br>${e.z}`;
   modalSymbol.textContent=e.symbol;modalName.textContent=vi[e.symbol]||e.name;
-  pType.textContent=categories[e.category];pGroupPeriod.textContent=`${e.group} / ${e.period}`;pPhase.textContent=d.phase;pBlock.textContent=d.block;
+  pType.textContent=d.pubChemGroupBlock||categories[e.category];pGroupPeriod.textContent=`${e.group} / ${e.period}`;pPhase.textContent=d.phase;pBlock.textContent=d.block;
   pIons.innerHTML=d.ions.map(x=>`<div class="ion-item"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
-  pMass.textContent=String(masses[e.symbol]||d.massNumber).replace('.',',');pConfig.textContent=d.config;pValence.textContent=d.valence;
+  pMass.textContent=String(d.pubChemAtomicMass||masses[e.symbol]||d.massNumber).replace('.',',');pConfig.textContent=d.config;pValence.textContent=d.valence;
   pProtons.textContent=e.z;pNeutrons.textContent=Math.max(0,d.massNumber-e.z);pElectrons.textContent=e.z;
   pIsotopes.innerHTML=d.isotopes.map(x=>`<div class="isotope-item"><b>${x[0]}</b><span style="text-align:right"><strong>${x[1]}</strong><br><small>${x[2]}</small></span></div>`).join('');
   pOxidation.innerHTML=d.oxidation.map(x=>`<span class="${d.commonOx.includes(x)?'common':''}">${x}</span>`).join('');
@@ -1066,6 +1179,7 @@ function drawModalAtom(){
 drawModalAtom();
 
 renderPeriodic();selectElement(selected);renderSelected();addLog('Phòng thí nghiệm đã sẵn sàng');
+loadPubChemPeriodicData();
 </script>
 </body>
 </html>

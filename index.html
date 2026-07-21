@@ -7,10 +7,11 @@
   <link rel="icon" type="image/png" href="LOGODF.png" />
   <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
   <link rel="apple-touch-icon" href="LOGODF.png" />
-  <title>doublef.io.vn - App Hub</title>
+  <title>doublef.io.vn - Portal</title>
+
   <style>
     :root{
-      --bg:#f4f7fb;
+      --bg:#f5f7fb;
       --card:#ffffff;
       --card2:#f8fafc;
       --text:#0f172a;
@@ -19,17 +20,14 @@
       --line2:#cbd5e1;
       --brand:#0f172a;
       --blue:#2563eb;
-      --green:#0f766e;
       --shadow:0 18px 45px rgba(15,23,42,.08);
       --side:280px;
-      --radius:22px;
-      --icon-size:92px;
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       color-scheme:light;
     }
 
     body.dark{
-      --bg:#09111f;
+      --bg:#0b1220;
       --card:#111827;
       --card2:#0f172a;
       --text:#f8fafc;
@@ -37,307 +35,598 @@
       --line:#243042;
       --line2:#334155;
       --brand:#f8fafc;
-      --shadow:0 18px 45px rgba(0,0,0,.3);
+      --shadow:0 18px 45px rgba(0,0,0,.28);
       color-scheme:dark;
     }
 
     *{box-sizing:border-box}
     html,body{margin:0;min-height:100%}
+
     body{
       background:
         radial-gradient(780px 420px at 90% -10%,rgba(37,99,235,.12),transparent 62%),
         radial-gradient(680px 420px at -8% 8%,rgba(15,118,110,.10),transparent 60%),
         var(--bg);
       color:var(--text);
-      overflow-x:hidden;
     }
 
     button,input,select{font:inherit}
     button{cursor:pointer;color:inherit}
     a{color:inherit;text-decoration:none}
-    .app{min-height:100vh;display:grid;grid-template-columns:var(--side) minmax(0,1fr)}
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:var(--side) minmax(0,1fr)
+    }
 
     aside{
-      position:sticky;top:0;height:100vh;padding:18px;border-right:1px solid var(--line);
-      background:rgba(255,255,255,.72);backdrop-filter:blur(18px);overflow:auto;z-index:30
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:18px;
+      border-right:1px solid var(--line);
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(18px);
+      overflow:auto;
+      z-index:20
     }
+
     body.dark aside{background:rgba(15,23,42,.78)}
 
     .brand{
-      display:flex;align-items:center;gap:12px;padding:6px 4px 18px;border-bottom:1px solid var(--line);margin-bottom:18px
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:6px 4px 18px;
+      border-bottom:1px solid var(--line);
+      margin-bottom:18px
     }
+
     .brand img{
-      width:46px;height:46px;border-radius:14px;object-fit:cover;background:#0f172a;
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      object-fit:cover;
+      background:#0f172a;
       box-shadow:0 12px 28px rgba(15,23,42,.18)
     }
+
     .brand b{display:block;font-size:16px;letter-spacing:-.2px}
     .brand span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
+
     .side-title{
-      font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;
-      font-weight:900;margin:16px 4px 8px
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#94a3b8;
+      font-weight:900;
+      margin:16px 4px 8px
     }
+
     .search{
-      display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
-      border-radius:14px;padding:10px 12px;box-shadow:0 6px 18px rgba(15,23,42,.04)
-    }
-    .search input{width:100%;border:0;background:transparent;outline:0;color:var(--text);min-width:0}
-    .filters{display:grid;gap:8px}
-    .filter{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
-      border:1px solid transparent;background:transparent;border-radius:14px;padding:10px 11px;
-      color:var(--muted);font-weight:700
-    }
-    .filter:hover{background:var(--card2);border-color:var(--line)}
-    .filter.active{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
-    body.dark .filter.active{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.35);color:#93c5fd}
-    .count{font-size:12px;color:#94a3b8;font-weight:900}
-    .side-card{
-      background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
       box-shadow:0 6px 18px rgba(15,23,42,.04)
     }
-    .stat-line{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:13px;margin:8px 0}
+
+    .search input{
+      width:100%;
+      border:0;
+      background:transparent;
+      outline:0;
+      color:var(--text);
+      min-width:0
+    }
+
+    .filters{display:grid;gap:8px}
+
+    .filter{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      width:100%;
+      border:1px solid transparent;
+      background:transparent;
+      border-radius:14px;
+      padding:10px 11px;
+      color:var(--muted);
+      font-weight:700
+    }
+
+    .filter:hover{background:var(--card2);border-color:var(--line)}
+    .filter.active{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+    body.dark .filter.active{
+      background:rgba(96,165,250,.12);
+      border-color:rgba(96,165,250,.35);
+      color:#93c5fd
+    }
+
+    .count{font-size:12px;color:#94a3b8;font-weight:900}
+
+    .side-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:13px;
+      box-shadow:0 6px 18px rgba(15,23,42,.04)
+    }
+
+    .stat-line{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--muted);
+      font-size:13px;
+      margin:8px 0
+    }
+
     .stat-line b{color:var(--text)}
     .time{font-size:26px;font-weight:950;color:var(--brand);letter-spacing:-.5px}
     .date{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px}
 
     main{min-width:0;padding:22px}
-    .container{max-width:1280px;margin:0 auto;display:grid;gap:16px}
+
+    .container{
+      max-width:1220px;
+      margin:0 auto;
+      display:grid;
+      gap:16px
+    }
 
     .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:22px;
-      padding:14px 16px;box-shadow:var(--shadow);backdrop-filter:blur(18px)
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:14px 16px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px)
     }
+
     body.dark .topbar{background:rgba(17,24,39,.72)}
+
     .topbar h1{margin:0;font-size:20px;letter-spacing:-.4px}
     .topbar p{margin:3px 0 0;color:var(--muted);font-size:13px}
-    .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .btn{
-      border:1px solid var(--line);background:var(--card);border-radius:13px;padding:10px 13px;
-      font-weight:800;box-shadow:0 6px 18px rgba(15,23,42,.04);transition:.16s
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center
     }
+
+    .btn{
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:13px;
+      padding:10px 13px;
+      font-weight:800;
+      box-shadow:0 6px 18px rgba(15,23,42,.04);
+      transition:.16s ease
+    }
+
     .btn:hover{border-color:var(--line2);transform:translateY(-1px)}
     .btn.primary{background:var(--brand);color:var(--card);border-color:var(--brand)}
 
     .hero{
-      background:linear-gradient(135deg,#0f172a,#111827 56%,#17345f);color:#fff;border-radius:26px;
-      padding:24px 26px;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1fr) 300px;
-      gap:20px;overflow:hidden;position:relative
+      background:linear-gradient(135deg,#0f172a,#111827 56%,#17345f);
+      color:#fff;
+      border-radius:26px;
+      padding:26px;
+      box-shadow:var(--shadow);
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 280px;
+      gap:20px;
+      overflow:hidden;
+      position:relative
     }
+
     .hero:after{
-      content:"";position:absolute;right:-80px;bottom:-150px;width:360px;height:360px;border-radius:50%;
-      background:rgba(96,165,250,.24);filter:blur(12px)
+      content:"";
+      position:absolute;
+      right:-80px;
+      bottom:-150px;
+      width:360px;
+      height:360px;
+      border-radius:50%;
+      background:rgba(96,165,250,.24);
+      filter:blur(12px)
     }
+
     .hero>*{position:relative;z-index:1}
-    .hero h2{margin:0;font-size:clamp(28px,4vw,46px);line-height:1.05;letter-spacing:-1.4px}
-    .hero p{margin:13px 0 0;color:rgba(255,255,255,.72);line-height:1.65}
-    .hero-panel{
-      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);
-      border-radius:20px;padding:16px;display:grid;gap:12px
+    .hero h2{
+      margin:0;
+      font-size:clamp(28px,4vw,46px);
+      line-height:1.05;
+      letter-spacing:-1.4px
     }
+
+    .hero p{
+      margin:13px 0 0;
+      color:rgba(255,255,255,.72);
+      line-height:1.65
+    }
+
+    .hero-panel{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:20px;
+      padding:16px;
+      display:grid;
+      gap:12px
+    }
+
     .hero-num{font-size:42px;font-weight:950}
     .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .mini{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px}
+    .mini{
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:10px
+    }
     .mini span{display:block;color:rgba(255,255,255,.6);font-size:11px}
     .mini b{display:block;margin-top:5px;font-size:18px}
 
     .toolbar{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-      background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:12px;
       box-shadow:0 6px 18px rgba(15,23,42,.04)
     }
+
     .toolbar-left{display:flex;gap:8px;flex-wrap:wrap}
+
     .select{
-      border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:12px;
-      padding:10px 12px;font-weight:750;outline:0
+      border:1px solid var(--line);
+      background:var(--card2);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:750;
+      outline:0
     }
+
     .view{
-      display:flex;gap:4px;background:var(--card2);border:1px solid var(--line);
-      border-radius:12px;padding:3px
+      display:flex;
+      gap:4px;
+      background:var(--card2);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:3px
     }
+
     .view button{
-      border:0;background:transparent;border-radius:9px;padding:8px 10px;color:var(--muted);font-weight:850
+      border:0;
+      background:transparent;
+      border-radius:9px;
+      padding:8px 10px;
+      color:var(--muted);
+      font-weight:850
     }
+
     .view button.active{
-      background:var(--card);color:var(--blue);box-shadow:0 5px 14px rgba(15,23,42,.06)
+      background:var(--card);
+      color:var(--blue);
+      box-shadow:0 5px 14px rgba(15,23,42,.06)
     }
 
     .panel{
-      background:var(--card);border:1px solid var(--line);border-radius:22px;
-      box-shadow:0 8px 24px rgba(15,23,42,.05);overflow:hidden
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:0 8px 24px rgba(15,23,42,.05);
+      overflow:hidden
     }
+
     .panel-head{
-      display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
-      padding:18px 18px 0;flex-wrap:wrap
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      padding:18px 18px 0;
+      flex-wrap:wrap
     }
+
     .panel-head h3{margin:0;font-size:18px}
     .panel-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
     .panel-body{padding:18px}
-    .badge{
-      display:inline-flex;border:1px solid var(--line);background:var(--card2);color:var(--muted);
-      border-radius:999px;padding:4px 8px;font-size:11px;font-weight:850
+
+    .menu{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px
     }
 
-    /* Apple Watch honeycomb */
-    .honey-shell{
-      position:relative;height:650px;border-radius:24px;overflow:hidden;
-      background:
-        radial-gradient(circle at 50% 45%,rgba(37,99,235,.10),transparent 36%),
-        radial-gradient(circle at 18% 20%,rgba(15,118,110,.08),transparent 28%),
-        var(--card2);
-      border:1px solid var(--line);
-      touch-action:none;
-      user-select:none;
-    }
-    .honey-stage{
-      position:absolute;left:50%;top:50%;width:1000px;height:720px;
-      transform:translate(-50%,-50%);
-      transform-origin:center center;
-      will-change:transform;
-    }
-    .app-node{
-      position:absolute;width:var(--icon-size);text-align:center;transform:translate(-50%,-50%);
-      transition:filter .18s,opacity .18s;
-    }
-    .app-node.dimmed{opacity:.14;filter:grayscale(1)}
-    .app-node.focused .app-icon{
-      transform:scale(1.18);box-shadow:0 22px 45px rgba(15,23,42,.24),0 0 0 5px rgba(37,99,235,.12)
-    }
-    .app-icon{
-      width:var(--icon-size);height:var(--icon-size);border-radius:50%;
-      display:grid;place-items:center;margin:auto;
-      color:#fff;font-size:38px;font-weight:950;
-      border:5px solid rgba(255,255,255,.92);
-      box-shadow:0 14px 32px rgba(15,23,42,.18);
-      transition:transform .18s,box-shadow .18s;
-      cursor:pointer;
-      overflow:hidden;
-    }
-    .app-icon img{width:100%;height:100%;object-fit:cover}
-    .app-node:hover .app-icon{transform:scale(1.12)}
-    .app-label{
-      margin-top:8px;font-size:12px;font-weight:950;line-height:1.2;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-      text-shadow:0 1px 0 var(--card)
-    }
-    .app-sub{
-      margin-top:3px;font-size:10px;color:var(--muted);line-height:1.25;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
-    }
-    .app-fav{
-      position:absolute;right:-4px;top:-3px;width:28px;height:28px;border-radius:50%;
-      border:1px solid rgba(255,255,255,.9);background:var(--card);color:#b7791f;
-      box-shadow:0 6px 14px rgba(15,23,42,.16);display:grid;place-items:center;font-size:15px
-    }
-
-    .honey-help{
-      position:absolute;left:14px;bottom:14px;z-index:5;display:flex;gap:8px;flex-wrap:wrap
-    }
-    .honey-help span{
-      background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid var(--line);
-      border-radius:999px;padding:7px 10px;color:#475569;font-size:11px;font-weight:800
-    }
-    body.dark .honey-help span{background:rgba(17,24,39,.88);color:#cbd5e1}
-    .zoom-controls{
-      position:absolute;right:14px;bottom:14px;z-index:6;display:flex;gap:8px
-    }
-    .zoom-controls button{
-      width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);
-      color:var(--text);font-size:20px;font-weight:900;box-shadow:0 8px 20px rgba(15,23,42,.1)
-    }
-
-    .selected-card{
-      display:none;margin-top:14px;background:var(--card);border:1px solid var(--line);
-      border-radius:18px;padding:14px;align-items:center;gap:14px;box-shadow:0 12px 28px rgba(15,23,42,.07)
-    }
-    .selected-card.show{display:flex}
-    .selected-icon{
-      width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:26px;
-      border:3px solid rgba(255,255,255,.9);box-shadow:0 8px 18px rgba(15,23,42,.15)
-    }
-    .selected-main{min-width:0;flex:1}
-    .selected-title{font-size:16px;font-weight:950}
-    .selected-desc{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.45}
-    .selected-actions{display:flex;gap:8px;flex-wrap:wrap}
-
-    /* Grid/list views */
-    .menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
     .menu.list{grid-template-columns:1fr}
-    .tile{
-      display:flex;gap:13px;align-items:flex-start;background:var(--card);border:1px solid var(--line);
-      border-radius:18px;padding:14px;transition:.16s ease;min-width:0
+
+    .app-card{
+      position:relative;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      min-width:0;
+      padding:16px;
+      background:linear-gradient(180deg,var(--card),var(--card2));
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      transition:.18s ease;
+      box-shadow:0 8px 18px rgba(15,23,42,.04)
     }
-    .tile:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(37,99,235,.30)}
-    .tile-ico{
-      width:54px;height:54px;border-radius:16px;display:grid;place-items:center;color:#fff;
-      font-size:26px;font-weight:950;flex:none;overflow:hidden
+
+    .app-card:before{
+      content:"";
+      position:absolute;
+      width:130px;
+      height:130px;
+      border-radius:50%;
+      right:-50px;
+      top:-55px;
+      background:var(--glow,rgba(37,99,235,.08));
+      filter:blur(2px)
     }
-    .tile-ico img{width:100%;height:100%;object-fit:cover}
-    .tile-text{min-width:0;flex:1}
-    .tile-title{font-size:15px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .tile-desc{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.45}
-    .tile-path{margin-top:5px;font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .app-card:hover{
+      transform:translateY(-3px);
+      border-color:rgba(37,99,235,.34);
+      box-shadow:0 20px 40px rgba(15,23,42,.10)
+    }
+
+    .app-icon{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      flex:none;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-size:28px;
+      font-weight:950;
+      box-shadow:0 12px 24px rgba(15,23,42,.16);
+      position:relative;
+      z-index:1
+    }
+
+    .app-icon img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:inherit
+    }
+
+    .app-info{
+      min-width:0;
+      flex:1;
+      position:relative;
+      z-index:1
+    }
+
+    .app-title{
+      font-size:16px;
+      font-weight:950;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis
+    }
+
+    .app-desc{
+      margin-top:5px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+      min-height:36px
+    }
+
+    .app-path{
+      margin-top:6px;
+      font-size:11px;
+      color:#94a3b8;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis
+    }
+
+    .card-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-top:12px
+    }
+
+    .badge{
+      display:inline-flex;
+      border:1px solid var(--line);
+      background:var(--card);
+      color:var(--muted);
+      border-radius:999px;
+      padding:4px 8px;
+      font-size:11px;
+      font-weight:850
+    }
+
     .fav{
-      width:34px;height:34px;border:1px solid var(--line);background:var(--card2);
-      border-radius:11px;color:#b7791f;flex:none
+      width:36px;
+      height:36px;
+      border:1px solid var(--line);
+      background:var(--card);
+      border-radius:12px;
+      color:#b7791f;
+      flex:none;
+      position:relative;
+      z-index:2
     }
+
+    .menu.list .app-card{
+      align-items:center
+    }
+
+    .menu.list .app-desc{min-height:0}
+    .menu.list .app-icon{width:50px;height:50px;border-radius:16px}
 
     .empty{
-      grid-column:1/-1;border:1px dashed var(--line2);background:var(--card2);
-      border-radius:16px;padding:28px;text-align:center;color:var(--muted)
+      grid-column:1/-1;
+      border:1px dashed var(--line2);
+      background:var(--card2);
+      border-radius:16px;
+      padding:28px;
+      text-align:center;
+      color:var(--muted)
     }
 
     .mobile-menu,.backdrop{display:none}
-    .toast{position:fixed;right:18px;bottom:18px;display:grid;gap:10px;z-index:100}
-    .toast-item{
-      background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-      padding:12px 14px;font-size:13px;animation:in .18s ease
+
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      display:grid;
+      gap:10px;
+      z-index:100
     }
-    @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .toast-item{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:12px 14px;
+      font-size:13px;
+      animation:in .18s ease
+    }
+
+    @keyframes in{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:none}
+    }
 
     .cmdk{
-      position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);z-index:80;
-      display:none;align-items:flex-start;justify-content:center;padding:8vh 16px
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.55);
+      backdrop-filter:blur(8px);
+      z-index:80;
+      display:none;
+      align-items:flex-start;
+      justify-content:center;
+      padding:8vh 16px
     }
+
     .cmdk.open{display:flex}
+
     .cmdk-box{
-      width:min(720px,100%);background:var(--card);border:1px solid var(--line);border-radius:22px;
-      box-shadow:0 28px 80px rgba(0,0,0,.25);overflow:hidden
+      width:min(720px,100%);
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:0 28px 80px rgba(0,0,0,.25);
+      overflow:hidden
     }
+
     .cmdk-top{padding:14px;border-bottom:1px solid var(--line)}
+
     .cmdk-top input{
-      width:100%;border:1px solid var(--line);background:var(--card2);color:var(--text);
-      border-radius:14px;padding:13px;outline:0
+      width:100%;
+      border:1px solid var(--line);
+      background:var(--card2);
+      color:var(--text);
+      border-radius:14px;
+      padding:13px;
+      outline:0
     }
-    .cmdk-list{padding:10px;display:grid;gap:8px;max-height:58vh;overflow:auto}
+
+    .cmdk-list{
+      padding:10px;
+      display:grid;
+      gap:8px;
+      max-height:58vh;
+      overflow:auto
+    }
+
     .cmdk-item{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);
-      background:var(--card2);border-radius:15px;padding:12px;cursor:pointer
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border:1px solid var(--line);
+      background:var(--card2);
+      border-radius:15px;
+      padding:12px;
+      cursor:pointer
     }
-    .cmdk-item.active,.cmdk-item:hover{background:#eff6ff;border-color:#bfdbfe}
-    body.dark .cmdk-item.active,body.dark .cmdk-item:hover{background:rgba(96,165,250,.12)}
-    .cmdk-foot{border-top:1px solid var(--line);padding:11px 14px;color:var(--muted);font-size:12px;background:var(--card2)}
+
+    .cmdk-item.active,.cmdk-item:hover{
+      background:#eff6ff;
+      border-color:#bfdbfe
+    }
+
+    body.dark .cmdk-item.active,
+    body.dark .cmdk-item:hover{
+      background:rgba(96,165,250,.12)
+    }
+
+    .cmdk-foot{
+      border-top:1px solid var(--line);
+      padding:11px 14px;
+      color:var(--muted);
+      font-size:12px;
+      background:var(--card2)
+    }
+
+    @media(max-width:1100px){
+      .menu{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
 
     @media(max-width:980px){
-      :root{--side:0px;--icon-size:82px}
+      :root{--side:0px}
       .app{grid-template-columns:1fr}
+
       aside{
-        position:fixed;left:0;top:0;bottom:0;width:min(88vw,320px);height:100dvh;
-        transform:translateX(-105%);transition:.2s ease;box-shadow:0 24px 70px rgba(0,0,0,.22)
+        position:fixed;
+        left:0;
+        top:0;
+        bottom:0;
+        width:min(88vw,320px);
+        height:100dvh;
+        transform:translateX(-105%);
+        transition:.2s ease;
+        box-shadow:0 24px 70px rgba(0,0,0,.22)
       }
+
       body.sidebar-open aside{transform:none}
-      .backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);z-index:15}
+
+      .backdrop{
+        position:fixed;
+        inset:0;
+        background:rgba(15,23,42,.45);
+        backdrop-filter:blur(3px);
+        z-index:15
+      }
+
       body.sidebar-open .backdrop{display:block}
       .mobile-menu{display:inline-flex}
       .hero{grid-template-columns:1fr}
-      .menu{grid-template-columns:repeat(2,minmax(0,1fr))}
       main{padding:14px 14px 84px}
-      .honey-shell{height:620px}
-      .honey-stage{width:900px;height:680px}
     }
 
-    @media(max-width:620px){
-      :root{--icon-size:74px}
+    @media(max-width:680px){
       .topbar{border-radius:18px}
       .topbar h1{font-size:17px}
       .actions .hide-sm{display:none}
@@ -347,38 +636,48 @@
       .toolbar-left,.select,.view{width:100%}
       .toolbar-left{display:grid;grid-template-columns:1fr 1fr}
       .view button{flex:1}
-      .panel-head,.panel-body{padding:15px}
       .menu{grid-template-columns:1fr}
-      .honey-shell{height:560px;border-radius:18px}
-      .honey-stage{width:760px;height:620px}
-      .app-label{font-size:11px}
-      .app-sub{font-size:9px}
-      .selected-card{align-items:flex-start;flex-wrap:wrap}
-      .selected-actions{width:100%}
-      .selected-actions .btn{flex:1}
+      .panel-head,.panel-body{padding:15px}
       .toast{right:12px;bottom:12px}
-      .honey-help{right:14px}
-      .honey-help span:nth-child(2){display:none}
     }
   </style>
 </head>
+
 <body>
   <div class="app">
     <aside id="sidebar">
       <div class="brand">
         <img src="LOGODF.png" alt="DF" onerror="this.style.display='none';this.nextElementSibling.style.marginLeft='0'" />
-        <div><b>doublef.io.vn</b><span>Professional App Hub</span></div>
+        <div>
+          <b>doublef.io.vn</b>
+          <span>Professional Portal</span>
+        </div>
       </div>
 
       <div class="side-title">Tìm kiếm</div>
-      <div class="search"><span>⌕</span><input id="q" placeholder="Tìm ứng dụng, công cụ..." /></div>
+      <div class="search">
+        <span>⌕</span>
+        <input id="q" placeholder="Tìm trang, công cụ..." />
+      </div>
 
       <div class="side-title">Bộ lọc</div>
       <div class="filters">
-        <button class="filter active" data-filter="all"><span>Tất cả ứng dụng</span><span class="count" id="countAll">0</span></button>
-        <button class="filter" data-filter="tools"><span>Công cụ</span><span class="count" id="countTools">0</span></button>
-        <button class="filter" data-filter="games"><span>Game</span><span class="count" id="countGames">0</span></button>
-        <button class="filter" data-filter="fav"><span>Đã ghim</span><span class="count" id="countFav">0</span></button>
+        <button class="filter active" data-filter="all">
+          <span>Tất cả trang</span>
+          <span class="count" id="countAll">0</span>
+        </button>
+        <button class="filter" data-filter="tools">
+          <span>Công cụ</span>
+          <span class="count" id="countTools">0</span>
+        </button>
+        <button class="filter" data-filter="games">
+          <span>Game</span>
+          <span class="count" id="countGames">0</span>
+        </button>
+        <button class="filter" data-filter="fav">
+          <span>Đã ghim</span>
+          <span class="count" id="countFav">0</span>
+        </button>
       </div>
 
       <div class="side-title">Thời gian</div>
@@ -389,7 +688,7 @@
 
       <div class="side-title">Thống kê</div>
       <div class="side-card">
-        <div class="stat-line"><span>Tổng ứng dụng</span><b id="statTotal">0</b></div>
+        <div class="stat-line"><span>Tổng trang</span><b id="statTotal">0</b></div>
         <div class="stat-line"><span>Công cụ</span><b id="statTools">0</b></div>
         <div class="stat-line"><span>Game</span><b id="statGames">0</b></div>
         <div class="stat-line"><span>Đã ghim</span><b id="statFav">0</b></div>
@@ -403,7 +702,7 @@
         <section class="topbar">
           <button class="btn mobile-menu" id="sidebarBtn">☰</button>
           <div>
-            <h1>DoubleF App Hub</h1>
+            <h1>Professional Portal</h1>
             <p>Truy cập nhanh toàn bộ trang và công cụ của bạn</p>
           </div>
           <div class="actions">
@@ -415,12 +714,13 @@
 
         <section class="hero">
           <div>
-            <h2>Tất cả ứng dụng DoubleF trong một không gian trực quan.</h2>
-            <p>Danh sách được tải tự động từ <b>pages.json</b>. Chế độ tổ ong mô phỏng phong cách ứng dụng trên Apple Watch, hỗ trợ kéo, phóng to, tìm kiếm và ghim ứng dụng.</p>
+            <h2>Cổng truy cập gọn gàng cho hệ thống web DoubleF.</h2>
+            <p>Danh sách được lấy tự động từ <b>pages.json</b>. Mỗi website được gán một icon và màu riêng để dễ nhận diện, tìm kiếm và mở nhanh.</p>
           </div>
+
           <div class="hero-panel">
             <div>
-              <span style="color:rgba(255,255,255,.65);font-size:12px">Ứng dụng đã tải</span>
+              <span style="color:rgba(255,255,255,.65);font-size:12px">Pages loaded</span>
               <div class="hero-num" id="miniTotal">0</div>
             </div>
             <div class="mini-grid">
@@ -439,14 +739,15 @@
               <option value="az">Sắp xếp A-Z</option>
               <option value="group">Theo nhóm</option>
             </select>
+
             <select class="select" id="openMode">
               <option value="same">Mở cùng tab</option>
               <option value="new">Mở tab mới</option>
             </select>
           </div>
+
           <div class="view">
-            <button class="active" data-view="honey">Tổ ong</button>
-            <button data-view="grid">Lưới icon</button>
+            <button class="active" data-view="grid">Lưới</button>
             <button data-view="list">Danh sách</button>
           </div>
         </section>
@@ -455,40 +756,13 @@
           <div class="panel-head">
             <div>
               <h3>Danh sách ứng dụng</h3>
-              <p>Kéo để di chuyển cụm icon, cuộn để phóng to. Bấm icon để chọn, bấm lần nữa để mở.</p>
+              <p>Bấm vào thẻ để mở trang, bấm dấu sao để ghim.</p>
             </div>
             <span class="badge" id="resultInfo">0 kết quả</span>
           </div>
+
           <div class="panel-body">
-            <div id="honeyWrap">
-              <div class="honey-shell" id="honeyShell">
-                <div class="honey-stage" id="honeyStage"></div>
-                <div class="honey-help">
-                  <span>Kéo để di chuyển</span>
-                  <span>Cuộn để phóng to</span>
-                  <span>Bấm 2 lần để mở</span>
-                </div>
-                <div class="zoom-controls">
-                  <button id="zoomOut" title="Thu nhỏ">−</button>
-                  <button id="zoomReset" title="Đặt lại">⌂</button>
-                  <button id="zoomIn" title="Phóng to">＋</button>
-                </div>
-              </div>
-
-              <div class="selected-card" id="selectedCard">
-                <div class="selected-icon" id="selectedIcon">📄</div>
-                <div class="selected-main">
-                  <div class="selected-title" id="selectedTitle">Tên ứng dụng</div>
-                  <div class="selected-desc" id="selectedDesc">Phụ đề ứng dụng</div>
-                </div>
-                <div class="selected-actions">
-                  <button class="btn primary" id="selectedOpen">Mở ứng dụng</button>
-                  <button class="btn" id="selectedFav">☆ Ghim</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="menu" id="menu" style="display:none"></div>
+            <div class="menu" id="menu"></div>
           </div>
         </section>
       </div>
@@ -497,7 +771,9 @@
 
   <div class="cmdk" id="cmdk">
     <div class="cmdk-box">
-      <div class="cmdk-top"><input id="cmdInput" placeholder="Gõ tên ứng dụng hoặc đường dẫn..." /></div>
+      <div class="cmdk-top">
+        <input id="cmdInput" placeholder="Gõ tên trang hoặc đường dẫn..." />
+      </div>
       <div class="cmdk-list" id="cmdList"></div>
       <div class="cmdk-foot">Enter: mở trang • ↑↓: chọn • Esc: đóng • Ctrl/⌘ + K</div>
     </div>
@@ -508,102 +784,166 @@
 <script>
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-const FAV_KEY='doublef_favs_watch_v1';
-const THEME_KEY='doublef_theme_watch_v1';
+
+const FAV_KEY='doublef_favs_normal_v1';
+const THEME_KEY='doublef_theme_normal_v1';
 
 let allPages=[];
 let filter='all';
-let view='honey';
-let selectedCmd=0;
-let selectedPage=null;
-
-let honeyState={x:0,y:0,scale:1,drag:false,startX:0,startY:0,originX:0,originY:0,moved:false};
+let view='grid';
+let selected=0;
 
 const els={
   q:$('#q'),
   menu:$('#menu'),
-  honeyWrap:$('#honeyWrap'),
-  honeyShell:$('#honeyShell'),
-  honeyStage:$('#honeyStage'),
   cmdk:$('#cmdk'),
   cmdInput:$('#cmdInput'),
   cmdList:$('#cmdList'),
   toast:$('#toast'),
-  themeName:$('#themeName'),
-  selectedCard:$('#selectedCard'),
-  selectedIcon:$('#selectedIcon'),
-  selectedTitle:$('#selectedTitle'),
-  selectedDesc:$('#selectedDesc'),
-  selectedOpen:$('#selectedOpen'),
-  selectedFav:$('#selectedFav')
+  themeName:$('#themeName')
 };
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,m=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
   }[m]));
 }
+
 function norm(s){
-  return String(s??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  return String(s??'')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'');
 }
+
 function favs(){
-  try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}catch{return[]}
+  try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}
+  catch{return[]}
 }
-function saveFavs(a){localStorage.setItem(FAV_KEY,JSON.stringify(a))}
-function isFav(p){return favs().includes(String(p||''))}
-function clean(){return allPages.filter(p=>p&&p.path&&norm(p.path)!=='index.html')}
+
+function saveFavs(a){
+  localStorage.setItem(FAV_KEY,JSON.stringify(a))
+}
+
+function isFav(path){
+  return favs().includes(String(path||''))
+}
+
+function clean(){
+  return allPages.filter(p=>p&&p.path&&norm(p.path)!=='index.html')
+}
 
 function typeOf(p){
   const t=norm((p.title||'')+' '+(p.path||'')+' '+(p.group||'')+' '+(p.desc||''));
-  if(t.includes('game')||t.includes('tom')||t.includes('jerry')||t.includes('survival')||t.includes('runner'))return'games';
-  if(t.includes('tool')||t.includes('cong cu')||t.includes('tinh')||t.includes('thi cong')||t.includes('bao gia')||t.includes('ssvb'))return'tools';
-  return'page';
-}
-function label(p){return typeOf(p)==='games'?'Game':typeOf(p)==='tools'?'Công cụ':'Trang'}
 
-function icon(p){
+  if(
+    t.includes('game')||
+    t.includes('tom')||
+    t.includes('jerry')||
+    t.includes('survival')||
+    t.includes('runner')
+  ) return 'games';
+
+  if(
+    t.includes('tool')||
+    t.includes('cong cu')||
+    t.includes('tinh')||
+    t.includes('thi cong')||
+    t.includes('bao gia')||
+    t.includes('ssvb')
+  ) return 'tools';
+
+  return 'page';
+}
+
+function label(p){
+  return typeOf(p)==='games'?'Game':
+         typeOf(p)==='tools'?'Công cụ':'Trang';
+}
+
+function randomIconFor(p){
   if(p.icon)return p.icon;
-  const t=norm((p.title||'')+' '+(p.path||''));
-  if(t.includes('phong thi nghiem')||t.includes('hoa hoc'))return'🧪';
-  if(t.includes('dia chi'))return'📍';
-  if(t.includes('xu phat')||t.includes('giao thong'))return'⚖️';
-  if(t.includes('word')||t.includes('doc'))return'📄';
-  if(t.includes('so do')||t.includes('tu duy'))return'🧠';
-  if(t.includes('chat'))return'💬';
-  if(t.includes('bao gia'))return'💰';
-  if(t.includes('du an'))return'🏗️';
-  if(t.includes('tinh tien')||t.includes('tinh toan'))return'🧮';
-  if(t.includes('chinh ta')||t.includes('spell'))return'✍️';
-  if(typeOf(p)==='games')return'🎮';
-  if(typeOf(p)==='tools')return'🛠️';
-  return'🔗';
+
+  const title=norm((p.title||'')+' '+(p.path||''));
+
+  const keywordIcons=[
+    [['phong thi nghiem','hoa hoc'],'🧪'],
+    [['dia chi','ban do','maps'],'📍'],
+    [['xu phat','giao thong','phap luat'],'⚖️'],
+    [['word','doc','van ban'],'📄'],
+    [['excel','bang tinh'],'📊'],
+    [['pdf'],'📕'],
+    [['so do','tu duy','mindmap'],'🧠'],
+    [['chat','tro chuyen'],'💬'],
+    [['bao gia','gia tien'],'💰'],
+    [['du an','thi cong','xay dung'],'🏗️'],
+    [['tinh tien','tinh toan'],'🧮'],
+    [['chinh ta','spell'],'✍️'],
+    [['tu vi','cung hoang dao'],'🔮'],
+    [['game'],'🎮'],
+    [['camera','hinh anh'],'📷'],
+    [['mail','email'],'✉️'],
+    [['bao cao','thong ke'],'📈'],
+    [['ai','robot'],'🤖'],
+    [['am nhac','music'],'🎵'],
+    [['video'],'🎬'],
+    [['lich','calendar'],'📅']
+  ];
+
+  for(const [keys,icon] of keywordIcons){
+    if(keys.some(k=>title.includes(k)))return icon;
+  }
+
+  const fallbackIcons=['🚀','⚡','🌐','🧩','🛠️','📦','🎯','🛰️','💡','🔗','🗂️','🧭','🪄','📚','🧰'];
+  const hash=[...String(p.title||p.path||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
+
+  return fallbackIcons[hash%fallbackIcons.length];
 }
 
 function subtitle(p){
   if(p.desc&&String(p.desc).trim())return p.desc;
+
   const t=norm(p.title||'');
-  if(t.includes('phong thi nghiem'))return'Khám phá hóa học và mô phỏng phản ứng';
+
+  if(t.includes('phong thi nghiem'))return'Mô phỏng hóa học và bảng tuần hoàn';
   if(t.includes('dia chi'))return'Tra cứu địa chỉ sau sáp nhập';
-  if(t.includes('xu phat'))return'Tra cứu lỗi và mức phạt giao thông';
+  if(t.includes('xu phat'))return'Tra cứu lỗi và mức xử phạt';
   if(t.includes('word'))return'Xử lý và so sánh tài liệu Word';
-  if(t.includes('so do'))return'Vẽ và trình bày sơ đồ trực quan';
+  if(t.includes('so do'))return'Tạo sơ đồ và nội dung trực quan';
   if(t.includes('chat'))return'Trao đổi trực tuyến nhanh chóng';
   if(t.includes('bao gia'))return'Tạo và quản lý báo giá';
   if(t.includes('du an'))return'Quản lý danh sách dự án';
   if(t.includes('tinh tien'))return'Tính toán chi phí thi công';
+
   return'Mở ứng dụng trong hệ thống DoubleF';
 }
 
-function colorFor(p,index=0){
-  if(p.color)return p.color;
+function colorsFor(p,index=0){
+  if(p.color){
+    return [p.color,p.color];
+  }
+
   const palettes=[
-    ['#2563eb','#60a5fa'],['#7c3aed','#c084fc'],['#0f766e','#2dd4bf'],
-    ['#ea580c','#fb923c'],['#be123c','#fb7185'],['#0369a1','#38bdf8'],
-    ['#4d7c0f','#a3e635'],['#b45309','#fbbf24'],['#4338ca','#818cf8'],
-    ['#334155','#94a3b8']
+    ['#2563eb','#60a5fa'],
+    ['#7c3aed','#c084fc'],
+    ['#0f766e','#2dd4bf'],
+    ['#ea580c','#fb923c'],
+    ['#be123c','#fb7185'],
+    ['#0369a1','#38bdf8'],
+    ['#4d7c0f','#a3e635'],
+    ['#b45309','#fbbf24'],
+    ['#4338ca','#818cf8'],
+    ['#334155','#94a3b8'],
+    ['#0f766e','#14b8a6'],
+    ['#a21caf','#e879f9']
   ];
-  const h=Array.from(String(p.title||p.path||'')).reduce((a,c)=>a+c.charCodeAt(0),0);
-  return palettes[(h+index)%palettes.length];
+
+  const hash=[...String(p.title||p.path||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
+  return palettes[(hash+index)%palettes.length];
 }
 
 function setTheme(t){
@@ -611,21 +951,28 @@ function setTheme(t){
   localStorage.setItem(THEME_KEY,t);
   els.themeName.textContent=t==='dark'?'Dark':'Light';
 }
+
 setTheme(localStorage.getItem(THEME_KEY)||'light');
 
-$('#themeBtn').onclick=()=>setTheme(document.body.classList.contains('dark')?'light':'dark');
+$('#themeBtn').onclick=()=>{
+  setTheme(document.body.classList.contains('dark')?'light':'dark')
+};
 
 function toast(t){
   const d=document.createElement('div');
   d.className='toast-item';
   d.textContent=t;
   els.toast.appendChild(d);
-  setTimeout(()=>d.remove(),2500);
+  setTimeout(()=>d.remove(),2500)
 }
 
 function toggleSidebar(on){
-  document.body.classList.toggle('sidebar-open',on??!document.body.classList.contains('sidebar-open'));
+  document.body.classList.toggle(
+    'sidebar-open',
+    on??!document.body.classList.contains('sidebar-open')
+  )
 }
+
 $('#sidebarBtn').onclick=()=>toggleSidebar();
 $('#backdrop').onclick=()=>toggleSidebar(false);
 
@@ -634,347 +981,358 @@ function updateStats(){
   const tools=p.filter(x=>typeOf(x)==='tools').length;
   const games=p.filter(x=>typeOf(x)==='games').length;
   const fav=favs().filter(x=>p.some(y=>String(y.path)===String(x))).length;
+
   [
-    ['statTotal',p.length],['statTools',tools],['statGames',games],['statFav',fav],
-    ['countAll',p.length],['countTools',tools],['countGames',games],['countFav',fav],
-    ['miniTotal',p.length],['miniTools',tools],['miniGames',games],['miniFav',fav]
-  ].forEach(([id,v])=>{const e=$('#'+id);if(e)e.textContent=v});
+    ['statTotal',p.length],
+    ['statTools',tools],
+    ['statGames',games],
+    ['statFav',fav],
+    ['countAll',p.length],
+    ['countTools',tools],
+    ['countGames',games],
+    ['countFav',fav],
+    ['miniTotal',p.length],
+    ['miniTools',tools],
+    ['miniGames',games],
+    ['miniFav',fav]
+  ].forEach(([id,v])=>{
+    const e=$('#'+id);
+    if(e)e.textContent=v
+  })
 }
 
 function filtered(){
   const q=norm(els.q.value).trim();
+
   let p=clean().filter(x=>{
-    const hay=norm((x.title||'')+' '+(x.path||'')+' '+(x.desc||''));
+    const hay=norm(
+      (x.title||'')+' '+
+      (x.path||'')+' '+
+      (x.desc||'')
+    );
+
     if(q&&!hay.includes(q))return false;
     if(filter==='fav')return isFav(x.path);
     if(filter==='tools')return typeOf(x)==='tools';
     if(filter==='games')return typeOf(x)==='games';
-    return true;
+
+    return true
   });
 
   const mode=$('#sortMode').value;
+
   p.sort((a,b)=>{
     if(mode==='fav'){
-      const fa=isFav(a.path)?1:0,fb=isFav(b.path)?1:0;
-      if(fa!==fb)return fb-fa;
+      const fa=isFav(a.path)?1:0;
+      const fb=isFav(b.path)?1:0;
+      if(fa!==fb)return fb-fa
     }
+
     if(mode==='group'){
-      const ga=typeOf(a),gb=typeOf(b);
-      if(ga!==gb)return ga.localeCompare(gb);
+      const ga=typeOf(a);
+      const gb=typeOf(b);
+      if(ga!==gb)return ga.localeCompare(gb)
     }
-    return String(a.title||a.path).localeCompare(String(b.title||b.path),'vi',{sensitivity:'base'});
+
+    return String(a.title||a.path).localeCompare(
+      String(b.title||b.path),
+      'vi',
+      {sensitivity:'base'}
+    )
   });
-  return p;
+
+  return p
 }
 
 function openPage(path){
-  $('#openMode').value==='new'
-    ?window.open(path,'_blank','noopener,noreferrer')
-    :location.href=path;
+  if($('#openMode').value==='new'){
+    window.open(path,'_blank','noopener,noreferrer')
+  }else{
+    location.href=path
+  }
 }
 
 function toggleFav(path){
   let a=favs();
   const i=a.indexOf(path);
-  i>=0?a.splice(i,1):a.unshift(path);
+
+  if(i>=0)a.splice(i,1);
+  else a.unshift(path);
+
   saveFavs(a);
   render();
-  toast('Đã cập nhật ghim');
+  toast('Đã cập nhật ghim')
 }
 
-function createIconContent(p){
-  const ic=icon(p);
+function iconMarkup(p){
+  const ic=randomIconFor(p);
+
   if(/\.(png|jpg|jpeg|webp|svg)$/i.test(ic)){
-    return `<img src="${esc(ic)}" alt="">`;
-  }
-  return esc(ic);
-}
-
-function honeyPositions(count){
-  const positions=[];
-  if(!count)return positions;
-
-  const spacing=122;
-  const rowHeight=106;
-  let index=0;
-  let row=0;
-  const rowPattern=[5,6,7,6,5,4,3,2];
-
-  while(index<count){
-    const cols=rowPattern[row%rowPattern.length];
-    const y=(row-(rowPattern.length-1)/2)*rowHeight;
-    const offset=(row%2)*spacing/2;
-    for(let c=0;c<cols&&index<count;c++){
-      const x=(c-(cols-1)/2)*spacing+offset;
-      positions.push({x,y});
-      index++;
-    }
-    row++;
+    return `<img src="${esc(ic)}" alt="">`
   }
 
-  const maxY=Math.max(...positions.map(p=>Math.abs(p.y)),1);
-  positions.forEach(p=>{
-    const curve=(Math.abs(p.y)/maxY)*32;
-    p.x+=p.x>0?-curve:curve;
-  });
-  return positions;
-}
-
-function applyHoneyTransform(){
-  els.honeyStage.style.transform=
-    `translate(calc(-50% + ${honeyState.x}px),calc(-50% + ${honeyState.y}px)) scale(${honeyState.scale})`;
-}
-
-function resetHoney(){
-  honeyState.x=0;
-  honeyState.y=0;
-  honeyState.scale=window.innerWidth<620?.84:1;
-  applyHoneyTransform();
-}
-
-function selectApp(p,node){
-  selectedPage=p;
-  $$('.app-node',els.honeyStage).forEach(n=>n.classList.toggle('focused',n===node));
-  const colors=colorFor(p);
-  els.selectedIcon.style.background=`linear-gradient(135deg,${colors[0]},${colors[1]})`;
-  els.selectedIcon.innerHTML=createIconContent(p);
-  els.selectedTitle.textContent=p.title||p.path;
-  els.selectedDesc.textContent=subtitle(p);
-  els.selectedFav.textContent=isFav(p.path)?'★ Đã ghim':'☆ Ghim';
-  els.selectedCard.classList.add('show');
-}
-
-function renderHoney(pages){
-  els.honeyStage.innerHTML='';
-  const positions=honeyPositions(pages.length);
-
-  pages.forEach((p,i)=>{
-    const pos=positions[i]||{x:0,y:0};
-    const colors=colorFor(p,i);
-    const node=document.createElement('div');
-    node.className='app-node';
-    node.style.left=`calc(50% + ${pos.x}px)`;
-    node.style.top=`calc(50% + ${pos.y}px)`;
-    node.dataset.path=p.path;
-    node.innerHTML=`
-      <button class="app-fav" title="Ghim">${isFav(p.path)?'★':'☆'}</button>
-      <div class="app-icon" style="background:linear-gradient(135deg,${colors[0]},${colors[1]})">${createIconContent(p)}</div>
-      <div class="app-label">${esc(p.title||p.path)}</div>
-      <div class="app-sub">${esc(subtitle(p))}</div>
-    `;
-
-    let lastClick=0;
-    node.querySelector('.app-icon').onclick=e=>{
-      e.stopPropagation();
-      const now=Date.now();
-      if(now-lastClick<420){
-        openPage(p.path);
-      }else{
-        selectApp(p,node);
-      }
-      lastClick=now;
-    };
-
-    node.querySelector('.app-fav').onclick=e=>{
-      e.stopPropagation();
-      toggleFav(p.path);
-    };
-
-    els.honeyStage.appendChild(node);
-  });
-
-  if(!pages.length){
-    els.honeyStage.innerHTML='<div class="empty" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:340px">Không tìm thấy ứng dụng phù hợp.</div>';
-  }
-
-  if(selectedPage&&!pages.some(p=>p.path===selectedPage.path)){
-    selectedPage=null;
-    els.selectedCard.classList.remove('show');
-  }
-}
-
-function renderMenu(pages){
-  els.menu.className='menu '+(view==='list'?'list':'');
-  if(!pages.length){
-    els.menu.innerHTML='<div class="empty">Không tìm thấy ứng dụng phù hợp.</div>';
-    return;
-  }
-
-  els.menu.innerHTML=pages.map((p,i)=>{
-    const colors=colorFor(p,i);
-    return `
-      <a class="tile" href="${esc(p.path)}" data-path="${esc(p.path)}">
-        <div class="tile-ico" style="background:linear-gradient(135deg,${colors[0]},${colors[1]})">${createIconContent(p)}</div>
-        <div class="tile-text">
-          <div class="tile-title">${esc(p.title||p.path)} ${isFav(p.path)?'★':''}</div>
-          <div class="tile-desc">${esc(subtitle(p))}</div>
-          <div class="tile-path">${esc(p.path)}</div>
-          <div style="margin-top:9px"><span class="badge">${esc(label(p))}</span></div>
-        </div>
-        <button class="fav" data-fav="${esc(p.path)}">${isFav(p.path)?'★':'☆'}</button>
-      </a>
-    `;
-  }).join('');
-
-  $$('.tile',els.menu).forEach(a=>a.onclick=e=>{
-    if(e.target.closest('[data-fav]'))return;
-    e.preventDefault();
-    openPage(a.dataset.path);
-  });
-  $$('[data-fav]',els.menu).forEach(b=>b.onclick=e=>{
-    e.preventDefault();
-    e.stopPropagation();
-    toggleFav(b.dataset.fav);
-  });
+  return esc(ic)
 }
 
 function render(){
   updateStats();
+
   const pages=filtered();
+  els.menu.className='menu '+(view==='list'?'list':'');
   $('#resultInfo').textContent=pages.length+' kết quả';
 
-  const honey=view==='honey';
-  els.honeyWrap.style.display=honey?'block':'none';
-  els.menu.style.display=honey?'none':'grid';
+  if(!pages.length){
+    els.menu.innerHTML='<div class="empty">Không tìm thấy trang phù hợp.</div>';
+    return
+  }
 
-  if(honey)renderHoney(pages);
-  else renderMenu(pages);
+  els.menu.innerHTML=pages.map((p,index)=>{
+    const [c1,c2]=colorsFor(p,index);
+
+    return `
+      <a
+        class="app-card"
+        href="${esc(p.path)}"
+        data-path="${esc(p.path)}"
+        style="--glow:${c1}22"
+      >
+        <div
+          class="app-icon"
+          style="background:linear-gradient(135deg,${c1},${c2})"
+        >
+          ${iconMarkup(p)}
+        </div>
+
+        <div class="app-info">
+          <div class="app-title">
+            ${esc(p.title||p.path)}
+            ${isFav(p.path)?'★':''}
+          </div>
+
+          <div class="app-desc">
+            ${esc(subtitle(p))}
+          </div>
+
+          <div class="app-path">
+            ${esc(p.path)}
+          </div>
+
+          <div class="card-bottom">
+            <span class="badge">${esc(label(p))}</span>
+            <button
+              class="fav"
+              data-fav="${esc(p.path)}"
+              title="Ghim trang"
+            >
+              ${isFav(p.path)?'★':'☆'}
+            </button>
+          </div>
+        </div>
+      </a>
+    `
+  }).join('');
+
+  $$('.app-card',els.menu).forEach(card=>{
+    card.onclick=e=>{
+      if(e.target.closest('[data-fav]'))return;
+      e.preventDefault();
+      openPage(card.dataset.path)
+    }
+  });
+
+  $$('[data-fav]',els.menu).forEach(btn=>{
+    btn.onclick=e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFav(btn.dataset.fav)
+    }
+  })
 }
 
-els.selectedOpen.onclick=()=>selectedPage&&openPage(selectedPage.path);
-els.selectedFav.onclick=()=>selectedPage&&toggleFav(selectedPage.path);
+async function loadPages(){
+  try{
+    const res=await fetch(
+      'pages.json?v='+Date.now(),
+      {cache:'no-store'}
+    );
 
-$$('.filter').forEach(b=>b.onclick=()=>{
-  filter=b.dataset.filter;
-  $$('.filter').forEach(x=>x.classList.toggle('active',x===b));
-  render();
+    if(!res.ok)throw new Error('HTTP '+res.status);
+
+    const data=await res.json();
+
+    if(!Array.isArray(data)){
+      throw new Error('pages.json không phải mảng')
+    }
+
+    allPages=data;
+    render();
+    toast('Đã tải pages.json')
+  }catch(e){
+    console.error(e);
+    allPages=[];
+    render();
+    toast('Không đọc được pages.json')
+  }
+}
+
+function renderCmd(){
+  const q=norm(els.cmdInput.value).trim();
+
+  const p=clean()
+    .filter(x=>{
+      const hay=norm(
+        (x.title||'')+' '+
+        (x.path||'')+' '+
+        subtitle(x)
+      );
+
+      return !q||hay.includes(q)
+    })
+    .slice(0,14);
+
+  if(selected>=p.length)selected=p.length-1;
+  if(selected<0)selected=0;
+
+  els.cmdList.innerHTML=p.length
+    ?p.map((x,i)=>`
+      <div
+        class="cmdk-item ${i===selected?'active':''}"
+        data-path="${esc(x.path)}"
+      >
+        <span>
+          ${esc(randomIconFor(x))}
+          <b>${esc(x.title||x.path)}</b>
+          <br>
+          <small>${esc(subtitle(x))}</small>
+        </span>
+        <span class="badge">Enter</span>
+      </div>
+    `).join('')
+    :'<div class="empty">Không có kết quả.</div>';
+
+  $$('.cmdk-item',els.cmdList).forEach(x=>{
+    x.onclick=()=>{
+      openPage(x.dataset.path);
+      closeCmd()
+    }
+  })
+}
+
+function openCmd(){
+  els.cmdk.classList.add('open');
+  selected=0;
+  renderCmd();
+  setTimeout(()=>els.cmdInput.focus(),0)
+}
+
+function closeCmd(){
+  els.cmdk.classList.remove('open')
+}
+
+$('#cmdBtn').onclick=openCmd;
+
+els.cmdk.onclick=e=>{
+  if(e.target===els.cmdk)closeCmd()
+};
+
+els.cmdInput.oninput=()=>{
+  selected=0;
+  renderCmd()
+};
+
+$$('.filter').forEach(b=>{
+  b.onclick=()=>{
+    filter=b.dataset.filter;
+
+    $$('.filter').forEach(x=>{
+      x.classList.toggle('active',x===b)
+    });
+
+    render()
+  }
 });
 
-$$('.view button').forEach(b=>b.onclick=()=>{
-  view=b.dataset.view;
-  $$('.view button').forEach(x=>x.classList.toggle('active',x===b));
-  render();
+$$('.view button').forEach(b=>{
+  b.onclick=()=>{
+    view=b.dataset.view;
+
+    $$('.view button').forEach(x=>{
+      x.classList.toggle('active',x===b)
+    });
+
+    render()
+  }
 });
 
 els.q.oninput=render;
 $('#sortMode').onchange=render;
 $('#reloadBtn').onclick=loadPages;
 
-els.honeyShell.onpointerdown=e=>{
-  if(e.target.closest('.app-icon,.app-fav,.zoom-controls'))return;
-  honeyState.drag=true;
-  honeyState.moved=false;
-  honeyState.startX=e.clientX;
-  honeyState.startY=e.clientY;
-  honeyState.originX=honeyState.x;
-  honeyState.originY=honeyState.y;
-  els.honeyShell.setPointerCapture(e.pointerId);
-};
-
-els.honeyShell.onpointermove=e=>{
-  if(!honeyState.drag)return;
-  const dx=e.clientX-honeyState.startX;
-  const dy=e.clientY-honeyState.startY;
-  if(Math.abs(dx)+Math.abs(dy)>4)honeyState.moved=true;
-  honeyState.x=honeyState.originX+dx;
-  honeyState.y=honeyState.originY+dy;
-  applyHoneyTransform();
-};
-
-els.honeyShell.onpointerup=()=>{
-  honeyState.drag=false;
-};
-
-els.honeyShell.onwheel=e=>{
-  e.preventDefault();
-  honeyState.scale=Math.max(.55,Math.min(1.8,honeyState.scale+(e.deltaY<0?.08:-.08)));
-  applyHoneyTransform();
-};
-
-$('#zoomIn').onclick=()=>{
-  honeyState.scale=Math.min(1.8,honeyState.scale+.1);
-  applyHoneyTransform();
-};
-$('#zoomOut').onclick=()=>{
-  honeyState.scale=Math.max(.55,honeyState.scale-.1);
-  applyHoneyTransform();
-};
-$('#zoomReset').onclick=resetHoney;
-
-async function loadPages(){
-  try{
-    const res=await fetch('pages.json?v='+Date.now(),{cache:'no-store'});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    if(!Array.isArray(data))throw new Error('pages.json không phải mảng');
-    allPages=data;
-    render();
-    resetHoney();
-    toast('Đã tải pages.json');
-  }catch(e){
-    console.error(e);
-    allPages=[];
-    render();
-    toast('Không đọc được pages.json');
-  }
-}
-
-function renderCmd(){
-  const q=norm(els.cmdInput.value).trim();
-  const p=clean().filter(x=>!q||norm((x.title||'')+' '+(x.path||'')+' '+subtitle(x)).includes(q)).slice(0,14);
-
-  if(selectedCmd>=p.length)selectedCmd=p.length-1;
-  if(selectedCmd<0)selectedCmd=0;
-
-  els.cmdList.innerHTML=p.length
-    ?p.map((x,i)=>`
-      <div class="cmdk-item ${i===selectedCmd?'active':''}" data-path="${esc(x.path)}">
-        <span>${esc(icon(x))} <b>${esc(x.title||x.path)}</b><br><small>${esc(subtitle(x))}</small></span>
-        <span class="badge">Enter</span>
-      </div>`).join('')
-    :'<div class="empty">Không có kết quả.</div>';
-
-  $$('.cmdk-item',els.cmdList).forEach(x=>x.onclick=()=>{
-    openPage(x.dataset.path);
-    closeCmd();
-  });
-}
-
-function openCmd(){
-  els.cmdk.classList.add('open');
-  selectedCmd=0;
-  renderCmd();
-  setTimeout(()=>els.cmdInput.focus(),0);
-}
-function closeCmd(){els.cmdk.classList.remove('open')}
-
-$('#cmdBtn').onclick=openCmd;
-els.cmdk.onclick=e=>{if(e.target===els.cmdk)closeCmd()};
-els.cmdInput.oninput=()=>{selectedCmd=0;renderCmd()};
-
 addEventListener('keydown',e=>{
-  const mod=navigator.platform.toLowerCase().includes('mac')?e.metaKey:e.ctrlKey;
+  const mod=navigator.platform.toLowerCase().includes('mac')
+    ?e.metaKey
+    :e.ctrlKey;
+
   if(mod&&e.key.toLowerCase()==='k'){
     e.preventDefault();
     openCmd();
-    return;
+    return
   }
+
   if(!els.cmdk.classList.contains('open'))return;
-  if(e.key==='Escape'){e.preventDefault();closeCmd()}
-  if(e.key==='ArrowDown'){e.preventDefault();selectedCmd++;renderCmd()}
-  if(e.key==='ArrowUp'){e.preventDefault();selectedCmd--;renderCmd()}
+
+  if(e.key==='Escape'){
+    e.preventDefault();
+    closeCmd()
+  }
+
+  if(e.key==='ArrowDown'){
+    e.preventDefault();
+    selected++;
+    renderCmd()
+  }
+
+  if(e.key==='ArrowUp'){
+    e.preventDefault();
+    selected--;
+    renderCmd()
+  }
+
   if(e.key==='Enter'){
     e.preventDefault();
-    const item=$$('.cmdk-item',els.cmdList)[selectedCmd];
-    if(item){openPage(item.dataset.path);closeCmd()}
+
+    const item=$$('.cmdk-item',els.cmdList)[selected];
+
+    if(item){
+      openPage(item.dataset.path);
+      closeCmd()
+    }
   }
 });
 
 function tick(){
   const d=new Date();
-  $('#time').textContent=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  $('#date').textContent=d.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+
+  $('#time').textContent=d.toLocaleTimeString(
+    'vi-VN',
+    {
+      hour:'2-digit',
+      minute:'2-digit',
+      second:'2-digit'
+    }
+  );
+
+  $('#date').textContent=d.toLocaleDateString(
+    'vi-VN',
+    {
+      weekday:'long',
+      day:'2-digit',
+      month:'long',
+      year:'numeric'
+    }
+  )
 }
+
 setInterval(tick,500);
 tick();
 loadPages();

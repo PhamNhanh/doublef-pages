@@ -2,7 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f2a3b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="description" content="Phòng Thí Nghiệm Số: bảng tuần hoàn, mô hình nguyên tử tương tác và phòng thí nghiệm hóa học ảo." />
   <title>Phòng Thí Nghiệm Số</title>
   <style>
@@ -375,7 +378,182 @@
       .beaker-zone{top:35%}.temp-card{top:190px}
       #atomCanvas{height:420px}.facts{grid-template-columns:1fr}
     }
-  </style>
+  
+    /* ===== Tối ưu điện thoại ===== */
+    .mobile-tabbar{
+      display:none;
+      position:fixed;left:10px;right:10px;bottom:10px;z-index:450;
+      padding:8px;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);
+      border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 34px rgba(24,38,60,.2)
+    }
+    .mobile-tabbar button{
+      flex:1;border:0;background:transparent;color:#657185;border-radius:13px;padding:9px 5px;
+      font-size:11px;font-weight:800
+    }
+    .mobile-tabbar button span{display:block;font-size:20px;margin-bottom:2px}
+    .mobile-tabbar button.active{background:#1f2a3b;color:#fff}
+    .mobile-only{display:none}
+    .swipe-hint{display:none}
+
+    @media(max-width:700px){
+      body{padding-bottom:86px}
+      .topbar{
+        position:sticky;top:0;padding:9px 12px;border-radius:0;
+        justify-content:center
+      }
+      .topbar .nav{display:none}
+      .brand{width:100%;justify-content:center}
+      .brand-logo{width:34px;height:34px;border-radius:11px}
+      .main{padding:10px 10px 20px}
+      .hero{display:block;margin:4px 0 12px}
+      .hero h1{font-size:34px;line-height:1.02}
+      .hero p{font-size:14px;line-height:1.5}
+      .chips{margin-top:10px}
+      .chip{font-size:11px;padding:7px 9px}
+      .toolbar{gap:7px}
+      .input{min-width:100%;width:100%;padding:11px 12px}
+      .select{flex:1;min-width:0;padding:11px 9px}
+      #randomBtn{padding:11px 10px}
+      .legend{overflow:auto;flex-wrap:nowrap;padding-bottom:5px}
+      .legend span{flex:0 0 auto}
+      .periodic-wrap{
+        margin-left:-10px;margin-right:-10px;padding:0 10px 12px;
+        scroll-snap-type:x proximity
+      }
+      .periodic{min-width:1040px;grid-auto-rows:68px;gap:4px}
+      .el{border-radius:8px;padding:4px}
+      .el .sym{font-size:22px;line-height:24px}
+      .el .nm{font-size:8px}
+      .grid-2{gap:12px}
+      .panel{border-radius:16px}
+      .panel-head{padding:13px 14px}
+      .panel-body{padding:12px}
+      #atomCanvas{height:380px;border-radius:14px}
+      .particle-note{max-width:230px;min-width:180px;font-size:12px}
+      .facts{grid-template-columns:1fr 1fr;gap:7px}
+      .fact{padding:9px}
+      .fact b{font-size:14px}
+      .tabs{overflow:auto;flex-wrap:nowrap}
+      .tabs button{flex:0 0 auto}
+      .mobile-tabbar{display:flex}
+      .mobile-only{display:block}
+      .swipe-hint{
+        display:block;text-align:center;color:var(--muted);font-size:11px;margin:6px 0 0
+      }
+
+      /* Phòng thí nghiệm trên điện thoại */
+      .lab-shell{padding:10px;border-radius:18px}
+      .lab-title h2{font-size:22px}
+      .lab-stage{min-height:980px;border-radius:18px}
+      .equation-pill{
+        top:14px;left:12px;right:12px;transform:none;text-align:center;
+        padding:11px 12px;font-size:15px
+      }
+      .mission-box{
+        top:70px;left:12px;right:12px;max-width:none;padding:10px 12px;font-size:13px
+      }
+      .score-card{
+        top:162px;right:12px;width:132px;padding:10px
+      }
+      .score-number{font-size:24px}
+      .temp-card{left:12px;top:162px;width:60px;padding:10px 7px}
+      .thermo{height:92px}
+      .beaker-zone{top:38%;width:280px;height:300px}
+      .beaker{width:145px;height:220px}
+      .drop-zone{top:38%;width:300px;height:320px}
+      .apparatus-tray{
+        left:12px;right:12px;bottom:365px;top:auto;width:auto;padding:10px
+      }
+      .apparatus-grid{grid-template-columns:repeat(4,1fr)}
+      .apparatus-item{font-size:10px;padding:7px 3px}
+      .apparatus-item span{font-size:20px}
+      .element-menu{
+        left:12px;right:12px;bottom:150px;top:auto;width:auto;max-height:200px;border-radius:15px
+      }
+      .bottom-controls{
+        left:12px;right:12px;bottom:10px;gap:8px
+      }
+      .heater-card{padding:10px 12px}
+      .action-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+      .action-row .btn{min-width:0;padding:10px 5px;font-size:12px}
+      .right-actions{display:none}
+      .lab-side{gap:12px}
+      .reaction-library{grid-template-columns:1fr}
+      .score-breakdown{grid-template-columns:1fr 1fr}
+      .chemical-grid{grid-template-columns:repeat(2,1fr)}
+
+      /* Modal nguyên tố toàn màn hình trên điện thoại */
+      .element-modal{padding:0;background:#fbfbfa}
+      .element-modal-card{
+        display:block;height:100dvh;border-radius:0;overflow:auto;background:#fbfbfa
+      }
+      .modal-close{
+        position:fixed;right:12px;top:12px;width:44px;height:44px;font-size:22px;
+        background:rgba(242,243,245,.95)
+      }
+      .element-side{border:0;min-height:auto}
+      .element-modal-head{
+        position:sticky;top:0;z-index:12;height:112px;padding:18px 58px 16px 18px;
+        gap:16px;background:rgba(250,247,241,.95);backdrop-filter:blur(12px)
+      }
+      .mass-atomic{font-size:34px;min-width:40px}
+      .modal-symbol{font-size:65px;letter-spacing:-3px}
+      .modal-name{font-size:28px;max-width:42vw;word-break:break-word}
+      .element-page-wrap{height:auto;overflow:visible;padding:14px}
+      .element-page{
+        min-height:520px;height:auto;border-radius:22px;padding:18px;overflow:visible
+      }
+      .page-row{gap:10px;padding:9px 0}
+      .page-row .label{font-size:11px}
+      .page-row .value{font-size:17px}
+      .metric-grid{grid-template-columns:1fr 1fr;gap:0 10px}
+      .metric{padding:10px 6px}
+      .metric b{font-size:16px}
+      .ion-item,.isotope-item{padding:11px 12px}
+      .ion-item b,.isotope-item b{font-size:22px}
+      .page-dots{
+        position:sticky;bottom:0;z-index:13;height:46px;background:rgba(251,251,250,.94);
+        backdrop-filter:blur(12px)
+      }
+      .modal-visual{
+        height:520px;margin:0 10px 88px;border-radius:22px;overflow:hidden;border:1px solid var(--line)
+      }
+      #modalAtomCanvas{height:100%}
+      .config-pill{
+        top:12px;left:12px;max-width:62%;font-size:14px;padding:8px 10px;
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+      }
+      .data-source-pill{
+        right:12px;top:64px;max-width:62%;font-size:10px;padding:6px 8px
+      }
+      .modal-controls{left:14px;bottom:14px}
+      .round-control{width:44px;height:44px}
+      .modal-help{right:14px;bottom:14px;width:42px;height:42px}
+      .modal-particle-note{max-width:220px;font-size:12px}
+      .swipe-modal{
+        display:block;text-align:center;color:var(--muted);font-size:11px;padding:2px 0 8px
+      }
+
+      /* Công cụ */
+      .tools-grid{grid-template-columns:1fr}
+      .tool-card{border-radius:16px;padding:14px}
+    }
+
+    @media(max-width:390px){
+      .hero h1{font-size:30px}
+      .modal-name{font-size:24px}
+      .modal-symbol{font-size:58px}
+      .mass-atomic{font-size:30px}
+      .facts{grid-template-columns:1fr}
+      .metric-grid{grid-template-columns:1fr}
+      .score-breakdown{grid-template-columns:1fr}
+      .action-row{grid-template-columns:1fr}
+      .lab-stage{min-height:1080px}
+      .apparatus-tray{bottom:455px}
+      .element-menu{bottom:205px}
+    }
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -404,7 +582,7 @@
         <button id="randomBtn" class="btn">Ngẫu nhiên</button>
       </div>
       <div id="legend" class="legend"></div>
-      <div class="periodic-wrap"><div id="periodic" class="periodic"></div></div>
+      <div class="periodic-wrap"><div id="periodic" class="periodic"></div></div><div class="swipe-hint">Vuốt ngang để xem toàn bộ bảng tuần hoàn</div>
 
       <div class="grid-2" style="margin-top:18px">
         <div class="panel">
@@ -634,7 +812,7 @@
         <button class="page-dot" data-page-target="1"></button>
         <button class="page-dot" data-page-target="2"></button>
         <button class="page-dot" data-page-target="3"></button>
-      </div>
+      </div><div class="swipe-modal">Vuốt trái hoặc phải để chuyển trang thông tin</div>
     </aside>
 
     <section class="modal-visual">
@@ -650,6 +828,13 @@
     </section>
   </div>
 </div>
+
+
+<nav class="mobile-tabbar" aria-label="Điều hướng điện thoại">
+  <button class="active" data-view="periodicView"><span>⚛</span>Bảng tuần hoàn</button>
+  <button data-view="labView"><span>⚗</span>Phòng thí nghiệm</button>
+  <button data-view="toolsView"><span>🧮</span>Công cụ</button>
+</nav>
 
 <div class="footer">Mô phỏng phục vụ học tập. Không dùng để thay thế quy trình an toàn trong phòng thí nghiệm thực tế.</div>
 </div>
@@ -671,12 +856,12 @@ const descriptions={
 let selected=elements.find(e=>e.symbol==='C');
 let paused=false,angleX=.45,angleY=.2,zoom=1,drag=false,lastX=0,lastY=0,particleHits=[];
 
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById(b.dataset.view).classList.add('active');
-});
+function switchMainView(viewId){
+  document.querySelectorAll('.nav button,.mobile-tabbar button').forEach(x=>x.classList.toggle('active',x.dataset.view===viewId));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===viewId));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav button,.mobile-tabbar button').forEach(b=>b.onclick=()=>switchMainView(b.dataset.view));
 
 Object.entries(categories).forEach(([k,v])=>categoryFilter.innerHTML+=`<option value="${k}">${v}</option>`);
 legend.innerHTML=Object.entries(categories).map(([k,v])=>`<span><i class="${k}"></i>${v}</span>`).join('');
@@ -1180,6 +1365,39 @@ drawModalAtom();
 
 renderPeriodic();selectElement(selected);renderSelected();addLog('Phòng thí nghiệm đã sẵn sàng');
 loadPubChemPeriodicData();
+
+let modalTouchStartX=0,modalTouchStartY=0;
+elementModal.addEventListener('touchstart',e=>{
+  if(!e.touches.length)return;
+  modalTouchStartX=e.touches[0].clientX;modalTouchStartY=e.touches[0].clientY;
+},{passive:true});
+elementModal.addEventListener('touchend',e=>{
+  if(!e.changedTouches.length)return;
+  const dx=e.changedTouches[0].clientX-modalTouchStartX;
+  const dy=e.changedTouches[0].clientY-modalTouchStartY;
+  if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*1.4){
+    showModalPage(Math.max(0,Math.min(3,modalPage+(dx<0?1:-1))));
+  }
+},{passive:true});
+
+function attachTouchRotate(target,prefix){
+  let active=false,x=0,y=0;
+  target.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1)return;
+    active=true;x=e.touches[0].clientX;y=e.touches[0].clientY;
+  },{passive:true});
+  target.addEventListener('touchmove',e=>{
+    if(!active||e.touches.length!==1)return;
+    const nx=e.touches[0].clientX,ny=e.touches[0].clientY;
+    if(prefix==='modal'){modalAngleY+=(nx-x)*.007;modalAngleX+=(ny-y)*.007}
+    else{angleY+=(nx-x)*.007;angleX+=(ny-y)*.007}
+    x=nx;y=ny;
+  },{passive:true});
+  target.addEventListener('touchend',()=>active=false,{passive:true});
+}
+attachTouchRotate(canvas,'main');
+attachTouchRotate(modalCanvas,'modal');
+
 </script>
 </body>
 </html>

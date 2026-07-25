@@ -1,0 +1,21 @@
+<script>
+async function sendMessage(message) {
+  const response = await fetch("/api/ai", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: message
+    })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Không thể kết nối AI");
+  }
+
+  return data.answer;
+}
+</script>

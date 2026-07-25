@@ -290,7 +290,7 @@
 
 <script>
 const API_KEY = "AIzaSyD3qz_SlRcLxjcXHANkrWNhxRo6IQl56Ys";
-const MODEL = "gemini-3.5-flash";
+const MODEL = "gemini-2.5-flash";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 const STORE_KEY = "doublef_ai_chats_v1";
@@ -305,8 +305,20 @@ const historyEl = $("#history");
 const titleEl = $("#chatTitle");
 
 let chats = loadChats();
-let currentId = chats[0]?.id || createChat(false).id;
+let currentId = chats[0]?.id || null;
 let sending = false;
+
+if (!currentId) {
+  const firstChat = {
+    id: uid(),
+    title: "Cuộc trò chuyện mới",
+    createdAt: new Date().toISOString(),
+    messages: []
+  };
+  chats.unshift(firstChat);
+  currentId = firstChat.id;
+  saveChats();
+}
 
 function uid(){
   return Date.now().toString(36) + Math.random().toString(36).slice(2,8);

@@ -1,22 +1,614 @@
-const API_KEY = "AIzaSyD3qz_SlRcLxjcXHANkrWNhxRo6IQl56Ys";
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="icon" type="image/png" href="LOGODF.png" />
+  <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
+  <link rel="apple-touch-icon" href="LOGODF.png" />
+  <title>DoubleF AI</title>
+  <style>
+    :root{
+      --bg:#eef2ff;
+      --panel:#ffffff;
+      --panel2:#f8fafc;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --brand:#2563eb;
+      --brand2:#7c3aed;
+      --danger:#dc2626;
+      --shadow:0 24px 70px rgba(15,23,42,.12);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color-scheme:light;
+    }
+    body.dark{
+      --bg:#07111f;
+      --panel:#0f172a;
+      --panel2:#111c2d;
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --line:#243247;
+      --shadow:0 24px 70px rgba(0,0,0,.34);
+      color-scheme:dark;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%}
+    body{
+      background:
+        radial-gradient(900px 520px at 100% 0%,rgba(37,99,235,.16),transparent 60%),
+        radial-gradient(700px 460px at 0% 100%,rgba(124,58,237,.14),transparent 60%),
+        var(--bg);
+      color:var(--text);
+      overflow:hidden;
+    }
+    button,textarea,input{font:inherit}
+    button{cursor:pointer}
+    .app{
+      height:100dvh;
+      display:grid;
+      grid-template-columns:280px minmax(0,1fr);
+    }
+    aside{
+      border-right:1px solid var(--line);
+      background:rgba(255,255,255,.76);
+      backdrop-filter:blur(18px);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+    body.dark aside{background:rgba(15,23,42,.82)}
+    .brand{
+      display:flex;align-items:center;gap:12px;
+      padding:4px 4px 16px;
+      border-bottom:1px solid var(--line)
+    }
+    .brand img{
+      width:44px;height:44px;border-radius:14px;object-fit:cover;
+      box-shadow:0 10px 24px rgba(15,23,42,.18);
+      background:#0f172a
+    }
+    .brand b{display:block}
+    .brand span{font-size:12px;color:var(--muted)}
+    .new-chat{
+      margin:16px 0 12px;
+      border:0;border-radius:14px;padding:12px 14px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;font-weight:800;
+      box-shadow:0 12px 28px rgba(37,99,235,.25)
+    }
+    .side-title{
+      margin:8px 4px;font-size:11px;font-weight:900;
+      text-transform:uppercase;letter-spacing:.12em;color:#94a3b8
+    }
+    .history{
+      display:grid;gap:8px;overflow:auto;min-height:0;padding-right:2px
+    }
+    .history-item{
+      border:1px solid var(--line);background:var(--panel);
+      border-radius:13px;padding:10px 11px;text-align:left;
+      color:var(--text);display:grid;gap:4px
+    }
+    .history-item.active{border-color:#93c5fd;background:#eff6ff}
+    body.dark .history-item.active{background:rgba(37,99,235,.14)}
+    .history-item b{
+      font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+    }
+    .history-item span{font-size:11px;color:var(--muted)}
+    .sidebar-foot{
+      margin-top:auto;padding-top:12px;border-top:1px solid var(--line);
+      display:grid;gap:8px
+    }
+    .side-btn{
+      border:1px solid var(--line);background:var(--panel);
+      color:var(--text);border-radius:12px;padding:10px;font-weight:700
+    }
+    main{min-width:0;display:flex;flex-direction:column;height:100dvh}
+    .topbar{
+      min-height:68px;display:flex;align-items:center;justify-content:space-between;
+      gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.72);backdrop-filter:blur(18px)
+    }
+    body.dark .topbar{background:rgba(15,23,42,.78)}
+    .topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
+    .topbar h1{margin:0;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .topbar p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+    .top-actions{display:flex;gap:8px}
+    .icon-btn{
+      border:1px solid var(--line);background:var(--panel);color:var(--text);
+      border-radius:12px;padding:9px 11px;font-weight:800
+    }
+    .menu-btn{display:none}
+    .chat{
+      flex:1;overflow:auto;padding:24px 18px 16px;scroll-behavior:smooth
+    }
+    .chat-inner{width:min(900px,100%);margin:0 auto;display:grid;gap:18px}
+    .welcome{
+      background:linear-gradient(135deg,#0f172a,#1e293b 55%,#312e81);
+      color:#fff;border-radius:26px;padding:28px;box-shadow:var(--shadow)
+    }
+    .welcome h2{margin:0;font-size:clamp(28px,5vw,46px);letter-spacing:-1.3px}
+    .welcome p{margin:12px 0 0;color:rgba(255,255,255,.72);line-height:1.65}
+    .suggestions{
+      margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px
+    }
+    .suggestion{
+      border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);
+      color:#fff;border-radius:15px;padding:12px;text-align:left;line-height:1.4
+    }
+    .msg{display:flex;gap:12px;align-items:flex-start}
+    .msg.user{justify-content:flex-end}
+    .avatar{
+      width:38px;height:38px;border-radius:13px;display:grid;place-items:center;
+      flex:none;font-size:18px;font-weight:900;box-shadow:0 8px 20px rgba(15,23,42,.12)
+    }
+    .msg.ai .avatar{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}
+    .msg.user .avatar{background:#0f172a;color:#fff;order:2}
+    .bubble{
+      max-width:min(760px,82%);
+      border:1px solid var(--line);background:var(--panel);
+      border-radius:20px;padding:14px 16px;line-height:1.68;
+      box-shadow:0 8px 24px rgba(15,23,42,.06);
+      overflow-wrap:anywhere
+    }
+    .msg.user .bubble{
+      background:linear-gradient(135deg,#2563eb,#4f46e5);
+      color:#fff;border-color:transparent;border-bottom-right-radius:6px
+    }
+    .msg.ai .bubble{border-bottom-left-radius:6px}
+    .bubble pre{
+      background:#0b1220;color:#e2e8f0;padding:14px;border-radius:14px;
+      overflow:auto;border:1px solid #243247
+    }
+    .bubble code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      background:rgba(148,163,184,.14);padding:2px 5px;border-radius:6px
+    }
+    .bubble pre code{background:transparent;padding:0}
+    .bubble p{margin:.45em 0}
+    .bubble ul,.bubble ol{padding-left:22px}
+    .typing{display:inline-flex;gap:5px;align-items:center;min-height:20px}
+    .typing i{
+      width:7px;height:7px;border-radius:50%;background:#94a3b8;
+      animation:blink 1s infinite alternate
+    }
+    .typing i:nth-child(2){animation-delay:.2s}
+    .typing i:nth-child(3){animation-delay:.4s}
+    @keyframes blink{to{opacity:.25;transform:translateY(-3px)}}
+    .composer-wrap{
+      padding:12px 18px 18px;
+      background:linear-gradient(180deg,transparent,rgba(238,242,255,.92) 30%)
+    }
+    body.dark .composer-wrap{background:linear-gradient(180deg,transparent,rgba(7,17,31,.95) 30%)}
+    .composer{
+      width:min(900px,100%);margin:0 auto;
+      background:var(--panel);border:1px solid var(--line);border-radius:22px;
+      box-shadow:var(--shadow);padding:10px
+    }
+    .composer textarea{
+      width:100%;min-height:54px;max-height:180px;resize:none;
+      border:0;outline:0;background:transparent;color:var(--text);
+      padding:10px 12px;line-height:1.5
+    }
+    .composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .composer-note{font-size:11px;color:var(--muted);padding-left:8px}
+    .send{
+      border:0;border-radius:14px;padding:10px 16px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;font-weight:900;min-width:92px
+    }
+    .send:disabled{opacity:.55;cursor:not-allowed}
+    .error{
+      border:1px solid #fecaca;background:#fef2f2;color:#991b1b;
+      border-radius:14px;padding:12px 14px
+    }
+    body.dark .error{background:rgba(127,29,29,.2);border-color:#7f1d1d;color:#fecaca}
+    .backdrop{display:none}
+    @media(max-width:860px){
+      .app{grid-template-columns:1fr}
+      aside{
+        position:fixed;inset:0 auto 0 0;width:min(86vw,310px);z-index:30;
+        transform:translateX(-105%);transition:.2s ease;box-shadow:var(--shadow)
+      }
+      body.sidebar-open aside{transform:none}
+      .backdrop{
+        position:fixed;inset:0;background:rgba(15,23,42,.48);
+        backdrop-filter:blur(3px);z-index:20
+      }
+      body.sidebar-open .backdrop{display:block}
+      .menu-btn{display:inline-flex}
+    }
+    @media(max-width:640px){
+      .chat{padding:16px 10px}
+      .topbar{padding:10px}
+      .topbar p{display:none}
+      .welcome{padding:20px;border-radius:22px}
+      .suggestions{grid-template-columns:1fr}
+      .bubble{max-width:88%}
+      .composer-wrap{padding:8px 10px 10px}
+      .composer-note{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <img src="LOGODF.png" alt="DF" onerror="this.style.display='none'">
+        <div>
+          <b>DoubleF AI</b>
+          <span>Trợ lý Gemini</span>
+        </div>
+      </div>
 
-const response = await fetch(
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
-  {
+      <button class="new-chat" id="newChatBtn">＋ Cuộc trò chuyện mới</button>
+
+      <div class="side-title">Lịch sử</div>
+      <div class="history" id="history"></div>
+
+      <div class="sidebar-foot">
+        <button class="side-btn" id="themeBtn">Đổi giao diện</button>
+        <button class="side-btn" id="clearBtn">Xóa toàn bộ lịch sử</button>
+        <button class="side-btn" onclick="location.href='index.html'">Về trang chủ</button>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <main>
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn menu-btn" id="menuBtn">☰</button>
+          <div>
+            <h1 id="chatTitle">Cuộc trò chuyện mới</h1>
+            <p>Gemini trả lời trực tiếp từ trình duyệt</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="copyBtn">Sao chép</button>
+          <button class="icon-btn" id="exportBtn">Xuất TXT</button>
+        </div>
+      </header>
+
+      <section class="chat" id="chat">
+        <div class="chat-inner" id="chatInner"></div>
+      </section>
+
+      <div class="composer-wrap">
+        <div class="composer">
+          <textarea id="input" placeholder="Nhập nội dung cần hỏi..." rows="1"></textarea>
+          <div class="composer-bottom">
+            <div class="composer-note">Enter để gửi • Shift + Enter để xuống dòng</div>
+            <button class="send" id="sendBtn">Gửi</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script>
+const API_KEY = "AIzaSyD3qz_SlRcLxjcXHANkrWNhxRo6IQl56Ys";
+const MODEL = "gemini-3.5-flash";
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+
+const STORE_KEY = "doublef_ai_chats_v1";
+const THEME_KEY = "doublef_ai_theme_v1";
+
+const $ = s => document.querySelector(s);
+const chatEl = $("#chat");
+const chatInner = $("#chatInner");
+const input = $("#input");
+const sendBtn = $("#sendBtn");
+const historyEl = $("#history");
+const titleEl = $("#chatTitle");
+
+let chats = loadChats();
+let currentId = chats[0]?.id || createChat(false).id;
+let sending = false;
+
+function uid(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+}
+
+function loadChats(){
+  try{
+    const value = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
+    return Array.isArray(value) ? value : [];
+  }catch{
+    return [];
+  }
+}
+
+function saveChats(){
+  localStorage.setItem(STORE_KEY, JSON.stringify(chats));
+}
+
+function createChat(renderNow = true){
+  const chat = {
+    id: uid(),
+    title: "Cuộc trò chuyện mới",
+    createdAt: new Date().toISOString(),
+    messages: []
+  };
+  chats.unshift(chat);
+  currentId = chat.id;
+  saveChats();
+  if(renderNow) renderAll();
+  return chat;
+}
+
+function currentChat(){
+  return chats.find(c => c.id === currentId);
+}
+
+function setTheme(theme){
+  document.body.classList.toggle("dark", theme === "dark");
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+setTheme(localStorage.getItem(THEME_KEY) || "light");
+
+function esc(text){
+  return String(text ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+function renderMarkdown(text){
+  let safe = esc(text);
+  const blocks = [];
+  safe = safe.replace(/```([\s\S]*?)```/g, (_, code) => {
+    const token = `@@CODE_${blocks.length}@@`;
+    blocks.push(`<pre><code>${code.trim()}</code></pre>`);
+    return token;
+  });
+  safe = safe
+    .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+    .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+    .replace(/^# (.*)$/gm, "<h1>$1</h1>")
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/^\s*[-*] (.*)$/gm, "<li>$1</li>")
+    .replace(/\n/g, "<br>");
+  safe = safe.replace(/(?:<li>.*?<\/li><br>?)+/g, m => `<ul>${m.replace(/<br>/g,"")}</ul>`);
+  blocks.forEach((block,i) => safe = safe.replace(`@@CODE_${i}@@`, block));
+  return safe;
+}
+
+function welcomeHTML(){
+  return `
+    <div class="welcome">
+      <h2>Xin chào, tôi là DoubleF AI.</h2>
+      <p>Tôi có thể hỗ trợ soạn thảo, giải thích, viết code, lập kế hoạch, phân tích nội dung và trả lời câu hỏi bằng tiếng Việt.</p>
+      <div class="suggestions">
+        <button class="suggestion">Viết giúp tôi một công văn hành chính ngắn gọn</button>
+        <button class="suggestion">Giải thích một đoạn code JavaScript</button>
+        <button class="suggestion">Lập kế hoạch triển khai một website</button>
+        <button class="suggestion">Tóm tắt nội dung thành các ý chính</button>
+      </div>
+    </div>`;
+}
+
+function renderMessages(){
+  const chat = currentChat();
+  titleEl.textContent = chat?.title || "Cuộc trò chuyện mới";
+
+  if(!chat || chat.messages.length === 0){
+    chatInner.innerHTML = welcomeHTML();
+    document.querySelectorAll(".suggestion").forEach(btn => {
+      btn.onclick = () => {
+        input.value = btn.textContent.trim();
+        autoGrow();
+        input.focus();
+      };
+    });
+    return;
+  }
+
+  chatInner.innerHTML = chat.messages.map(m => `
+    <div class="msg ${m.role === "user" ? "user" : "ai"}">
+      <div class="avatar">${m.role === "user" ? "B" : "AI"}</div>
+      <div class="bubble">${m.role === "user" ? esc(m.text).replace(/\n/g,"<br>") : renderMarkdown(m.text)}</div>
+    </div>
+  `).join("");
+
+  scrollBottom();
+}
+
+function renderHistory(){
+  historyEl.innerHTML = chats.length ? chats.map(chat => `
+    <button class="history-item ${chat.id === currentId ? "active" : ""}" data-id="${chat.id}">
+      <b>${esc(chat.title)}</b>
+      <span>${new Date(chat.createdAt).toLocaleString("vi-VN")}</span>
+    </button>
+  `).join("") : `<div style="color:var(--muted);font-size:13px;padding:8px">Chưa có lịch sử.</div>`;
+
+  historyEl.querySelectorAll("[data-id]").forEach(btn => {
+    btn.onclick = () => {
+      currentId = btn.dataset.id;
+      renderAll();
+      document.body.classList.remove("sidebar-open");
+    };
+  });
+}
+
+function renderAll(){
+  renderHistory();
+  renderMessages();
+}
+
+function scrollBottom(){
+  requestAnimationFrame(() => {
+    chatEl.scrollTop = chatEl.scrollHeight;
+  });
+}
+
+function autoGrow(){
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 180) + "px";
+}
+
+function addTyping(){
+  const div = document.createElement("div");
+  div.className = "msg ai";
+  div.id = "typing";
+  div.innerHTML = `
+    <div class="avatar">AI</div>
+    <div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div>`;
+  chatInner.appendChild(div);
+  scrollBottom();
+}
+
+function removeTyping(){
+  $("#typing")?.remove();
+}
+
+function buildContents(messages){
+  return messages.map(m => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.text }]
+  }));
+}
+
+async function callGemini(messages){
+  const response = await fetch(API_URL, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "x-goog-api-key": API_KEY
     },
     body: JSON.stringify({
-      contents: [
-        {
-          parts: [
-            {
-              text: message
-            }
-          ]
-        }
-      ]
+      systemInstruction: {
+        parts: [{
+          text: "Bạn là DoubleF AI, trợ lý tiếng Việt. Trả lời rõ ràng, chính xác, có cấu trúc. Khi viết code, cung cấp code hoàn chỉnh và dễ sử dụng."
+        }]
+      },
+      contents: buildContents(messages),
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 4096
+      }
     })
+  });
+
+  const data = await response.json();
+
+  if(!response.ok){
+    const message = data?.error?.message || `Lỗi HTTP ${response.status}`;
+    throw new Error(message);
   }
-);
+
+  const answer = data?.candidates?.[0]?.content?.parts
+    ?.map(p => p.text || "")
+    .join("")
+    .trim();
+
+  if(!answer){
+    const reason = data?.candidates?.[0]?.finishReason;
+    throw new Error(reason ? `Gemini không trả về nội dung: ${reason}` : "Gemini không trả về nội dung.");
+  }
+
+  return answer;
+}
+
+async function sendMessage(){
+  if(sending) return;
+  const text = input.value.trim();
+  if(!text) return;
+
+  let chat = currentChat();
+  if(!chat) chat = createChat(false);
+
+  chat.messages.push({ role:"user", text });
+
+  if(chat.messages.length === 1){
+    chat.title = text.length > 42 ? text.slice(0,42) + "…" : text;
+  }
+
+  saveChats();
+  input.value = "";
+  autoGrow();
+  renderAll();
+
+  sending = true;
+  sendBtn.disabled = true;
+  addTyping();
+
+  try{
+    const answer = await callGemini(chat.messages);
+    chat.messages.push({ role:"assistant", text:answer });
+    saveChats();
+    renderAll();
+  }catch(error){
+    removeTyping();
+    const box = document.createElement("div");
+    box.className = "error";
+    box.innerHTML = `<b>Không thể gọi Gemini.</b><br>${esc(error.message)}`;
+    chatInner.appendChild(box);
+    scrollBottom();
+  }finally{
+    sending = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
+}
+
+$("#sendBtn").onclick = sendMessage;
+
+input.addEventListener("input", autoGrow);
+input.addEventListener("keydown", e => {
+  if(e.key === "Enter" && !e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+$("#newChatBtn").onclick = () => createChat(true);
+
+$("#themeBtn").onclick = () => {
+  setTheme(document.body.classList.contains("dark") ? "light" : "dark");
+};
+
+$("#clearBtn").onclick = () => {
+  if(!confirm("Xóa toàn bộ lịch sử trò chuyện?")) return;
+  chats = [];
+  createChat(false);
+  saveChats();
+  renderAll();
+};
+
+$("#menuBtn").onclick = () => document.body.classList.add("sidebar-open");
+$("#backdrop").onclick = () => document.body.classList.remove("sidebar-open");
+
+$("#copyBtn").onclick = async () => {
+  const chat = currentChat();
+  if(!chat?.messages?.length) return;
+  const text = chat.messages.map(m =>
+    `${m.role === "user" ? "Bạn" : "DoubleF AI"}:\n${m.text}`
+  ).join("\n\n");
+  await navigator.clipboard.writeText(text);
+  alert("Đã sao chép cuộc trò chuyện.");
+};
+
+$("#exportBtn").onclick = () => {
+  const chat = currentChat();
+  if(!chat?.messages?.length) return;
+  const text = chat.messages.map(m =>
+    `${m.role === "user" ? "Bạn" : "DoubleF AI"}:\n${m.text}`
+  ).join("\n\n");
+  const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (chat.title || "doublef-ai").replace(/[\\/:*?"<>|]/g,"-") + ".txt";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+renderAll();
+autoGrow();
+</script>
+</body>
+</html>

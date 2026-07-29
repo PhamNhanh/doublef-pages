@@ -3,470 +3,911 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b1a">
 
-<title>Dự đoán 5 năm tới</title>
+<title>Dự đoán tương lai AI 3D</title>
 
-<!-- Logo hiển thị trên tab trình duyệt -->
 <link rel="icon" type="image/png" href="LOGODF.png">
 <link rel="shortcut icon" type="image/png" href="LOGODF.png">
 <link rel="apple-touch-icon" href="LOGODF.png">
 
 <style>
 :root{
-  --bg1:#070b1a;
-  --bg2:#24124d;
-  --accent:#8b5cf6;
-  --accent2:#22d3ee;
-  --text:#f8fafc;
-  --muted:#b8bfd3;
+  --bg:#040612;
+  --panel:rgba(12,16,39,.72);
+  --panel2:rgba(255,255,255,.065);
+  --line:rgba(255,255,255,.12);
+  --text:#f8fbff;
+  --muted:#aab3ca;
+  --violet:#8b5cf6;
+  --blue:#22d3ee;
+  --pink:#ff3b81;
+  --green:#49e3a2;
+  --danger:#ff1744;
 }
 *{box-sizing:border-box}
-html,body{width:100%;min-height:100%}
+html{scroll-behavior:smooth}
 body{
   margin:0;
   min-height:100vh;
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   color:var(--text);
   background:
-    radial-gradient(circle at 15% 15%,rgba(34,211,238,.18),transparent 28%),
-    radial-gradient(circle at 85% 20%,rgba(139,92,246,.24),transparent 32%),
-    linear-gradient(145deg,var(--bg1),var(--bg2));
-  display:grid;
-  place-items:center;
-  overflow:hidden;
+    radial-gradient(circle at 12% 10%,rgba(34,211,238,.15),transparent 24%),
+    radial-gradient(circle at 84% 16%,rgba(139,92,246,.23),transparent 27%),
+    radial-gradient(circle at 50% 100%,rgba(255,59,129,.09),transparent 31%),
+    linear-gradient(145deg,#03050d,#0b0c27 52%,#160d30);
+  overflow-x:hidden;
 }
-.stars,.stars:before,.stars:after{
-  position:fixed;
-  inset:0;
-  content:"";
-  pointer-events:none;
-  background-image:
-    radial-gradient(#fff 1px,transparent 1px),
-    radial-gradient(#fff 1px,transparent 1px);
-  background-size:70px 70px,110px 110px;
-  background-position:0 0,35px 25px;
-  opacity:.12;
-  animation:float 18s linear infinite;
-}
-.stars:before{
-  transform:scale(1.3);
-  opacity:.08;
-  animation-duration:28s;
-}
-.stars:after{
-  transform:scale(.8);
-  opacity:.16;
-  animation-duration:13s;
-}
-@keyframes float{
-  to{background-position:500px 500px,300px 600px}
-}
-
-.app{
-  width:min(92vw,460px);
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(10,14,35,.72);
-  backdrop-filter:blur(18px);
-  border-radius:28px;
-  padding:28px;
-  box-shadow:0 30px 80px rgba(0,0,0,.45);
-  position:relative;
-  z-index:2;
-}
-
-/* Logo chính trên giao diện */
-.logo{
-  width:96px;
-  height:96px;
-  margin:0 auto 16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:26px;
-  padding:10px;
-  overflow:hidden;
-  background:linear-gradient(
-    145deg,
-    rgba(255,255,255,.16),
-    rgba(255,255,255,.05)
-  );
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:
-    0 16px 35px rgba(0,0,0,.38),
-    0 0 35px rgba(34,211,238,.22),
-    0 0 55px rgba(139,92,246,.18);
-}
-.logo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  border-radius:18px;
-  display:block;
-}
-
-h1{
-  font-size:27px;
-  text-align:center;
-  margin:0 0 8px;
-}
-.subtitle{
-  color:var(--muted);
-  text-align:center;
-  line-height:1.55;
-  margin:0 0 24px;
-}
-label{
-  display:block;
-  font-size:14px;
-  font-weight:700;
-  margin:14px 0 7px;
-}
-input{
-  width:100%;
-  border:1px solid rgba(255,255,255,.13);
-  background:rgba(255,255,255,.07);
-  color:#fff;
-  border-radius:15px;
-  padding:15px 16px;
-  font-size:16px;
-  outline:none;
-}
-input:focus{
-  border-color:var(--accent2);
-  box-shadow:0 0 0 3px rgba(34,211,238,.12);
-}
-input::-webkit-calendar-picker-indicator{
-  filter:invert(1);
-  cursor:pointer;
-}
-button{
-  width:100%;
-  margin-top:22px;
-  border:0;
-  border-radius:16px;
-  padding:16px;
-  font-size:16px;
-  font-weight:800;
-  color:#fff;
-  background:linear-gradient(135deg,var(--accent),#5b21b6);
-  box-shadow:0 14px 30px rgba(91,33,182,.32);
-  cursor:pointer;
-  transition:.2s;
-}
-button:hover{transform:translateY(-2px)}
-button:active{transform:scale(.98)}
-.error{
-  color:#fda4af;
-  font-size:13px;
-  margin-top:10px;
-  display:none;
-}
-
-.screen{display:none}
-.screen.active{display:block}
-
-.loading-title{
-  text-align:center;
-  font-size:24px;
-  margin:4px 0 8px;
-}
-.loading-name{
-  text-align:center;
-  color:#c4b5fd;
-  font-weight:700;
-}
-.orb{
-  width:160px;
-  height:160px;
-  margin:28px auto;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  padding:25px;
-  background:
-    radial-gradient(circle at 35% 30%,#fff,rgba(255,255,255,.18) 12%,transparent 14%),
-    radial-gradient(circle,var(--accent2),var(--accent) 45%,#26135b 72%);
-  box-shadow:
-    0 0 45px rgba(34,211,238,.34),
-    0 0 90px rgba(139,92,246,.25);
-  animation:pulse 1.5s ease-in-out infinite;
-}
-.orb img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  border-radius:50%;
-}
-@keyframes pulse{
-  50%{
-    transform:scale(1.06);
-    filter:brightness(1.22);
-  }
-}
-
-.progress-shell{
-  height:18px;
-  background:rgba(255,255,255,.1);
-  border-radius:999px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.1);
-}
-.progress-bar{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  border-radius:inherit;
-  transition:width .12s linear;
-  box-shadow:0 0 18px rgba(34,211,238,.5);
-}
-.percent{
-  text-align:center;
-  font-size:38px;
-  font-weight:900;
-  margin:14px 0 4px;
-}
-.status{
-  text-align:center;
-  color:var(--muted);
-  min-height:24px;
-}
-
+button,input,select{font:inherit}
+button{cursor:pointer}
 [hidden]{display:none!important}
 
-.result{
+#space{
+  position:fixed;
+  inset:0;
+  z-index:-4;
+  width:100%;
+  height:100%;
+}
+.aurora{
+  position:fixed;
+  inset:-30%;
+  z-index:-3;
+  pointer-events:none;
+  background:conic-gradient(from 180deg,transparent,rgba(34,211,238,.09),transparent,rgba(139,92,246,.1),transparent);
+  filter:blur(80px);
+  animation:aurora 18s linear infinite;
+}
+@keyframes aurora{to{transform:rotate(360deg)}}
+
+.topbar{
+  width:min(1180px,calc(100% - 28px));
+  margin:16px auto 0;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border:1px solid var(--line);
+  background:rgba(6,9,25,.65);
+  backdrop-filter:blur(18px);
+  border-radius:20px;
+  position:relative;
+  z-index:10;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+.brand img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  border-radius:12px;
+  background:rgba(255,255,255,.07);
+  padding:4px;
+}
+.brand strong{display:block;font-size:15px}
+.brand small{display:block;color:var(--muted);margin-top:2px}
+.top-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#d7dcf0;
+  font-size:13px;
+  white-space:nowrap;
+}
+.dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 14px var(--green);
+  animation:blink 1.5s infinite;
+}
+@keyframes blink{50%{opacity:.35}}
+
+.page{
+  width:min(1180px,calc(100% - 28px));
+  margin:20px auto 60px;
+}
+.hero{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:22px;
+  align-items:stretch;
+}
+.glass{
+  border:1px solid var(--line);
+  background:var(--panel);
+  backdrop-filter:blur(22px);
+  border-radius:28px;
+}
+.intro{
+  padding:36px;
+  min-height:560px;
+  position:relative;
+  overflow:hidden;
+}
+.intro:after{
+  content:"";
+  position:absolute;
+  width:300px;height:300px;border-radius:50%;
+  right:-130px;bottom:-140px;
+  background:radial-gradient(circle,rgba(34,211,238,.18),transparent 65%);
+}
+.kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(34,211,238,.25);
+  border-radius:999px;
+  color:#c8f8ff;
+  background:rgba(34,211,238,.08);
+  font-size:13px;
+  font-weight:700;
+}
+h1{
+  margin:20px 0 14px;
+  font-size:clamp(38px,5vw,68px);
+  line-height:1.02;
+  letter-spacing:-2.4px;
+}
+.gradient-text{
+  background:linear-gradient(90deg,#fff,#a5f3fc 40%,#c4b5fd 75%,#f9a8d4);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.lead{
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+  max-width:650px;
+}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:26px 0;
+}
+.metric{
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+}
+.metric strong{font-size:19px;display:block}
+.metric span{font-size:12px;color:var(--muted);display:block;margin-top:4px}
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:22px;
+}
+.feature{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+}
+.feature i{
+  font-style:normal;
+  width:34px;height:34px;border-radius:11px;
+  display:grid;place-items:center;
+  background:rgba(139,92,246,.14);
+}
+.feature b{display:block;font-size:14px}
+.feature small{color:var(--muted);display:block;margin-top:3px;line-height:1.4}
+
+.form-card{
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+}
+.form-card h2{margin:0 0 8px;font-size:24px}
+.form-card .hint{color:var(--muted);margin:0 0 22px;line-height:1.5}
+.field{margin-top:15px}
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  color:#eef2ff;
+  margin-bottom:7px;
+}
+.input-wrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.055);
+  border-radius:15px;
+}
+.input-wrap:focus-within{
+  border-color:rgba(34,211,238,.65);
+  box-shadow:0 0 0 4px rgba(34,211,238,.08);
+}
+.input-wrap span{opacity:.8}
+.input-wrap input,.input-wrap select{
+  width:100%;
+  min-width:0;
+  border:0;
+  outline:0;
+  color:#fff;
+  background:transparent;
+  padding:14px 0;
+}
+.input-wrap select option{color:#111}
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.privacy{
+  margin-top:15px;
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+.predict{
+  width:100%;
+  border:0;
+  color:white;
+  font-weight:900;
+  padding:16px;
+  margin-top:20px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--violet),#5b21b6 48%,#2563eb);
+  box-shadow:0 14px 28px rgba(91,33,182,.35);
+  position:relative;
+  overflow:hidden;
+  transition:.22s;
+}
+.predict:before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.3) 45%,transparent 70%);
+  transform:translateX(-120%);
+  animation:shine 3s infinite;
+}
+@keyframes shine{60%,100%{transform:translateX(120%)}}
+.predict:hover{transform:translateY(-2px)}
+.error{display:none;color:#fecdd3;font-size:13px;margin-top:10px}
+
+.info-strip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:22px;
+}
+.info-card{
+  padding:17px;
+  border:1px solid var(--line);
+  background:rgba(8,11,29,.62);
+  border-radius:18px;
+}
+.info-card .icon{font-size:22px}
+.info-card b{display:block;margin-top:8px}
+.info-card p{color:var(--muted);font-size:13px;line-height:1.45;margin:6px 0 0}
+
+/* Loading */
+.loading-overlay{
   position:fixed;
   inset:0;
   z-index:50;
+  background:
+    radial-gradient(circle at center,rgba(38,23,86,.72),transparent 38%),
+    rgba(2,3,10,.96);
+  display:none;
+  overflow:auto;
+  padding:24px;
+}
+.loading-overlay.show{display:block}
+.loading-container{
+  width:min(980px,100%);
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:.92fr 1.08fr;
+  gap:24px;
+  align-items:center;
+}
+.loading-copy{
+  padding:28px;
+}
+.loading-copy h2{font-size:31px;margin:0 0 8px}
+.loading-copy p{color:var(--muted);line-height:1.6}
+.person-chip{
+  margin:18px 0;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.045);
+}
+.person-avatar{
+  width:48px;height:48px;border-radius:15px;
+  display:grid;place-items:center;
+  font-size:22px;
+  background:linear-gradient(135deg,var(--violet),var(--blue));
+}
+.person-chip strong,.person-chip span{display:block}
+.person-chip span{font-size:13px;color:var(--muted);margin-top:3px}
+.progress-head{
+  display:flex;justify-content:space-between;align-items:end;margin-top:22px;
+}
+.progress-head strong{font-size:48px;line-height:1}
+.progress-head span{font-size:12px;color:var(--muted)}
+.progress-track{
+  height:13px;
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--line);
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:12px;
+}
+.progress-bar{
+  width:1%;height:100%;
+  background:linear-gradient(90deg,var(--violet),var(--blue),var(--pink));
+  background-size:200% 100%;
+  animation:barflow 1.4s linear infinite;
+  border-radius:inherit;
+  transition:width .15s;
+}
+@keyframes barflow{to{background-position:-200% 0}}
+.status{
+  min-height:24px;
+  color:#dbeafe;
+  margin-top:13px;
+  font-size:14px;
+}
+.scan-list{
+  margin-top:22px;
+  display:grid;
+  gap:9px;
+}
+.scan-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:var(--muted);
+  background:rgba(255,255,255,.035);
+  font-size:13px;
+}
+.scan-item.active{
+  color:white;
+  border-color:rgba(34,211,238,.45);
+  background:rgba(34,211,238,.08);
+}
+.scan-item.done .scan-state{color:var(--green)}
+.scan-state{font-weight:800}
+
+/* 3D scene */
+.scene-card{
+  min-height:620px;
+  display:grid;
+  place-items:center;
+  perspective:1100px;
+  position:relative;
+  overflow:hidden;
+}
+.scene-card:before{
+  content:"";
+  position:absolute;
+  width:420px;height:420px;
+  border:1px solid rgba(34,211,238,.18);
+  border-radius:50%;
+  box-shadow:0 0 80px rgba(34,211,238,.08) inset;
+}
+.scene{
+  width:360px;
+  height:360px;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:sceneSpin 16s linear infinite;
+}
+@keyframes sceneSpin{
+  from{transform:rotateX(-14deg) rotateY(0deg)}
+  to{transform:rotateX(-14deg) rotateY(360deg)}
+}
+.core{
+  position:absolute;
+  left:50%;top:50%;
+  width:138px;height:138px;
+  transform:translate(-50%,-50%);
+  transform-style:preserve-3d;
+}
+.core img{
+  width:100%;height:100%;
+  object-fit:contain;
+  border-radius:34px;
+  background:rgba(255,255,255,.08);
+  padding:13px;
+  box-shadow:
+    0 0 30px rgba(255,255,255,.18),
+    0 0 65px rgba(139,92,246,.36),
+    0 0 110px rgba(34,211,238,.18);
+}
+.ring{
+  position:absolute;
+  left:50%;top:50%;
+  border:2px solid rgba(34,211,238,.4);
+  border-radius:50%;
+  transform-style:preserve-3d;
+}
+.ring.r1{width:250px;height:250px;transform:translate(-50%,-50%) rotateX(72deg)}
+.ring.r2{width:310px;height:310px;transform:translate(-50%,-50%) rotateY(68deg)}
+.ring.r3{width:200px;height:200px;transform:translate(-50%,-50%) rotateX(42deg) rotateY(42deg);border-color:rgba(255,59,129,.42)}
+.planet{
+  position:absolute;
+  left:50%;top:50%;
+  width:48px;height:48px;
+  margin:-24px;
+  display:grid;place-items:center;
+  border-radius:15px;
+  border:1px solid var(--line);
+  background:rgba(14,19,45,.92);
+  box-shadow:0 0 20px rgba(34,211,238,.2);
+  font-size:20px;
+}
+.p1{transform:rotateY(0deg) translateZ(180px)}
+.p2{transform:rotateY(72deg) translateZ(180px)}
+.p3{transform:rotateY(144deg) translateZ(180px)}
+.p4{transform:rotateY(216deg) translateZ(180px)}
+.p5{transform:rotateY(288deg) translateZ(180px)}
+.scene-label{
+  position:absolute;
+  bottom:25px;
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--muted);
+  font-size:13px;
+  text-align:center;
+  width:90%;
+}
+
+/* Result */
+.result{
+  position:fixed;
+  inset:0;
+  z-index:100;
   display:none;
   align-items:center;
   justify-content:center;
   flex-direction:column;
   padding:24px;
   text-align:center;
-  background:#030303;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at center,rgba(255,23,68,.12),transparent 34%),
+    #020202;
 }
-.result.show{
-  display:flex;
-  animation:flash .35s ease-out;
-}
+.result.show{display:flex;animation:flash .42s ease-out}
 @keyframes flash{
   0%{background:#fff}
-  100%{background:#030303}
+  20%{background:#ff1744}
+  100%{background:#020202}
+}
+.result:before,.result:after{
+  content:"";
+  position:absolute;
+  width:65vmax;height:65vmax;border-radius:50%;
+  border:1px solid rgba(255,23,68,.16);
+  animation:shock 2.1s linear infinite;
+}
+.result:after{animation-delay:1.05s}
+@keyframes shock{
+  from{transform:scale(.2);opacity:1}
+  to{transform:scale(1.25);opacity:0}
 }
 .result-logo{
-  width:96px;
-  height:96px;
-  object-fit:contain;
-  margin-bottom:28px;
-  filter:drop-shadow(0 0 22px rgba(255,255,255,.25));
+  width:105px;height:105px;object-fit:contain;
+  margin-bottom:26px;
+  filter:drop-shadow(0 0 28px rgba(255,255,255,.32));
+  z-index:2;
 }
 .result-text{
-  font-size:clamp(46px,12vw,118px);
-  line-height:1.02;
+  z-index:2;
+  font-size:clamp(48px,11vw,124px);
+  line-height:1;
   font-weight:1000;
-  color:#ff1744;
-  text-shadow:
-    0 0 12px #ff1744,
-    0 0 35px rgba(255,23,68,.65);
-  animation:shake .48s infinite;
+  color:var(--danger);
+  text-shadow:0 0 12px var(--danger),0 0 42px rgba(255,23,68,.72);
+  animation:glitch .55s infinite;
 }
-@keyframes shake{
-  0%,100%{transform:translate(0) rotate(0)}
-  20%{transform:translate(-4px,2px) rotate(-1deg)}
-  40%{transform:translate(4px,-2px) rotate(1deg)}
+@keyframes glitch{
+  0%,100%{transform:translate(0) skew(0)}
+  20%{transform:translate(-5px,2px) skew(-2deg)}
+  40%{transform:translate(6px,-2px) skew(2deg)}
   60%{transform:translate(-3px,-1px)}
   80%{transform:translate(3px,2px)}
 }
-.result small{
-  margin-top:25px;
-  color:#bbb;
+.result-sub{
+  z-index:2;
+  margin-top:20px;
+  color:#ddd;
   font-size:17px;
 }
 .retry{
-  width:auto;
-  padding:12px 22px;
-  margin-top:24px;
-  background:#222;
-  box-shadow:none;
+  z-index:2;
   border:1px solid #444;
+  color:white;
+  background:#181818;
+  border-radius:14px;
+  padding:12px 20px;
+  margin-top:22px;
 }
 
-@media(max-width:520px){
-  body{
-    overflow:auto;
-    padding:18px 0;
+@media(max-width:900px){
+  .hero,.loading-container{grid-template-columns:1fr}
+  .intro{min-height:auto}
+  .scene-card{min-height:500px}
+  .info-strip{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .top-status{display:none}
+  .page{margin-top:14px}
+  .intro,.form-card{padding:22px}
+  h1{font-size:40px;letter-spacing:-1.5px}
+  .metrics,.features,.row,.info-strip{grid-template-columns:1fr}
+  .loading-overlay{padding:10px}
+  .loading-copy{padding:20px}
+  .scene-card{min-height:420px}
+  .scene{transform:scale(.77);animation:sceneSpinMobile 16s linear infinite}
+  @keyframes sceneSpinMobile{
+    from{transform:scale(.77) rotateX(-14deg) rotateY(0)}
+    to{transform:scale(.77) rotateX(-14deg) rotateY(360deg)}
   }
-  .app{
-    padding:22px;
-    border-radius:24px;
-  }
-  .logo{
-    width:82px;
-    height:82px;
-  }
-  h1{font-size:24px}
 }
 </style>
 </head>
-
 <body>
-<div class="stars"></div>
+<canvas id="space"></canvas>
+<div class="aurora"></div>
 
-<main class="app">
-  <section id="formScreen" class="screen active">
-    <div class="logo">
-      <img src="LOGODF.png" alt="Logo DoubleF">
+<header class="topbar">
+  <div class="brand">
+    <img src="LOGODF.png" alt="Logo DoubleF">
+    <div>
+      <strong>DoubleF Future AI</strong>
+      <small>Hệ thống mô phỏng tương lai 3D</small>
     </div>
+  </div>
+  <div class="top-status"><span class="dot"></span> Máy chủ dự đoán đang hoạt động</div>
+</header>
 
-    <h1>Dự đoán 5 năm tới</h1>
+<main class="page">
+  <section class="hero">
+    <article class="glass intro">
+      <span class="kicker">✦ AI QUANTUM FORECAST 5.0</span>
+      <h1><span class="gradient-text">Khám phá hành trình 5 năm tiếp theo</span></h1>
+      <p class="lead">
+        Mô hình dự đoán sẽ tổng hợp dữ liệu ngày sinh, chu kỳ cuộc sống và các chỉ số mô phỏng
+        để xây dựng bản đồ tương lai cá nhân trong 5 năm tới.
+      </p>
 
-    <p class="subtitle">
-      Hệ thống AI sẽ phân tích ngày sinh và dự đoán những thay đổi quan trọng
-      trong 5 năm tiếp theo.
-    </p>
+      <div class="metrics">
+        <div class="metric"><strong>5 năm</strong><span>Khoảng thời gian phân tích</span></div>
+        <div class="metric"><strong>12 lớp</strong><span>Mô hình dữ liệu mô phỏng</span></div>
+        <div class="metric"><strong>3D</strong><span>Không gian dự đoán tương tác</span></div>
+      </div>
 
-    <label for="name">Họ và tên</label>
-    <input
-      id="name"
-      type="text"
-      placeholder="Nhập họ và tên"
-      autocomplete="name"
-    >
+      <div class="features">
+        <div class="feature"><i>💼</i><div><b>Sự nghiệp</b><small>Phân tích biến động công việc và cơ hội phát triển.</small></div></div>
+        <div class="feature"><i>💗</i><div><b>Tình cảm</b><small>Mô phỏng chu kỳ kết nối và các cột mốc quan trọng.</small></div></div>
+        <div class="feature"><i>💰</i><div><b>Tài chính</b><small>Đánh giá xu hướng ổn định và thay đổi thu nhập.</small></div></div>
+        <div class="feature"><i>🌟</i><div><b>Vận may</b><small>Tổng hợp chỉ số cơ hội trong từng giai đoạn.</small></div></div>
+      </div>
+    </article>
 
-    <label for="birth">Ngày tháng năm sinh</label>
-    <input id="birth" type="date">
+    <aside class="glass form-card">
+      <h2>Tạo bản dự đoán cá nhân</h2>
+      <p class="hint">Hoàn thành thông tin bên dưới để khởi chạy mô hình AI 3D.</p>
 
-    <div id="error" class="error">
-      Vui lòng nhập đầy đủ họ tên và ngày sinh.
-    </div>
+      <div class="field">
+        <label for="name">Họ và tên</label>
+        <div class="input-wrap"><span>👤</span><input id="name" type="text" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name"></div>
+      </div>
 
-    <button id="predictBtn">
-      ✨ Dự đoán trong 5 năm tới
-    </button>
+      <div class="field">
+        <label for="birth">Ngày tháng năm sinh</label>
+        <div class="input-wrap"><span>📅</span><input id="birth" type="date"></div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="gender">Giới tính</label>
+          <div class="input-wrap">
+            <span>⚧</span>
+            <select id="gender">
+              <option value="">Chọn</option>
+              <option>Nam</option>
+              <option>Nữ</option>
+              <option>Khác</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="focus">Lĩnh vực quan tâm</label>
+          <div class="input-wrap">
+            <span>🎯</span>
+            <select id="focus">
+              <option value="">Tổng quan</option>
+              <option>Sự nghiệp</option>
+              <option>Tình cảm</option>
+              <option>Tài chính</option>
+              <option>Sức khỏe</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="dream">Mục tiêu lớn nhất trong 5 năm tới</label>
+        <div class="input-wrap"><span>🚀</span><input id="dream" type="text" placeholder="Ví dụ: Thành công, mua nhà, lập gia đình..."></div>
+      </div>
+
+      <div class="privacy">
+        <span>🔒</span>
+        <span>Thông tin chỉ được xử lý ngay trên thiết bị và không gửi đến máy chủ bên ngoài.</span>
+      </div>
+
+      <div id="error" class="error">Vui lòng nhập đầy đủ họ tên và ngày sinh.</div>
+      <button id="predictBtn" class="predict" type="button">Khởi chạy dự đoán AI 3D</button>
+    </aside>
   </section>
 
-  <section id="loadingScreen" class="screen">
-    <h2 class="loading-title">Đang phân tích tương lai</h2>
-    <div id="loadingName" class="loading-name"></div>
-
-    <div class="orb">
-      <img src="LOGODF.png" alt="Đang phân tích">
-    </div>
-
-    <div class="progress-shell">
-      <div id="progressBar" class="progress-bar"></div>
-    </div>
-
-    <div id="percent" class="percent">1%</div>
-    <div id="status" class="status">Khởi tạo mô hình dự đoán...</div>
+  <section class="info-strip">
+    <div class="info-card"><div class="icon">🧬</div><b>Phân tích chu kỳ</b><p>Đối chiếu dữ liệu ngày sinh với mô hình chu kỳ 5 năm.</p></div>
+    <div class="info-card"><div class="icon">🛰️</div><b>Mô phỏng đa lớp</b><p>Kết hợp nhiều lớp dữ liệu để tạo trải nghiệm thuyết phục.</p></div>
+    <div class="info-card"><div class="icon">🧿</div><b>Không gian 3D</b><p>Hiển thị lõi dự đoán và năm lớp thời gian xoay theo chiều sâu.</p></div>
+    <div class="info-card"><div class="icon">⚡</div><b>Xử lý thời gian thực</b><p>Tiến trình chạy từ 1% đến 100% với trạng thái chi tiết.</p></div>
   </section>
 </main>
 
-<section
-  id="result"
-  class="result"
-  hidden
-  aria-hidden="true"
->
+<section id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+  <div class="loading-container">
+    <article class="glass loading-copy">
+      <h2>Đang dựng bản đồ tương lai</h2>
+      <p>AI đang tạo mô hình 5 năm và phân tích các chỉ số liên quan đến hồ sơ của bạn.</p>
+
+      <div class="person-chip">
+        <div class="person-avatar">👤</div>
+        <div>
+          <strong id="loadingName">Người dùng</strong>
+          <span id="loadingMeta">Đang nạp dữ liệu cá nhân...</span>
+        </div>
+      </div>
+
+      <div class="progress-head">
+        <div><span>TIẾN TRÌNH PHÂN TÍCH</span><strong id="percent">1%</strong></div>
+        <span id="eta">Khoảng 8 giây</span>
+      </div>
+      <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+      <div id="status" class="status" aria-live="polite">Khởi tạo lõi dự đoán lượng tử...</div>
+
+      <div class="scan-list">
+        <div class="scan-item" data-step="8"><span>Xác minh dữ liệu đầu vào</span><span class="scan-state">Chờ</span></div>
+        <div class="scan-item" data-step="25"><span>Phân tích chu kỳ ngày sinh</span><span class="scan-state">Chờ</span></div>
+        <div class="scan-item" data-step="44"><span>Dựng trục thời gian 5 năm</span><span class="scan-state">Chờ</span></div>
+        <div class="scan-item" data-step="63"><span>Mô phỏng sự nghiệp và tài chính</span><span class="scan-state">Chờ</span></div>
+        <div class="scan-item" data-step="81"><span>Đối chiếu tình cảm và vận may</span><span class="scan-state">Chờ</span></div>
+        <div class="scan-item" data-step="96"><span>Giải mã kết quả cuối cùng</span><span class="scan-state">Chờ</span></div>
+      </div>
+    </article>
+
+    <aside class="glass scene-card">
+      <div class="scene" id="scene3d">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+
+        <div class="core"><img src="LOGODF.png" alt="Lõi dự đoán DoubleF"></div>
+
+        <div class="planet p1">2027</div>
+        <div class="planet p2">2028</div>
+        <div class="planet p3">2029</div>
+        <div class="planet p4">2030</div>
+        <div class="planet p5">2031</div>
+      </div>
+      <div class="scene-label">Kéo chuột hoặc chạm và di chuyển để xoay mô hình 3D</div>
+    </aside>
+  </div>
+</section>
+
+<section id="result" class="result" hidden aria-hidden="true">
   <img src="LOGODF.png" alt="Logo DoubleF" class="result-logo">
-
   <div class="result-text">CÓ CÁI CON CẮK</div>
-
-  <small>😂 Dự đoán hoàn tất — bạn vừa bị troll!</small>
-
-  <button class="retry" onclick="location.reload()">
-    Dự đoán lại
-  </button>
+  <div class="result-sub">😂 Dự đoán 5 năm hoàn tất — bạn vừa bị troll!</div>
+  <button id="retryBtn" class="retry" type="button">Dự đoán lại</button>
 </section>
 
 <script>
-const btn = document.getElementById('predictBtn');
+const canvas = document.getElementById('space');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  canvas.style.width = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  stars = Array.from({length: Math.min(150, Math.floor(innerWidth/7))}, () => ({
+    x: Math.random()*innerWidth,
+    y: Math.random()*innerHeight,
+    r: Math.random()*1.6+.2,
+    v: Math.random()*.22+.05,
+    a: Math.random()*.7+.15
+  }));
+}
+function drawSpace(){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  stars.forEach(s=>{
+    s.y += s.v;
+    if(s.y>innerHeight+3){s.y=-3;s.x=Math.random()*innerWidth}
+    ctx.beginPath();
+    ctx.fillStyle=`rgba(255,255,255,${s.a})`;
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(drawSpace);
+}
+resizeCanvas();
+drawSpace();
+window.addEventListener('resize',resizeCanvas);
+
 const nameInput = document.getElementById('name');
 const birthInput = document.getElementById('birth');
+const genderInput = document.getElementById('gender');
+const focusInput = document.getElementById('focus');
+const dreamInput = document.getElementById('dream');
 const error = document.getElementById('error');
-const formScreen = document.getElementById('formScreen');
-const loadingScreen = document.getElementById('loadingScreen');
+const predictBtn = document.getElementById('predictBtn');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const loadingName = document.getElementById('loadingName');
+const loadingMeta = document.getElementById('loadingMeta');
 const progressBar = document.getElementById('progressBar');
 const percent = document.getElementById('percent');
+const eta = document.getElementById('eta');
 const status = document.getElementById('status');
-const loadingName = document.getElementById('loadingName');
+const scanItems = [...document.querySelectorAll('.scan-item')];
 const result = document.getElementById('result');
+const retryBtn = document.getElementById('retryBtn');
 
-const messages = [
-  [1, 'Khởi tạo mô hình dự đoán...'],
-  [12, 'Phân tích ngày tháng năm sinh...'],
-  [26, 'Đối chiếu chu kỳ vận mệnh...'],
-  [41, 'Quét các cột mốc trong 5 năm tới...'],
-  [58, 'Tính xác suất tình duyên và sự nghiệp...'],
-  [73, 'Đồng bộ dữ liệu với vũ trụ...'],
-  [88, 'Tổng hợp kết quả cuối cùng...'],
-  [97, 'Đang giải mã dự đoán...']
+const statusMessages = [
+  [1,'Khởi tạo lõi dự đoán lượng tử...'],
+  [9,'Xác minh họ tên và ngày sinh...'],
+  [19,'Đồng bộ hồ sơ với mô hình chu kỳ...'],
+  [31,'Phân tích các điểm giao trong 5 năm...'],
+  [45,'Dựng trục thời gian không gian 3D...'],
+  [58,'Mô phỏng thay đổi sự nghiệp và tài chính...'],
+  [70,'Đối chiếu chỉ số tình cảm và vận may...'],
+  [83,'Tổng hợp 12 lớp dữ liệu dự đoán...'],
+  [93,'Giải mã kết quả cuối cùng...'],
+  [99,'Đang mở khóa dự đoán...']
 ];
 
 function resetPage(){
+  loadingOverlay.classList.remove('show');
+  loadingOverlay.setAttribute('aria-hidden','true');
   result.classList.remove('show');
   result.hidden = true;
   result.setAttribute('aria-hidden','true');
-
-  formScreen.classList.add('active');
-  loadingScreen.classList.remove('active');
-
-  progressBar.style.width = '0%';
-  percent.textContent = '1%';
-  status.textContent = 'Khởi tạo mô hình dự đoán...';
+  document.body.style.overflowX = 'hidden';
+  progressBar.style.width='1%';
+  percent.textContent='1%';
+  status.textContent='Khởi tạo lõi dự đoán lượng tử...';
+  scanItems.forEach(item=>{
+    item.classList.remove('active','done');
+    item.querySelector('.scan-state').textContent='Chờ';
+  });
 }
-
-window.addEventListener('DOMContentLoaded', resetPage);
 window.addEventListener('pageshow', resetPage);
 
-btn.addEventListener('click', () => {
+predictBtn.addEventListener('click',()=>{
   const name = nameInput.value.trim();
   const birth = birthInput.value;
-
   if(!name || !birth){
-    error.style.display = 'block';
+    error.style.display='block';
     return;
   }
+  error.style.display='none';
 
-  error.style.display = 'none';
-  formScreen.classList.remove('active');
-  loadingScreen.classList.add('active');
+  const birthDate = new Date(birth+'T00:00:00');
+  const dateText = birthDate.toLocaleDateString('vi-VN');
   loadingName.textContent = name;
+  loadingMeta.textContent = `${dateText} • ${genderInput.value || 'Chưa chọn giới tính'} • ${focusInput.value || 'Tổng quan'}`;
 
-  let value = 1;
+  loadingOverlay.classList.add('show');
+  loadingOverlay.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
 
-  percent.textContent = '1%';
-  progressBar.style.width = '1%';
+  let value=1;
+  const timer=setInterval(()=>{
+    value += Math.floor(Math.random()*3)+1;
+    if(value>100) value=100;
 
-  const timer = setInterval(() => {
-    value += Math.floor(Math.random() * 3) + 1;
+    percent.textContent=value+'%';
+    progressBar.style.width=value+'%';
+    eta.textContent = value < 90 ? `Khoảng ${Math.max(1,Math.ceil((100-value)/13))} giây` : 'Sắp hoàn tất';
 
-    if(value > 100){
-      value = 100;
-    }
-
-    progressBar.style.width = value + '%';
-    percent.textContent = value + '%';
-
-    for(let i = messages.length - 1; i >= 0; i--){
-      if(value >= messages[i][0]){
-        status.textContent = messages[i][1];
+    for(let i=statusMessages.length-1;i>=0;i--){
+      if(value>=statusMessages[i][0]){
+        status.textContent=statusMessages[i][1];
         break;
       }
     }
 
-    if(value === 100){
-      clearInterval(timer);
-      status.textContent = 'Hoàn tất 100%';
+    scanItems.forEach(item=>{
+      const step=Number(item.dataset.step);
+      const state=item.querySelector('.scan-state');
+      if(value>=step+10){
+        item.classList.remove('active');
+        item.classList.add('done');
+        state.textContent='Hoàn tất';
+      }else if(value>=step){
+        item.classList.add('active');
+        state.textContent='Đang chạy';
+      }
+    });
 
-      setTimeout(() => {
-        result.hidden = false;
+    if(value===100){
+      clearInterval(timer);
+      status.textContent='Hoàn tất 100% — Đang hiển thị kết quả';
+      setTimeout(()=>{
+        loadingOverlay.classList.remove('show');
+        loadingOverlay.setAttribute('aria-hidden','true');
+        result.hidden=false;
         result.setAttribute('aria-hidden','false');
         result.classList.add('show');
-      }, 650);
+      },850);
     }
-  }, 90);
+  },85);
 });
+
+retryBtn.addEventListener('click',()=>{
+  result.classList.remove('show');
+  result.hidden=true;
+  result.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+const scene = document.getElementById('scene3d');
+let dragging=false, startX=0, startY=0, rotX=-14, rotY=0;
+
+function setSceneTransform(){
+  scene.style.animation='none';
+  scene.style.transform=`rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+}
+scene.addEventListener('pointerdown',e=>{
+  dragging=true;startX=e.clientX;startY=e.clientY;
+  scene.setPointerCapture(e.pointerId);
+});
+scene.addEventListener('pointermove',e=>{
+  if(!dragging) return;
+  const dx=e.clientX-startX, dy=e.clientY-startY;
+  rotY += dx*.45;
+  rotX -= dy*.3;
+  rotX=Math.max(-65,Math.min(45,rotX));
+  startX=e.clientX;startY=e.clientY;
+  setSceneTransform();
+});
+scene.addEventListener('pointerup',()=>dragging=false);
+scene.addEventListener('pointercancel',()=>dragging=false);
 </script>
 </body>
 </html>

@@ -512,14 +512,14 @@ h1{
   to{transform:scale(1.25);opacity:0}
 }
 .result-logo{
-  width:105px;height:105px;object-fit:contain;
-  margin-bottom:26px;
+  width:86px;height:86px;object-fit:contain;
+  margin-bottom:18px;
   filter:drop-shadow(0 0 28px rgba(255,255,255,.32));
   z-index:2;
 }
 .result-text{
   z-index:2;
-  font-size:clamp(48px,11vw,124px);
+  font-size:clamp(42px,8vw,92px);
   line-height:1;
   font-weight:1000;
   color:var(--danger);
@@ -552,24 +552,25 @@ h1{
 
 .troll-video-wrap{
   z-index:2;
-  width:min(92vw,430px);
-  margin-top:26px;
+  width:min(96vw,1100px);
+  margin-top:24px;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:12px;
+  gap:14px;
 }
 .troll-video{
   width:100%;
-  max-height:48vh;
+  height:auto;
+  max-height:72vh;
   display:block;
   object-fit:contain;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.18);
+  border-radius:24px;
+  border:2px solid rgba(255,255,255,.18);
   background:#000;
   box-shadow:
-    0 18px 50px rgba(0,0,0,.55),
-    0 0 36px rgba(255,23,68,.24);
+    0 28px 70px rgba(0,0,0,.68),
+    0 0 55px rgba(255,23,68,.34);
 }
 .sound-btn{
   width:100%;
@@ -602,6 +603,26 @@ h1{
     to{transform:scale(.77) rotateX(-14deg) rotateY(360deg)}
   }
 }
+
+@media(max-width:560px){
+  .troll-video-wrap{
+    width:96vw;
+    margin-top:18px;
+  }
+  .troll-video{
+    max-height:64vh;
+    border-radius:18px;
+  }
+  .result-logo{
+    width:68px;
+    height:68px;
+    margin-bottom:12px;
+  }
+  .result-text{
+    font-size:clamp(36px,12vw,58px);
+  }
+}
+
 </style>
 </head>
 <body>

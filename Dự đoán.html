@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Dự đoán 5 năm tới</title>
+
+<!-- Logo hiển thị trên tab trình duyệt -->
+<link rel="icon" type="image/png" href="LOGODF.png">
+<link rel="shortcut icon" type="image/png" href="LOGODF.png">
+<link rel="apple-touch-icon" href="LOGODF.png">
+
 <style>
 :root{
   --bg1:#070b1a;
@@ -14,6 +21,7 @@
   --muted:#b8bfd3;
 }
 *{box-sizing:border-box}
+html,body{width:100%;min-height:100%}
 body{
   margin:0;
   min-height:100vh;
@@ -28,7 +36,10 @@ body{
   overflow:hidden;
 }
 .stars,.stars:before,.stars:after{
-  position:fixed;inset:0;content:"";pointer-events:none;
+  position:fixed;
+  inset:0;
+  content:"";
+  pointer-events:none;
   background-image:
     radial-gradient(#fff 1px,transparent 1px),
     radial-gradient(#fff 1px,transparent 1px);
@@ -37,9 +48,19 @@ body{
   opacity:.12;
   animation:float 18s linear infinite;
 }
-.stars:before{transform:scale(1.3);opacity:.08;animation-duration:28s}
-.stars:after{transform:scale(.8);opacity:.16;animation-duration:13s}
-@keyframes float{to{background-position:500px 500px,300px 600px}}
+.stars:before{
+  transform:scale(1.3);
+  opacity:.08;
+  animation-duration:28s;
+}
+.stars:after{
+  transform:scale(.8);
+  opacity:.16;
+  animation-duration:13s;
+}
+@keyframes float{
+  to{background-position:500px 500px,300px 600px}
+}
 
 .app{
   width:min(92vw,460px);
@@ -52,75 +73,201 @@ body{
   position:relative;
   z-index:2;
 }
+
+/* Logo chính trên giao diện */
 .logo{
-  width:70px;height:70px;margin:0 auto 14px;
-  display:grid;place-items:center;
-  border-radius:22px;
-  font-size:34px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 14px 30px rgba(139,92,246,.3);
+  width:96px;
+  height:96px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:26px;
+  padding:10px;
+  overflow:hidden;
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.16),
+    rgba(255,255,255,.05)
+  );
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.38),
+    0 0 35px rgba(34,211,238,.22),
+    0 0 55px rgba(139,92,246,.18);
 }
-h1{font-size:27px;text-align:center;margin:0 0 8px}
-.subtitle{color:var(--muted);text-align:center;line-height:1.55;margin:0 0 24px}
-label{display:block;font-size:14px;font-weight:700;margin:14px 0 7px}
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:18px;
+  display:block;
+}
+
+h1{
+  font-size:27px;
+  text-align:center;
+  margin:0 0 8px;
+}
+.subtitle{
+  color:var(--muted);
+  text-align:center;
+  line-height:1.55;
+  margin:0 0 24px;
+}
+label{
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  margin:14px 0 7px;
+}
 input{
-  width:100%;border:1px solid rgba(255,255,255,.13);
-  background:rgba(255,255,255,.07);color:#fff;
-  border-radius:15px;padding:15px 16px;font-size:16px;outline:none;
+  width:100%;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  border-radius:15px;
+  padding:15px 16px;
+  font-size:16px;
+  outline:none;
 }
-input:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+input:focus{
+  border-color:var(--accent2);
+  box-shadow:0 0 0 3px rgba(34,211,238,.12);
+}
+input::-webkit-calendar-picker-indicator{
+  filter:invert(1);
+  cursor:pointer;
+}
 button{
-  width:100%;margin-top:22px;border:0;border-radius:16px;
-  padding:16px;font-size:16px;font-weight:800;color:#fff;
+  width:100%;
+  margin-top:22px;
+  border:0;
+  border-radius:16px;
+  padding:16px;
+  font-size:16px;
+  font-weight:800;
+  color:#fff;
   background:linear-gradient(135deg,var(--accent),#5b21b6);
   box-shadow:0 14px 30px rgba(91,33,182,.32);
-  cursor:pointer;transition:.2s;
+  cursor:pointer;
+  transition:.2s;
 }
 button:hover{transform:translateY(-2px)}
 button:active{transform:scale(.98)}
-.error{color:#fda4af;font-size:13px;margin-top:10px;display:none}
+.error{
+  color:#fda4af;
+  font-size:13px;
+  margin-top:10px;
+  display:none;
+}
 
 .screen{display:none}
 .screen.active{display:block}
-.loading-title{text-align:center;font-size:24px;margin:4px 0 8px}
-.loading-name{text-align:center;color:#c4b5fd;font-weight:700}
+
+.loading-title{
+  text-align:center;
+  font-size:24px;
+  margin:4px 0 8px;
+}
+.loading-name{
+  text-align:center;
+  color:#c4b5fd;
+  font-weight:700;
+}
 .orb{
-  width:150px;height:150px;margin:28px auto;
+  width:160px;
+  height:160px;
+  margin:28px auto;
   border-radius:50%;
-  display:grid;place-items:center;
-  font-size:42px;
+  display:grid;
+  place-items:center;
+  padding:25px;
   background:
     radial-gradient(circle at 35% 30%,#fff,rgba(255,255,255,.18) 12%,transparent 14%),
     radial-gradient(circle,var(--accent2),var(--accent) 45%,#26135b 72%);
-  box-shadow:0 0 45px rgba(34,211,238,.34),0 0 90px rgba(139,92,246,.25);
+  box-shadow:
+    0 0 45px rgba(34,211,238,.34),
+    0 0 90px rgba(139,92,246,.25);
   animation:pulse 1.5s ease-in-out infinite;
 }
-@keyframes pulse{50%{transform:scale(1.06);filter:brightness(1.22)}}
+.orb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:50%;
+}
+@keyframes pulse{
+  50%{
+    transform:scale(1.06);
+    filter:brightness(1.22);
+  }
+}
+
 .progress-shell{
-  height:18px;background:rgba(255,255,255,.1);border-radius:999px;
-  overflow:hidden;border:1px solid rgba(255,255,255,.1);
+  height:18px;
+  background:rgba(255,255,255,.1);
+  border-radius:999px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);
 }
 .progress-bar{
-  width:0%;height:100%;
+  width:0%;
+  height:100%;
   background:linear-gradient(90deg,var(--accent),var(--accent2));
-  border-radius:inherit;transition:width .12s linear;
+  border-radius:inherit;
+  transition:width .12s linear;
   box-shadow:0 0 18px rgba(34,211,238,.5);
 }
-.percent{text-align:center;font-size:38px;font-weight:900;margin:14px 0 4px}
-.status{text-align:center;color:var(--muted);min-height:24px}
+.percent{
+  text-align:center;
+  font-size:38px;
+  font-weight:900;
+  margin:14px 0 4px;
+}
+.status{
+  text-align:center;
+  color:var(--muted);
+  min-height:24px;
+}
+
+[hidden]{display:none!important}
 
 .result{
-  position:fixed;inset:0;z-index:50;
-  display:none;align-items:center;justify-content:center;flex-direction:column;
-  padding:24px;text-align:center;background:#030303;
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:24px;
+  text-align:center;
+  background:#030303;
 }
-.result.show{display:flex;animation:flash .35s ease-out}
-@keyframes flash{0%{background:#fff}100%{background:#030303}}
+.result.show{
+  display:flex;
+  animation:flash .35s ease-out;
+}
+@keyframes flash{
+  0%{background:#fff}
+  100%{background:#030303}
+}
+.result-logo{
+  width:96px;
+  height:96px;
+  object-fit:contain;
+  margin-bottom:28px;
+  filter:drop-shadow(0 0 22px rgba(255,255,255,.25));
+}
 .result-text{
   font-size:clamp(46px,12vw,118px);
-  line-height:1.02;font-weight:1000;
+  line-height:1.02;
+  font-weight:1000;
   color:#ff1744;
-  text-shadow:0 0 12px #ff1744,0 0 35px rgba(255,23,68,.65);
+  text-shadow:
+    0 0 12px #ff1744,
+    0 0 35px rgba(255,23,68,.65);
   animation:shake .48s infinite;
 }
 @keyframes shake{
@@ -130,46 +277,106 @@ button:active{transform:scale(.98)}
   60%{transform:translate(-3px,-1px)}
   80%{transform:translate(3px,2px)}
 }
-.result small{margin-top:25px;color:#bbb;font-size:17px}
+.result small{
+  margin-top:25px;
+  color:#bbb;
+  font-size:17px;
+}
 .retry{
-  width:auto;padding:12px 22px;margin-top:24px;background:#222;
-  box-shadow:none;border:1px solid #444;
+  width:auto;
+  padding:12px 22px;
+  margin-top:24px;
+  background:#222;
+  box-shadow:none;
+  border:1px solid #444;
+}
+
+@media(max-width:520px){
+  body{
+    overflow:auto;
+    padding:18px 0;
+  }
+  .app{
+    padding:22px;
+    border-radius:24px;
+  }
+  .logo{
+    width:82px;
+    height:82px;
+  }
+  h1{font-size:24px}
 }
 </style>
 </head>
+
 <body>
 <div class="stars"></div>
 
 <main class="app">
   <section id="formScreen" class="screen active">
-    <div class="logo">🔮</div>
+    <div class="logo">
+      <img src="LOGODF.png" alt="Logo DoubleF">
+    </div>
+
     <h1>Dự đoán 5 năm tới</h1>
-    <p class="subtitle">Hệ thống AI sẽ phân tích ngày sinh và dự đoán những thay đổi quan trọng trong 5 năm tiếp theo.</p>
+
+    <p class="subtitle">
+      Hệ thống AI sẽ phân tích ngày sinh và dự đoán những thay đổi quan trọng
+      trong 5 năm tiếp theo.
+    </p>
 
     <label for="name">Họ và tên</label>
-    <input id="name" type="text" placeholder="Nhập họ và tên" autocomplete="name">
+    <input
+      id="name"
+      type="text"
+      placeholder="Nhập họ và tên"
+      autocomplete="name"
+    >
 
     <label for="birth">Ngày tháng năm sinh</label>
     <input id="birth" type="date">
 
-    <div id="error" class="error">Vui lòng nhập đầy đủ họ tên và ngày sinh.</div>
-    <button id="predictBtn">✨ Dự đoán trong 5 năm tới</button>
+    <div id="error" class="error">
+      Vui lòng nhập đầy đủ họ tên và ngày sinh.
+    </div>
+
+    <button id="predictBtn">
+      ✨ Dự đoán trong 5 năm tới
+    </button>
   </section>
 
   <section id="loadingScreen" class="screen">
     <h2 class="loading-title">Đang phân tích tương lai</h2>
     <div id="loadingName" class="loading-name"></div>
-    <div class="orb">🔮</div>
-    <div class="progress-shell"><div id="progressBar" class="progress-bar"></div></div>
+
+    <div class="orb">
+      <img src="LOGODF.png" alt="Đang phân tích">
+    </div>
+
+    <div class="progress-shell">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
     <div id="percent" class="percent">1%</div>
     <div id="status" class="status">Khởi tạo mô hình dự đoán...</div>
   </section>
 </main>
 
-<section id="result" class="result">
+<section
+  id="result"
+  class="result"
+  hidden
+  aria-hidden="true"
+>
+  <img src="LOGODF.png" alt="Logo DoubleF" class="result-logo">
+
   <div class="result-text">CÓ CÁI CON CẮK</div>
+
   <small>😂 Dự đoán hoàn tất — bạn vừa bị troll!</small>
-  <button class="retry" onclick="location.reload()">Dự đoán lại</button>
+
+  <button class="retry" onclick="location.reload()">
+    Dự đoán lại
+  </button>
 </section>
 
 <script>
@@ -186,20 +393,37 @@ const loadingName = document.getElementById('loadingName');
 const result = document.getElementById('result');
 
 const messages = [
-  [1,'Khởi tạo mô hình dự đoán...'],
-  [12,'Phân tích ngày tháng năm sinh...'],
-  [26,'Đối chiếu chu kỳ vận mệnh...'],
-  [41,'Quét các cột mốc trong 5 năm tới...'],
-  [58,'Tính xác suất tình duyên và sự nghiệp...'],
-  [73,'Đồng bộ dữ liệu với vũ trụ...'],
-  [88,'Tổng hợp kết quả cuối cùng...'],
-  [97,'Đang giải mã dự đoán...']
+  [1, 'Khởi tạo mô hình dự đoán...'],
+  [12, 'Phân tích ngày tháng năm sinh...'],
+  [26, 'Đối chiếu chu kỳ vận mệnh...'],
+  [41, 'Quét các cột mốc trong 5 năm tới...'],
+  [58, 'Tính xác suất tình duyên và sự nghiệp...'],
+  [73, 'Đồng bộ dữ liệu với vũ trụ...'],
+  [88, 'Tổng hợp kết quả cuối cùng...'],
+  [97, 'Đang giải mã dự đoán...']
 ];
+
+function resetPage(){
+  result.classList.remove('show');
+  result.hidden = true;
+  result.setAttribute('aria-hidden','true');
+
+  formScreen.classList.add('active');
+  loadingScreen.classList.remove('active');
+
+  progressBar.style.width = '0%';
+  percent.textContent = '1%';
+  status.textContent = 'Khởi tạo mô hình dự đoán...';
+}
+
+window.addEventListener('DOMContentLoaded', resetPage);
+window.addEventListener('pageshow', resetPage);
 
 btn.addEventListener('click', () => {
   const name = nameInput.value.trim();
   const birth = birthInput.value;
-  if (!name || !birth) {
+
+  if(!name || !birth){
     error.style.display = 'block';
     return;
   }
@@ -210,27 +434,36 @@ btn.addEventListener('click', () => {
   loadingName.textContent = name;
 
   let value = 1;
+
   percent.textContent = '1%';
   progressBar.style.width = '1%';
 
   const timer = setInterval(() => {
     value += Math.floor(Math.random() * 3) + 1;
-    if (value > 100) value = 100;
+
+    if(value > 100){
+      value = 100;
+    }
 
     progressBar.style.width = value + '%';
     percent.textContent = value + '%';
 
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (value >= messages[i][0]) {
+    for(let i = messages.length - 1; i >= 0; i--){
+      if(value >= messages[i][0]){
         status.textContent = messages[i][1];
         break;
       }
     }
 
-    if (value === 100) {
+    if(value === 100){
       clearInterval(timer);
       status.textContent = 'Hoàn tất 100%';
-      setTimeout(() => result.classList.add('show'), 650);
+
+      setTimeout(() => {
+        result.hidden = false;
+        result.setAttribute('aria-hidden','false');
+        result.classList.add('show');
+      }, 650);
     }
   }, 90);
 });

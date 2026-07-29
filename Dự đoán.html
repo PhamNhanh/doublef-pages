@@ -2,75 +2,238 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dự đoán tương lai AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dự đoán 5 năm tới</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#111827,#312e81);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.card{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);padding:28px;border-radius:20px;max-width:420px;width:92%;box-shadow:0 10px 30px rgba(0,0,0,.4)}
-input,select,button{width:100%;padding:12px;margin:8px 0;border:none;border-radius:10px;font-size:16px}
-button{background:#7c3aed;color:#fff;font-weight:bold;cursor:pointer}
-#loading,#result{display:none;text-align:center}
-.spinner{width:70px;height:70px;border:8px solid #555;border-top-color:#fff;border-radius:50%;margin:20px auto;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#result{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column}
-#msg{font-size:min(9vw,72px);font-weight:900;color:#ff2d55;text-align:center;animation:pulse .8s infinite}
-small{margin-top:20px;color:#ddd}
-@keyframes pulse{50%{transform:scale(1.08)}}
+:root{
+  --bg1:#070b1a;
+  --bg2:#24124d;
+  --accent:#8b5cf6;
+  --accent2:#22d3ee;
+  --text:#f8fafc;
+  --muted:#b8bfd3;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 15%,rgba(34,211,238,.18),transparent 28%),
+    radial-gradient(circle at 85% 20%,rgba(139,92,246,.24),transparent 32%),
+    linear-gradient(145deg,var(--bg1),var(--bg2));
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.stars,.stars:before,.stars:after{
+  position:fixed;inset:0;content:"";pointer-events:none;
+  background-image:
+    radial-gradient(#fff 1px,transparent 1px),
+    radial-gradient(#fff 1px,transparent 1px);
+  background-size:70px 70px,110px 110px;
+  background-position:0 0,35px 25px;
+  opacity:.12;
+  animation:float 18s linear infinite;
+}
+.stars:before{transform:scale(1.3);opacity:.08;animation-duration:28s}
+.stars:after{transform:scale(.8);opacity:.16;animation-duration:13s}
+@keyframes float{to{background-position:500px 500px,300px 600px}}
+
+.app{
+  width:min(92vw,460px);
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(10,14,35,.72);
+  backdrop-filter:blur(18px);
+  border-radius:28px;
+  padding:28px;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  position:relative;
+  z-index:2;
+}
+.logo{
+  width:70px;height:70px;margin:0 auto 14px;
+  display:grid;place-items:center;
+  border-radius:22px;
+  font-size:34px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 14px 30px rgba(139,92,246,.3);
+}
+h1{font-size:27px;text-align:center;margin:0 0 8px}
+.subtitle{color:var(--muted);text-align:center;line-height:1.55;margin:0 0 24px}
+label{display:block;font-size:14px;font-weight:700;margin:14px 0 7px}
+input{
+  width:100%;border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.07);color:#fff;
+  border-radius:15px;padding:15px 16px;font-size:16px;outline:none;
+}
+input:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+button{
+  width:100%;margin-top:22px;border:0;border-radius:16px;
+  padding:16px;font-size:16px;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,var(--accent),#5b21b6);
+  box-shadow:0 14px 30px rgba(91,33,182,.32);
+  cursor:pointer;transition:.2s;
+}
+button:hover{transform:translateY(-2px)}
+button:active{transform:scale(.98)}
+.error{color:#fda4af;font-size:13px;margin-top:10px;display:none}
+
+.screen{display:none}
+.screen.active{display:block}
+.loading-title{text-align:center;font-size:24px;margin:4px 0 8px}
+.loading-name{text-align:center;color:#c4b5fd;font-weight:700}
+.orb{
+  width:150px;height:150px;margin:28px auto;
+  border-radius:50%;
+  display:grid;place-items:center;
+  font-size:42px;
+  background:
+    radial-gradient(circle at 35% 30%,#fff,rgba(255,255,255,.18) 12%,transparent 14%),
+    radial-gradient(circle,var(--accent2),var(--accent) 45%,#26135b 72%);
+  box-shadow:0 0 45px rgba(34,211,238,.34),0 0 90px rgba(139,92,246,.25);
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{50%{transform:scale(1.06);filter:brightness(1.22)}}
+.progress-shell{
+  height:18px;background:rgba(255,255,255,.1);border-radius:999px;
+  overflow:hidden;border:1px solid rgba(255,255,255,.1);
+}
+.progress-bar{
+  width:0%;height:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:inherit;transition:width .12s linear;
+  box-shadow:0 0 18px rgba(34,211,238,.5);
+}
+.percent{text-align:center;font-size:38px;font-weight:900;margin:14px 0 4px}
+.status{text-align:center;color:var(--muted);min-height:24px}
+
+.result{
+  position:fixed;inset:0;z-index:50;
+  display:none;align-items:center;justify-content:center;flex-direction:column;
+  padding:24px;text-align:center;background:#030303;
+}
+.result.show{display:flex;animation:flash .35s ease-out}
+@keyframes flash{0%{background:#fff}100%{background:#030303}}
+.result-text{
+  font-size:clamp(46px,12vw,118px);
+  line-height:1.02;font-weight:1000;
+  color:#ff1744;
+  text-shadow:0 0 12px #ff1744,0 0 35px rgba(255,23,68,.65);
+  animation:shake .48s infinite;
+}
+@keyframes shake{
+  0%,100%{transform:translate(0) rotate(0)}
+  20%{transform:translate(-4px,2px) rotate(-1deg)}
+  40%{transform:translate(4px,-2px) rotate(1deg)}
+  60%{transform:translate(-3px,-1px)}
+  80%{transform:translate(3px,2px)}
+}
+.result small{margin-top:25px;color:#bbb;font-size:17px}
+.retry{
+  width:auto;padding:12px 22px;margin-top:24px;background:#222;
+  box-shadow:none;border:1px solid #444;
+}
 </style>
 </head>
 <body>
-<div class="card" id="form">
-<h2>🔮 AI Dự Đoán Tương Lai</h2>
-<p>Nhập thông tin để AI phân tích tương lai của bạn.</p>
-<input placeholder="Họ và tên">
-<input type="date">
-<select>
-<option>Nam</option>
-<option>Nữ</option>
-<option>Khác</option>
-</select>
-<input placeholder="Nghề nghiệp">
-<button onclick="run()">🔍 Phân tích</button>
-</div>
+<div class="stars"></div>
 
-<div id="loading">
-<div class="card">
-<h2>Đang quét vận mệnh...</h2>
-<div class="spinner"></div>
-<p id="step">Đang kết nối AI...</p>
-</div>
-</div>
+<main class="app">
+  <section id="formScreen" class="screen active">
+    <div class="logo">🔮</div>
+    <h1>Dự đoán 5 năm tới</h1>
+    <p class="subtitle">Hệ thống AI sẽ phân tích ngày sinh và dự đoán những thay đổi quan trọng trong 5 năm tiếp theo.</p>
 
-<div id="result">
-<div id="msg">CÓ CÁI CON CẮK</div>
-<small>😂 Bạn vừa bị troll!</small>
-</div>
+    <label for="name">Họ và tên</label>
+    <input id="name" type="text" placeholder="Nhập họ và tên" autocomplete="name">
+
+    <label for="birth">Ngày tháng năm sinh</label>
+    <input id="birth" type="date">
+
+    <div id="error" class="error">Vui lòng nhập đầy đủ họ tên và ngày sinh.</div>
+    <button id="predictBtn">✨ Dự đoán trong 5 năm tới</button>
+  </section>
+
+  <section id="loadingScreen" class="screen">
+    <h2 class="loading-title">Đang phân tích tương lai</h2>
+    <div id="loadingName" class="loading-name"></div>
+    <div class="orb">🔮</div>
+    <div class="progress-shell"><div id="progressBar" class="progress-bar"></div></div>
+    <div id="percent" class="percent">1%</div>
+    <div id="status" class="status">Khởi tạo mô hình dự đoán...</div>
+  </section>
+</main>
+
+<section id="result" class="result">
+  <div class="result-text">CÓ CÁI CON CẮK</div>
+  <small>😂 Dự đoán hoàn tất — bạn vừa bị troll!</small>
+  <button class="retry" onclick="location.reload()">Dự đoán lại</button>
+</section>
 
 <script>
-const steps=[
-"Đang kết nối AI lượng tử...",
-"Đọc chỉ tay bằng camera...",
-"Đồng bộ vũ trụ...",
-"Phân tích vận mệnh...",
-"Tính xác suất thành công...",
-"Hoàn tất!"
+const btn = document.getElementById('predictBtn');
+const nameInput = document.getElementById('name');
+const birthInput = document.getElementById('birth');
+const error = document.getElementById('error');
+const formScreen = document.getElementById('formScreen');
+const loadingScreen = document.getElementById('loadingScreen');
+const progressBar = document.getElementById('progressBar');
+const percent = document.getElementById('percent');
+const status = document.getElementById('status');
+const loadingName = document.getElementById('loadingName');
+const result = document.getElementById('result');
+
+const messages = [
+  [1,'Khởi tạo mô hình dự đoán...'],
+  [12,'Phân tích ngày tháng năm sinh...'],
+  [26,'Đối chiếu chu kỳ vận mệnh...'],
+  [41,'Quét các cột mốc trong 5 năm tới...'],
+  [58,'Tính xác suất tình duyên và sự nghiệp...'],
+  [73,'Đồng bộ dữ liệu với vũ trụ...'],
+  [88,'Tổng hợp kết quả cuối cùng...'],
+  [97,'Đang giải mã dự đoán...']
 ];
-function run(){
-document.getElementById("form").style.display="none";
-document.getElementById("loading").style.display="block";
-let i=0;
-const t=setInterval(()=>{
-document.getElementById("step").textContent=steps[i];
-i++;
-if(i===steps.length){
-clearInterval(t);
-setTimeout(()=>{
-document.getElementById("loading").style.display="none";
-document.getElementById("result").style.display="flex";
-},700);
-}
-},900);
-}
+
+btn.addEventListener('click', () => {
+  const name = nameInput.value.trim();
+  const birth = birthInput.value;
+  if (!name || !birth) {
+    error.style.display = 'block';
+    return;
+  }
+
+  error.style.display = 'none';
+  formScreen.classList.remove('active');
+  loadingScreen.classList.add('active');
+  loadingName.textContent = name;
+
+  let value = 1;
+  percent.textContent = '1%';
+  progressBar.style.width = '1%';
+
+  const timer = setInterval(() => {
+    value += Math.floor(Math.random() * 3) + 1;
+    if (value > 100) value = 100;
+
+    progressBar.style.width = value + '%';
+    percent.textContent = value + '%';
+
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (value >= messages[i][0]) {
+        status.textContent = messages[i][1];
+        break;
+      }
+    }
+
+    if (value === 100) {
+      clearInterval(timer);
+      status.textContent = 'Hoàn tất 100%';
+      setTimeout(() => result.classList.add('show'), 650);
+    }
+  }, 90);
+});
 </script>
 </body>
 </html>

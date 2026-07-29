@@ -297,6 +297,308 @@ h1{
 .info-card b{display:block;margin-top:8px}
 .info-card p{color:var(--muted);font-size:13px;line-height:1.45;margin:6px 0 0}
 
+
+/* Premium birth date picker */
+.birth-field{
+  position:relative;
+  z-index:15;
+}
+.birth-picker{
+  position:relative;
+}
+.birth-trigger{
+  width:100%;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+  color:#fff;
+  border-radius:17px;
+  min-height:62px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  transition:.24s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.birth-trigger:hover{
+  border-color:rgba(34,211,238,.52);
+  transform:translateY(-1px);
+  background:
+    linear-gradient(135deg,rgba(34,211,238,.09),rgba(139,92,246,.08));
+}
+.birth-trigger.active{
+  border-color:rgba(34,211,238,.72);
+  box-shadow:
+    0 0 0 4px rgba(34,211,238,.08),
+    0 16px 36px rgba(0,0,0,.24);
+}
+.birth-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  background:
+    linear-gradient(145deg,rgba(34,211,238,.22),rgba(139,92,246,.24));
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 0 24px rgba(34,211,238,.13);
+  transition:.28s ease;
+}
+.birth-trigger.active .birth-icon{
+  transform:rotate(-8deg) scale(1.06);
+}
+.birth-value{
+  min-width:0;
+  flex:1;
+}
+.birth-value small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  margin-bottom:3px;
+}
+.birth-value strong{
+  display:block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:15px;
+}
+.birth-arrow{
+  color:#dbeafe;
+  font-size:21px;
+  transition:.2s ease;
+}
+.birth-trigger.active .birth-arrow{
+  transform:rotate(180deg);
+}
+.birth-panel{
+  position:absolute;
+  z-index:45;
+  top:calc(100% + 10px);
+  left:0;
+  right:0;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(34,211,238,.12),transparent 28%),
+    radial-gradient(circle at 100% 20%,rgba(139,92,246,.15),transparent 34%),
+    rgba(7,10,27,.97);
+  backdrop-filter:blur(24px);
+  box-shadow:
+    0 28px 70px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  overflow:hidden;
+  animation:birthPanelIn .25s ease both;
+}
+@keyframes birthPanelIn{
+  from{opacity:0;transform:translateY(-6px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.birth-panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.birth-panel-head small{
+  display:block;
+  color:#94a3b8;
+  letter-spacing:1px;
+  font-size:10px;
+}
+.birth-panel-head strong{
+  display:block;
+  margin-top:2px;
+  font-size:18px;
+}
+.birth-close{
+  width:34px;
+  height:34px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  color:#fff;
+  background:rgba(255,255,255,.05);
+  font-size:22px;
+}
+.birth-preview{
+  margin-top:14px;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid rgba(34,211,238,.18);
+  background:rgba(34,211,238,.06);
+  border-radius:15px;
+}
+.birth-preview-icon{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:#a5f3fc;
+  background:rgba(34,211,238,.12);
+  box-shadow:0 0 18px rgba(34,211,238,.11);
+}
+.birth-preview small{
+  display:block;
+  color:#8ea0bb;
+  font-size:10px;
+  letter-spacing:.8px;
+}
+.birth-preview strong{
+  display:block;
+  margin-top:2px;
+  font-size:14px;
+}
+.birth-select-grid{
+  display:grid;
+  grid-template-columns:.8fr 1.2fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.birth-select-box{
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+}
+.birth-select-box label{
+  display:block;
+  margin:0 0 6px;
+  color:#97a5be;
+  font-size:10px;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+}
+.birth-select-box select{
+  width:100%;
+  border:0;
+  outline:0;
+  color:#fff;
+  background:transparent;
+  font-weight:800;
+  padding:2px 0;
+}
+.birth-select-box select option{
+  color:#111827;
+}
+.birth-wheel{
+  height:86px;
+  margin:14px 0 8px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  perspective:600px;
+}
+.birth-orbit{
+  position:absolute;
+  left:50%;
+  top:50%;
+  border:1px solid rgba(34,211,238,.34);
+  border-radius:50%;
+  transform-style:preserve-3d;
+}
+.orbit-one{
+  width:165px;
+  height:54px;
+  transform:translate(-50%,-50%) rotateX(67deg);
+  animation:birthOrbit1 4s linear infinite;
+}
+.orbit-two{
+  width:118px;
+  height:74px;
+  border-color:rgba(139,92,246,.45);
+  transform:translate(-50%,-50%) rotateY(68deg);
+  animation:birthOrbit2 5s linear infinite reverse;
+}
+.birth-orbit-core{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  font-weight:1000;
+  color:white;
+  background:linear-gradient(135deg,var(--violet),var(--blue));
+  box-shadow:0 0 28px rgba(34,211,238,.28);
+}
+@keyframes birthOrbit1{
+  to{transform:translate(-50%,-50%) rotateX(67deg) rotateZ(360deg)}
+}
+@keyframes birthOrbit2{
+  to{transform:translate(-50%,-50%) rotateY(68deg) rotateZ(360deg)}
+}
+.birth-insight{
+  min-height:42px;
+  padding:10px 12px;
+  color:#b7c1d6;
+  font-size:12px;
+  line-height:1.45;
+  border-left:3px solid var(--blue);
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+}
+.birth-actions{
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:10px;
+  margin-top:14px;
+}
+.birth-secondary,
+.birth-primary{
+  border-radius:13px;
+  padding:12px;
+  font-weight:850;
+}
+.birth-secondary{
+  border:1px solid var(--line);
+  color:#dbe4f5;
+  background:rgba(255,255,255,.05);
+}
+.birth-primary{
+  border:0;
+  color:#fff;
+  background:linear-gradient(135deg,var(--violet),#2563eb);
+  box-shadow:0 10px 24px rgba(91,33,182,.3);
+}
+.birth-primary:hover,
+.birth-secondary:hover{
+  transform:translateY(-1px);
+}
+.birth-panel.birth-reading .birth-orbit-core{
+  animation:birthPulse .6s ease infinite alternate;
+}
+@keyframes birthPulse{
+  to{
+    transform:scale(1.12);
+    box-shadow:0 0 38px rgba(34,211,238,.48);
+  }
+}
+@media(max-width:560px){
+  .birth-panel{
+    position:fixed;
+    left:12px;
+    right:12px;
+    top:auto;
+    bottom:12px;
+    max-height:calc(100vh - 24px);
+    overflow:auto;
+    border-radius:24px;
+  }
+  .birth-select-grid{
+    grid-template-columns:1fr 1.15fr 1fr;
+  }
+}
+
 /* Loading */
 .loading-overlay{
   position:fixed;
@@ -673,9 +975,71 @@ h1{
         <div class="input-wrap"><span>👤</span><input id="name" type="text" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name"></div>
       </div>
 
-      <div class="field">
-        <label for="birth">Ngày tháng năm sinh</label>
-        <div class="input-wrap"><span>📅</span><input id="birth" type="date"></div>
+      <div class="field birth-field">
+        <label>Ngày tháng năm sinh</label>
+
+        <div class="birth-picker" id="birthPicker">
+          <button id="birthTrigger" class="birth-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+            <span class="birth-icon">📅</span>
+            <span class="birth-value">
+              <small>Ngày sinh của bạn</small>
+              <strong id="birthDisplay">Chọn ngày sinh</strong>
+            </span>
+            <span class="birth-arrow">⌄</span>
+          </button>
+
+          <div id="birthPanel" class="birth-panel" hidden>
+            <div class="birth-panel-head">
+              <div>
+                <small>HỒ SƠ THỜI GIAN</small>
+                <strong>Chọn ngày sinh</strong>
+              </div>
+              <button id="birthClose" class="birth-close" type="button" aria-label="Đóng">×</button>
+            </div>
+
+            <div class="birth-preview">
+              <span class="birth-preview-icon">✦</span>
+              <div>
+                <small>DỮ LIỆU ĐANG CHỌN</small>
+                <strong id="birthPreviewText">Chưa có ngày sinh</strong>
+              </div>
+            </div>
+
+            <div class="birth-select-grid">
+              <div class="birth-select-box">
+                <label for="birthDay">Ngày</label>
+                <select id="birthDay"></select>
+              </div>
+
+              <div class="birth-select-box">
+                <label for="birthMonth">Tháng</label>
+                <select id="birthMonth"></select>
+              </div>
+
+              <div class="birth-select-box">
+                <label for="birthYear">Năm</label>
+                <select id="birthYear"></select>
+              </div>
+            </div>
+
+            <div class="birth-wheel">
+              <div class="birth-orbit orbit-one"></div>
+              <div class="birth-orbit orbit-two"></div>
+              <div class="birth-orbit-core">AI</div>
+            </div>
+
+            <div id="birthInsight" class="birth-insight">
+              Hệ thống sẽ đọc chu kỳ cá nhân ngay sau khi bạn xác nhận.
+            </div>
+
+            <div class="birth-actions">
+              <button id="birthToday" class="birth-secondary" type="button">Đặt lại</button>
+              <button id="birthConfirm" class="birth-primary" type="button">Xác nhận ngày sinh</button>
+            </div>
+          </div>
+        </div>
+
+        <input id="birth" type="hidden">
       </div>
 
       <div class="row">
@@ -838,6 +1202,18 @@ window.addEventListener('resize',resizeCanvas);
 
 const nameInput = document.getElementById('name');
 const birthInput = document.getElementById('birth');
+const birthPicker = document.getElementById('birthPicker');
+const birthTrigger = document.getElementById('birthTrigger');
+const birthPanel = document.getElementById('birthPanel');
+const birthClose = document.getElementById('birthClose');
+const birthDisplay = document.getElementById('birthDisplay');
+const birthPreviewText = document.getElementById('birthPreviewText');
+const birthDay = document.getElementById('birthDay');
+const birthMonth = document.getElementById('birthMonth');
+const birthYear = document.getElementById('birthYear');
+const birthConfirm = document.getElementById('birthConfirm');
+const birthToday = document.getElementById('birthToday');
+const birthInsight = document.getElementById('birthInsight');
 const genderInput = document.getElementById('gender');
 const focusInput = document.getElementById('focus');
 const dreamInput = document.getElementById('dream');
@@ -856,6 +1232,153 @@ const retryBtn = document.getElementById('retryBtn');
 const trollVideo = document.getElementById('trollVideo');
 const playSoundBtn = document.getElementById('playSoundBtn');
 
+
+const MONTH_NAMES = [
+  'Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6',
+  'Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'
+];
+
+function populateBirthPicker(){
+  const now = new Date();
+  const currentYear = now.getFullYear();
+
+  birthMonth.innerHTML = MONTH_NAMES.map((m,i) =>
+    `<option value="${i+1}">${m}</option>`
+  ).join('');
+
+  birthYear.innerHTML = Array.from({length: currentYear - 1949}, (_,i) => currentYear - i)
+    .map(y => `<option value="${y}">${y}</option>`)
+    .join('');
+
+  birthMonth.value = String(now.getMonth()+1);
+  birthYear.value = String(Math.max(2000, currentYear-20));
+  updateBirthDays();
+}
+
+function daysInMonth(month, year){
+  return new Date(year, month, 0).getDate();
+}
+
+function updateBirthDays(){
+  const month = Number(birthMonth.value || 1);
+  const year = Number(birthYear.value || new Date().getFullYear());
+  const total = daysInMonth(month, year);
+  const previous = Number(birthDay.value || 1);
+
+  birthDay.innerHTML = Array.from({length: total}, (_,i) =>
+    `<option value="${i+1}">${String(i+1).padStart(2,'0')}</option>`
+  ).join('');
+
+  birthDay.value = String(Math.min(previous, total));
+  updateBirthPreview();
+}
+
+function getSelectedBirth(){
+  const d = Number(birthDay.value);
+  const m = Number(birthMonth.value);
+  const y = Number(birthYear.value);
+  return {d,m,y};
+}
+
+function formatBirth(d,m,y){
+  return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+}
+
+function getBirthInsight(d,m,y){
+  const total = String(d)+String(m)+String(y);
+  const lifeNumber = total.split('').reduce((sum,n)=>sum+Number(n),0);
+  const reduced = String(lifeNumber).split('').reduce((sum,n)=>sum+Number(n),0);
+  const labels = {
+    1:'Chu kỳ thiên về sự khởi đầu và tính chủ động.',
+    2:'Chu kỳ nổi bật về kết nối và sự cân bằng.',
+    3:'Chu kỳ thiên về sáng tạo và biểu đạt bản thân.',
+    4:'Chu kỳ đề cao ổn định, nền tảng và kỷ luật.',
+    5:'Chu kỳ có nhiều dịch chuyển và trải nghiệm mới.',
+    6:'Chu kỳ nhấn mạnh trách nhiệm và các mối quan hệ.',
+    7:'Chu kỳ nghiêng về chiều sâu và sự quan sát.',
+    8:'Chu kỳ nổi bật về mục tiêu và tham vọng.',
+    9:'Chu kỳ hướng đến hoàn thiện và thay đổi lớn.'
+  };
+  return labels[reduced] || 'Dữ liệu ngày sinh đã sẵn sàng để phân tích.';
+}
+
+function updateBirthPreview(){
+  const {d,m,y} = getSelectedBirth();
+  birthPreviewText.textContent = formatBirth(d,m,y);
+  birthInsight.textContent = getBirthInsight(d,m,y);
+}
+
+function openBirthPanel(){
+  birthPanel.hidden = false;
+  birthTrigger.classList.add('active');
+  birthTrigger.setAttribute('aria-expanded','true');
+  updateBirthPreview();
+}
+
+function closeBirthPanel(){
+  birthPanel.hidden = true;
+  birthTrigger.classList.remove('active');
+  birthTrigger.setAttribute('aria-expanded','false');
+}
+
+birthTrigger.addEventListener('click',()=>{
+  if(birthPanel.hidden) openBirthPanel();
+  else closeBirthPanel();
+});
+
+birthClose.addEventListener('click',closeBirthPanel);
+
+birthMonth.addEventListener('change',updateBirthDays);
+birthYear.addEventListener('change',updateBirthDays);
+birthDay.addEventListener('change',updateBirthPreview);
+
+birthToday.addEventListener('click',()=>{
+  const now = new Date();
+  birthMonth.value = String(now.getMonth()+1);
+  birthYear.value = String(Math.max(2000, now.getFullYear()-20));
+  updateBirthDays();
+  birthDay.value = '1';
+  updateBirthPreview();
+  birthInput.value = '';
+  birthDisplay.textContent = 'Chọn ngày sinh';
+});
+
+birthConfirm.addEventListener('click',()=>{
+  const {d,m,y} = getSelectedBirth();
+  const maxDate = new Date();
+  const selected = new Date(y,m-1,d);
+
+  if(selected > maxDate){
+    birthInsight.textContent = 'Ngày sinh không thể nằm trong tương lai.';
+    return;
+  }
+
+  birthPanel.classList.add('birth-reading');
+  birthInsight.textContent = 'Đang đọc chu kỳ vận mệnh và đồng bộ dòng thời gian...';
+
+  setTimeout(()=>{
+    birthInput.value = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    birthDisplay.textContent = formatBirth(d,m,y);
+    birthInsight.textContent = getBirthInsight(d,m,y);
+    birthPanel.classList.remove('birth-reading');
+    closeBirthPanel();
+  },700);
+});
+
+document.addEventListener('click',e=>{
+  if(!birthPicker.contains(e.target) && !birthPanel.hidden){
+    closeBirthPanel();
+  }
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key === 'Escape' && !birthPanel.hidden){
+    closeBirthPanel();
+  }
+});
+
+populateBirthPicker();
+
 const statusMessages = [
   [1,'Khởi tạo lõi dự đoán lượng tử...'],
   [9,'Xác minh họ tên và ngày sinh...'],
@@ -870,6 +1393,7 @@ const statusMessages = [
 ];
 
 function resetPage(){
+  closeBirthPanel();
   loadingOverlay.classList.remove('show');
   loadingOverlay.setAttribute('aria-hidden','true');
   result.classList.remove('show');

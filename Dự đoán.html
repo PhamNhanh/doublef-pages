@@ -549,6 +549,38 @@ h1{
   margin-top:22px;
 }
 
+
+.troll-video-wrap{
+  z-index:2;
+  width:min(92vw,430px);
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+.troll-video{
+  width:100%;
+  max-height:48vh;
+  display:block;
+  object-fit:contain;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.18);
+  background:#000;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 0 36px rgba(255,23,68,.24);
+}
+.sound-btn{
+  width:100%;
+  border:1px solid rgba(255,255,255,.25);
+  color:#fff;
+  background:linear-gradient(135deg,#7c3aed,#dc2626);
+  border-radius:14px;
+  padding:13px 16px;
+  font-weight:850;
+}
+
 @media(max-width:900px){
   .hero,.loading-container{grid-template-columns:1fr}
   .intro{min-height:auto}
@@ -729,7 +761,21 @@ h1{
 <section id="result" class="result" hidden aria-hidden="true">
   <img src="LOGODF.png" alt="Logo DoubleF" class="result-logo">
   <div class="result-text">CÓ CÁI CON CẮK</div>
-  <div class="result-sub">😂 Dự đoán 5 năm hoàn tất — bạn vừa bị troll!</div>
+
+  <div class="troll-video-wrap">
+    <video
+      id="trollVideo"
+      class="troll-video"
+      src="troll-video.mp4"
+      playsinline
+      preload="auto"
+      controls
+    ></video>
+    <button id="playSoundBtn" class="sound-btn" type="button" hidden>
+      🔊 Bấm để phát video có âm thanh
+    </button>
+  </div>
+
   <button id="retryBtn" class="retry" type="button">Dự đoán lại</button>
 </section>
 
@@ -786,6 +832,8 @@ const status = document.getElementById('status');
 const scanItems = [...document.querySelectorAll('.scan-item')];
 const result = document.getElementById('result');
 const retryBtn = document.getElementById('retryBtn');
+const trollVideo = document.getElementById('trollVideo');
+const playSoundBtn = document.getElementById('playSoundBtn');
 
 const statusMessages = [
   [1,'Khởi tạo lõi dự đoán lượng tử...'],
@@ -810,6 +858,13 @@ function resetPage(){
   progressBar.style.width='1%';
   percent.textContent='1%';
   status.textContent='Khởi tạo lõi dự đoán lượng tử...';
+  if(trollVideo){
+    trollVideo.pause();
+    trollVideo.currentTime = 0;
+    trollVideo.muted = false;
+  }
+  if(playSoundBtn) playSoundBtn.hidden = true;
+
   scanItems.forEach(item=>{
     item.classList.remove('active','done');
     item.querySelector('.scan-state').textContent='Chờ';
@@ -873,15 +928,43 @@ predictBtn.addEventListener('click',()=>{
         result.hidden=false;
         result.setAttribute('aria-hidden','false');
         result.classList.add('show');
+
+        // Trình duyệt có thể chặn tự phát âm thanh. Thử phát trực tiếp trước.
+        trollVideo.currentTime = 0;
+        trollVideo.muted = false;
+        const playAttempt = trollVideo.play();
+
+        if(playAttempt !== undefined){
+          playAttempt.catch(() => {
+            // Nếu bị chặn, phát video không tiếng và hiện nút bật âm thanh.
+            trollVideo.muted = true;
+            trollVideo.play().catch(() => {});
+            playSoundBtn.hidden = false;
+          });
+        }
       },850);
     }
   },85);
+});
+
+playSoundBtn.addEventListener('click', async ()=>{
+  try{
+    trollVideo.muted = false;
+    trollVideo.currentTime = 0;
+    await trollVideo.play();
+    playSoundBtn.hidden = true;
+  }catch(e){
+    playSoundBtn.textContent = '▶️ Bấm lại để phát video';
+  }
 });
 
 retryBtn.addEventListener('click',()=>{
   result.classList.remove('show');
   result.hidden=true;
   result.setAttribute('aria-hidden','true');
+  trollVideo.pause();
+  trollVideo.currentTime = 0;
+  playSoundBtn.hidden = true;
   document.body.style.overflow='';
   window.scrollTo({top:0,behavior:'smooth'});
 });

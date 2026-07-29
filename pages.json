@@ -35,6 +35,11 @@
     "icon": "🏠"
   },
   {
+    "title": "Dự đoán tương lai AI",
+    "path": "Dự đoán.html",
+    "icon": "🔗"
+  },
+  {
     "title": "Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell",
     "path": "Kiểm tra lỗi chính tả.html",
     "icon": "🔗"

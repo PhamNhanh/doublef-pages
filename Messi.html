@@ -3,455 +3,325 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Thống kê bàn thắng sự nghiệp Lionel Messi - dữ liệu tổng hợp theo WeLoveMessi và các nguồn đối chiếu cập nhật 13/09/2026." />
-  <title>Lionel Messi - Thống kê sự nghiệp</title>
+  <meta name="description" content="Lionel Messi career goals - fan-made interactive statistics page inspired by modern football storytelling websites." />
+  <title>Lionel Messi — 928 Career Goals</title>
+  <link rel="preconnect" href="https://commons.wikimedia.org" />
   <style>
     :root{
-      --bg:#07111f;
-      --panel:#0d1b2d;
-      --panel-2:#10243a;
-      --text:#f7fbff;
-      --muted:#9eb1c7;
-      --line:rgba(255,255,255,.08);
-      --accent:#7ed6ff;
-      --accent-2:#ff6fae;
-      --gold:#ffd166;
-      --green:#52d39b;
-      --shadow:0 18px 55px rgba(0,0,0,.28);
+      --ink:#07152a;
+      --ink2:#0a1e3a;
+      --sky:#8ed8f8;
+      --sky2:#dff6ff;
+      --cream:#f6f1e7;
+      --white:#fff;
+      --pink:#f1a3bd;
+      --gold:#f5c451;
+      --muted:#6d7890;
+      --line:rgba(7,21,42,.12);
+      --radius:26px;
     }
-
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 12% 10%, rgba(126,214,255,.14), transparent 30%),
-        radial-gradient(circle at 88% 18%, rgba(255,111,174,.12), transparent 28%),
-        linear-gradient(180deg, #06101d 0%, #081423 55%, #06101c 100%);
-      min-height:100vh;
-    }
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button{font:inherit}
 
-    a{color:inherit}
-    .wrap{width:min(1180px, calc(100% - 32px)); margin:0 auto}
+    .nav{position:fixed;z-index:50;left:50%;transform:translateX(-50%);top:18px;width:min(1180px,calc(100% - 26px));display:flex;align-items:center;justify-content:space-between;padding:12px 14px 12px 18px;border-radius:999px;background:rgba(7,21,42,.82);backdrop-filter:blur(16px);color:white;border:1px solid rgba(255,255,255,.13);box-shadow:0 18px 50px rgba(2,10,24,.2)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:-.04em}
+    .brand-ball{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--sky),white);position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
+    .brand-ball:after{content:"10";position:absolute;inset:0;display:grid;place-items:center;color:var(--ink);font-size:12px;font-weight:950}
+    .nav-links{display:flex;gap:4px;align-items:center}
+    .nav-links a{font-size:12px;font-weight:750;padding:10px 13px;border-radius:999px;color:rgba(255,255,255,.82)}
+    .nav-links a:hover{background:rgba(255,255,255,.1);color:white}
+    .nav-cta{padding:10px 15px;border-radius:999px;background:var(--sky);color:var(--ink)!important;font-weight:900!important}
 
-    .hero{
-      padding:62px 0 34px;
-      position:relative;
-      overflow:hidden;
-    }
+    .hero{min-height:100svh;position:relative;background:#091a34;color:#fff;overflow:hidden;display:flex;align-items:flex-end}
+    .hero-media{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(4,13,27,.95) 0%,rgba(4,13,27,.7) 42%,rgba(4,13,27,.12) 76%),linear-gradient(0deg,rgba(4,13,27,.9) 0%,transparent 45%),url('https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_Argentina_v_Egypt_7_July_2026-207.jpg');background-size:cover;background-position:center 22%;transform:scale(1.02)}
+    .hero-noise{position:absolute;inset:0;opacity:.16;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E")}
+    .hero-inner{position:relative;z-index:2;width:min(1180px,calc(100% - 34px));margin:0 auto;padding:150px 0 54px;display:grid;grid-template-columns:1.25fr .75fr;gap:46px;align-items:end}
+    .kicker{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:850;color:#cbefff}
+    .kicker:before{content:"";width:34px;height:1px;background:var(--sky)}
+    .hero h1{margin:15px 0 15px;font-size:clamp(62px,11vw,150px);line-height:.77;letter-spacing:-.075em;font-weight:950;text-transform:uppercase;max-width:850px}
+    .hero h1 span{display:block;color:var(--sky)}
+    .hero-copy{max-width:610px;color:rgba(255,255,255,.73);font-size:15px;line-height:1.75;margin:0}
+    .hero-stats{display:grid;gap:12px;align-self:end}
+    .mega{border-radius:32px;padding:26px 26px 23px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px)}
+    .mega .label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.64);font-weight:800}
+    .mega .value{font-size:clamp(72px,9vw,126px);line-height:.9;font-weight:950;letter-spacing:-.07em;color:white;margin:10px 0 4px}
+    .mega .note{color:#cfefff;font-size:12px}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .mini{padding:17px;border-radius:22px;background:rgba(8,22,44,.72);border:1px solid rgba(255,255,255,.12)}
+    .mini strong{display:block;font-size:28px;letter-spacing:-.04em}
+    .mini span{font-size:11px;color:rgba(255,255,255,.65)}
+    .scroll-hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);z-index:3}
 
-    .eyebrow{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:7px 11px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      color:#ccefff;
-      background:rgba(255,255,255,.035);
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
+    .ticker{background:var(--sky);overflow:hidden;border-bottom:1px solid rgba(7,21,42,.08)}
+    .ticker-track{display:flex;gap:42px;white-space:nowrap;padding:14px 0;animation:marquee 28s linear infinite;font-weight:950;text-transform:uppercase;letter-spacing:-.03em;font-size:18px}
+    .ticker-track span:after{content:"✦";margin-left:42px}
+    @keyframes marquee{to{transform:translateX(-50%)}}
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.35fr .65fr;
-      gap:28px;
-      align-items:end;
-      margin-top:18px;
-    }
+    .container{width:min(1180px,calc(100% - 34px));margin:0 auto}
+    .section{padding:96px 0}
+    .section-label{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:900;color:#54637c;margin-bottom:14px}
+    .section-title{font-size:clamp(40px,6vw,76px);line-height:.95;letter-spacing:-.06em;margin:0;max-width:850px;font-weight:950}
+    .section-title em{font-style:normal;color:#5caed2}
+    .lead{max-width:690px;color:var(--muted);line-height:1.75;font-size:15px;margin-top:18px}
 
-    h1{
-      margin:0;
-      max-width:760px;
-      font-size:clamp(42px,7vw,86px);
-      line-height:.93;
-      letter-spacing:-.055em;
-      font-weight:900;
-    }
+    .summary{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:42px}
+    .summary-card{min-height:290px;border-radius:32px;padding:30px;position:relative;overflow:hidden;border:1px solid var(--line)}
+    .summary-card.dark{background:var(--ink);color:white}
+    .summary-card.light{background:#fff}
+    .summary-card h3{font-size:14px;margin:0 0 26px;color:inherit}
+    .summary-main{display:flex;align-items:end;justify-content:space-between;gap:18px}
+    .summary-num{font-size:clamp(66px,9vw,114px);font-weight:950;letter-spacing:-.07em;line-height:.85}
+    .summary-side{text-align:right;padding-bottom:8px;font-size:12px;line-height:1.6;color:var(--muted)}
+    .dark .summary-side{color:rgba(255,255,255,.62)}
+    .progress{height:10px;border-radius:999px;background:rgba(104,120,146,.15);overflow:hidden;margin-top:32px}
+    .progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--sky),#4eacd5);width:var(--pct)}
+    .dark .progress{background:rgba(255,255,255,.1)}
+    .summary-orb{position:absolute;width:160px;height:160px;border-radius:50%;right:-45px;top:-55px;background:radial-gradient(circle,#93ddfa 0%,rgba(147,221,250,0) 68%);opacity:.45}
 
-    h1 span{
-      display:block;
-      background:linear-gradient(90deg, #fff 5%, var(--accent) 55%, #d9f5ff 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
+    .eras{background:var(--ink);color:white}
+    .eras .section-label{color:#86b8d2}.eras .lead{color:rgba(255,255,255,.6)}
+    .era-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:42px}
+    .era-card{position:relative;min-height:510px;border-radius:30px;overflow:hidden;grid-column:span 6;background:#112a4c;border:1px solid rgba(255,255,255,.09)}
+    .era-card:nth-child(3),.era-card:nth-child(4){min-height:420px}
+    .era-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+    .era-card:hover img{transform:scale(1.045)}
+    .era-card:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(4,13,27,.94),rgba(4,13,27,.15) 64%,rgba(4,13,27,.08))}
+    .era-content{position:absolute;z-index:2;left:26px;right:26px;bottom:24px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}
+    .era-years{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#bcd3df;margin-bottom:5px}
+    .era-name{font-size:28px;font-weight:900;letter-spacing:-.04em}
+    .era-goals{text-align:right}.era-goals strong{display:block;font-size:50px;line-height:.85;letter-spacing:-.06em}.era-goals span{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:#bdd7e4}
+    .era-card.barca{grid-column:span 7}.era-card.arg{grid-column:span 5}
 
-    .hero-copy{
-      color:var(--muted);
-      line-height:1.65;
-      margin:18px 0 0;
-      max-width:680px;
-      font-size:15px;
-    }
+    .number-story{background:#9edcf7;padding:110px 0;overflow:hidden}
+    .number-wrap{display:grid;grid-template-columns:.65fr 1.35fr;gap:46px;align-items:center}
+    .big-928{font-size:clamp(140px,22vw,330px);font-weight:950;letter-spacing:-.1em;line-height:.68;color:var(--ink);margin-left:-12px}
+    .number-copy h2{font-size:clamp(42px,6vw,78px);line-height:.93;letter-spacing:-.055em;margin:0;font-weight:950}
+    .number-copy p{max-width:620px;line-height:1.75;color:#26435b;margin:20px 0 0}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}.chip{padding:9px 12px;border:1px solid rgba(7,21,42,.18);border-radius:999px;font-size:11px;font-weight:850;background:rgba(255,255,255,.22)}
 
-    .update-box{
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:22px;
-      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
-      box-shadow:var(--shadow);
-    }
+    .milestones{background:#fff}
+    .timeline{position:relative;margin-top:46px}
+    .timeline:before{content:"";position:absolute;left:122px;top:0;bottom:0;width:1px;background:#cad3dc}
+    .milestone{display:grid;grid-template-columns:90px 32px 1fr;gap:16px;padding:0 0 34px;position:relative}
+    .milestone .year{text-align:right;font-size:12px;font-weight:900;color:#62718b;padding-top:3px}
+    .milestone .dot{width:13px;height:13px;background:var(--ink);border-radius:50%;margin:2px auto 0;box-shadow:0 0 0 6px white;z-index:2}
+    .milestone .ms-title{font-size:22px;font-weight:900;letter-spacing:-.03em}.milestone .ms-desc{margin-top:5px;color:var(--muted);font-size:13px;line-height:1.6}
 
-    .update-box .small{color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.1em}
-    .update-box .date{font-size:28px; font-weight:850; margin:6px 0}
-    .update-box .source{font-size:13px; color:#c1cfde; line-height:1.5}
+    .stats-board{background:#f0e9dc}
+    .board{margin-top:40px;border-radius:32px;overflow:hidden;background:#fff;border:1px solid var(--line)}
+    .board-row{display:grid;grid-template-columns:1.5fr .7fr .8fr .8fr;align-items:center;border-bottom:1px solid #e7e2da;min-height:80px;padding:0 26px}.board-row:last-child{border-bottom:0}.board-head{min-height:50px;background:#f8f5ef;color:#788397;font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:850}.team-cell{display:flex;gap:13px;align-items:center;font-weight:900}.badge{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:white;font-size:11px;font-weight:950;background:var(--ink)}.badge.arg{background:#74c6ec;color:#06203c}.badge.miami{background:#ef9fbc;color:#222}.badge.psg{background:#173764}.badge.fcb{background:linear-gradient(135deg,#b82445,#173e8f)}.board-num{text-align:right;font-variant-numeric:tabular-nums;font-weight:900}.board-muted{text-align:right;color:#7b8698;font-size:12px}
 
-    .stats-grid{
-      display:grid;
-      grid-template-columns:1.25fr repeat(3, .75fr);
-      gap:14px;
-      margin:12px 0 26px;
-    }
+    .gallery{background:var(--ink);color:white;padding:100px 0}
+    .gallery-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:26px}.gallery-head p{color:rgba(255,255,255,.55);max-width:480px;font-size:13px;line-height:1.7;margin:0}
+    .gallery-grid{display:grid;grid-template-columns:1.25fr .75fr .75fr;grid-template-rows:290px 290px;gap:14px}
+    .photo{border-radius:25px;overflow:hidden;position:relative}.photo:first-child{grid-row:span 2}.photo img{width:100%;height:100%;object-fit:cover;transition:.6s}.photo:hover img{transform:scale(1.045)}.photo:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);border-radius:inherit}
 
-    .stat{
-      min-height:148px;
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:rgba(255,255,255,.035);
-      padding:22px;
-      position:relative;
-      overflow:hidden;
-    }
+    footer{background:#061428;color:white;padding:46px 0 30px}
+    .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:end}.footer-title{font-size:44px;font-weight:950;letter-spacing:-.06em}.footer-note{color:rgba(255,255,255,.55);font-size:12px;line-height:1.7;max-width:700px}.credits{font-size:10px;color:rgba(255,255,255,.43);line-height:1.7;margin-top:20px}.credits a{text-decoration:underline;text-underline-offset:2px}
+    .to-top{justify-self:end;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:grid;place-items:center;color:white;background:transparent;cursor:pointer}
 
-    .stat.primary{
-      background:linear-gradient(135deg, rgba(126,214,255,.15), rgba(255,111,174,.08));
-    }
+    .reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.7,.2,1)}.reveal.show{opacity:1;transform:none}
 
-    .stat .label{font-size:12px; color:var(--muted); letter-spacing:.11em; text-transform:uppercase; font-weight:750}
-    .stat .value{font-size:clamp(34px,5vw,64px); font-weight:900; letter-spacing:-.045em; margin-top:8px}
-    .stat:not(.primary) .value{font-size:38px}
-    .stat .note{font-size:12px; color:#bac8d7; margin-top:8px}
-    .stat .glow{position:absolute; width:110px; height:110px; border-radius:50%; filter:blur(40px); opacity:.18; right:-30px; bottom:-35px; background:var(--accent)}
-
-    .section{padding:26px 0}
-    .section-head{display:flex; justify-content:space-between; gap:20px; align-items:end; margin-bottom:16px}
-    .section h2{font-size:clamp(24px,3vw,34px); margin:0; letter-spacing:-.025em}
-    .section-head p{margin:0; color:var(--muted); font-size:13px}
-
-    .club-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
-    .club-card{
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:19px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      transition:.2s ease;
-    }
-    .club-card:hover{transform:translateY(-3px); border-color:rgba(126,214,255,.32)}
-    .club-top{display:flex; align-items:center; gap:12px}
-    .badge{
-      width:43px; height:43px; border-radius:13px;
-      display:grid; place-items:center;
-      background:rgba(126,214,255,.11);
-      border:1px solid var(--line);
-      font-weight:900;
-    }
-    .club-name{font-weight:800}
-    .club-years{font-size:12px; color:var(--muted); margin-top:2px}
-    .club-goals{font-size:36px; font-weight:900; margin:18px 0 9px; letter-spacing:-.04em}
-    .bar{height:7px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden}
-    .bar span{display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg, var(--accent), var(--accent-2)); width:var(--w)}
-    .club-meta{display:flex; justify-content:space-between; color:var(--muted); font-size:11px; margin-top:8px}
-
-    .analysis-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-    .panel{
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:rgba(255,255,255,.03);
-      padding:22px;
-      min-height:330px;
-    }
-
-    .donut-wrap{display:grid; grid-template-columns:190px 1fr; gap:24px; align-items:center; height:100%}
-    .donut{width:180px; height:180px; transform:rotate(-90deg)}
-    .donut circle{fill:none; stroke-width:18}
-    .donut .track{stroke:rgba(255,255,255,.075)}
-    .donut .seg{stroke-linecap:round; transition:.4s ease}
-    .legend{display:grid; gap:12px}
-    .legend-row{display:grid; grid-template-columns:10px 1fr auto; gap:10px; align-items:center; font-size:13px}
-    .dot{width:9px; height:9px; border-radius:50%}
-    .legend-row span:nth-child(2){color:#dce7f2}
-    .legend-row strong{font-size:13px}
-
-    .timeline{display:grid; gap:13px; margin-top:14px}
-    .event{display:grid; grid-template-columns:84px 14px 1fr; gap:12px; align-items:start}
-    .event .year{font-size:12px; color:var(--muted); padding-top:1px}
-    .event .point{width:10px; height:10px; border-radius:50%; margin-top:3px; background:var(--accent); box-shadow:0 0 0 5px rgba(126,214,255,.08)}
-    .event .title{font-size:14px; font-weight:800}
-    .event .desc{font-size:12px; color:var(--muted); margin-top:4px; line-height:1.5}
-
-    .table-wrap{overflow:auto; border:1px solid var(--line); border-radius:20px; background:rgba(255,255,255,.025)}
-    table{width:100%; border-collapse:collapse; min-width:720px}
-    th,td{padding:15px 16px; text-align:left; border-bottom:1px solid var(--line)}
-    th{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.09em; font-weight:800}
-    td{font-size:13px}
-    tbody tr:last-child td{border-bottom:0}
-    tbody tr:hover{background:rgba(255,255,255,.025)}
-    .num{text-align:right; font-variant-numeric:tabular-nums; font-weight:800}
-
-    .footer{
-      border-top:1px solid var(--line);
-      margin-top:32px;
-      padding:24px 0 38px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.65;
-    }
-    .footer-inner{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
-    .source-link{display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#d9effb; padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.03)}
-
-    @media (max-width:900px){
-      .hero-grid{grid-template-columns:1fr}
-      .stats-grid{grid-template-columns:1fr 1fr}
-      .club-grid{grid-template-columns:1fr 1fr}
-      .analysis-grid{grid-template-columns:1fr}
-    }
-    @media (max-width:580px){
-      .wrap{width:min(100% - 22px,1180px)}
-      .hero{padding-top:36px}
-      .stats-grid,.club-grid{grid-template-columns:1fr}
-      .donut-wrap{grid-template-columns:1fr; justify-items:center}
-      .legend{width:100%}
-      .section-head{align-items:start; flex-direction:column}
-    }
+    @media(max-width:900px){
+      .nav-links a:not(.nav-cta){display:none}.hero-inner{grid-template-columns:1fr;padding-top:130px}.hero-stats{max-width:520px}.summary{grid-template-columns:1fr}.era-card,.era-card.barca,.era-card.arg{grid-column:span 12}.number-wrap{grid-template-columns:1fr}.big-928{font-size:44vw}.board-row{grid-template-columns:1.5fr .7fr .8fr}.board-row>*:nth-child(3){display:none}.gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:360px 240px 240px}.photo:first-child{grid-column:span 2;grid-row:auto}.footer-grid{grid-template-columns:1fr}.to-top{justify-self:start}}
+    @media(max-width:600px){
+      .nav{top:10px}.hero-media{background-position:62% 20%}.hero h1{font-size:19vw}.hero-inner{padding-bottom:70px}.mini-grid{grid-template-columns:1fr 1fr}.section{padding:72px 0}.era-card,.era-card:nth-child(3),.era-card:nth-child(4){min-height:440px}.number-story{padding:78px 0}.timeline:before{left:82px}.milestone{grid-template-columns:58px 20px 1fr;gap:10px}.board-row{padding:0 15px;grid-template-columns:1.5fr .6fr}.board-row>*:nth-child(4){display:none}.board-row>*:nth-child(3){display:none}.gallery-grid{display:grid;grid-template-columns:1fr;grid-template-rows:420px repeat(4,260px)}.photo:first-child{grid-column:auto}.gallery-head{display:block}.gallery-head p{margin-top:14px}.footer-title{font-size:34px}}
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <div class="eyebrow">Career goals dashboard</div>
-      <div class="hero-grid">
-        <div>
-          <h1>LIONEL <span>MESSI</span></h1>
-          <p class="hero-copy">Thống kê bàn thắng chính thức trong sự nghiệp cấp CLB và Đội tuyển Argentina. Giao diện được thiết kế dạng dashboard, tự tính tổng, tỷ trọng và biểu đồ từ một khối dữ liệu JavaScript duy nhất.</p>
+  <nav class="nav">
+    <a class="brand" href="#top"><span class="brand-ball"></span><span>MESSI / GOALS</span></a>
+    <div class="nav-links">
+      <a href="#career">Sự nghiệp</a>
+      <a href="#eras">Các giai đoạn</a>
+      <a href="#milestones">Cột mốc</a>
+      <a href="#stats" class="nav-cta">Thống kê</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-media"></div><div class="hero-noise"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="kicker">Fan-made career archive · cập nhật 13.09.2026</div>
+        <h1>Lionel <span>Messi</span></h1>
+        <p class="hero-copy">Một trang thống kê sự nghiệp được thiết kế theo phong cách kể chuyện bóng đá hiện đại: ảnh lớn, con số lớn, từng giai đoạn thi đấu và các cột mốc bàn thắng nổi bật.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="mega">
+          <div class="label">Bàn thắng chính thức trong sự nghiệp</div>
+          <div class="value count" data-target="928">0</div>
+          <div class="note">Barcelona + PSG + Inter Miami + Argentina</div>
         </div>
-        <aside class="update-box">
-          <div class="small">Cập nhật dữ liệu</div>
-          <div class="date" id="updatedAt">13.09.2026</div>
-          <div class="source">Nguồn chính: WeLoveMessi / Goals. Số liệu hiện tại được đối chiếu với thông tin trận đấu và mốc 900 bàn.</div>
-        </aside>
+        <div class="mini-grid">
+          <div class="mini"><strong class="count" data-target="803">0</strong><span>Bàn cho CLB</span></div>
+          <div class="mini"><strong class="count" data-target="125">0</strong><span>Bàn cho Argentina</span></div>
+        </div>
       </div>
     </div>
+    <div class="scroll-hint">Cuộn để khám phá ↓</div>
   </header>
 
-  <main class="wrap">
-    <section class="stats-grid" aria-label="Thống kê tổng quan">
-      <article class="stat primary">
-        <div class="label">Tổng bàn thắng sự nghiệp</div>
-        <div class="value counter" data-target="928">0</div>
-        <div class="note">CLB + Đội tuyển Argentina</div>
-        <div class="glow"></div>
-      </article>
-      <article class="stat">
-        <div class="label">Bàn cho CLB</div>
-        <div class="value counter" data-target="803">0</div>
-        <div class="note" id="clubPct">86,5% tổng số bàn</div>
-      </article>
-      <article class="stat">
-        <div class="label">Argentina</div>
-        <div class="value counter" data-target="125">0</div>
-        <div class="note" id="argPct">13,5% tổng số bàn</div>
-      </article>
-      <article class="stat">
-        <div class="label">Inter Miami</div>
-        <div class="value counter" data-target="99">0</div>
-        <div class="note">Còn 1 bàn tới mốc 100</div>
-      </article>
-    </section>
+  <div class="ticker"><div class="ticker-track"><span>928 bàn thắng</span><span>672 Barcelona</span><span>32 PSG</span><span>99 Inter Miami</span><span>125 Argentina</span><span>928 bàn thắng</span><span>672 Barcelona</span><span>32 PSG</span><span>99 Inter Miami</span><span>125 Argentina</span></div></div>
 
-    <section class="section">
-      <div class="section-head">
-        <div><h2>Bàn thắng theo đội bóng</h2></div>
-        <p>Tỷ lệ được tính trên tổng 928 bàn</p>
-      </div>
-      <div class="club-grid" id="clubGrid"></div>
-    </section>
-
-    <section class="section">
-      <div class="analysis-grid">
-        <article class="panel">
-          <div class="section-head">
-            <h2>Cơ cấu 928 bàn</h2>
-            <p>Phân bổ theo đội</p>
-          </div>
-          <div class="donut-wrap">
-            <svg class="donut" viewBox="0 0 120 120" aria-label="Biểu đồ tỷ trọng bàn thắng">
-              <circle class="track" cx="60" cy="60" r="46"></circle>
-              <g id="donutSegments"></g>
-            </svg>
-            <div class="legend" id="legend"></div>
-          </div>
-        </article>
-
-        <article class="panel">
-          <div class="section-head">
-            <h2>Các cột mốc</h2>
-            <p>Career timeline</p>
-          </div>
-          <div class="timeline">
-            <div class="event">
-              <div class="year">01/05/2005</div><div class="point"></div>
-              <div><div class="title">Bàn thắng đầu tiên cho Barcelona</div><div class="desc">Khởi đầu hành trình ghi bàn chuyên nghiệp ở đội một FC Barcelona.</div></div>
-            </div>
-            <div class="event">
-              <div class="year">2021</div><div class="point"></div>
-              <div><div class="title">Khép lại Barcelona với 672 bàn</div><div class="desc">Đây vẫn là phần lớn nhất trong tổng số bàn thắng sự nghiệp của Messi.</div></div>
-            </div>
-            <div class="event">
-              <div class="year">2021–2023</div><div class="point"></div>
-              <div><div class="title">32 bàn cho Paris Saint-Germain</div><div class="desc">Giai đoạn thi đấu tại Ligue 1 trước khi chuyển sang MLS.</div></div>
-            </div>
-            <div class="event">
-              <div class="year">18/03/2026</div><div class="point"></div>
-              <div><div class="title">Chạm mốc 900 bàn sự nghiệp</div><div class="desc">Bàn thứ 900 được ghi cho Inter Miami ở Concacaf Champions Cup.</div></div>
-            </div>
-            <div class="event">
-              <div class="year">13/09/2026</div><div class="point"></div>
-              <div><div class="title">928 bàn — Inter Miami đạt 99 bàn</div><div class="desc">Mốc dữ liệu được dùng cho phiên bản dashboard này.</div></div>
-            </div>
-          </div>
-        </article>
+  <main>
+    <section class="section" id="career">
+      <div class="container">
+        <div class="reveal">
+          <div class="section-label">01 · Tổng quan sự nghiệp</div>
+          <h2 class="section-title">Những con số tạo nên một <em>kỷ nguyên.</em></h2>
+          <p class="lead">Tổng số dưới đây được gom theo bốn đội bóng/đội tuyển mà Messi đã ghi bàn ở cấp độ đội một. Dữ liệu được đặt trong JavaScript ở cuối file để có thể chỉnh nhanh khi có bàn thắng mới.</p>
+        </div>
+        <div class="summary">
+          <article class="summary-card dark reveal">
+            <div class="summary-orb"></div>
+            <h3>CLB</h3>
+            <div class="summary-main"><div class="summary-num">803</div><div class="summary-side">Barcelona · PSG<br/>Inter Miami</div></div>
+            <div class="progress"><i style="--pct:86.5%"></i></div>
+          </article>
+          <article class="summary-card light reveal">
+            <h3>Đội tuyển Argentina</h3>
+            <div class="summary-main"><div class="summary-num">125</div><div class="summary-side">Cấp đội tuyển quốc gia<br/>tính trong tổng 928 bàn</div></div>
+            <div class="progress"><i style="--pct:13.5%"></i></div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="section-head">
-        <h2>Bảng tổng hợp</h2>
-        <p>Có thể copy trực tiếp sang Excel</p>
+    <section class="section eras" id="eras">
+      <div class="container">
+        <div class="reveal"><div class="section-label">02 · Những màu áo</div><h2 class="section-title">Bốn chương của một <em>hành trình.</em></h2><p class="lead">Ảnh được lấy từ các nguồn ảnh trực tuyến có trang thông tin giấy phép rõ ràng và được dùng ở đây cho mục đích fan-made/phi thương mại.</p></div>
+        <div class="era-grid">
+          <article class="era-card barca reveal">
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi%2C_Player_of_FC_Barcelona_team.JPG" alt="Lionel Messi trong màu áo Barcelona" />
+            <div class="era-content"><div><div class="era-years">2004 — 2021</div><div class="era-name">FC Barcelona</div></div><div class="era-goals"><strong>672</strong><span>bàn thắng</span></div></div>
+          </article>
+          <article class="era-card arg reveal">
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_in_2018.jpg" alt="Lionel Messi trong màu áo Argentina" />
+            <div class="era-content"><div><div class="era-years">2005 — nay</div><div class="era-name">Argentina</div></div><div class="era-goals"><strong>125</strong><span>bàn thắng</span></div></div>
+          </article>
+          <article class="era-card reveal">
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_PSG_%28cropped%29.jpg" alt="Lionel Messi trong màu áo PSG" />
+            <div class="era-content"><div><div class="era-years">2021 — 2023</div><div class="era-name">Paris Saint-Germain</div></div><div class="era-goals"><strong>32</strong><span>bàn thắng</span></div></div>
+          </article>
+          <article class="era-card reveal">
+            <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_NYCFC_Miami_24_Sep_2025-051.jpg" alt="Lionel Messi trong màu áo Inter Miami" />
+            <div class="era-content"><div><div class="era-years">2023 — nay</div><div class="era-name">Inter Miami CF</div></div><div class="era-goals"><strong>99</strong><span>bàn thắng</span></div></div>
+          </article>
+        </div>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Đội</th>
-              <th>Giai đoạn</th>
-              <th class="num">Bàn thắng</th>
-              <th class="num">Tỷ trọng</th>
-              <th>Phân loại</th>
-            </tr>
-          </thead>
-          <tbody id="statsTable"></tbody>
-        </table>
+    </section>
+
+    <section class="number-story">
+      <div class="container number-wrap">
+        <div class="big-928 reveal">928</div>
+        <div class="number-copy reveal"><div class="section-label">Một con số, hàng nghìn khoảnh khắc</div><h2>Không chỉ là bàn thắng. Đó là <br/>một dòng thời gian.</h2><p>Từ bàn đầu tiên cho Barcelona đến các cột mốc ở Argentina và Inter Miami, mỗi con số có thể được mở rộng thành dữ liệu chi tiết theo ngày, đối thủ, giải đấu, phút ghi bàn hay kiểu dứt điểm.</p><div class="chips"><span class="chip">Barcelona 672</span><span class="chip">Argentina 125</span><span class="chip">Inter Miami 99</span><span class="chip">PSG 32</span></div></div>
+      </div>
+    </section>
+
+    <section class="section milestones" id="milestones">
+      <div class="container">
+        <div class="reveal"><div class="section-label">03 · Timeline</div><h2 class="section-title">Các cột mốc <em>đáng nhớ.</em></h2></div>
+        <div class="timeline">
+          <div class="milestone reveal"><div class="year">2005</div><div class="dot"></div><div><div class="ms-title">Bàn đầu tiên cho Barcelona</div><div class="ms-desc">Khởi đầu hành trình ghi bàn ở đội một FC Barcelona.</div></div></div>
+          <div class="milestone reveal"><div class="year">2012</div><div class="dot"></div><div><div class="ms-title">Năm ghi bàn lịch sử</div><div class="ms-desc">Giai đoạn đỉnh cao với hiệu suất ghi bàn thuộc hàng hiếm có trong bóng đá hiện đại.</div></div></div>
+          <div class="milestone reveal"><div class="year">2021</div><div class="dot"></div><div><div class="ms-title">Khép lại chương Barcelona</div><div class="ms-desc">Rời Barcelona với 672 bàn thắng chính thức cho đội một.</div></div></div>
+          <div class="milestone reveal"><div class="year">2022</div><div class="dot"></div><div><div class="ms-title">Đỉnh cao cùng Argentina</div><div class="ms-desc">Một trong những giai đoạn mang tính biểu tượng nhất trong sự nghiệp đội tuyển.</div></div></div>
+          <div class="milestone reveal"><div class="year">2023</div><div class="dot"></div><div><div class="ms-title">Chương mới tại Miami</div><div class="ms-desc">Bắt đầu giai đoạn thi đấu tại Inter Miami CF và tiếp tục nâng tổng bàn thắng sự nghiệp.</div></div></div>
+          <div class="milestone reveal"><div class="year">2026</div><div class="dot"></div><div><div class="ms-title">Mốc 900+ bàn</div><div class="ms-desc">Tổng bàn thắng trong file hiện tại được cập nhật ở mức 928 vào ngày 13/09/2026.</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section stats-board" id="stats">
+      <div class="container">
+        <div class="reveal"><div class="section-label">04 · Breakdown</div><h2 class="section-title">Bàn thắng theo <em>đội bóng.</em></h2></div>
+        <div class="board reveal">
+          <div class="board-row board-head"><div>Đội</div><div class="board-num">Bàn</div><div class="board-muted">Tỷ trọng</div><div class="board-muted">Giai đoạn</div></div>
+          <div class="board-row"><div class="team-cell"><span class="badge fcb">FCB</span>FC Barcelona</div><div class="board-num">672</div><div class="board-muted">72,4%</div><div class="board-muted">2004–2021</div></div>
+          <div class="board-row"><div class="team-cell"><span class="badge arg">ARG</span>Argentina</div><div class="board-num">125</div><div class="board-muted">13,5%</div><div class="board-muted">2005–nay</div></div>
+          <div class="board-row"><div class="team-cell"><span class="badge miami">MIA</span>Inter Miami CF</div><div class="board-num">99</div><div class="board-muted">10,7%</div><div class="board-muted">2023–nay</div></div>
+          <div class="board-row"><div class="team-cell"><span class="badge psg">PSG</span>Paris Saint-Germain</div><div class="board-num">32</div><div class="board-muted">3,4%</div><div class="board-muted">2021–2023</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="container">
+        <div class="gallery-head reveal"><div><div class="section-label" style="color:#8ac8e5">05 · Gallery</div><h2 class="section-title">Leo, qua những <em>khung hình.</em></h2></div><p>Ảnh trực tuyến từ Wikimedia Commons. Phần credits bên dưới liên kết đến trang nguồn và thông tin giấy phép của từng ảnh.</p></div>
+        <div class="gallery-grid">
+          <div class="photo reveal"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_Argentina_v_Egypt_7_July_2026-282.jpg" alt="Messi Argentina 2026" /></div>
+          <div class="photo reveal"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_NYCFC_Miami_24_Sep_2025-089.jpg" alt="Messi Inter Miami 2025" /></div>
+          <div class="photo reveal"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Argentina_vs_mexico_messi_celebra_con_tribuna.jpg" alt="Messi Argentina World Cup" /></div>
+          <div class="photo reveal"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi_PSG_%28cropped%29.jpg" alt="Messi PSG" /></div>
+          <div class="photo reveal"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Lionel_Messi%2C_Player_of_FC_Barcelona_team.JPG" alt="Messi Barcelona" /></div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap footer-inner">
+  <footer>
+    <div class="container footer-grid">
       <div>
-        Dữ liệu dùng cho mục đích thống kê/tham khảo. WeLoveMessi là dự án fan-made và không phải trang chính thức của Lionel Messi.
+        <div class="footer-title">MESSI / GOALS</div>
+        <div class="footer-note">Fan-made, không liên kết với Lionel Messi, FIFA, AFA hay các CLB. Số liệu dùng cho mục đích thông tin; có thể cần cập nhật sau mỗi trận đấu.</div>
+        <div class="credits">Nguồn ảnh: <a href="https://commons.wikimedia.org/wiki/File:Lionel_Messi,_Player_of_FC_Barcelona_team.JPG" target="_blank">Barcelona — Christopher Johnson / CHUCAO</a> · <a href="https://commons.wikimedia.org/wiki/File:Lionel_Messi_PSG_(cropped).jpg" target="_blank">PSG — Bigmatbasket</a> · <a href="https://commons.wikimedia.org/wiki/File:Lionel_Messi_NYCFC_Miami_24_Sep_2025-051.jpg" target="_blank">Inter Miami — Bryan Berlin / WikiPortraits</a> · <a href="https://commons.wikimedia.org/wiki/File:Lionel_Messi_in_2018.jpg" target="_blank">Argentina 2018 — Kirill Venediktov</a> · <a href="https://commons.wikimedia.org/wiki/File:Lionel_Messi_Argentina_v_Egypt_7_July_2026-207.jpg" target="_blank">Argentina 2026 — Bryan Berlin / WikiPortraits</a>. Xem trang nguồn để biết giấy phép cụ thể.</div>
       </div>
-      <a class="source-link" href="https://welovemessi.com/vi/goals" target="_blank" rel="noopener noreferrer">Mở nguồn WeLoveMessi ↗</a>
+      <button class="to-top" aria-label="Về đầu trang" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
     </div>
   </footer>
 
   <script>
-    /* ============================================================
-       CHỈ CẦN SỬA KHỐI DỮ LIỆU NÀY KHI CÓ BÀN THẮNG MỚI.
-       Toàn bộ tổng số, % và biểu đồ phía dưới sẽ tự cập nhật.
-       ============================================================ */
-    const MESSI_DATA = {
-      updatedAt: '13.09.2026',
+    const DATA = {
+      updated: '13.09.2026',
+      total: 928,
       teams: [
-        { name: 'FC Barcelona', short: 'FCB', years: '2004–2021', goals: 672, type: 'CLB', color: '#7ed6ff' },
-        { name: 'Paris Saint-Germain', short: 'PSG', years: '2021–2023', goals: 32, type: 'CLB', color: '#ff6fae' },
-        { name: 'Inter Miami CF', short: 'MIA', years: '2023–nay', goals: 99, type: 'CLB', color: '#ffd166' },
-        { name: 'Argentina', short: 'ARG', years: '2005–nay', goals: 125, type: 'ĐTQG', color: '#52d39b' }
+        {name:'FC Barcelona', goals:672},
+        {name:'Argentina', goals:125},
+        {name:'Inter Miami CF', goals:99},
+        {name:'Paris Saint-Germain', goals:32}
       ]
     };
 
-    const total = MESSI_DATA.teams.reduce((s, t) => s + t.goals, 0);
-    const clubGoals = MESSI_DATA.teams.filter(t => t.type === 'CLB').reduce((s, t) => s + t.goals, 0);
-    const argentinaGoals = MESSI_DATA.teams.find(t => t.name === 'Argentina').goals;
-
-    document.getElementById('updatedAt').textContent = MESSI_DATA.updatedAt;
-    document.querySelector('[data-target="928"]').dataset.target = total;
-    document.querySelector('[data-target="803"]').dataset.target = clubGoals;
-    document.querySelector('[data-target="125"]').dataset.target = argentinaGoals;
-    document.querySelector('[data-target="99"]').dataset.target = MESSI_DATA.teams.find(t => t.name === 'Inter Miami CF').goals;
-    document.getElementById('clubPct').textContent = `${(clubGoals/total*100).toFixed(1).replace('.', ',')}% tổng số bàn`;
-    document.getElementById('argPct').textContent = `${(argentinaGoals/total*100).toFixed(1).replace('.', ',')}% tổng số bàn`;
-
-    const grid = document.getElementById('clubGrid');
-    MESSI_DATA.teams.forEach(team => {
-      const pct = team.goals / total * 100;
-      grid.insertAdjacentHTML('beforeend', `
-        <article class="club-card">
-          <div class="club-top">
-            <div class="badge">${team.short}</div>
-            <div><div class="club-name">${team.name}</div><div class="club-years">${team.years}</div></div>
-          </div>
-          <div class="club-goals">${team.goals}</div>
-          <div class="bar"><span style="--w:${pct}%"></span></div>
-          <div class="club-meta"><span>${team.type}</span><span>${pct.toFixed(1).replace('.', ',')}%</span></div>
-        </article>`);
-    });
-
-    const tbody = document.getElementById('statsTable');
-    MESSI_DATA.teams.forEach(team => {
-      const pct = team.goals / total * 100;
-      tbody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td><strong>${team.name}</strong></td>
-          <td>${team.years}</td>
-          <td class="num">${team.goals}</td>
-          <td class="num">${pct.toFixed(2).replace('.', ',')}%</td>
-          <td>${team.type}</td>
-        </tr>`);
-    });
-    tbody.insertAdjacentHTML('beforeend', `
-      <tr>
-        <td><strong>TỔNG CỘNG</strong></td><td>2004–2026</td>
-        <td class="num">${total}</td><td class="num">100,00%</td><td>CLB + ĐTQG</td>
-      </tr>`);
-
-    // Donut chart bằng SVG thuần, không cần thư viện ngoài.
-    const r = 46;
-    const C = 2 * Math.PI * r;
-    let offset = 0;
-    const segments = document.getElementById('donutSegments');
-    const legend = document.getElementById('legend');
-
-    MESSI_DATA.teams.forEach(team => {
-      const ratio = team.goals / total;
-      const dash = C * ratio;
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('class', 'seg');
-      circle.setAttribute('cx', '60');
-      circle.setAttribute('cy', '60');
-      circle.setAttribute('r', r);
-      circle.setAttribute('stroke', team.color);
-      circle.setAttribute('stroke-dasharray', `${dash} ${C-dash}`);
-      circle.setAttribute('stroke-dashoffset', `${-offset}`);
-      segments.appendChild(circle);
-      offset += dash;
-
-      legend.insertAdjacentHTML('beforeend', `
-        <div class="legend-row">
-          <i class="dot" style="background:${team.color}"></i>
-          <span>${team.name}</span>
-          <strong>${team.goals}</strong>
-        </div>`);
-    });
-
-    // Hiệu ứng đếm số.
-    document.querySelectorAll('.counter').forEach(el => {
-      const target = Number(el.dataset.target);
-      const duration = 900;
+    const easeOut = t => 1 - Math.pow(1-t, 3);
+    function animateCounter(el){
+      const target = Number(el.dataset.target || 0);
+      const duration = 1200;
       const start = performance.now();
-      function tick(now){
-        const p = Math.min((now-start)/duration, 1);
-        const eased = 1 - Math.pow(1-p, 3);
-        el.textContent = Math.round(target * eased).toLocaleString('vi-VN');
-        if(p < 1) requestAnimationFrame(tick);
+      function frame(now){
+        const p = Math.min((now-start)/duration,1);
+        el.textContent = Math.floor(target * easeOut(p)).toLocaleString('vi-VN');
+        if(p<1) requestAnimationFrame(frame);
       }
-      requestAnimationFrame(tick);
-    });
+      requestAnimationFrame(frame);
+    }
+
+    const revealObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+    const counterObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){animateCounter(entry.target);counterObserver.unobserve(entry.target)}
+      });
+    },{threshold:.5});
+    document.querySelectorAll('.count').forEach(el=>counterObserver.observe(el));
+
+    window.addEventListener('scroll',()=>{
+      const y=window.scrollY;
+      const media=document.querySelector('.hero-media');
+      if(media && y < window.innerHeight*1.2) media.style.transform=`scale(1.02) translateY(${y*.08}px)`;
+    },{passive:true});
   </script>
 </body>
 </html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Thống kê bàn thắng sự nghiệp Lionel Messi - dữ liệu tổng hợp theo WeLoveMessi và các nguồn đối chiếu cập nhật 13/09/2026." />
+  <title>Lionel Messi - Thống kê sự nghiệp</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0d1b2d;
+      --panel-2:#10243a;
+      --text:#f7fbff;
+      --muted:#9eb1c7;
+      --line:rgba(255,255,255,.08);
+      --accent:#7ed6ff;
+      --accent-2:#ff6fae;
+      --gold:#ffd166;
+      --green:#52d39b;
+      --shadow:0 18px 55px rgba(0,0,0,.28);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(126,214,255,.14), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(255,111,174,.12), transparent 28%),
+        linear-gradient(180deg, #06101d 0%, #081423 55%, #06101c 100%);
+      min-height:100vh;
+    }
+
+    a{color:inherit}
+    .wrap{width:min(1180px, calc(100% - 32px)); margin:0 auto}
+
+    .hero{
+      padding:62px 0 34px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:7px 11px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:#ccefff;
+      background:rgba(255,255,255,.035);
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.35fr .65fr;
+      gap:28px;
+      align-items:end;
+      margin-top:18px;
+    }
+
+    h1{
+      margin:0;
+      max-width:760px;
+      font-size:clamp(42px,7vw,86px);
+      line-height:.93;
+      letter-spacing:-.055em;
+      font-weight:900;
+    }
+
+    h1 span{
+      display:block;
+      background:linear-gradient(90deg, #fff 5%, var(--accent) 55%, #d9f5ff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero-copy{
+      color:var(--muted);
+      line-height:1.65;
+      margin:18px 0 0;
+      max-width:680px;
+      font-size:15px;
+    }
+
+    .update-box{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+      box-shadow:var(--shadow);
+    }
+
+    .update-box .small{color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.1em}
+    .update-box .date{font-size:28px; font-weight:850; margin:6px 0}
+    .update-box .source{font-size:13px; color:#c1cfde; line-height:1.5}
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:1.25fr repeat(3, .75fr);
+      gap:14px;
+      margin:12px 0 26px;
+    }
+
+    .stat{
+      min-height:148px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.035);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .stat.primary{
+      background:linear-gradient(135deg, rgba(126,214,255,.15), rgba(255,111,174,.08));
+    }
+
+    .stat .label{font-size:12px; color:var(--muted); letter-spacing:.11em; text-transform:uppercase; font-weight:750}
+    .stat .value{font-size:clamp(34px,5vw,64px); font-weight:900; letter-spacing:-.045em; margin-top:8px}
+    .stat:not(.primary) .value{font-size:38px}
+    .stat .note{font-size:12px; color:#bac8d7; margin-top:8px}
+    .stat .glow{position:absolute; width:110px; height:110px; border-radius:50%; filter:blur(40px); opacity:.18; right:-30px; bottom:-35px; background:var(--accent)}
+
+    .section{padding:26px 0}
+    .section-head{display:flex; justify-content:space-between; gap:20px; align-items:end; margin-bottom:16px}
+    .section h2{font-size:clamp(24px,3vw,34px); margin:0; letter-spacing:-.025em}
+    .section-head p{margin:0; color:var(--muted); font-size:13px}
+
+    .club-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+    .club-card{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:19px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      transition:.2s ease;
+    }
+    .club-card:hover{transform:translateY(-3px); border-color:rgba(126,214,255,.32)}
+    .club-top{display:flex; align-items:center; gap:12px}
+    .badge{
+      width:43px; height:43px; border-radius:13px;
+      display:grid; place-items:center;
+      background:rgba(126,214,255,.11);
+      border:1px solid var(--line);
+      font-weight:900;
+    }
+    .club-name{font-weight:800}
+    .club-years{font-size:12px; color:var(--muted); margin-top:2px}
+    .club-goals{font-size:36px; font-weight:900; margin:18px 0 9px; letter-spacing:-.04em}
+    .bar{height:7px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden}
+    .bar span{display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg, var(--accent), var(--accent-2)); width:var(--w)}
+    .club-meta{display:flex; justify-content:space-between; color:var(--muted); font-size:11px; margin-top:8px}
+
+    .analysis-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    .panel{
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:rgba(255,255,255,.03);
+      padding:22px;
+      min-height:330px;
+    }
+
+    .donut-wrap{display:grid; grid-template-columns:190px 1fr; gap:24px; align-items:center; height:100%}
+    .donut{width:180px; height:180px; transform:rotate(-90deg)}
+    .donut circle{fill:none; stroke-width:18}
+    .donut .track{stroke:rgba(255,255,255,.075)}
+    .donut .seg{stroke-linecap:round; transition:.4s ease}
+    .legend{display:grid; gap:12px}
+    .legend-row{display:grid; grid-template-columns:10px 1fr auto; gap:10px; align-items:center; font-size:13px}
+    .dot{width:9px; height:9px; border-radius:50%}
+    .legend-row span:nth-child(2){color:#dce7f2}
+    .legend-row strong{font-size:13px}
+
+    .timeline{display:grid; gap:13px; margin-top:14px}
+    .event{display:grid; grid-template-columns:84px 14px 1fr; gap:12px; align-items:start}
+    .event .year{font-size:12px; color:var(--muted); padding-top:1px}
+    .event .point{width:10px; height:10px; border-radius:50%; margin-top:3px; background:var(--accent); box-shadow:0 0 0 5px rgba(126,214,255,.08)}
+    .event .title{font-size:14px; font-weight:800}
+    .event .desc{font-size:12px; color:var(--muted); margin-top:4px; line-height:1.5}
+
+    .table-wrap{overflow:auto; border:1px solid var(--line); border-radius:20px; background:rgba(255,255,255,.025)}
+    table{width:100%; border-collapse:collapse; min-width:720px}
+    th,td{padding:15px 16px; text-align:left; border-bottom:1px solid var(--line)}
+    th{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.09em; font-weight:800}
+    td{font-size:13px}
+    tbody tr:last-child td{border-bottom:0}
+    tbody tr:hover{background:rgba(255,255,255,.025)}
+    .num{text-align:right; font-variant-numeric:tabular-nums; font-weight:800}
+
+    .footer{
+      border-top:1px solid var(--line);
+      margin-top:32px;
+      padding:24px 0 38px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.65;
+    }
+    .footer-inner{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
+    .source-link{display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#d9effb; padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.03)}
+
+    @media (max-width:900px){
+      .hero-grid{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .club-grid{grid-template-columns:1fr 1fr}
+      .analysis-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:580px){
+      .wrap{width:min(100% - 22px,1180px)}
+      .hero{padding-top:36px}
+      .stats-grid,.club-grid{grid-template-columns:1fr}
+      .donut-wrap{grid-template-columns:1fr; justify-items:center}
+      .legend{width:100%}
+      .section-head{align-items:start; flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Career goals dashboard</div>
+      <div class="hero-grid">
+        <div>
+          <h1>LIONEL <span>MESSI</span></h1>
+          <p class="hero-copy">Thống kê bàn thắng chính thức trong sự nghiệp cấp CLB và Đội tuyển Argentina. Giao diện được thiết kế dạng dashboard, tự tính tổng, tỷ trọng và biểu đồ từ một khối dữ liệu JavaScript duy nhất.</p>
+        </div>
+        <aside class="update-box">
+          <div class="small">Cập nhật dữ liệu</div>
+          <div class="date" id="updatedAt">13.09.2026</div>
+          <div class="source">Nguồn chính: WeLoveMessi / Goals. Số liệu hiện tại được đối chiếu với thông tin trận đấu và mốc 900 bàn.</div>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="stats-grid" aria-label="Thống kê tổng quan">
+      <article class="stat primary">
+        <div class="label">Tổng bàn thắng sự nghiệp</div>
+        <div class="value counter" data-target="928">0</div>
+        <div class="note">CLB + Đội tuyển Argentina</div>
+        <div class="glow"></div>
+      </article>
+      <article class="stat">
+        <div class="label">Bàn cho CLB</div>
+        <div class="value counter" data-target="803">0</div>
+        <div class="note" id="clubPct">86,5% tổng số bàn</div>
+      </article>
+      <article class="stat">
+        <div class="label">Argentina</div>
+        <div class="value counter" data-target="125">0</div>
+        <div class="note" id="argPct">13,5% tổng số bàn</div>
+      </article>
+      <article class="stat">
+        <div class="label">Inter Miami</div>
+        <div class="value counter" data-target="99">0</div>
+        <div class="note">Còn 1 bàn tới mốc 100</div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div><h2>Bàn thắng theo đội bóng</h2></div>
+        <p>Tỷ lệ được tính trên tổng 928 bàn</p>
+      </div>
+      <div class="club-grid" id="clubGrid"></div>
+    </section>
+
+    <section class="section">
+      <div class="analysis-grid">
+        <article class="panel">
+          <div class="section-head">
+            <h2>Cơ cấu 928 bàn</h2>
+            <p>Phân bổ theo đội</p>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120" aria-label="Biểu đồ tỷ trọng bàn thắng">
+              <circle class="track" cx="60" cy="60" r="46"></circle>
+              <g id="donutSegments"></g>
+            </svg>
+            <div class="legend" id="legend"></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="section-head">
+            <h2>Các cột mốc</h2>
+            <p>Career timeline</p>
+          </div>
+          <div class="timeline">
+            <div class="event">
+              <div class="year">01/05/2005</div><div class="point"></div>
+              <div><div class="title">Bàn thắng đầu tiên cho Barcelona</div><div class="desc">Khởi đầu hành trình ghi bàn chuyên nghiệp ở đội một FC Barcelona.</div></div>
+            </div>
+            <div class="event">
+              <div class="year">2021</div><div class="point"></div>
+              <div><div class="title">Khép lại Barcelona với 672 bàn</div><div class="desc">Đây vẫn là phần lớn nhất trong tổng số bàn thắng sự nghiệp của Messi.</div></div>
+            </div>
+            <div class="event">
+              <div class="year">2021–2023</div><div class="point"></div>
+              <div><div class="title">32 bàn cho Paris Saint-Germain</div><div class="desc">Giai đoạn thi đấu tại Ligue 1 trước khi chuyển sang MLS.</div></div>
+            </div>
+            <div class="event">
+              <div class="year">18/03/2026</div><div class="point"></div>
+              <div><div class="title">Chạm mốc 900 bàn sự nghiệp</div><div class="desc">Bàn thứ 900 được ghi cho Inter Miami ở Concacaf Champions Cup.</div></div>
+            </div>
+            <div class="event">
+              <div class="year">13/09/2026</div><div class="point"></div>
+              <div><div class="title">928 bàn — Inter Miami đạt 99 bàn</div><div class="desc">Mốc dữ liệu được dùng cho phiên bản dashboard này.</div></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Bảng tổng hợp</h2>
+        <p>Có thể copy trực tiếp sang Excel</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Đội</th>
+              <th>Giai đoạn</th>
+              <th class="num">Bàn thắng</th>
+              <th class="num">Tỷ trọng</th>
+              <th>Phân loại</th>
+            </tr>
+          </thead>
+          <tbody id="statsTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        Dữ liệu dùng cho mục đích thống kê/tham khảo. WeLoveMessi là dự án fan-made và không phải trang chính thức của Lionel Messi.
+      </div>
+      <a class="source-link" href="https://welovemessi.com/vi/goals" target="_blank" rel="noopener noreferrer">Mở nguồn WeLoveMessi ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ============================================================
+       CHỈ CẦN SỬA KHỐI DỮ LIỆU NÀY KHI CÓ BÀN THẮNG MỚI.
+       Toàn bộ tổng số, % và biểu đồ phía dưới sẽ tự cập nhật.
+       ============================================================ */
+    const MESSI_DATA = {
+      updatedAt: '13.09.2026',
+      teams: [
+        { name: 'FC Barcelona', short: 'FCB', years: '2004–2021', goals: 672, type: 'CLB', color: '#7ed6ff' },
+        { name: 'Paris Saint-Germain', short: 'PSG', years: '2021–2023', goals: 32, type: 'CLB', color: '#ff6fae' },
+        { name: 'Inter Miami CF', short: 'MIA', years: '2023–nay', goals: 99, type: 'CLB', color: '#ffd166' },
+        { name: 'Argentina', short: 'ARG', years: '2005–nay', goals: 125, type: 'ĐTQG', color: '#52d39b' }
+      ]
+    };
+
+    const total = MESSI_DATA.teams.reduce((s, t) => s + t.goals, 0);
+    const clubGoals = MESSI_DATA.teams.filter(t => t.type === 'CLB').reduce((s, t) => s + t.goals, 0);
+    const argentinaGoals = MESSI_DATA.teams.find(t => t.name === 'Argentina').goals;
+
+    document.getElementById('updatedAt').textContent = MESSI_DATA.updatedAt;
+    document.querySelector('[data-target="928"]').dataset.target = total;
+    document.querySelector('[data-target="803"]').dataset.target = clubGoals;
+    document.querySelector('[data-target="125"]').dataset.target = argentinaGoals;
+    document.querySelector('[data-target="99"]').dataset.target = MESSI_DATA.teams.find(t => t.name === 'Inter Miami CF').goals;
+    document.getElementById('clubPct').textContent = `${(clubGoals/total*100).toFixed(1).replace('.', ',')}% tổng số bàn`;
+    document.getElementById('argPct').textContent = `${(argentinaGoals/total*100).toFixed(1).replace('.', ',')}% tổng số bàn`;
+
+    const grid = document.getElementById('clubGrid');
+    MESSI_DATA.teams.forEach(team => {
+      const pct = team.goals / total * 100;
+      grid.insertAdjacentHTML('beforeend', `
+        <article class="club-card">
+          <div class="club-top">
+            <div class="badge">${team.short}</div>
+            <div><div class="club-name">${team.name}</div><div class="club-years">${team.years}</div></div>
+          </div>
+          <div class="club-goals">${team.goals}</div>
+          <div class="bar"><span style="--w:${pct}%"></span></div>
+          <div class="club-meta"><span>${team.type}</span><span>${pct.toFixed(1).replace('.', ',')}%</span></div>
+        </article>`);
+    });
+
+    const tbody = document.getElementById('statsTable');
+    MESSI_DATA.teams.forEach(team => {
+      const pct = team.goals / total * 100;
+      tbody.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td><strong>${team.name}</strong></td>
+          <td>${team.years}</td>
+          <td class="num">${team.goals}</td>
+          <td class="num">${pct.toFixed(2).replace('.', ',')}%</td>
+          <td>${team.type}</td>
+        </tr>`);
+    });
+    tbody.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td><strong>TỔNG CỘNG</strong></td><td>2004–2026</td>
+        <td class="num">${total}</td><td class="num">100,00%</td><td>CLB + ĐTQG</td>
+      </tr>`);
+
+    // Donut chart bằng SVG thuần, không cần thư viện ngoài.
+    const r = 46;
+    const C = 2 * Math.PI * r;
+    let offset = 0;
+    const segments = document.getElementById('donutSegments');
+    const legend = document.getElementById('legend');
+
+    MESSI_DATA.teams.forEach(team => {
+      const ratio = team.goals / total;
+      const dash = C * ratio;
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('class', 'seg');
+      circle.setAttribute('cx', '60');
+      circle.setAttribute('cy', '60');
+      circle.setAttribute('r', r);
+      circle.setAttribute('stroke', team.color);
+      circle.setAttribute('stroke-dasharray', `${dash} ${C-dash}`);
+      circle.setAttribute('stroke-dashoffset', `${-offset}`);
+      segments.appendChild(circle);
+      offset += dash;
+
+      legend.insertAdjacentHTML('beforeend', `
+        <div class="legend-row">
+          <i class="dot" style="background:${team.color}"></i>
+          <span>${team.name}</span>
+          <strong>${team.goals}</strong>
+        </div>`);
+    });
+
+    // Hiệu ứng đếm số.
+    document.querySelectorAll('.counter').forEach(el => {
+      const target = Number(el.dataset.target);
+      const duration = 900;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now-start)/duration, 1);
+        const eased = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString('vi-VN');
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  </script>
+</body>
+</html>

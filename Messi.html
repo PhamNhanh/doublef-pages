@@ -2909,7 +2909,7 @@ body.award-modal-open{overflow:hidden}
         ["2022","Messi cùng Argentina vô địch tại Qatar và nâng chiếc cúp World Cup sau trận chung kết với Pháp."]
       ],
       messi:"World Cup 2022 hoàn thiện bộ sưu tập danh hiệu đội tuyển của Messi và trở thành hình ảnh biểu tượng trong giai đoạn cuối sự nghiệp quốc tế.",
-      photo:"https://upload.wikimedia.org/wikipedia/commons/4/46/Ousmane_Demb%C3%A9l%C3%A9_World_Cup_Trophy.jpg", fallbackPhoto:"https://upload.wikimedia.org/wikipedia/commons/f/f9/Paul_Pogba_World_Cup_Trophy.jpg", source:"https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/trophy-design-history-jules-rimet", art:"worldcup"
+      photo:"https://i2-prod.scottishdailyexpress.co.uk/article28763966.ece/ALTERNATES/s1200f/0_Argentina-v-France-Final-FIFA-World-Cup-Qatar-2022.jpg", fallbackPhoto:"https://www.fanzword.com/wp-content/uploads/2024/12/81zXzdp9ZYL.jpg", photoFit:"cover", photoPosition:"50% 42%", source:"https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/trophy-design-history-jules-rimet", art:"worldcup"
     },
     copa:{
       title:"Copa América", type:"Đội tuyển", born:"1916", body:"CONMEBOL",
@@ -3017,7 +3017,7 @@ body.award-modal-open{overflow:hidden}
         <div class="award-visual">
           <div class="award-photo-stage" id="awardPhotoStage" aria-label="Ảnh thật của danh hiệu, có thể kéo để nghiêng góc nhìn">
             <div class="award-photo-card" id="awardPhotoCard">
-              <img id="awardPhoto" alt="" loading="eager" referrerpolicy="no-referrer">
+              <img id="awardPhoto" alt="" loading="eager">
               <span class="award-photo-glare" aria-hidden="true"></span>
             </div>
           </div>
@@ -3053,6 +3053,8 @@ body.award-modal-open{overflow:hidden}
     const img=document.getElementById('awardPhoto'), card=document.getElementById('awardPhotoCard'); if(!img||!card)return;
     card.classList.remove('photo-load-error');
     img.alt=`Ảnh thật ${d.title}`;
+    img.style.objectFit=d.photoFit||'contain';
+    img.style.objectPosition=d.photoPosition||'50% 50%';
     img.dataset.fallbackUsed='0';
     img.onerror=()=>{
       if(d.fallbackPhoto && img.dataset.fallbackUsed!=='1'){

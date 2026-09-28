@@ -12017,4 +12017,162 @@ K6OszcosyuxK7cx+ZXeXJUXtkllp3mVJVkebLY5tJinGGvt0MqOtSSdMe9rEbbWxpZUGb2se1FmPPp2r
 <!-- build-map 1030 · print-mode · GOAT Ultimate v16 -->
 <!-- build-map 1031 · responsive-panel · GOAT Ultimate v16 -->
 <!-- /GOATX BUILD MAP ====================================================== -->
+
+<style id="leo-goat-mobile-responsive-v12">
+/* Mobile/tablet compatibility patch. Keeps desktop design intact. */
+html,body{max-width:100%;overflow-x:hidden}
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+img,svg,video,canvas{max-width:100%;height:auto}
+.page,.section,.wrap,.card,.copy,.prose,.person-copy,.card-copy{min-width:0}
+
+@media(max-width:900px){
+  .wrap{width:min(calc(100% - 28px),1320px)!important}
+  .section{padding:68px 0!important}
+
+  /* Main navigation becomes two rows: controls + horizontally scrollable tabs. */
+  .nav{
+    top:6px!important;left:6px!important;right:6px!important;transform:none!important;
+    width:auto!important;max-width:none!important;height:auto!important;min-height:72px!important;
+    padding:7px!important;gap:6px!important;flex-wrap:wrap!important;align-content:center!important;
+    border-radius:18px!important;overflow:visible!important
+  }
+  .brand{min-width:0!important;flex:0 0 auto!important;order:1!important}
+  .brand-logo{width:40px!important;height:40px!important;flex:0 0 40px!important}
+  .brand-copy{display:none!important}
+  .theme-switch{
+    order:2!important;margin-left:auto!important;min-width:88px!important;width:auto!important;
+    height:42px!important;padding:3px!important;gap:3px!important;border-radius:14px!important
+  }
+  .theme-btn{min-width:38px!important;width:38px!important;height:34px!important;padding:4px!important;border-radius:11px!important}
+  .theme-btn span{display:none!important}
+  .theme-logo{width:22px!important;height:22px!important}
+  .tabs{
+    order:3!important;flex:1 0 100%!important;width:100%!important;max-width:none!important;min-width:0!important;
+    overflow-x:auto!important;overflow-y:hidden!important;padding:2px 0 1px!important;gap:4px!important;
+    -webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity
+  }
+  .tab{scroll-snap-align:start;min-height:38px!important;padding:9px 11px!important;font-size:10px!important;flex:0 0 auto!important}
+
+  /* Compensate for taller mobile nav. */
+  .hero-inner,.ga-hero,.assist-hero,.keeper-hero,.goal-hero,.profile-hero,.timeline-hero,.gallery-hero,
+  .interaction-hero,.interaction-first{padding-top:132px!important}
+
+  /* Collapse wide editorial/data layouts. */
+  .hero-bottom,.career-orbit,.ga-score,.rating-wall,.goal-head,.goal-anatomy,.profile-layout,.chapter-layout,
+  .timeline-event,.gallery-essay,.assist-hero-grid,.interaction-hero-inner,.interaction-head,.quiz-layout,
+  .network-layout,.guess-layout,.compare-controls,.compare-stage,.tactical-board{grid-template-columns:1fr!important}
+  .section-head{grid-template-columns:1fr!important;gap:18px!important}
+  .context-grid,.evolution-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .finishing-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .directory,.keeper-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .recipient-podium,.keeper-podium{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .trophy-shelf,.honour-grid,.record-grid,.atlas,.stat-ribbon{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+
+  .gallery-essay .photo{min-height:440px!important}
+  .sticky-photo{position:relative!important;top:auto!important;height:auto!important;min-height:480px!important}
+  .goal-map-panel{min-height:auto!important;padding:18px!important}
+  .goal-dot-map,.goal-dot-map-profile{width:min(100%,500px)!important}
+
+  /* Tables stay readable without forcing the entire page wider. */
+  .ledger,.season-table{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important}
+  .ledger table,.season-table table{min-width:720px!important;width:100%!important}
+  .ledger th,.ledger td,.season-table th,.season-table td{white-space:nowrap!important}
+
+  .toolbar,.gallery-controls,.quiz-actions,.goatx-head-actions{max-width:100%;flex-wrap:wrap!important}
+  .field.search,.goatx-search{min-width:0!important;width:100%!important;max-width:100%!important}
+
+  .modal{padding:14px!important}
+  .modal-card{width:100%!important;max-height:92vh!important}
+  .award-dialog{width:100%!important}
+}
+
+@media(max-width:640px){
+  .wrap{width:calc(100% - 20px)!important}
+  .section{padding:54px 0!important}
+
+  .nav{left:5px!important;right:5px!important;top:5px!important;padding:6px!important;border-radius:16px!important}
+  .brand-logo{width:38px!important;height:38px!important;flex-basis:38px!important}
+  .theme-switch{height:40px!important;min-width:84px!important}
+  .theme-btn{width:36px!important;min-width:36px!important;height:32px!important}
+  .tab{font-size:9px!important;padding:8px 10px!important;min-height:36px!important}
+
+  .hero-inner,.ga-hero,.assist-hero,.keeper-hero,.goal-hero,.profile-hero,.timeline-hero,.gallery-hero,
+  .interaction-hero,.interaction-first{padding-top:124px!important}
+
+  .hero h1{font-size:clamp(64px,22vw,104px)!important;line-height:.8!important}
+  .ga-big b{font-size:clamp(86px,31vw,150px)!important}
+  .assist-number{font-size:clamp(94px,34vw,150px)!important}
+  .goal-hero .big{font-size:clamp(108px,35vw,170px)!important}
+  .profile-name{font-size:clamp(54px,17vw,82px)!important;line-height:.82!important}
+  .keeper-title{font-size:clamp(54px,17vw,84px)!important;line-height:.84!important}
+  .title{font-size:clamp(34px,11vw,54px)!important;line-height:.94!important}
+  .assist-side h2,.gallery-essay h2,.copy h2{font-size:clamp(32px,10vw,44px)!important;line-height:1!important}
+  .prose{font-size:16px!important;line-height:1.75!important}
+  .prose h3{font-size:32px!important}
+
+  .hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .ga-stack,.keeper-kpis,.modal-kpis,.counter-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .context-grid,.evolution-grid,.finishing-stat-grid,.directory,.keeper-grid,.recipient-podium,.keeper-podium,
+  .trophy-shelf,.honour-grid,.record-grid,.atlas,.stat-ribbon,.milestone-grid,.venue-list,.footer-sources,
+  .goatx-grid{grid-template-columns:1fr!important}
+
+  .evolution-step,.finishing-stat{border-right:0!important;border-bottom:1px solid var(--theme-line,#bfd7e5)!important}
+  .evolution-step:last-child,.finishing-stat:last-child{border-bottom:0!important}
+  .finishing-stat{min-height:150px!important;padding:22px!important}
+  .finishing-stat b{font-size:54px!important}
+
+  .mosaic,.gallery-wall{grid-template-columns:1fr!important;grid-auto-rows:auto!important}
+  .mosaic .photo,.gallery-wall .photo{grid-column:auto!important;grid-row:auto!important;min-height:300px!important;aspect-ratio:4/5}
+  .gallery-essay .photo{min-height:360px!important}
+  .sticky-photo{min-height:380px!important}
+
+  .season-board{padding:18px!important;overflow-x:auto!important}
+  .season-bars{min-width:620px!important;height:230px!important}
+  .season-labels{min-width:620px!important}
+
+  .ledger{border-radius:16px!important}
+  .ledger table,.season-table table{min-width:660px!important}
+  .ledger th,.ledger td,.season-table th,.season-table td{padding:11px 12px!important;font-size:11px!important}
+
+  .card,.recipient-card,.person-card,.keeper-card,.gk-card{border-radius:16px!important}
+  .recipient-card,.person-card,.keeper-card,.gk-card{min-height:0!important;padding:16px!important}
+
+  .counter-topline{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+  .counter-topline strong{font-size:38px!important}
+  .compare-ledger{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  .assist-network{min-height:620px!important;overflow:hidden!important}
+  .network-node{width:82px!important}
+  .network-node .avatar{width:54px!important;height:54px!important}
+  .network-node.messi .avatar{width:74px!important;height:74px!important}
+
+  .modal{padding:8px!important;align-items:flex-end!important}
+  .modal-card{border-radius:18px 18px 0 0!important;max-height:94vh!important}
+  .modal-head{padding:16px!important;gap:12px!important}
+  .modal-head h3{font-size:22px!important}
+  .modal-body{padding:16px!important}
+  .award-modal{padding:6px!important}
+  .award-copy{padding:28px 18px!important}
+
+  .site-footer{padding:42px 0!important}
+  .footer-grid{gap:24px!important}
+
+  input,select,textarea,button{font-size:16px}
+  button,.tab,.theme-btn,.close{touch-action:manipulation}
+}
+
+@media(max-width:420px){
+  .wrap{width:calc(100% - 16px)!important}
+  .hero-metrics,.ga-stack,.keeper-kpis,.modal-kpis,.counter-metrics{grid-template-columns:1fr!important}
+  .hero-metric{min-height:92px!important}
+  .assist-number{font-size:30vw!important}
+  .goal-hero .big{font-size:31vw!important}
+  .profile-name,.keeper-title{font-size:15vw!important}
+  .gallery-essay .photo,.sticky-photo{min-height:320px!important}
+  .guess-photo{min-height:360px!important}
+  .award-visual{min-height:360px!important}
+  .award-model-stage{height:280px!important}
+  .footer-editor-launcher{left:8px!important;bottom:8px!important}
+}
+</style>
+
 </body></html>

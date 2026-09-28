@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="LOGODF.png" />
   <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
   <link rel="apple-touch-icon" href="LOGODF.png" />
-  <title>doublef.io.vn - Portal</title>
+  <title>DoubleF Workspace - Enterprise Portal</title>
 
   <style>
     :root{
@@ -641,6 +641,374 @@
       .toast{right:12px;bottom:12px}
     }
   </style>
+
+<style id="corporate-overrides">
+  :root{
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --card2:#f8fafc;
+    --text:#172033;
+    --muted:#667085;
+    --line:#e4e7ec;
+    --line2:#d0d5dd;
+    --brand:#0b1f3a;
+    --blue:#155eef;
+    --blue-soft:#eef4ff;
+    --green:#067647;
+    --shadow-sm:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);
+    --shadow-md:0 8px 24px rgba(16,24,40,.08);
+    --shadow-lg:0 18px 48px rgba(16,24,40,.12);
+    --side:276px;
+  }
+
+  body.dark{
+    --bg:#0d1117;
+    --card:#131a24;
+    --card2:#18212e;
+    --text:#f2f4f7;
+    --muted:#98a2b3;
+    --line:#273142;
+    --line2:#344054;
+    --brand:#f9fafb;
+    --blue:#84adff;
+    --blue-soft:rgba(47,107,255,.12);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.18);
+    --shadow-md:0 10px 30px rgba(0,0,0,.24);
+    --shadow-lg:0 20px 56px rgba(0,0,0,.32);
+  }
+
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    letter-spacing:-.01em;
+  }
+
+  .app{grid-template-columns:var(--side) minmax(0,1fr)}
+
+  aside{
+    padding:20px 16px;
+    border-right:1px solid #16263d;
+    background:linear-gradient(180deg,#0a1728 0%,#0b1f3a 100%);
+    color:#fff;
+    backdrop-filter:none;
+    box-shadow:10px 0 30px rgba(15,23,42,.06);
+  }
+  body.dark aside{background:linear-gradient(180deg,#08111f 0%,#0a1728 100%)}
+
+  .brand{
+    padding:4px 4px 20px;
+    margin-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,.10);
+  }
+  .brand img{
+    width:42px;height:42px;border-radius:11px;
+    background:#fff;
+    box-shadow:none;
+  }
+  .brand b{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em}
+  .brand span{font-size:11px;color:#98a2b3;margin-top:2px}
+
+  .side-title{
+    margin:18px 8px 8px;
+    color:#667085;
+    font-size:10px;
+    letter-spacing:.16em;
+    font-weight:800;
+  }
+
+  .search{
+    background:rgba(255,255,255,.07);
+    border-color:rgba(255,255,255,.10);
+    border-radius:10px;
+    padding:10px 11px;
+    box-shadow:none;
+  }
+  .search span{color:#98a2b3}
+  .search input{color:#fff;font-size:13px}
+  .search input::placeholder{color:#667085}
+
+  .filters{gap:4px}
+  .filter{
+    color:#b7c0ce;
+    border-radius:9px;
+    padding:10px 11px;
+    font-size:13px;
+    font-weight:650;
+  }
+  .filter:hover{
+    background:rgba(255,255,255,.06);
+    border-color:transparent;
+    color:#fff;
+  }
+  .filter.active,
+  body.dark .filter.active{
+    background:rgba(21,94,239,.18);
+    border-color:rgba(132,173,255,.18);
+    color:#fff;
+  }
+  .count{
+    min-width:26px;
+    padding:2px 7px;
+    border-radius:999px;
+    background:rgba(255,255,255,.07);
+    color:#98a2b3;
+    text-align:center;
+  }
+  .filter.active .count{color:#c7d7fe;background:rgba(255,255,255,.08)}
+
+  .side-card{
+    background:rgba(255,255,255,.06);
+    border-color:rgba(255,255,255,.09);
+    border-radius:12px;
+    box-shadow:none;
+    color:#fff;
+  }
+  .stat-line{color:#98a2b3}
+  .stat-line b{color:#fff}
+  .time{color:#fff;font-size:24px;font-weight:750;letter-spacing:-.04em}
+  .date{color:#98a2b3}
+
+  main{padding:24px 30px 40px}
+  .container{max-width:1380px;gap:20px}
+
+  .topbar{
+    position:sticky;
+    top:14px;
+    z-index:12;
+    min-height:66px;
+    border-radius:14px;
+    padding:12px 14px 12px 18px;
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(228,231,236,.95);
+    box-shadow:var(--shadow-sm);
+    backdrop-filter:blur(16px) saturate(160%);
+  }
+  body.dark .topbar{background:rgba(19,26,36,.92)}
+  .topbar h1{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.03em}
+  .topbar p{font-size:12px;color:var(--muted);margin-top:2px}
+
+  .actions{gap:7px}
+  .btn{
+    border-radius:9px;
+    padding:9px 12px;
+    min-height:38px;
+    border-color:var(--line);
+    box-shadow:none;
+    font-size:12px;
+    font-weight:700;
+    background:var(--card);
+  }
+  .btn:hover{transform:none;border-color:#b2c5ef;background:var(--card2)}
+  .btn.primary{
+    background:#155eef;
+    color:#fff;
+    border-color:#155eef;
+    box-shadow:0 1px 2px rgba(21,94,239,.22);
+  }
+  body.dark .btn.primary{background:#2f6bff;border-color:#2f6bff;color:#fff}
+
+  .hero{
+    min-height:290px;
+    grid-template-columns:minmax(0,1.5fr) minmax(300px,.7fr);
+    align-items:stretch;
+    gap:28px;
+    padding:36px 38px;
+    border-radius:18px;
+    color:var(--text);
+    background:
+      radial-gradient(800px 320px at 12% 0%,rgba(21,94,239,.10),transparent 60%),
+      linear-gradient(180deg,#fff,#fbfcfe);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+  body.dark .hero{
+    background:
+      radial-gradient(700px 320px at 10% 0%,rgba(47,107,255,.14),transparent 60%),
+      linear-gradient(180deg,#131a24,#101720);
+  }
+  .hero:after{
+    right:-120px;bottom:-190px;width:420px;height:420px;
+    background:rgba(21,94,239,.06);filter:blur(4px);
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:14px;
+    color:#155eef;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.12em;
+  }
+  .eyebrow:before{
+    content:"";
+    width:24px;height:2px;border-radius:99px;background:#155eef;
+  }
+  .hero h2{
+    max-width:780px;
+    font-size:clamp(34px,4vw,58px);
+    line-height:1.02;
+    letter-spacing:-.055em;
+    color:var(--text);
+    font-weight:800;
+  }
+  .hero p{
+    max-width:760px;
+    margin-top:16px;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .hero-panel{
+    align-self:stretch;
+    align-content:center;
+    background:#0b1f3a;
+    border:0;
+    border-radius:16px;
+    padding:22px;
+    box-shadow:none;
+    color:#fff;
+  }
+  body.dark .hero-panel{background:#0a1728;border:1px solid #243042}
+  .metric-label{color:#98a2b3;font-size:11px;font-weight:700;letter-spacing:.04em}
+  .hero-num{font-size:48px;letter-spacing:-.06em;margin-top:2px}
+  .mini-grid{gap:8px}
+  .mini{
+    background:rgba(255,255,255,.06);
+    border-color:rgba(255,255,255,.08);
+    border-radius:10px;
+    padding:11px 12px;
+  }
+  .mini span{font-size:10px;color:#98a2b3}
+  .mini b{font-size:16px;margin-top:4px;color:#fff}
+
+  .toolbar{
+    border-radius:14px;
+    padding:10px 12px;
+    border-color:var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+  .select{
+    min-height:38px;
+    border-radius:9px;
+    padding:8px 11px;
+    font-size:12px;
+    font-weight:650;
+    background:var(--card);
+  }
+  .view{border-radius:9px;padding:3px;background:var(--card2)}
+  .view button{border-radius:7px;padding:7px 11px;font-size:12px}
+
+  .panel{
+    border-radius:16px;
+    border-color:var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+  .panel-head{padding:22px 22px 0}
+  .panel-head h3{font-size:17px;font-weight:800;letter-spacing:-.02em}
+  .panel-head p{font-size:12px}
+  .panel-body{padding:18px 22px 24px}
+
+  .menu{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .app-card{
+    min-height:146px;
+    padding:16px;
+    border-radius:14px;
+    border-color:var(--line);
+    background:var(--card);
+    box-shadow:none;
+    transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+  }
+  .app-card:before{display:none}
+  .app-card:hover{
+    transform:translateY(-2px);
+    border-color:#b7c7ea;
+    box-shadow:var(--shadow-md);
+  }
+  body.dark .app-card:hover{border-color:#3b82f6}
+
+  .app-icon{
+    width:48px;height:48px;border-radius:11px;
+    font-size:23px;
+    box-shadow:none;
+  }
+  .app-title{font-size:14px;font-weight:800;letter-spacing:-.02em}
+  .app-desc{font-size:12px;line-height:1.55;color:var(--muted);min-height:38px}
+  .app-path{font-size:10px;color:#98a2b3}
+  .card-bottom{margin-top:10px}
+  .badge{
+    border-radius:999px;
+    padding:4px 7px;
+    font-size:10px;
+    font-weight:750;
+    background:var(--card2);
+  }
+  .fav{
+    width:32px;height:32px;border-radius:8px;
+    box-shadow:none;
+  }
+  .fav:hover{background:var(--blue-soft);border-color:#b2c5ef}
+
+  .empty{border-radius:12px}
+  .toast-item{border-radius:10px;box-shadow:var(--shadow-md)}
+  .cmdk-box{border-radius:16px;box-shadow:var(--shadow-lg)}
+  .cmdk-top input{border-radius:10px}
+  .cmdk-item{border-radius:10px}
+
+  @media(max-width:1180px){
+    .menu{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .hero{grid-template-columns:1fr 300px}
+  }
+
+  @media(max-width:980px){
+    :root{--side:0px}
+    main{padding:16px 16px 84px}
+    .topbar{top:8px}
+    .hero{grid-template-columns:1fr;padding:28px}
+    .hero-panel{min-height:180px}
+    aside{width:min(88vw,310px)}
+  }
+
+  @media(max-width:680px){
+    main{padding:10px 10px 76px}
+    .container{gap:12px}
+    .topbar{
+      border-radius:12px;
+      padding:10px;
+      align-items:center;
+    }
+    .topbar h1{font-size:15px}
+    .topbar p{display:none}
+    .actions{margin-left:auto}
+    .btn{min-height:36px;padding:8px 10px}
+    #cmdBtn{font-size:0}
+    #cmdBtn:before{content:"Tìm kiếm";font-size:12px}
+    .hero{padding:24px 20px;border-radius:14px;min-height:0}
+    .hero h2{font-size:32px;line-height:1.06}
+    .hero p{font-size:13px;line-height:1.6}
+    .hero-panel{padding:16px;border-radius:12px;min-height:0}
+    .hero-num{font-size:40px}
+    .toolbar{border-radius:12px}
+    .toolbar-left{grid-template-columns:1fr 1fr}
+    .panel{border-radius:12px}
+    .panel-head,.panel-body{padding-left:14px;padding-right:14px}
+    .menu{grid-template-columns:1fr}
+    .app-card{min-height:0;border-radius:12px;padding:14px}
+    .app-icon{width:46px;height:46px;border-radius:10px}
+    .app-desc{min-height:0}
+  }
+
+  @media(max-width:430px){
+    .actions{gap:5px}
+    .actions .btn{padding:8px 9px}
+    #reloadBtn{display:none}
+    .toolbar-left{grid-template-columns:1fr}
+    .hero h2{font-size:29px}
+    .mini-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+
 </head>
 
 <body>
@@ -649,8 +1017,8 @@
       <div class="brand">
         <img src="LOGODF.png" alt="DF" onerror="this.style.display='none';this.nextElementSibling.style.marginLeft='0'" />
         <div>
-          <b>doublef.io.vn</b>
-          <span>Professional Portal</span>
+          <b>DoubleF Workspace</b>
+          <span>Enterprise application portal</span>
         </div>
       </div>
 
@@ -708,7 +1076,7 @@
           <div class="actions">
             <button class="btn hide-sm" id="themeBtn">Chế độ</button>
             <button class="btn" id="cmdBtn">Tìm nhanh ⌘K</button>
-            <button class="btn primary" id="reloadBtn">Tải lại</button>
+            <button class="btn primary" id="reloadBtn">Đồng bộ</button>
           </div>
         </section>
 
@@ -720,14 +1088,14 @@
 
           <div class="hero-panel">
             <div>
-              <span style="color:rgba(255,255,255,.65);font-size:12px">Pages loaded</span>
+              <span class="metric-label">Ứng dụng khả dụng</span>
               <div class="hero-num" id="miniTotal">0</div>
             </div>
             <div class="mini-grid">
               <div class="mini"><span>Công cụ</span><b id="miniTools">0</b></div>
               <div class="mini"><span>Game</span><b id="miniGames">0</b></div>
               <div class="mini"><span>Đã ghim</span><b id="miniFav">0</b></div>
-              <div class="mini"><span>Theme</span><b id="themeName">Light</b></div>
+              <div class="mini"><span>Giao diện</span><b id="themeName">Light</b></div>
             </div>
           </div>
         </section>

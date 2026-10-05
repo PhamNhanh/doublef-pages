@@ -35,51 +35,6 @@
     "icon": "🔗"
   },
   {
-    "title": "Báo cáo | DoubleF Test Management",
-    "path": "kiem-thu/bao-cao.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "Dự án | DoubleF Test Management",
-    "path": "kiem-thu/du-an.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "Dashboard | DoubleF Test Management",
-    "path": "kiem-thu/index.html",
-    "icon": "🏠"
-  },
-  {
-    "title": "Kế hoạch kiểm thử | DoubleF Test Management",
-    "path": "kiem-thu/ke-hoach.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "Đăng nhập | DoubleF Test Management",
-    "path": "kiem-thu/login.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "Quản lý lỗi | DoubleF Test Management",
-    "path": "kiem-thu/loi.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "Test Case | DoubleF Test Management",
-    "path": "kiem-thu/test-case.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "Thành viên | DoubleF Test Management",
-    "path": "kiem-thu/thanh-vien.html",
-    "icon": "🔗"
-  },
-  {
-    "title": "thuc-hien.html",
-    "path": "kiem-thu/thuc-hien.html",
-    "icon": "🔗"
-  },
-  {
     "title": "Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell",
     "path": "Kiểm tra lỗi chính tả.html",
     "icon": "🔗"

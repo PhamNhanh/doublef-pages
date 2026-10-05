@@ -60,6 +60,11 @@
     "icon": "🔗"
   },
   {
+    "title": "Thực hiện kiểm thử",
+    "path": "kiem-thu/thuc-hien.html",
+    "icon": "🔗"
+  },
+  {
     "title": "Spellcheck tiếng Việt cho file Word (.docx) - nspell + hunspell",
     "path": "Kiểm tra lỗi chính tả.html",
     "icon": "🔗"

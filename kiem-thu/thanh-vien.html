@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thành viên | DoubleF Test</title>
+<style>
+:root{--b:#155eef;--bg:#f5f7fa;--bd:#eaecf0;--m:#667085;--s:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.side{position:fixed;inset:0 auto 0 0;width:var(--s);background:#fff;border-right:1px solid var(--bd);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd)}.logo{width:39px;height:39px;background:var(--b);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px}.nav a.active,.nav a:hover{background:#eff4ff;color:var(--b);font-weight:700}.who{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--s)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.btn{padding:10px 13px;border-radius:8px;border:1px solid var(--bd);background:#fff;cursor:pointer}.primary{background:var(--b);color:#fff}.content{padding:26px 28px;max-width:1500px;margin:auto}.head{display:flex;justify-content:space-between}.card{background:#fff;border:1px solid var(--bd);border-radius:12px;margin:16px 0;overflow:hidden}.form{padding:18px;display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end}.form span{display:block;font-size:11px;font-weight:700;margin-bottom:6px}select{width:100%;height:42px;border:1px solid #d0d5dd;border-radius:8px;padding:8px}table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;background:#f9fafb;color:var(--m);font-size:10px;padding:12px}td{padding:13px;border-top:1px solid var(--bd)}.hidden{display:none}@media(max-width:900px){.side{display:none}.main{margin:0}.content{padding:20px 14px}.form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="brand"><div class="logo">DF</div><strong>DoubleF Test</strong></div><nav class="nav"><a href="/kiem-thu/">Tổng quan</a><a href="/kiem-thu/du-an">Dự án</a><a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a href="/kiem-thu/test-case">Test Case</a><a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a href="/kiem-thu/loi">Quản lý lỗi</a><a href="/kiem-thu/bao-cao">Báo cáo</a><a class="active" href="/kiem-thu/thanh-vien">Thành viên</a></nav><div class="who" id="who">...</div></aside>
+<div class="main"><header class="top"><strong>Thành viên</strong><button id="logout" class="btn">Đăng xuất</button></header><main class="content">
+<div class="head"><div><h1>Thành viên dự án</h1><p style="color:#667085">Phân quyền Manager, Tester, Viewer.</p></div><button id="open" class="btn primary">+ Phân quyền</button></div>
+
+<section id="formBox" class="card hidden"><form id="form" class="form">
+<label><span>Dự án</span><select id="project" name="project_id"></select></label>
+<label><span>Người dùng</span><select id="userSelect" name="user_id"></select></label>
+<label><span>Vai trò dự án</span><select name="role"><option>manager</option><option>tester</option><option>viewer</option></select></label>
+<button class="btn primary">Lưu quyền</button>
+</form></section>
+
+<section class="card" style="overflow:auto"><table><thead><tr><th>Họ tên</th><th>Email</th><th>Quyền hệ thống</th><th>Dự án</th><th>Quyền dự án</th></tr></thead><tbody id="body"></tbody></table></section>
+
+<section id="adminBox" class="card hidden">
+<div style="padding:18px"><h2 style="font-size:16px">Quản trị quyền hệ thống</h2><p style="font-size:12px;color:#667085">Chỉ Admin sử dụng chức năng này.</p><div id="globalUsers"></div></div>
+</section>
+</main></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+let me,profile,projects=[],profiles=[],members=[];
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");me=session.user;
+ const {data:p}=await sb.from("profiles").select("*").eq("id",me.id).maybeSingle();profile=p;if(!p)return location.replace("/kiem-thu/login");who.textContent=p.full_name||me.email;
+ await load();
+}
+async function load(){
+ const r=await Promise.all([sb.from("projects").select("*"),sb.from("profiles").select("*").order("full_name"),sb.from("project_members").select("*")]);
+ projects=r[0].data||[];profiles=r[1].data||[];members=r[2].data||[];
+ const manageable=profile.role==="admin"?projects:projects.filter(p=>members.some(m=>m.project_id===p.id&&m.user_id===me.id&&m.role==="manager"));
+ if(!["admin","manager"].includes(profile.role)||!manageable.length)open.style.display="none";
+ project.innerHTML=manageable.map(p=>`<option value="${p.id}">${e(p.project_name)}</option>`).join("");
+ userSelect.innerHTML=profiles.map(p=>`<option value="${p.id}">${e(p.full_name||p.email)} (${e(p.email)})</option>`).join("");
+ body.innerHTML=members.map(m=>{const u=profiles.find(p=>p.id===m.user_id),pr=projects.find(p=>p.id===m.project_id);return `<tr><td>${e(u?.full_name||"")}</td><td>${e(u?.email||"")}</td><td>${e(u?.role||"")}</td><td>${e(pr?.project_name||"")}</td><td>${e(m.role)}</td></tr>`}).join("")||'<tr><td colspan="5">Chưa có thành viên.</td></tr>';
+ if(profile.role==="admin"){adminBox.classList.remove("hidden");globalUsers.innerHTML=profiles.map(u=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #eaecf0"><span>${e(u.full_name||u.email)} - ${e(u.email)}</span><select style="width:140px" onchange="globalRole('${u.id}',this.value)"><option ${u.role==="admin"?"selected":""}>admin</option><option ${u.role==="manager"?"selected":""}>manager</option><option ${u.role==="tester"?"selected":""}>tester</option><option ${u.role==="viewer"?"selected":""}>viewer</option></select></div>`).join("")}
+}
+open.onclick=()=>formBox.classList.toggle("hidden");
+form.onsubmit=async ev=>{ev.preventDefault();const f=new FormData(form);const {error}=await sb.from("project_members").upsert({project_id:f.get("project_id"),user_id:f.get("user_id"),role:f.get("role")},{onConflict:"project_id,user_id"});if(error)return alert(error.message);formBox.classList.add("hidden");load()};
+async function globalRole(id,role){const {error}=await sb.from("profiles").update({role}).eq("id",id);if(error)alert(error.message);else load()}
+logout.onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+init();
+</script>
+</body>
+</html>

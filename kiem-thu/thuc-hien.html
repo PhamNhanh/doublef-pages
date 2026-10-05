@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thực hiện kiểm thử</title>
+<style>
+:root{--b:#155eef;--bg:#f5f7fa;--bd:#eaecf0;--m:#667085;--s:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.side{position:fixed;inset:0 auto 0 0;width:var(--s);background:#fff;border-right:1px solid var(--bd);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd)}.logo{width:39px;height:39px;background:var(--b);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px}.nav a.active,.nav a:hover{background:#eff4ff;color:var(--b);font-weight:700}.who{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--s)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.btn{padding:10px 13px;border-radius:8px;border:1px solid var(--bd);background:#fff;cursor:pointer}.primary{background:var(--b);color:#fff;border-color:var(--b)}.content{padding:26px 28px;max-width:1500px;margin:auto}.card{background:#fff;border:1px solid var(--bd);border-radius:12px;margin-bottom:17px;padding:18px}.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form span{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.full{grid-column:1/-1}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:8px;padding:10px}input,select{height:42px}table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;background:#f9fafb;color:var(--m);font-size:10px;padding:12px}td{padding:13px;border-top:1px solid var(--bd)}.badge{padding:5px 8px;border-radius:999px;background:#f2f4f7;font-size:9px}.PASS{color:#067647;background:#ecfdf3}.FAIL{color:#b42318;background:#fef3f2}.BLOCKED{color:#b54708;background:#fffaeb}@media(max-width:900px){.side{display:none}.main{margin:0}.content{padding:20px 14px}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="brand"><div class="logo">DF</div><strong>DoubleF Test</strong></div><nav class="nav"><a href="/kiem-thu/">Tổng quan</a><a href="/kiem-thu/du-an">Dự án</a><a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a href="/kiem-thu/test-case">Test Case</a><a class="active" href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a href="/kiem-thu/loi">Quản lý lỗi</a><a href="/kiem-thu/bao-cao">Báo cáo</a><a href="/kiem-thu/thanh-vien">Thành viên</a></nav><div class="who" id="who">...</div></aside>
+<div class="main"><header class="top"><strong>Thực hiện kiểm thử</strong><button id="logout" class="btn">Đăng xuất</button></header>
+<main class="content">
+<h1>Thực hiện Test Case</h1>
+<section class="card"><form id="form" class="form">
+<label class="full"><span>Test Case</span><select id="caseSelect" name="test_case_id"></select></label>
+<label><span>Kết quả</span><select name="result"><option>PASS</option><option>FAIL</option><option>BLOCKED</option><option>N/A</option></select></label>
+<label><span>Môi trường</span><input name="environment" value="Cloudflare Pages"></label>
+<label><span>Trình duyệt</span><input name="browser" value="Google Chrome"></label>
+<label><span>Thiết bị</span><input name="device" value="Windows"></label>
+<label class="full"><span>Kết quả thực tế</span><textarea name="actual_result" rows="4"></textarea></label>
+<label class="full"><span>Ghi chú</span><textarea name="note"></textarea></label>
+<div class="full"><button class="btn primary">Lưu kết quả kiểm thử</button></div>
+</form></section>
+
+<section class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Test Case</th><th>Tester</th><th>Kết quả</th><th>Kết quả thực tế</th><th>Thời gian</th></tr></thead><tbody id="body"></tbody></table></section>
+</main></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+let me,cases=[],profiles=[];
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");me=session.user;
+ const {data:p}=await sb.from("profiles").select("*").eq("id",me.id).maybeSingle();if(!p)return location.replace("/kiem-thu/login");who.textContent=p.full_name||me.email;
+ await load();
+}
+async function load(){
+ const r=await Promise.all([sb.from("test_cases").select("*").order("test_code"),sb.from("test_runs").select("*").order("tested_at",{ascending:false}),sb.from("profiles").select("*")]);
+ cases=r[0].data||[];const runs=r[1].data||[];profiles=r[2].data||[];
+ caseSelect.innerHTML=cases.map(c=>`<option value="${c.id}">${e(c.test_code)} - ${e(c.test_name)}</option>`).join("");
+ body.innerHTML=runs.map(x=>`<tr><td>${e(cases.find(c=>c.id===x.test_case_id)?.test_code||"")}</td><td>${e(profiles.find(p=>p.id===x.tester_id)?.full_name||"")}</td><td><span class="badge ${x.result}">${e(x.result)}</span></td><td>${e(x.actual_result||"")}</td><td>${new Date(x.tested_at).toLocaleString("vi-VN")}</td></tr>`).join("")||'<tr><td colspan="5">Chưa có kết quả.</td></tr>';
+}
+form.onsubmit=async ev=>{ev.preventDefault();const f=new FormData(form);const {error}=await sb.from("test_runs").insert({test_case_id:f.get("test_case_id"),tester_id:me.id,result:f.get("result"),environment:f.get("environment").trim()||null,browser:f.get("browser").trim()||null,device:f.get("device").trim()||null,actual_result:f.get("actual_result").trim()||null,note:f.get("note").trim()||null,tested_at:new Date().toISOString()});if(error)return alert(error.message);alert("Đã lưu kết quả.");load()};
+logout.onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+init();
+</script>
+</body>
+</html>

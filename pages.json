@@ -45,6 +45,11 @@
     "icon": "🏠"
   },
   {
+    "title": "Kế hoạch kiểm thử",
+    "path": "kiem-thu/ke-hoach.html",
+    "icon": "🔗"
+  },
+  {
     "title": "Đăng nhập | DoubleF Test Management",
     "path": "kiem-thu/login.html",
     "icon": "🔗"

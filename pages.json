@@ -45,6 +45,11 @@
     "icon": "🏠"
   },
   {
+    "title": "ke-hoach.html",
+    "path": "kiem-thu/ke-hoach.html",
+    "icon": "🔗"
+  },
+  {
     "title": "login.html",
     "path": "kiem-thu/login.html",
     "icon": "🔗"

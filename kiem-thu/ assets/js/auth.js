@@ -1,369 +1,574 @@
-
 /* =========================================================
    DOUBLEF TEST MANAGEMENT
-   File: assets/js/auth.js
-   Xử lý đăng nhập / đăng xuất / session
+   AUTHENTICATION
 ========================================================= */
 
 (function () {
+
   "use strict";
 
-  /* -------------------------------------------------------
-     Helper
-  ------------------------------------------------------- */
 
-  function getCurrentPage() {
-    const path = window.location.pathname.toLowerCase();
+  /* =======================================================
+     PATH
+  ======================================================= */
 
-    if (path.endsWith("/login.html")) {
-      return "login";
+  function currentPath() {
+
+    return window.location.pathname
+      .toLowerCase()
+      .replace(/\/+$/, "");
+
+  }
+
+
+  function isLoginPage() {
+
+    const path = currentPath();
+
+    return (
+      path.endsWith("/kiem-thu/login") ||
+      path.endsWith("/kiem-thu/login.html")
+    );
+
+  }
+
+
+  function goLogin() {
+
+    window.location.replace(
+      window.APP_CONFIG?.paths?.login ||
+      "/kiem-thu/login"
+    );
+
+  }
+
+
+  function goDashboard() {
+
+    window.location.replace(
+      window.APP_CONFIG?.paths?.dashboard ||
+      "/kiem-thu/"
+    );
+
+  }
+
+
+  /* =======================================================
+     MESSAGE
+  ======================================================= */
+
+  function showLoginMessage(
+    message,
+    type = "error"
+  ) {
+
+    const el =
+      document.getElementById(
+        "loginMessage"
+      );
+
+    if (!el) return;
+
+    el.textContent = message;
+
+    el.className =
+      "login-message " + type;
+
+    el.hidden = false;
+
+  }
+
+
+  function hideLoginMessage() {
+
+    const el =
+      document.getElementById(
+        "loginMessage"
+      );
+
+    if (!el) return;
+
+    el.hidden = true;
+
+  }
+
+
+  /* =======================================================
+     LOADING
+  ======================================================= */
+
+  function setLoginLoading(
+    loading
+  ) {
+
+    const btn =
+      document.getElementById(
+        "btnLogin"
+      );
+
+    const label =
+      document.getElementById(
+        "loginButtonText"
+      );
+
+    const spinner =
+      document.getElementById(
+        "loginSpinner"
+      );
+
+
+    if (btn) {
+      btn.disabled = loading;
     }
 
-    return "app";
-  }
 
-  function redirectToLogin() {
-    window.location.href = "./login.html";
-  }
+    if (label) {
 
-  function redirectToDashboard() {
-    window.location.href = "./index.html";
-  }
+      label.textContent =
+        loading
+          ? "Đang đăng nhập..."
+          : "Đăng nhập";
 
-  function showAuthMessage(message, type = "error") {
-    const messageBox = document.getElementById("loginMessage");
-
-    if (!messageBox) return;
-
-    messageBox.textContent = message;
-    messageBox.className = `login-message ${type}`;
-    messageBox.style.display = "block";
-  }
-
-  function hideAuthMessage() {
-    const messageBox = document.getElementById("loginMessage");
-
-    if (!messageBox) return;
-
-    messageBox.style.display = "none";
-  }
-
-  function setLoginLoading(loading) {
-    const button = document.getElementById("btnLogin");
-    const buttonText = document.getElementById("loginButtonText");
-    const spinner = document.getElementById("loginSpinner");
-
-    if (!button) return;
-
-    button.disabled = loading;
-
-    if (buttonText) {
-      buttonText.textContent = loading
-        ? "Đang đăng nhập..."
-        : "Đăng nhập";
     }
+
 
     if (spinner) {
-      spinner.style.display = loading ? "inline-block" : "none";
+
+      spinner.hidden =
+        !loading;
+
     }
+
   }
 
-  /* -------------------------------------------------------
-     Kiểm tra Supabase
-  ------------------------------------------------------- */
 
-  function checkSupabase() {
+  /* =======================================================
+     SESSION
+  ======================================================= */
+
+  async function getSession() {
+
     if (!window.sb) {
-      showAuthMessage(
-        "Chưa cấu hình kết nối Supabase. Vui lòng kiểm tra file assets/js/config.js.",
-        "error"
+      return null;
+    }
+
+    const {
+      data,
+      error
+    } =
+      await window.sb.auth
+        .getSession();
+
+
+    if (error) {
+
+      console.error(
+        "getSession:",
+        error
+      );
+
+      return null;
+
+    }
+
+
+    return data.session;
+
+  }
+
+
+  async function getCurrentUser() {
+
+    if (!window.sb) {
+      return null;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await window.sb.auth
+        .getUser();
+
+
+    if (error) {
+
+      console.error(
+        "getCurrentUser:",
+        error
+      );
+
+      return null;
+
+    }
+
+
+    return data.user;
+
+  }
+
+
+  /* =======================================================
+     LOGIN
+  ======================================================= */
+
+  async function login(
+    email,
+    password
+  ) {
+
+    if (!window.sb) {
+
+      showLoginMessage(
+        "Không kết nối được Supabase."
       );
 
       return false;
+
     }
 
-    return true;
-  }
 
-  /* -------------------------------------------------------
-     Đăng nhập
-  ------------------------------------------------------- */
+    setLoginLoading(true);
 
-  async function login(email, password) {
-    if (!checkSupabase()) {
-      return {
-        success: false
-      };
-    }
+    hideLoginMessage();
+
 
     try {
-      setLoginLoading(true);
-      hideAuthMessage();
 
-      const { data, error } = await window.sb.auth.signInWithPassword({
-        email,
-        password
-      });
+      const {
+        data,
+        error
+      } =
+        await window.sb.auth
+          .signInWithPassword({
+            email,
+            password
+          });
+
 
       if (error) {
-        throw error;
+
+        console.error(
+          error
+        );
+
+
+        const text =
+          String(
+            error.message || ""
+          ).toLowerCase();
+
+
+        if (
+          text.includes(
+            "invalid login credentials"
+          )
+        ) {
+
+          showLoginMessage(
+            "Email hoặc mật khẩu không chính xác."
+          );
+
+        }
+
+        else if (
+          text.includes(
+            "email not confirmed"
+          )
+        ) {
+
+          showLoginMessage(
+            "Tài khoản chưa được xác nhận email."
+          );
+
+        }
+
+        else {
+
+          showLoginMessage(
+            error.message ||
+            "Không thể đăng nhập."
+          );
+
+        }
+
+
+        return false;
+
       }
 
-      if (!data || !data.user) {
-        throw new Error("Không thể xác định tài khoản người dùng.");
-      }
-
-      return {
-        success: true,
-        user: data.user,
-        session: data.session
-      };
-    } catch (error) {
-      console.error("Login error:", error);
-
-      let message = "Đăng nhập không thành công.";
-
-      const errorMessage = String(error.message || "").toLowerCase();
 
       if (
-        errorMessage.includes("invalid login credentials") ||
-        errorMessage.includes("invalid credentials")
+        !data?.session ||
+        !data?.user
       ) {
-        message = "Email hoặc mật khẩu không chính xác.";
-      } else if (errorMessage.includes("email not confirmed")) {
-        message = "Tài khoản chưa xác nhận địa chỉ email.";
-      } else if (error.message) {
-        message = error.message;
+
+        showLoginMessage(
+          "Không nhận được phiên đăng nhập."
+        );
+
+        return false;
+
       }
 
-      showAuthMessage(message, "error");
 
-      return {
-        success: false,
-        error
-      };
-    } finally {
-      setLoginLoading(false);
+      showLoginMessage(
+        "Đăng nhập thành công.",
+        "success"
+      );
+
+
+      setTimeout(
+        goDashboard,
+        250
+      );
+
+
+      return true;
+
     }
+
+    catch (error) {
+
+      console.error(
+        error
+      );
+
+      showLoginMessage(
+        "Có lỗi khi kết nối máy chủ."
+      );
+
+      return false;
+
+    }
+
+    finally {
+
+      setLoginLoading(false);
+
+    }
+
   }
 
-  /* -------------------------------------------------------
-     Đăng xuất
-  ------------------------------------------------------- */
+
+  /* =======================================================
+     LOGOUT
+  ======================================================= */
 
   async function logout() {
-    if (!window.sb) {
-      redirectToLogin();
-      return;
-    }
 
     try {
-      await window.sb.auth.signOut();
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      redirectToLogin();
-    }
-  }
 
-  /* -------------------------------------------------------
-     Lấy session hiện tại
-  ------------------------------------------------------- */
+      if (window.sb) {
 
-  async function getSession() {
-    if (!window.sb) return null;
+        await window.sb.auth
+          .signOut();
 
-    try {
-      const {
-        data: { session },
-        error
-      } = await window.sb.auth.getSession();
-
-      if (error) {
-        console.error(error);
-        return null;
       }
 
-      return session;
-    } catch (error) {
-      console.error(error);
-      return null;
     }
+
+    finally {
+
+      goLogin();
+
+    }
+
   }
 
-  /* -------------------------------------------------------
-     Lấy User
-  ------------------------------------------------------- */
 
-  async function getCurrentUser() {
-    if (!window.sb) return null;
+  /* =======================================================
+     LOGIN FORM
+  ======================================================= */
 
-    try {
-      const {
-        data: { user },
-        error
-      } = await window.sb.auth.getUser();
+  function bindLoginForm() {
 
-      if (error) {
-        console.error(error);
-        return null;
-      }
-
-      return user;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  }
-
-  /* -------------------------------------------------------
-     Bảo vệ trang
-  ------------------------------------------------------- */
-
-  async function guardPage() {
-    const page = getCurrentPage();
-
-    if (!window.sb) {
-      if (page === "app") {
-        console.warn("Chưa cấu hình Supabase.");
-      }
-
-      return;
-    }
-
-    const session = await getSession();
-
-    if (page === "login") {
-      if (session) {
-        redirectToDashboard();
-      }
-
-      return;
-    }
-
-    if (!session) {
-      redirectToLogin();
-    }
-  }
-
-  /* -------------------------------------------------------
-     Form Login
-  ------------------------------------------------------- */
-
-  function setupLoginForm() {
-    const form = document.getElementById("loginForm");
+    const form =
+      document.getElementById(
+        "loginForm"
+      );
 
     if (!form) return;
 
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
 
-      const emailInput = document.getElementById("email");
-      const passwordInput = document.getElementById("password");
+    form.addEventListener(
+      "submit",
+      async function (event) {
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+        event.preventDefault();
 
-      hideAuthMessage();
+        event.stopPropagation();
 
-      if (!email) {
-        showAuthMessage("Vui lòng nhập địa chỉ email.");
-        emailInput.focus();
-        return;
-      }
 
-      if (!password) {
-        showAuthMessage("Vui lòng nhập mật khẩu.");
-        passwordInput.focus();
-        return;
-      }
+        const email =
+          document
+            .getElementById("email")
+            ?.value
+            .trim();
 
-      const result = await login(email, password);
 
-      if (result.success) {
-        showAuthMessage(
-          "Đăng nhập thành công. Đang chuyển đến hệ thống...",
-          "success"
+        const password =
+          document
+            .getElementById("password")
+            ?.value;
+
+
+        if (!email) {
+
+          showLoginMessage(
+            "Vui lòng nhập email."
+          );
+
+          return;
+
+        }
+
+
+        if (!password) {
+
+          showLoginMessage(
+            "Vui lòng nhập mật khẩu."
+          );
+
+          return;
+
+        }
+
+
+        await login(
+          email,
+          password
         );
 
-        setTimeout(() => {
-          redirectToDashboard();
-        }, 350);
       }
-    });
+    );
+
   }
 
-  /* -------------------------------------------------------
-     Hiện/ẩn Password
-  ------------------------------------------------------- */
 
-  function setupPasswordToggle() {
-    const button = document.getElementById("togglePassword");
-    const password = document.getElementById("password");
+  /* =======================================================
+     PASSWORD TOGGLE
+  ======================================================= */
 
-    if (!button || !password) return;
+  function bindPasswordToggle() {
 
-    button.addEventListener("click", function () {
-      const isPassword = password.type === "password";
+    const button =
+      document.getElementById(
+        "togglePassword"
+      );
 
-      password.type = isPassword ? "text" : "password";
+    const input =
+      document.getElementById(
+        "password"
+      );
 
-      button.innerHTML = isPassword
-        ? `
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 3l18 18M10.6 10.6A2 2 0 0012 14a2 2 0 001.4-.6M9.9 4.2A9.8 9.8 0 0112 4c5 0 9 4 10 8a12.7 12.7 0 01-2.2 4.1M6.6 6.6A12.2 12.2 0 002 12c1 4 5 8 10 8a9.9 9.9 0 004.1-.9"/>
-          </svg>
-        `
-        : `
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        `;
-    });
+
+    if (
+      !button ||
+      !input
+    ) return;
+
+
+    button.addEventListener(
+      "click",
+      function () {
+
+        input.type =
+          input.type === "password"
+            ? "text"
+            : "password";
+
+      }
+    );
+
   }
 
-  /* -------------------------------------------------------
-     Theo dõi thay đổi authentication
-  ------------------------------------------------------- */
 
-  function setupAuthListener() {
-    if (!window.sb) return;
+  /* =======================================================
+     REQUIRE LOGIN
+  ======================================================= */
 
-    window.sb.auth.onAuthStateChange((event, session) => {
-      const page = getCurrentPage();
+  async function requireAuth() {
 
-      if (event === "SIGNED_OUT" && page !== "login") {
-        redirectToLogin();
-      }
+    const session =
+      await getSession();
 
-      if (event === "SIGNED_IN" && page === "login" && session) {
-        redirectToDashboard();
-      }
-    });
+
+    if (!session) {
+
+      goLogin();
+
+      return null;
+
+    }
+
+
+    return session;
+
   }
 
-  /* -------------------------------------------------------
-     Khởi động
-  ------------------------------------------------------- */
 
-  document.addEventListener("DOMContentLoaded", async function () {
-    setupLoginForm();
-    setupPasswordToggle();
-    setupAuthListener();
+  /* =======================================================
+     INIT
+  ======================================================= */
 
-    await guardPage();
-  });
+  document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-  /* -------------------------------------------------------
-     Public API
-  ------------------------------------------------------- */
+      if (!window.sb) {
+
+        console.error(
+          "Supabase client chưa sẵn sàng."
+        );
+
+        return;
+
+      }
+
+
+      if (isLoginPage()) {
+
+        bindLoginForm();
+
+        bindPasswordToggle();
+
+
+        const session =
+          await getSession();
+
+
+        if (session) {
+          goDashboard();
+        }
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     PUBLIC
+  ======================================================= */
 
   window.Auth = {
+
     login,
+
     logout,
+
     getSession,
+
     getCurrentUser,
-    guardPage
+
+    requireAuth,
+
+    goLogin,
+
+    goDashboard
+
   };
+
 })();

@@ -1,1 +1,54 @@
 
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quản lý lỗi</title>
+<style>
+:root{--b:#155eef;--bg:#f5f7fa;--bd:#eaecf0;--m:#667085;--s:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.side{position:fixed;inset:0 auto 0 0;width:var(--s);background:#fff;border-right:1px solid var(--bd);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd)}.logo{width:39px;height:39px;background:var(--b);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px}.nav a.active,.nav a:hover{background:#eff4ff;color:var(--b);font-weight:700}.who{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--s)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.btn{padding:10px 13px;border-radius:8px;border:1px solid var(--bd);background:#fff;cursor:pointer}.primary{background:var(--b);color:#fff}.content{padding:26px 28px;max-width:1500px;margin:auto}.head{display:flex;justify-content:space-between}.card{background:#fff;border:1px solid var(--bd);border-radius:12px;margin:16px 0;overflow:hidden}.form{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.form span{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.full{grid-column:1/-1}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:8px;padding:10px}input,select{height:42px}table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;background:#f9fafb;color:var(--m);font-size:10px;padding:12px}td{padding:13px;border-top:1px solid var(--bd)}.badge{padding:5px 8px;border-radius:999px;background:#f2f4f7;font-size:9px;text-transform:uppercase}.hidden{display:none}@media(max-width:900px){.side{display:none}.main{margin:0}.content{padding:20px 14px}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="brand"><div class="logo">DF</div><strong>DoubleF Test</strong></div><nav class="nav"><a href="/kiem-thu/">Tổng quan</a><a href="/kiem-thu/du-an">Dự án</a><a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a href="/kiem-thu/test-case">Test Case</a><a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a class="active" href="/kiem-thu/loi">Quản lý lỗi</a><a href="/kiem-thu/bao-cao">Báo cáo</a><a href="/kiem-thu/thanh-vien">Thành viên</a></nav><div class="who" id="who">...</div></aside>
+<div class="main"><header class="top"><strong>Quản lý lỗi</strong><button id="logout" class="btn">Đăng xuất</button></header><main class="content">
+<div class="head"><div><h1>Defect</h1><p>Ghi nhận và theo dõi lỗi phát hiện.</p></div><button id="open" class="btn primary">+ Ghi nhận lỗi</button></div>
+
+<div id="formBox" class="card hidden"><form id="form" class="form">
+<label><span>Dự án</span><select id="project" name="project_id"></select></label>
+<label><span>Test Case</span><select id="testcase" name="test_case_id"></select></label>
+<label><span>Mã lỗi</span><input name="defect_code" required></label>
+<label><span>Severity</span><select name="severity"><option>low</option><option selected>medium</option><option>high</option><option>critical</option></select></label>
+<label><span>Priority</span><select name="priority"><option>low</option><option selected>medium</option><option>high</option><option>critical</option></select></label>
+<label><span>Trạng thái</span><select name="status"><option value="open">Open</option><option value="assigned">Assigned</option></select></label>
+<label class="full"><span>Tiêu đề</span><input name="title" required></label>
+<label class="full"><span>Mô tả</span><textarea name="description" rows="4"></textarea></label>
+<div class="full"><button class="btn primary">Lưu lỗi</button></div>
+</form></div>
+
+<div class="card" style="overflow:auto"><table><thead><tr><th>Mã lỗi</th><th>Tiêu đề</th><th>Test Case</th><th>Severity</th><th>Priority</th><th>Trạng thái</th></tr></thead><tbody id="body"></tbody></table></div>
+</main></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+let me,projects=[],cases=[];
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");me=session.user;
+ const {data:p}=await sb.from("profiles").select("*").eq("id",me.id).maybeSingle();if(!p)return location.replace("/kiem-thu/login");who.textContent=p.full_name||me.email;if(p.role==="viewer")open.style.display="none";await load();
+}
+async function load(){
+ const r=await Promise.all([sb.from("projects").select("*"),sb.from("test_cases").select("*"),sb.from("defects").select("*").order("created_at",{ascending:false})]);
+ projects=r[0].data||[];cases=r[1].data||[];const defects=r[2].data||[];
+ project.innerHTML=projects.map(p=>`<option value="${p.id}">${e(p.project_name)}</option>`).join("");refreshCases();
+ body.innerHTML=defects.map(d=>`<tr><td><strong>${e(d.defect_code)}</strong></td><td>${e(d.title)}</td><td>${e(cases.find(c=>c.id===d.test_case_id)?.test_code||"—")}</td><td><span class="badge">${e(d.severity)}</span></td><td><span class="badge">${e(d.priority)}</span></td><td><select onchange="changeStatus('${d.id}',this.value)"><option ${d.status==="open"?"selected":""}>open</option><option ${d.status==="assigned"?"selected":""}>assigned</option><option ${d.status==="in_progress"?"selected":""}>in_progress</option><option ${d.status==="fixed"?"selected":""}>fixed</option><option ${d.status==="retest"?"selected":""}>retest</option><option ${d.status==="reopened"?"selected":""}>reopened</option><option ${d.status==="closed"?"selected":""}>closed</option><option ${d.status==="rejected"?"selected":""}>rejected</option></select></td></tr>`).join("")||'<tr><td colspan="6">Chưa có lỗi.</td></tr>';
+}
+function refreshCases(){const list=cases.filter(c=>c.project_id===project.value);testcase.innerHTML='<option value="">-- Không chọn --</option>'+list.map(c=>`<option value="${c.id}">${e(c.test_code)} - ${e(c.test_name)}</option>`).join("")}
+project.onchange=refreshCases;open.onclick=()=>formBox.classList.toggle("hidden");
+form.onsubmit=async ev=>{ev.preventDefault();const f=new FormData(form);const {error}=await sb.from("defects").insert({project_id:f.get("project_id"),test_case_id:f.get("test_case_id")||null,defect_code:f.get("defect_code").trim(),title:f.get("title").trim(),description:f.get("description").trim()||null,severity:f.get("severity"),priority:f.get("priority"),status:f.get("status"),reported_by:me.id});if(error)return alert(error.message);form.reset();formBox.classList.add("hidden");load()};
+async function changeStatus(id,status){const {error}=await sb.from("defects").update({status}).eq("id",id);if(error)alert(error.message)}
+logout.onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+init();
+</script>
+</body>
+</html>

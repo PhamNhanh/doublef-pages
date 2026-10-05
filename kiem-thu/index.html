@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard | DoubleF Test Management</title>
+
+<style>
+:root{--blue:#155eef;--green:#079455;--red:#d92d20;--orange:#dc6803;--purple:#6938ef;--bg:#f5f7fa;--border:#eaecf0;--text:#101828;--muted:#667085;--side:255px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}a{text-decoration:none;color:inherit}
+.sidebar{position:fixed;z-index:100;inset:0 auto 0 0;width:var(--side);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column}
+.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.brand-logo{width:39px;height:39px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px;margin-bottom:3px;color:#344054}.nav a:hover,.nav a.active{background:#eff4ff;color:var(--blue);font-weight:700}
+.side-user{margin:14px;padding:11px;background:#f9fafb;border-radius:10px}.side-user strong,.side-user small{display:block}.side-user strong{font-size:12px}.side-user small{font-size:10px;color:var(--muted);margin-top:3px}
+.main{margin-left:var(--side)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}.top strong{font-size:14px}.top small{display:block;color:var(--muted);font-size:10px}.logout{border:1px solid var(--border);background:#fff;border-radius:8px;padding:9px 12px;cursor:pointer}
+.content{max-width:1500px;margin:auto;padding:26px 28px 45px}.head{display:flex;justify-content:space-between;gap:16px;margin-bottom:22px}.head h1{margin:0;font-size:24px}.head p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:17px}.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}.stat span{font-size:11px;color:var(--muted)}.stat strong{display:block;font-size:29px;margin-top:12px}.green strong{color:var(--green)}.red strong{color:var(--red)}.orange strong{color:var(--orange)}.purple strong{color:var(--purple)}
+.grid{display:grid;grid-template-columns:1.4fr .8fr;gap:17px}.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:17px}.card-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.card-head h2{margin:0;font-size:14px}.card-head p{margin:4px 0 0;color:var(--muted);font-size:10px}.card-body{padding:18px}
+.progress{height:10px;background:#eef2f6;border-radius:999px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,#155eef,#528bff)}
+.row{padding:12px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px}.row:last-child{border:0}.row strong{font-size:12px}.row small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.badge{padding:5px 8px;border-radius:999px;background:#f2f4f7;font-size:9px;font-weight:700;text-transform:uppercase}.badge.active{background:#ecfdf3;color:#067647}
+.menu{display:none}.overlay{display:none}
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu{display:block}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(0,0,0,.4)}}
+@media(max-width:600px){.content{padding:20px 14px}.top{padding:0 14px}.stats{grid-template-columns:1fr}.head{display:block}}
+</style>
+</head>
+
+<body>
+<div id="overlay" class="overlay"></div>
+
+<aside id="sidebar" class="sidebar">
+<div class="brand"><div class="brand-logo">DF</div><div><strong>DoubleF Test</strong><small>Test Management</small></div></div>
+<nav class="nav">
+<a class="active" href="/kiem-thu/">Tổng quan</a>
+<a href="/kiem-thu/du-an">Dự án</a>
+<a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a>
+<a href="/kiem-thu/test-case">Test Case</a>
+<a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a>
+<a href="/kiem-thu/loi">Quản lý lỗi</a>
+<a href="/kiem-thu/bao-cao">Báo cáo</a>
+<a href="/kiem-thu/thanh-vien">Thành viên</a>
+</nav>
+<div class="side-user"><strong id="sideName">...</strong><small id="sideRole">...</small></div>
+</aside>
+
+<div class="main">
+<header class="top">
+<div style="display:flex;gap:10px;align-items:center">
+<button id="menu" class="menu">☰</button>
+<div><strong>Dashboard</strong><small>Quản lý kiểm thử dự án</small></div>
+</div>
+<button id="logout" class="logout">Đăng xuất</button>
+</header>
+
+<main class="content">
+<div class="head">
+<div><h1>Tổng quan kiểm thử</h1><p>Tổng hợp dữ liệu các dự án bạn được phép truy cập.</p></div>
+</div>
+
+<section class="stats">
+<div class="stat"><span>Tổng Test Case</span><strong id="total">0</strong></div>
+<div class="stat green"><span>Pass</span><strong id="pass">0</strong></div>
+<div class="stat red"><span>Fail</span><strong id="fail">0</strong></div>
+<div class="stat orange"><span>Blocked</span><strong id="blocked">0</strong></div>
+<div class="stat purple"><span>Lỗi đang mở</span><strong id="defects">0</strong></div>
+</section>
+
+<section class="grid">
+<div class="card">
+<div class="card-head"><div><h2>Tiến độ kiểm thử</h2><p>Tỷ lệ Test Case đã thực hiện</p></div><strong id="percent">0%</strong></div>
+<div class="card-body">
+<div class="progress"><div id="progressBar" style="width:0"></div></div>
+<p style="font-size:11px;color:#667085">Đã thực hiện <strong id="executed">0/0</strong> Test Case.</p>
+</div>
+</div>
+
+<div class="card">
+<div class="card-head"><div><h2>Dự án</h2><p>Danh sách dự án có quyền truy cập</p></div></div>
+<div id="projectList" class="card-body"></div>
+</div>
+</section>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient(
+"https://aizhygivtngtsqcjtvaj.supabase.co",
+"sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN"
+);
+
+const roleName={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
+
+async function auth(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){location.replace("/kiem-thu/login");return null}
+ const {data:profile}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();
+ if(!profile||profile.active===false){await sb.auth.signOut();location.replace("/kiem-thu/login");return null}
+ document.getElementById("sideName").textContent=profile.full_name||session.user.email;
+ document.getElementById("sideRole").textContent=roleName[profile.role]||profile.role;
+ return {session,profile};
+}
+
+document.getElementById("logout").onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+document.getElementById("menu").onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};
+overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
+
+(async()=>{
+ const user=await auth(); if(!user)return;
+
+ const [{data:projects},{data:testCases},{data:runs},{data:defects}]=await Promise.all([
+   sb.from("projects").select("*").order("created_at",{ascending:false}),
+   sb.from("test_cases").select("*"),
+   sb.from("test_runs").select("*").order("tested_at",{ascending:false}),
+   sb.from("defects").select("*")
+ ]);
+
+ const cases=testCases||[];
+ const latest=new Map();
+ for(const run of runs||[]) if(!latest.has(run.test_case_id)) latest.set(run.test_case_id,run);
+
+ let pass=0,fail=0,blocked=0;
+ for(const tc of cases){
+   const r=latest.get(tc.id);
+   if(r?.result==="PASS")pass++;
+   if(r?.result==="FAIL")fail++;
+   if(r?.result==="BLOCKED")blocked++;
+ }
+
+ const executed=pass+fail+blocked;
+ const pct=cases.length?Math.round(executed/cases.length*100):0;
+ const open=(defects||[]).filter(d=>!["closed","rejected"].includes(d.status)).length;
+
+ total.textContent=cases.length;
+ document.getElementById("pass").textContent=pass;
+ document.getElementById("fail").textContent=fail;
+ document.getElementById("blocked").textContent=blocked;
+ document.getElementById("defects").textContent=open;
+ percent.textContent=pct+"%";
+ progressBar.style.width=pct+"%";
+ document.getElementById("executed").textContent=executed+"/"+cases.length;
+
+ projectList.innerHTML=(projects||[]).length
+ ?projects.slice(0,6).map(p=>`<div class="row"><div><strong>${escapeHtml(p.project_name)}</strong><small>${escapeHtml(p.project_code)}</small></div><span class="badge ${p.status}">${p.status}</span></div>`).join("")
+ :"<p>Chưa có dự án.</p>";
+})();
+
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+</script>
+</body>
+</html>

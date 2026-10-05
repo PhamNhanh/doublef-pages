@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Test Case | DoubleF Test</title>
+<style>
+:root{--b:#155eef;--bg:#f5f7fa;--bd:#eaecf0;--m:#667085;--s:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.side{position:fixed;inset:0 auto 0 0;width:var(--s);background:#fff;border-right:1px solid var(--bd);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd)}.logo{width:39px;height:39px;background:var(--b);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px}.nav a.active,.nav a:hover{background:#eff4ff;color:var(--b);font-weight:700}.who{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--s)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.btn{padding:10px 13px;border-radius:8px;border:1px solid var(--bd);background:#fff;cursor:pointer}.primary{background:var(--b);color:#fff;border-color:var(--b)}.content{padding:26px 28px;max-width:1600px;margin:auto}.head{display:flex;justify-content:space-between;margin-bottom:20px}.head h1{margin:0}.head p{color:var(--m);font-size:13px}.card{background:#fff;border:1px solid var(--bd);border-radius:12px;margin-bottom:16px;overflow:hidden}.form{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.form span{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.full{grid-column:1/-1}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:8px;padding:10px}input,select{height:42px}table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;background:#f9fafb;color:var(--m);font-size:10px;text-transform:uppercase;padding:12px}td{padding:13px;border-top:1px solid var(--bd);vertical-align:top}.note{display:block;color:var(--m);font-size:10px;margin-top:4px}.badge{padding:5px 8px;border-radius:999px;background:#f2f4f7;font-size:9px;text-transform:uppercase}.hidden{display:none}@media(max-width:900px){.side{display:none}.main{margin:0}.content{padding:20px 14px}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="brand"><div class="logo">DF</div><strong>DoubleF Test</strong></div><nav class="nav"><a href="/kiem-thu/">Tổng quan</a><a href="/kiem-thu/du-an">Dự án</a><a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a class="active" href="/kiem-thu/test-case">Test Case</a><a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a href="/kiem-thu/loi">Quản lý lỗi</a><a href="/kiem-thu/bao-cao">Báo cáo</a><a href="/kiem-thu/thanh-vien">Thành viên</a></nav><div class="who"><strong id="who">...</strong></div></aside>
+<div class="main"><header class="top"><strong>Test Case</strong><button id="logout" class="btn">Đăng xuất</button></header><main class="content">
+<div class="head"><div><h1>Test Case</h1><p>Quản lý nội dung và kịch bản kiểm thử.</p></div><button id="open" class="btn primary">+ Tạo Test Case</button></div>
+
+<div id="formBox" class="card hidden"><form id="form" class="form">
+<label><span>Dự án</span><select id="project" name="project_id"></select></label>
+<label><span>Phân hệ</span><select id="module" name="module_id"></select></label>
+<label><span>Mã Test Case</span><input name="test_code" required></label>
+<label><span>Ưu tiên</span><select name="priority"><option>low</option><option selected>medium</option><option>high</option><option>critical</option></select></label>
+<label class="full"><span>Tên Test Case</span><input name="test_name" required></label>
+<label class="full"><span>Yêu cầu</span><textarea name="requirement"></textarea></label>
+<label class="full"><span>Điều kiện trước</span><textarea name="precondition"></textarea></label>
+<label class="full"><span>Các bước kiểm thử</span><textarea name="test_steps" rows="5"></textarea></label>
+<label class="full"><span>Dữ liệu kiểm thử</span><textarea name="test_data"></textarea></label>
+<label class="full"><span>Kết quả mong đợi</span><textarea name="expected_result" rows="4"></textarea></label>
+<div class="full"><button class="btn primary">Lưu Test Case</button></div>
+</form></div>
+
+<div class="card" style="overflow:auto"><table><thead><tr><th>Mã</th><th>Test Case</th><th>Phân hệ</th><th>Dự án</th><th>Ưu tiên</th><th>Trạng thái</th></tr></thead><tbody id="body"></tbody></table></div>
+</main></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+let me,profile,projects=[],modules=[];
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");me=session.user;
+ const {data:p}=await sb.from("profiles").select("*").eq("id",me.id).maybeSingle();profile=p;if(!p)return location.replace("/kiem-thu/login");who.textContent=p.full_name||me.email;
+ if(p.role==="viewer")open.style.display="none";await load();
+}
+async function load(){
+ const r=await Promise.all([sb.from("projects").select("*"),sb.from("test_modules").select("*"),sb.from("test_cases").select("*").order("created_at",{ascending:false})]);
+ projects=r[0].data||[];modules=r[1].data||[];const cases=r[2].data||[];
+ project.innerHTML=projects.map(p=>`<option value="${p.id}">${e(p.project_name)}</option>`).join("");refreshModules();
+ body.innerHTML=cases.map(t=>`<tr><td><strong>${e(t.test_code)}</strong></td><td><strong>${e(t.test_name)}</strong><span class="note">${e(t.expected_result||"")}</span></td><td>${e(modules.find(m=>m.id===t.module_id)?.module_name||"—")}</td><td>${e(projects.find(p=>p.id===t.project_id)?.project_name||"")}</td><td><span class="badge">${e(t.priority)}</span></td><td><span class="badge">${e(t.status)}</span></td></tr>`).join("")||'<tr><td colspan="6">Chưa có Test Case.</td></tr>';
+}
+function refreshModules(){const list=modules.filter(m=>m.project_id===project.value);module.innerHTML='<option value="">-- Không chọn --</option>'+list.map(m=>`<option value="${m.id}">${e(m.module_name)}</option>`).join("")}
+project.onchange=refreshModules;open.onclick=()=>formBox.classList.toggle("hidden");
+form.onsubmit=async ev=>{ev.preventDefault();const f=new FormData(form);const {error}=await sb.from("test_cases").insert({project_id:f.get("project_id"),module_id:f.get("module_id")||null,test_code:f.get("test_code").trim(),test_name:f.get("test_name").trim(),requirement:f.get("requirement").trim()||null,precondition:f.get("precondition").trim()||null,test_steps:f.get("test_steps").trim()||null,test_data:f.get("test_data").trim()||null,expected_result:f.get("expected_result").trim()||null,priority:f.get("priority"),status:"ready",created_by:me.id});if(error)return alert(error.message);form.reset();formBox.classList.add("hidden");load()};
+logout.onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+init();
+</script>
+</body>
+</html>

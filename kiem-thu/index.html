@@ -1,153 +1,51 @@
 <!doctype html>
-<html lang="vi">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dashboard | DoubleF Test Management</title>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#155eef"><title>Dashboard | DoubleF Test Management</title><style>
+:root{--primary:#155eef;--primary2:#004eeb;--blue-soft:#eff4ff;--success:#079455;--success-soft:#ecfdf3;--danger:#d92d20;--danger-soft:#fef3f2;--warning:#dc6803;--warning-soft:#fffaeb;--purple:#6938ef;--purple-soft:#f4f3ff;--bg:#f5f7fa;--surface:#fff;--surface2:#f9fafb;--text:#101828;--text2:#344054;--muted:#667085;--muted2:#98a2b3;--border:#eaecf0;--border2:#d0d5dd;--side:265px;--top:70px;--shadow:0 1px 2px rgba(16,24,40,.04),0 4px 12px rgba(16,24,40,.05)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}.page-loading{min-height:100vh;display:grid;place-items:center;color:var(--muted)}
+.app{min-height:100vh}.sidebar{position:fixed;z-index:100;left:0;top:0;bottom:0;width:var(--side);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:transform .22s ease}.brand{height:var(--top);padding:0 20px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--border)}.brand-logo{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#155eef,#0040c1);color:#fff;display:grid;place-items:center;font-weight:800;box-shadow:0 7px 18px rgba(21,94,239,.18)}.brand strong{display:block;font-size:14px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.nav{padding:15px 12px;flex:1;overflow:auto}.nav-group{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2);font-weight:800;padding:9px 12px 6px}.nav a{min-height:43px;padding:0 12px;border-radius:9px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--text2);margin:2px 0}.nav a:hover,.nav a.active{background:var(--blue-soft);color:var(--primary);font-weight:700}.nav .ico{width:19px;text-align:center}.side-user{margin:12px;padding:11px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:#dbe7ff;color:var(--primary);display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto}.side-user strong,.side-user small{display:block;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.side-user strong{font-size:11.5px}.side-user small{font-size:9.5px;color:var(--muted);margin-top:2px}.main{margin-left:var(--side);min-height:100vh}.topbar{position:sticky;z-index:50;top:0;height:var(--top);padding:0 26px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:18px}.top-left{display:flex;align-items:center;gap:11px;min-width:0}.top-left strong{display:block;font-size:14px}.top-left small{display:block;color:var(--muted);font-size:9.5px;margin-top:2px}.top-actions{display:flex;align-items:center;gap:9px}.project-select{height:39px;min-width:250px;max-width:360px;border:1px solid var(--border2);border-radius:9px;background:#fff;padding:0 10px;color:var(--text2);font-size:11.5px}.menu-btn{display:none}.btn{min-height:39px;padding:0 13px;border-radius:8px;border:1px solid var(--border2);background:#fff;color:var(--text2);font-size:11.5px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:6px}.btn:hover{background:#f9fafb}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}.btn.danger{color:var(--danger);border-color:#fecdca;background:#fff}.btn.success{color:#fff;background:var(--success);border-color:var(--success)}.btn.sm{min-height:31px;padding:0 9px;font-size:10px}.btn:disabled{opacity:.55;cursor:not-allowed}.content{max-width:1650px;margin:0 auto;padding:25px 27px 50px}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}.page-head h1{margin:0;font-size:23px;letter-spacing:-.4px}.page-head p{margin:6px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}.page-head-actions{display:flex;gap:8px;flex-wrap:wrap}.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);margin-bottom:16px}.card-head{min-height:58px;padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}.card-head h2{font-size:13.5px;margin:0}.card-head p{font-size:10px;color:var(--muted);margin:3px 0 0}.card-body{padding:18px}.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:16px}.stat{background:#fff;border:1px solid var(--border);border-radius:11px;padding:16px;box-shadow:var(--shadow)}.stat span{display:block;color:var(--muted);font-size:10.5px}.stat strong{display:block;font-size:26px;margin-top:11px;letter-spacing:-.5px}.stat small{display:block;color:var(--muted);font-size:9.5px;margin-top:6px}.stat.success strong{color:var(--success)}.stat.danger strong{color:var(--danger)}.stat.warning strong{color:var(--warning)}.stat.purple strong{color:var(--purple)}.grid-2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.75fr);gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.progress{height:10px;background:#eef2f6;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#155eef,#528bff);border-radius:inherit}.summary-line{display:flex;justify-content:space-between;gap:10px;margin-top:11px;font-size:10.5px;color:var(--muted)}
+.table-wrap{width:100%;overflow:auto}table{width:100%;border-collapse:collapse;font-size:11.5px}th{padding:11px 13px;background:#f9fafb;color:var(--muted);text-align:left;text-transform:uppercase;font-size:9px;letter-spacing:.25px;white-space:nowrap}td{padding:12px 13px;border-top:1px solid var(--border);vertical-align:top}td strong{font-size:11.5px}.sub{display:block;color:var(--muted);font-size:9.5px;line-height:1.5;margin-top:3px}.actions{display:flex;gap:5px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:0 8px;border-radius:999px;background:#f2f4f7;color:var(--text2);font-size:8.5px;font-weight:800;text-transform:uppercase;white-space:nowrap}.badge.pass,.badge.completed,.badge.active,.badge.closed{background:var(--success-soft);color:#067647}.badge.fail,.badge.critical,.badge.reopened{background:var(--danger-soft);color:#b42318}.badge.blocked,.badge.high,.badge.open,.badge.assigned{background:var(--warning-soft);color:#b54708}.badge.ready,.badge.in_progress,.badge.retest,.badge.planning{background:var(--blue-soft);color:#175cd3}.badge.medium{background:var(--purple-soft);color:#5925dc}.badge.low,.badge.draft,.badge.not_tested{background:#f2f4f7;color:#475467}.empty{padding:32px 18px;text-align:center;color:var(--muted);font-size:11.5px}.loading{padding:40px;text-align:center;color:var(--muted)}.notice{padding:12px 14px;border:1px solid #b2ddff;background:#eff8ff;color:#175cd3;border-radius:9px;font-size:11px;line-height:1.55;margin-bottom:14px}.error{padding:12px 14px;border:1px solid #fecdca;background:#fef3f2;color:#b42318;border-radius:9px;font-size:11px;line-height:1.5;margin-bottom:14px}
+.form-panel{padding:18px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.form-grid .full{grid-column:1/-1}.field label,.field>span{display:block;color:var(--text2);font-size:10.5px;font-weight:700;margin-bottom:5px}.control{width:100%;height:41px;border:1px solid var(--border2);border-radius:8px;padding:0 10px;background:#fff;color:var(--text);outline:none;font-size:11.5px}.control:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,94,239,.08)}textarea.control{height:auto;min-height:88px;padding:9px 10px;resize:vertical;line-height:1.5}.form-actions{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end;padding-top:3px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.filters .control{width:auto;min-width:160px}.search{min-width:250px!important}.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.8fr);gap:16px}.detail-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.detail-title h3{font-size:14px;margin:0}.detail-title p{font-size:10px;color:var(--muted);margin:4px 0 0}.scenario{border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}.scenario-head{padding:12px 14px;background:#fbfcfd;display:flex;justify-content:space-between;gap:12px}.scenario-body{padding:13px 14px}.scenario-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.kv{padding:9px;background:#f9fafb;border-radius:8px}.kv span{display:block;color:var(--muted);font-size:9px;margin-bottom:3px}.kv strong{font-size:10.5px;line-height:1.4}.steps{border:1px solid var(--border);border-radius:8px;overflow:hidden}.step{display:grid;grid-template-columns:45px minmax(180px,1fr) minmax(160px,.7fr) minmax(180px,1fr) auto;border-top:1px solid var(--border)}.step:first-child{border-top:0}.step>div{padding:9px 10px;font-size:10.5px}.step-no{background:#f9fafb;font-weight:800;text-align:center}.step-head{background:#f9fafb;color:var(--muted);font-size:8.5px;text-transform:uppercase;font-weight:800}.evidence-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.evidence{border:1px solid var(--border);border-radius:8px;padding:9px;font-size:10px;overflow:hidden}.evidence strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.evidence small{color:var(--muted)}.timeline-item{padding:11px 0;border-bottom:1px solid var(--border)}.timeline-item:last-child{border:0}.timeline-item strong{font-size:11px}.timeline-item p{font-size:10px;color:var(--muted);margin:4px 0 0;line-height:1.45}.muted{color:var(--muted)}.text-success{color:var(--success)}.text-danger{color:var(--danger)}.text-warning{color:var(--warning)}.toast{position:fixed;z-index:9999;right:22px;bottom:22px;max-width:380px;padding:12px 15px;border-radius:9px;background:#101828;color:#fff;box-shadow:0 12px 30px rgba(16,24,40,.25);font-size:11px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}.toast.bad{background:#b42318}.overlay{display:none}.modal-backdrop{position:fixed;z-index:1000;inset:0;background:rgba(16,24,40,.48);display:grid;place-items:center;padding:18px}.modal{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:13px;box-shadow:0 24px 60px rgba(16,24,40,.25)}.modal-head{padding:15px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.modal-head h3{margin:0;font-size:14px}.modal-body{padding:18px}
+@media(max-width:1250px){.stats{grid-template-columns:repeat(3,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.evidence-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:960px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu-btn{display:inline-flex}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(16,24,40,.42)}.topbar{padding:0 14px}.content{padding:20px 14px 40px}.project-select{min-width:180px;max-width:240px}.top-actions .user-meta{display:none}.grid-2{grid-template-columns:1fr}.step{grid-template-columns:40px 1fr}.step>div:nth-child(3),.step>div:nth-child(4){grid-column:2}.step>div:last-child{grid-column:2}.step-head{display:none}}
+@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}.page-head{display:block}.page-head-actions{margin-top:12px}.form-grid{grid-template-columns:1fr}.form-grid .full,.form-actions{grid-column:auto}.project-select{min-width:135px;max-width:160px}.top-left small{display:none}.content{padding:16px 10px 30px}.filters .control,.search{width:100%!important;min-width:0!important}.evidence-grid{grid-template-columns:1fr 1fr}}
+</style></head><body><div id="app" class="page-loading">Đang khởi tạo hệ thống...</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+const DF={url:"https://aizhygivtngtsqcjtvaj.supabase.co",key:"sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN",bucket:"test-evidence"};
+const sb=supabase.createClient(DF.url,DF.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const ROLE_LABEL={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
+const NAV=[
+ ["dashboard","/kiem-thu/","⌂","Tổng quan"],
+ ["projects","/kiem-thu/du-an","▣","Dự án"],
+ ["plans","/kiem-thu/ke-hoach","▤","Kế hoạch kiểm thử"],
+ ["usecases","/kiem-thu/usecase","◇","Use Case"],
+ ["testcases","/kiem-thu/test-case","✓","Test Case & Kịch bản"],
+ ["execute","/kiem-thu/thuc-hien","▶","Thực hiện kiểm thử"],
+ ["defects","/kiem-thu/loi","!","Quản lý Bug"],
+ ["reports","/kiem-thu/bao-cao","▥","Báo cáo"],
+ ["members","/kiem-thu/thanh-vien","♙","Thành viên"]
+];
+function e(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function fmtDate(v){if(!v)return "—";const d=new Date(v.length===10?v+"T00:00:00":v);return isNaN(d)?"—":d.toLocaleDateString("vi-VN")}
+function fmtDateTime(v){if(!v)return "—";const d=new Date(v);return isNaN(d)?"—":d.toLocaleString("vi-VN")}
+function initials(n){const a=String(n||"U").trim().split(/\s+/);return (a.length>1?a[a.length-2][0]+a[a.length-1][0]:a[0].slice(0,2)).toUpperCase()}
+function badge(v){const s=String(v||"").toLowerCase().replaceAll(" ","_");return `<span class="badge ${e(s)}">${e(v||"—")}</span>`}
+function toast(msg,bad=false){let x=document.getElementById("dfToast");if(!x){x=document.createElement("div");x.id="dfToast";document.body.appendChild(x)}x.className="toast"+(bad?" bad":"");x.textContent=msg;requestAnimationFrame(()=>x.classList.add("show"));setTimeout(()=>x.classList.remove("show"),2800)}
+function errMsg(error){return error?.message||String(error||"Có lỗi xảy ra")}
+async function requireAuth(){const {data:{session},error}=await sb.auth.getSession();if(error||!session){location.replace("/kiem-thu/login");return null}const {data:profile,error:pe}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();if(pe||!profile||profile.active===false){await sb.auth.signOut();location.replace("/kiem-thu/login");return null}return {session,user:session.user,profile}}
+async function visibleProjects(){const {data,error}=await sb.from("projects").select("*").order("created_at",{ascending:false});if(error)throw error;return data||[]}
+async function projectRole(projectId,userId){if(!projectId)return null;const {data}=await sb.from("project_members").select("role").eq("project_id",projectId).eq("user_id",userId).maybeSingle();return data?.role||null}
+function canManage(ctx){return ctx.profile.role==="admin"||ctx.projectRole==="manager"}
+function canTest(ctx){return ctx.profile.role==="admin"||["manager","tester"].includes(ctx.projectRole)}
+async function logout(){await sb.auth.signOut();location.replace("/kiem-thu/login")}
+function navHtml(active){return NAV.map((n,i)=>`${i===0?'<div class="nav-group">Quản lý kiểm thử</div>':''}<a class="${n[0]===active?'active':''}" href="${n[1]}"><span class="ico">${n[2]}</span><span>${n[3]}</span></a>`).join("")}
+function shell(active,title,ctx){const projectOptions=ctx.projects.length?ctx.projects.map(p=>`<option value="${p.id}" ${p.id===ctx.projectId?'selected':''}>${e(p.project_code)} - ${e(p.project_name)}</option>`).join(""):'<option value="">Chưa có dự án</option>';document.getElementById("app").className="app";document.getElementById("app").innerHTML=`<div id="overlay" class="overlay"></div><aside id="sidebar" class="sidebar"><div class="brand"><div class="brand-logo">DF</div><div><strong>DoubleF Test</strong><small>Project Test Management</small></div></div><nav class="nav">${navHtml(active)}</nav><div class="side-user"><div class="avatar">${e(initials(ctx.profile.full_name||ctx.user.email))}</div><div><strong>${e(ctx.profile.full_name||ctx.user.email)}</strong><small>${e(ROLE_LABEL[ctx.profile.role]||ctx.profile.role)}</small></div></div></aside><div class="main"><header class="topbar"><div class="top-left"><button id="menuBtn" class="btn menu-btn">☰</button><div><strong>${e(title)}</strong><small>${ctx.projectId?'Đang làm việc trong dự án đã chọn':'Chọn dự án để làm việc'}</small></div></div><div class="top-actions"><select id="projectSelect" class="project-select">${projectOptions}</select><span class="user-meta"><strong style="font-size:10.5px">${e(ctx.profile.full_name||ctx.user.email)}</strong></span><button id="logoutBtn" class="btn">Đăng xuất</button></div></header><main id="pageContent" class="content"><div class="loading">Đang tải dữ liệu...</div></main></div>`;document.getElementById("logoutBtn").onclick=logout;const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("overlay");document.getElementById("menuBtn").onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};document.getElementById("projectSelect").onchange=ev=>{localStorage.setItem("df_project_id",ev.target.value);location.reload()}}
+async function boot(active,title,{projectRequired=true}={}){try{const auth=await requireAuth();if(!auth)return null;const projects=await visibleProjects();let projectId=localStorage.getItem("df_project_id");if(!projects.some(p=>p.id===projectId))projectId=projects[0]?.id||"";if(projectId)localStorage.setItem("df_project_id",projectId);const pr=projectId?await projectRole(projectId,auth.user.id):null;const ctx={...auth,projects,projectId,project:projects.find(p=>p.id===projectId)||null,projectRole:pr};shell(active,title,ctx);if(projectRequired&&!projectId){document.getElementById("pageContent").innerHTML='<div class="notice">Chưa có dự án. Hãy tạo dự án trước.</div>';return null}return ctx}catch(error){document.getElementById("app").innerHTML=`<div class="error" style="margin:30px">${e(errMsg(error))}</div>`;return null}}
+function openModal(title,body){closeModal();const b=document.createElement("div");b.id="dfModal";b.className="modal-backdrop";b.innerHTML=`<div class="modal"><div class="modal-head"><h3>${e(title)}</h3><button class="btn sm" id="modalClose">Đóng</button></div><div class="modal-body">${body}</div></div>`;document.body.appendChild(b);document.getElementById("modalClose").onclick=closeModal;b.addEventListener("click",ev=>{if(ev.target===b)closeModal()})}
+function closeModal(){document.getElementById("dfModal")?.remove()}
+function tcResultMap(testCases,scenarios,executions){const latest=new Map();[...(executions||[])].sort((a,b)=>new Date(b.completed_at||b.created_at)-new Date(a.completed_at||a.created_at)).forEach(x=>{if(!latest.has(x.scenario_id))latest.set(x.scenario_id,x)});const map=new Map();for(const tc of testCases||[]){const ss=(scenarios||[]).filter(s=>s.test_case_id===tc.id&&s.active!==false);if(!ss.length){map.set(tc.id,"NOT_TESTED");continue}const rs=ss.map(s=>latest.get(s.id)?.result||"NOT_TESTED");let r="NOT_TESTED";if(rs.includes("FAIL"))r="FAIL";else if(rs.includes("BLOCKED"))r="BLOCKED";else if(rs.every(x=>["PASS","N/A"].includes(x)))r="PASS";else if(rs.some(x=>x==="PASS"))r="IN_PROGRESS";map.set(tc.id,r)}return {map,latest}}
+async function signedFile(path,seconds=120){const {data,error}=await sb.storage.from(DF.bucket).createSignedUrl(path,seconds);if(error)throw error;return data.signedUrl}
+async function viewFile(path){try{const url=await signedFile(path);window.open(url,"_blank","noopener")}catch(error){toast(errMsg(error),true)}}
+function safeFileName(name){return String(name||"file").normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g,"-").replace(/-+/g,"-")}
 
-<style>
-:root{--blue:#155eef;--green:#079455;--red:#d92d20;--orange:#dc6803;--purple:#6938ef;--bg:#f5f7fa;--border:#eaecf0;--text:#101828;--muted:#667085;--side:255px}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}a{text-decoration:none;color:inherit}
-.sidebar{position:fixed;z-index:100;inset:0 auto 0 0;width:var(--side);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column}
-.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
-.brand-logo{width:39px;height:39px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px;margin-bottom:3px;color:#344054}.nav a:hover,.nav a.active{background:#eff4ff;color:var(--blue);font-weight:700}
-.side-user{margin:14px;padding:11px;background:#f9fafb;border-radius:10px}.side-user strong,.side-user small{display:block}.side-user strong{font-size:12px}.side-user small{font-size:10px;color:var(--muted);margin-top:3px}
-.main{margin-left:var(--side)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}.top strong{font-size:14px}.top small{display:block;color:var(--muted);font-size:10px}.logout{border:1px solid var(--border);background:#fff;border-radius:8px;padding:9px 12px;cursor:pointer}
-.content{max-width:1500px;margin:auto;padding:26px 28px 45px}.head{display:flex;justify-content:space-between;gap:16px;margin-bottom:22px}.head h1{margin:0;font-size:24px}.head p{margin:6px 0 0;color:var(--muted);font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:17px}.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}.stat span{font-size:11px;color:var(--muted)}.stat strong{display:block;font-size:29px;margin-top:12px}.green strong{color:var(--green)}.red strong{color:var(--red)}.orange strong{color:var(--orange)}.purple strong{color:var(--purple)}
-.grid{display:grid;grid-template-columns:1.4fr .8fr;gap:17px}.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:17px}.card-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.card-head h2{margin:0;font-size:14px}.card-head p{margin:4px 0 0;color:var(--muted);font-size:10px}.card-body{padding:18px}
-.progress{height:10px;background:#eef2f6;border-radius:999px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,#155eef,#528bff)}
-.row{padding:12px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px}.row:last-child{border:0}.row strong{font-size:12px}.row small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
-.badge{padding:5px 8px;border-radius:999px;background:#f2f4f7;font-size:9px;font-weight:700;text-transform:uppercase}.badge.active{background:#ecfdf3;color:#067647}
-.menu{display:none}.overlay{display:none}
-@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu{display:block}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(0,0,0,.4)}}
-@media(max-width:600px){.content{padding:20px 14px}.top{padding:0 14px}.stats{grid-template-columns:1fr}.head{display:block}}
-</style>
-</head>
 
-<body>
-<div id="overlay" class="overlay"></div>
-
-<aside id="sidebar" class="sidebar">
-<div class="brand"><div class="brand-logo">DF</div><div><strong>DoubleF Test</strong><small>Test Management</small></div></div>
-<nav class="nav">
-<a class="active" href="/kiem-thu/">Tổng quan</a>
-<a href="/kiem-thu/du-an">Dự án</a>
-<a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a>
-<a href="/kiem-thu/test-case">Test Case</a>
-<a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a>
-<a href="/kiem-thu/loi">Quản lý lỗi</a>
-<a href="/kiem-thu/bao-cao">Báo cáo</a>
-<a href="/kiem-thu/thanh-vien">Thành viên</a>
-</nav>
-<div class="side-user"><strong id="sideName">...</strong><small id="sideRole">...</small></div>
-</aside>
-
-<div class="main">
-<header class="top">
-<div style="display:flex;gap:10px;align-items:center">
-<button id="menu" class="menu">☰</button>
-<div><strong>Dashboard</strong><small>Quản lý kiểm thử dự án</small></div>
-</div>
-<button id="logout" class="logout">Đăng xuất</button>
-</header>
-
-<main class="content">
-<div class="head">
-<div><h1>Tổng quan kiểm thử</h1><p>Tổng hợp dữ liệu các dự án bạn được phép truy cập.</p></div>
-</div>
-
-<section class="stats">
-<div class="stat"><span>Tổng Test Case</span><strong id="total">0</strong></div>
-<div class="stat green"><span>Pass</span><strong id="pass">0</strong></div>
-<div class="stat red"><span>Fail</span><strong id="fail">0</strong></div>
-<div class="stat orange"><span>Blocked</span><strong id="blocked">0</strong></div>
-<div class="stat purple"><span>Lỗi đang mở</span><strong id="defects">0</strong></div>
-</section>
-
-<section class="grid">
-<div class="card">
-<div class="card-head"><div><h2>Tiến độ kiểm thử</h2><p>Tỷ lệ Test Case đã thực hiện</p></div><strong id="percent">0%</strong></div>
-<div class="card-body">
-<div class="progress"><div id="progressBar" style="width:0"></div></div>
-<p style="font-size:11px;color:#667085">Đã thực hiện <strong id="executed">0/0</strong> Test Case.</p>
-</div>
-</div>
-
-<div class="card">
-<div class="card-head"><div><h2>Dự án</h2><p>Danh sách dự án có quyền truy cập</p></div></div>
-<div id="projectList" class="card-body"></div>
-</div>
-</section>
-</main>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const sb=supabase.createClient(
-"https://aizhygivtngtsqcjtvaj.supabase.co",
-"sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN"
-);
-
-const roleName={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
-
-async function auth(){
- const {data:{session}}=await sb.auth.getSession();
- if(!session){location.replace("/kiem-thu/login");return null}
- const {data:profile}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();
- if(!profile||profile.active===false){await sb.auth.signOut();location.replace("/kiem-thu/login");return null}
- document.getElementById("sideName").textContent=profile.full_name||session.user.email;
- document.getElementById("sideRole").textContent=roleName[profile.role]||profile.role;
- return {session,profile};
-}
-
-document.getElementById("logout").onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
-document.getElementById("menu").onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};
-overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
-
-(async()=>{
- const user=await auth(); if(!user)return;
-
- const [{data:projects},{data:testCases},{data:runs},{data:defects}]=await Promise.all([
-   sb.from("projects").select("*").order("created_at",{ascending:false}),
-   sb.from("test_cases").select("*"),
-   sb.from("test_runs").select("*").order("tested_at",{ascending:false}),
-   sb.from("defects").select("*")
- ]);
-
- const cases=testCases||[];
- const latest=new Map();
- for(const run of runs||[]) if(!latest.has(run.test_case_id)) latest.set(run.test_case_id,run);
-
- let pass=0,fail=0,blocked=0;
- for(const tc of cases){
-   const r=latest.get(tc.id);
-   if(r?.result==="PASS")pass++;
-   if(r?.result==="FAIL")fail++;
-   if(r?.result==="BLOCKED")blocked++;
- }
-
- const executed=pass+fail+blocked;
- const pct=cases.length?Math.round(executed/cases.length*100):0;
- const open=(defects||[]).filter(d=>!["closed","rejected"].includes(d.status)).length;
-
- total.textContent=cases.length;
- document.getElementById("pass").textContent=pass;
- document.getElementById("fail").textContent=fail;
- document.getElementById("blocked").textContent=blocked;
- document.getElementById("defects").textContent=open;
- percent.textContent=pct+"%";
- progressBar.style.width=pct+"%";
- document.getElementById("executed").textContent=executed+"/"+cases.length;
-
- projectList.innerHTML=(projects||[]).length
- ?projects.slice(0,6).map(p=>`<div class="row"><div><strong>${escapeHtml(p.project_name)}</strong><small>${escapeHtml(p.project_code)}</small></div><span class="badge ${p.status}">${p.status}</span></div>`).join("")
- :"<p>Chưa có dự án.</p>";
-})();
-
-function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-</script>
-</body>
-</html>
+(async()=>{const ctx=await boot("dashboard","Tổng quan");if(!ctx)return;try{const pid=ctx.projectId;const [plansR,ucsR,tcsR,scR,exR,bugR]=await Promise.all([sb.from("test_plans").select("*").eq("project_id",pid),sb.from("use_cases").select("*").eq("project_id",pid),sb.from("test_cases").select("*").eq("project_id",pid),sb.from("test_scenarios").select("*").in("test_case_id",(await sb.from("test_cases").select("id").eq("project_id",pid)).data?.map(x=>x.id)||[]),sb.from("test_executions").select("*").eq("project_id",pid).order("created_at",{ascending:false}),sb.from("defects").select("*").eq("project_id",pid).order("created_at",{ascending:false})]);for(const r of [plansR,ucsR,tcsR,scR,exR,bugR])if(r.error)throw r.error;const plans=plansR.data||[],ucs=ucsR.data||[],tcs=tcsR.data||[],sc=scR.data||[],ex=exR.data||[],bugs=bugR.data||[];const res=tcResultMap(tcs,sc,ex);let pass=0,fail=0,blocked=0,inprog=0;for(const v of res.map.values()){if(v==="PASS")pass++;else if(v==="FAIL")fail++;else if(v==="BLOCKED")blocked++;else if(v==="IN_PROGRESS")inprog++}const tested=pass+fail+blocked+inprog,pct=tcs.length?Math.round(tested/tcs.length*100):0,passRate=tested?Math.round(pass/tested*100):0,openBugs=bugs.filter(b=>!["closed","rejected","duplicate","wont_fix"].includes(b.status)).length;const recent=ex.slice(0,8);document.getElementById("pageContent").innerHTML=`<div class="page-head"><div><h1>${e(ctx.project?.project_name||"Tổng quan")}</h1><p>Tổng hợp cấu trúc và kết quả kiểm thử theo dự án.</p></div><div class="page-head-actions"><a class="btn primary" href="/kiem-thu/thuc-hien">▶ Thực hiện kiểm thử</a></div></div><div class="stats"><div class="stat"><span>Kế hoạch</span><strong>${plans.length}</strong><small>Test Plan</small></div><div class="stat"><span>Use Case</span><strong>${ucs.length}</strong><small>Nghiệp vụ</small></div><div class="stat"><span>Test Case</span><strong>${tcs.length}</strong><small>Bộ kiểm thử</small></div><div class="stat"><span>Kịch bản</span><strong>${sc.length}</strong><small>Scenario</small></div><div class="stat success"><span>PASS</span><strong>${pass}</strong><small>Test Case đạt</small></div><div class="stat danger"><span>Bug đang mở</span><strong>${openBugs}</strong><small>Cần xử lý</small></div></div><div class="grid-2"><section class="card"><div class="card-head"><div><h2>Tiến độ kiểm thử</h2><p>Tính theo Test Case đã có kết quả ở các kịch bản</p></div><strong style="color:var(--primary)">${pct}%</strong></div><div class="card-body"><div class="progress"><div style="width:${pct}%"></div></div><div class="summary-line"><span>Đã thực hiện: <b>${tested}/${tcs.length}</b></span><span>Pass rate: <b>${passRate}%</b></span></div><div class="grid-3" style="margin-top:16px"><div class="kv"><span>PASS</span><strong class="text-success">${pass}</strong></div><div class="kv"><span>FAIL</span><strong class="text-danger">${fail}</strong></div><div class="kv"><span>BLOCKED / IN PROGRESS</span><strong class="text-warning">${blocked+inprog}</strong></div></div></div></section><section class="card"><div class="card-head"><div><h2>Bug theo mức độ</h2><p>Tất cả Bug của dự án</p></div></div><div class="card-body">${["critical","high","medium","low"].map(s=>`<div class="summary-line" style="padding:6px 0"><span>${badge(s)}</span><strong>${bugs.filter(b=>b.severity===s).length}</strong></div>`).join("")}</div></section></div><section class="card"><div class="card-head"><div><h2>Thực hiện gần đây</h2><p>Lịch sử Test Execution mới nhất</p></div></div><div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Tester</th><th>Test Case</th><th>Kịch bản</th><th>Kết quả</th><th>Kết quả thực tế</th></tr></thead><tbody id="recentRows"></tbody></table></div></section>`;const prof=(await sb.from("profiles").select("id,full_name,email")).data||[];const pmap=new Map(prof.map(x=>[x.id,x]));const tcmap=new Map(tcs.map(x=>[x.id,x]));const smap=new Map(sc.map(x=>[x.id,x]));document.getElementById("recentRows").innerHTML=recent.length?recent.map(x=>`<tr><td>${fmtDateTime(x.completed_at||x.created_at)}</td><td>${e(pmap.get(x.tester_id)?.full_name||pmap.get(x.tester_id)?.email||"")}</td><td>${e(tcmap.get(x.test_case_id)?.test_code||"")}</td><td>${e(smap.get(x.scenario_id)?.scenario_name||"")}</td><td>${badge(x.result)}</td><td>${e(x.actual_result||"—")}</td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">Chưa có lần thực hiện kiểm thử.</div></td></tr>`}catch(error){document.getElementById("pageContent").innerHTML=`<div class="error">${e(errMsg(error))}</div>`}})();
+</script></body></html>

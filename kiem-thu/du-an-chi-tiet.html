@@ -48,6 +48,18 @@ button,input,select{font:inherit}
 @media(max-width:1150px){.stats{grid-template-columns:repeat(3,1fr)}.member-list{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff;border-radius:9px}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(16,24,40,.45)}.grid2{grid-template-columns:1fr}.tabs{top:78px}.project-row{display:block}.project-actions{margin-top:15px}}
 @media(max-width:650px){.content{padding:16px 12px 36px}.topbar{padding:0 12px}.stats{grid-template-columns:repeat(2,1fr)}.result-grid{grid-template-columns:repeat(2,1fr)}.member-list,.report-grid{grid-template-columns:1fr}.section-head{display:block}.actions{margin-top:10px}.toolbar{flex-direction:column}.field{width:100%}.project-head{padding:18px}.project-head h1{font-size:20px}.tc-row{grid-template-columns:1fr 95px}.tc-row .tc-progress,.tc-row .bug-col,.tc-row .arrow{display:none}}
+
+/* ===== IMPORT EXCEL USE CASE ===== */
+.modal-backdrop{position:fixed;z-index:1000;inset:0;background:rgba(16,24,40,.58);display:flex;align-items:center;justify-content:center;padding:18px}
+.modal{width:min(1120px,100%);max-height:94vh;background:#fff;border-radius:16px;box-shadow:0 24px 80px rgba(16,24,40,.25);overflow:hidden;display:flex;flex-direction:column}
+.modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.modal-head h2{margin:0;font-size:18px}.modal-head p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.modal-close{border:0;background:#f2f4f7;width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:18px}
+.modal-body{padding:18px 20px;overflow:auto}.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff}
+.import-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.import-summary .sum{border:1px solid var(--border);border-radius:11px;padding:12px;background:#f9fafb}.sum span{display:block;color:var(--muted);font-size:10px}.sum strong{display:block;margin-top:6px;font-size:18px}
+.import-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.import-toolbar .field{flex:1;min-width:220px}.mini-btn{border:1px solid var(--border);background:#fff;border-radius:8px;padding:8px 10px;font-size:11px;cursor:pointer}
+.import-list{border:1px solid var(--border);border-radius:12px;overflow:hidden}.import-group{background:#f2f4f7;padding:9px 12px;font-size:11px;font-weight:800;color:#344054;position:sticky;top:0}.import-item{display:grid;grid-template-columns:28px 82px minmax(280px,1fr) 150px 90px;gap:9px;align-items:start;padding:10px 12px;border-top:1px solid var(--border);font-size:11px}.import-item:hover{background:#f9fafb}.import-item input{margin-top:2px}.import-item .uc-title{font-weight:700}.import-item .muted{color:var(--muted);font-size:10px;margin-top:3px}.import-progress{height:10px;background:#eaecf0;border-radius:999px;overflow:hidden;margin-top:8px}.import-progress div{height:100%;background:var(--blue);width:0%;transition:.2s}.import-log{margin-top:10px;padding:10px 12px;border-radius:9px;background:#f9fafb;color:#475467;font-size:11px;white-space:pre-wrap;max-height:100px;overflow:auto}.warning{padding:10px 12px;border:1px solid #fedf89;background:#fffaeb;color:#93370d;border-radius:9px;font-size:11px;margin-bottom:12px}
+@media(max-width:760px){.import-summary{grid-template-columns:1fr 1fr}.import-item{grid-template-columns:24px 68px 1fr}.import-item .actor,.import-item .tx-count{display:none}.modal-backdrop{padding:0}.modal{max-height:100vh;height:100vh;border-radius:0}}
+
 </style>
 </head>
 <body>
@@ -173,6 +185,41 @@ button,input,select{font:inherit}
   </main>
 </div>
 
+
+<input id="ucImportFile" type="file" accept=".xlsx,.xls" class="hidden">
+<div id="importModal" class="modal-backdrop hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+    <div class="modal-head">
+      <div><h2 id="importTitle">Import Use Case từ Excel</h2><p id="importFileInfo">Đọc dữ liệu từ sheet UC và xem trước trước khi ghi vào dự án.</p></div>
+      <button id="closeImportModal" class="modal-close" type="button" aria-label="Đóng">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="importWarning" class="warning hidden"></div>
+      <div class="import-summary">
+        <div class="sum"><span>Phân hệ/nhóm</span><strong id="importGroupCount">0</strong></div>
+        <div class="sum"><span>Use Case phát hiện</span><strong id="importUcCount">0</strong></div>
+        <div class="sum"><span>Transaction</span><strong id="importTxCount">0</strong></div>
+        <div class="sum"><span>Đang chọn</span><strong id="importSelectedCount">0</strong></div>
+      </div>
+      <div class="import-toolbar">
+        <input id="importSearch" class="field" placeholder="Tìm STT, tên Use Case, tác nhân, phân hệ...">
+        <button id="selectAllImport" class="mini-btn" type="button">Chọn tất cả</button>
+        <button id="clearAllImport" class="mini-btn" type="button">Bỏ chọn tất cả</button>
+      </div>
+      <div id="importPreview" class="import-list"></div>
+      <div id="importProgressBox" class="hidden">
+        <div class="import-progress"><div id="importProgressBar"></div></div>
+        <div id="importLog" class="import-log"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span id="importFootText" style="font-size:11px;color:var(--muted)">Chưa chọn file.</span>
+      <div class="actions"><button id="cancelImport" class="btn" type="button">Hủy</button><button id="confirmImport" class="btn primary" type="button" disabled>Import vào dự án</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const sb=supabase.createClient(
@@ -390,8 +437,263 @@ el("editProjectBtn").onclick=()=>location.href="/kiem-thu/du-an?edit="+encodeURI
 el("managePlansBtn").onclick=()=>location.href="/kiem-thu/ke-hoach?project="+encodeURIComponent(projectId);
 el("manageUcBtn").onclick=()=>location.href="/kiem-thu/usecase?project="+encodeURIComponent(projectId);
 el("manageMembersBtn").onclick=()=>location.href="/kiem-thu/thanh-vien?project="+encodeURIComponent(projectId);
-function importLater(){alert("Chức năng Import Use Case từ Excel sẽ được bổ sung ở Bước 5. Dự án hiện tại đã được ghi nhớ để import đúng dự án.")}
-el("importUcBtn").onclick=importLater;el("importUcTabBtn").onclick=importLater;
+/* ================= IMPORT USE CASE EXCEL ================= */
+let importRows=[];
+let importSelection=new Set();
+let importFileMeta=null;
+let importBusy=false;
+
+function cleanText(v){
+  return String(v??"").replace(/\r/g," ").replace(/\n+/g," ").replace(/\s+/g," ").trim();
+}
+function upperCompact(v){
+  return cleanText(v).toLocaleUpperCase("vi-VN").replace(/\s+/g," ");
+}
+function isNumericStt(v){return /^\d+(?:\.0+)?$/.test(cleanText(v))}
+function sourceStt(v){const n=Number(cleanText(v));return Number.isFinite(n)?String(Math.trunc(n)):cleanText(v)}
+function isSectionRow(row){
+  const a=cleanText(row[0]),b=cleanText(row[1]),c=cleanText(row[2]),d=cleanText(row[3]),e=cleanText(row[4]),f=cleanText(row[5]);
+  if(a||!b||c||d||e||f)return false;
+  const u=upperCompact(b);
+  if(u.includes("PHÂN HỆ")||u.includes("PHAN HE"))return true;
+  const letters=b.replace(/[^A-Za-zÀ-ỹĐđ]/g,"");
+  return letters.length>=8 && b===b.toLocaleUpperCase("vi-VN");
+}
+function ignoreNote(v){const x=upperCompact(v);return !x||x==="GHI CHÚ"||x==="GHI CHU"}
+function endsSentence(v){return /[.!?;:]\s*$/.test(cleanText(v))}
+function beginsContinuation(v){
+  const s=cleanText(v);if(!s)return false;
+  const first=s[0];
+  if(first===first.toLocaleLowerCase("vi-VN") && first!==first.toLocaleUpperCase("vi-VN"))return true;
+  return /^(và|hoặc|của|theo|trên|tại|kèm|sau|đồng thời|nhiều|nhằm|để)\b/i.test(s);
+}
+function appendText(a,b){a=cleanText(a);b=cleanText(b);return a&&b?a+" "+b:(a||b)}
+function simpleHash(text){
+  let h=2166136261;
+  for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}
+  return (h>>>0).toString(16).padStart(8,"0");
+}
+async function sha256Hex(buffer){
+  if(!crypto?.subtle)return null;
+  const digest=await crypto.subtle.digest("SHA-256",buffer);
+  return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function parseUcSheet(sheet){
+  const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:"",raw:false,blankrows:true});
+  if(!rows.length)throw new Error("Sheet UC không có dữ liệu.");
+  const h=rows[0].map(cleanText);
+  if(upperCompact(h[0])!=="STT"||!upperCompact(h[1]).includes("USE CASE")||!upperCompact(h[2]).includes("TÁC NHÂN")||!upperCompact(h[3]).includes("TRANSACTION")){
+    throw new Error("Cấu trúc sheet UC không đúng mẫu: STT | Tên Use Case | Tác nhân | Giao dịch (Transaction) ...");
+  }
+
+  const result=[];let group="Chưa phân nhóm";let current=null;
+  const finish=()=>{
+    if(!current)return;
+    current.usecase_name=cleanText(current.usecase_name);
+    current.actor=cleanText(current.actor);
+    current.business_flow=current.transactions.map((t,i)=>`${i+1}. ${cleanText(t.transaction_text)}`).filter(x=>!x.endsWith(". ")).join("\n");
+    current.expected_result=[...new Set(current.transactions.map(t=>cleanText(t.expected_result)).filter(Boolean))].join("\n");
+    const notes=[...new Set(current.transactions.map(t=>cleanText(t.note)).filter(x=>x&&!ignoreNote(x)))];
+    current.note=notes.join("\n");
+    current.import_key=`excel:${current.source_stt}:${simpleHash(upperCompact(current.usecase_name))}`;
+    result.push(current);current=null;
+  };
+
+  for(let i=1;i<rows.length;i++){
+    const row=rows[i]||[];const excelRow=i+1;
+    const A=cleanText(row[0]),B=cleanText(row[1]),C=cleanText(row[2]),D=cleanText(row[3]),E=cleanText(row[4]),F=cleanText(row[5]),G=cleanText(row[6]);
+    if(!A&&!B&&!C&&!D&&!E&&!F&&!G)continue;
+
+    if(isSectionRow(row)){
+      finish();group=B;continue;
+    }
+
+    if(isNumericStt(A)&&B){
+      finish();
+      current={source_stt:sourceStt(A),usecase_name:B,actor:C,group_name:group,source_row:excelRow,transactions:[],business_flow:"",expected_result:"",note:"",import_key:""};
+      continue;
+    }
+
+    if(!current)continue;
+
+    /* Tên Use Case/Tác nhân có thể bị tách sang dòng kế tiếp trong file gốc */
+    if(!A&&B&&!D&&!E&&!F){
+      current.usecase_name=appendText(current.usecase_name,B);
+      if(C)current.actor=appendText(current.actor,C);
+      continue;
+    }
+    if(!A&&!B&&C&&!D&&!E&&!F){current.actor=appendText(current.actor,C);continue}
+
+    if(D||E||F||(!ignoreNote(G)&&G)){
+      const last=current.transactions[current.transactions.length-1];
+      const continuation=D&&last&&!endsSentence(last.transaction_text)&&beginsContinuation(D);
+      if(continuation){
+        last.transaction_text=appendText(last.transaction_text,D);
+        if(E)last.description=appendText(last.description,E);
+        if(F)last.expected_result=appendText(last.expected_result,F);
+        if(!ignoreNote(G))last.note=appendText(last.note,G);
+        continue;
+      }
+      if(D){
+        current.transactions.push({transaction_no:current.transactions.length+1,transaction_text:D,description:E||null,expected_result:F||null,note:ignoreNote(G)?null:G,source_row:excelRow,sort_order:current.transactions.length+1});
+      }else if(last){
+        if(E)last.description=appendText(last.description,E);
+        if(F)last.expected_result=appendText(last.expected_result,F);
+        if(!ignoreNote(G))last.note=appendText(last.note,G);
+      }
+    }
+  }
+  finish();
+  return result.filter(x=>x.source_stt&&x.usecase_name);
+}
+
+function openImportPicker(){
+  if(!canManage())return alert("Chỉ Admin hoặc Manager của dự án được Import Use Case.");
+  if(typeof XLSX==="undefined")return alert("Không tải được thư viện đọc Excel. Hãy tải lại trang và thử lại.");
+  el("ucImportFile").value="";el("ucImportFile").click();
+}
+function closeImport(){if(importBusy)return;el("importModal").classList.add("hidden")}
+function updateSelectedCount(){
+  el("importSelectedCount").textContent=importSelection.size;
+  el("importFootText").textContent=importFileMeta?`${importSelection.size}/${importRows.length} Use Case được chọn để import.`:"Chưa chọn file.";
+  el("confirmImport").disabled=!importSelection.size||importBusy;
+}
+function renderImportPreview(){
+  const key=upperCompact(el("importSearch").value);
+  const filtered=importRows.filter((u,idx)=>!key||upperCompact([u.source_stt,u.usecase_name,u.actor,u.group_name].join(" ")).includes(key));
+  const groups=new Map();
+  filtered.forEach(u=>{if(!groups.has(u.group_name))groups.set(u.group_name,[]);groups.get(u.group_name).push(u)});
+  let html="";
+  for(const [group,items] of groups){
+    html+=`<div class="import-group">${escapeHtml(group)} · ${items.length} Use Case</div>`;
+    html+=items.map(u=>{
+      const idx=importRows.indexOf(u);const checked=importSelection.has(idx)?"checked":"";
+      return `<label class="import-item"><input class="import-check" type="checkbox" data-idx="${idx}" ${checked}><div><strong>${escapeHtml(u.source_stt)}</strong></div><div><div class="uc-title">${escapeHtml(u.usecase_name)}</div><div class="muted">Dòng Excel ${u.source_row}</div></div><div class="actor">${escapeHtml(u.actor||"—")}</div><div class="tx-count">${u.transactions.length} giao dịch</div></label>`;
+    }).join("");
+  }
+  el("importPreview").innerHTML=html||`<div class="empty"><strong>Không có dữ liệu phù hợp</strong><span>Thay đổi nội dung tìm kiếm.</span></div>`;
+}
+
+async function handleImportFile(file){
+  try{
+    el("importModal").classList.remove("hidden");
+    el("importPreview").innerHTML=`<div class="empty"><strong>Đang đọc file Excel...</strong><span>File PL-04 có hơn 10.000 dòng nên có thể cần vài giây.</span></div>`;
+    el("confirmImport").disabled=true;el("importWarning").classList.add("hidden");
+    const buffer=await file.arrayBuffer();
+    const sourceHash=await sha256Hex(buffer);
+    const wb=XLSX.read(buffer,{type:"array",cellDates:false,cellText:true});
+    const sheetName=wb.SheetNames.find(n=>upperCompact(n)==="UC");
+    if(!sheetName)throw new Error("Không tìm thấy sheet UC trong file Excel.");
+    const parsed=parseUcSheet(wb.Sheets[sheetName]);
+    if(!parsed.length)throw new Error("Không phát hiện Use Case nào trong sheet UC.");
+    importRows=parsed;importSelection=new Set(parsed.map((_,i)=>i));
+    importFileMeta={fileName:file.name,sheetName,sourceHash};
+    const groupCount=new Set(parsed.map(x=>x.group_name)).size;
+    const txCount=parsed.reduce((n,x)=>n+x.transactions.length,0);
+    el("importFileInfo").textContent=`${file.name} · Sheet ${sheetName}`;
+    el("importGroupCount").textContent=groupCount;el("importUcCount").textContent=parsed.length;el("importTxCount").textContent=txCount;
+    el("importWarning").textContent=`Hệ thống chỉ import Use Case và Transaction. Không tự tạo Test Case. Các Use Case trùng khóa import sẽ được bỏ qua để không làm mất Test Case/Kịch bản đã tạo.`;
+    el("importWarning").classList.remove("hidden");
+    renderImportPreview();updateSelectedCount();
+  }catch(err){
+    importRows=[];importSelection.clear();importFileMeta=null;
+    el("importPreview").innerHTML=`<div class="empty"><strong>Không đọc được file</strong><span>${escapeHtml(err.message)}</span></div>`;
+    el("importWarning").textContent=err.message;el("importWarning").classList.remove("hidden");updateSelectedCount();
+  }
+}
+
+async function fetchAllUsecaseKeys(){
+  const all=[];const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb.from("use_cases").select("id,usecase_code,import_key,source_stt").eq("project_id",projectId).range(from,from+pageSize-1);
+    if(error)throw error;all.push(...(data||[]));if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+function makeUniqueCode(stt,used){
+  const raw=String(stt||"").replace(/\D/g,"")||"0";
+  let base=`UC-${raw.padStart(4,"0")}`;let code=base,n=1;
+  while(used.has(code)){code=`${base}-I${n++}`}
+  used.add(code);return code;
+}
+async function insertChunks(table,rows,size=100,selectCols=null){
+  const result=[];
+  for(let i=0;i<rows.length;i+=size){
+    const chunk=rows.slice(i,i+size);let q=sb.from(table).insert(chunk);if(selectCols)q=q.select(selectCols);
+    const {data,error}=await q;if(error)throw error;if(data)result.push(...data);
+  }
+  return result;
+}
+function setImportProgress(done,total,message){
+  const pct=total?Math.round(done/total*100):0;el("importProgressBar").style.width=pct+"%";
+  el("importLog").textContent=message;el("importFootText").textContent=message;
+}
+
+async function runImport(){
+  if(importBusy||!importSelection.size||!importFileMeta)return;
+  if(!confirm(`Import ${importSelection.size} Use Case vào dự án "${currentProject.project_name}"?`))return;
+  importBusy=true;el("confirmImport").disabled=true;el("cancelImport").disabled=true;el("closeImportModal").disabled=true;el("importProgressBox").classList.remove("hidden");
+  let batchId=null;
+  try{
+    const selected=[...importSelection].sort((a,b)=>a-b).map(i=>importRows[i]);
+    const txSourceCount=selected.reduce((n,u)=>n+u.transactions.length,0);
+    setImportProgress(0,selected.length,"Đang kiểm tra dữ liệu đã có trong dự án...");
+    const existing=await fetchAllUsecaseKeys();
+    const existingKeys=new Set(existing.map(x=>x.import_key).filter(Boolean));
+    const usedCodes=new Set(existing.map(x=>x.usecase_code).filter(Boolean));
+    const fresh=selected.filter(u=>!existingKeys.has(u.import_key));
+    const skipped=selected.length-fresh.length;
+
+    const {data:batch,error:bErr}=await sb.from("usecase_import_batches").insert({project_id:projectId,file_name:importFileMeta.fileName,sheet_name:importFileMeta.sheetName,source_hash:importFileMeta.sourceHash,status:"importing",total_usecases:selected.length,total_transactions:txSourceCount,imported_by:currentUser.id,note:skipped?`Bỏ qua ${skipped} Use Case đã import trước đó.`:null}).select("id").single();
+    if(bErr)throw bErr;batchId=batch.id;
+
+    if(!fresh.length){
+      await sb.from("usecase_import_batches").update({status:"completed",completed_at:new Date().toISOString(),note:`Không có dữ liệu mới. Đã bỏ qua ${skipped} Use Case trùng.`}).eq("id",batchId);
+      setImportProgress(selected.length,selected.length,`Hoàn tất: không có Use Case mới; bỏ qua ${skipped} Use Case đã tồn tại.`);return;
+    }
+
+    const payload=fresh.map(u=>({
+      project_id:projectId,usecase_code:makeUniqueCode(u.source_stt,usedCodes),usecase_name:u.usecase_name,description:null,actor:u.actor||null,precondition:null,postcondition:null,business_flow:u.business_flow||null,priority:"medium",status:"active",created_by:currentUser.id,
+      group_name:u.group_name||null,source_stt:u.source_stt,expected_result:u.expected_result||null,note:u.note||null,import_source:importFileMeta.fileName,import_sheet:importFileMeta.sheetName,import_key:u.import_key,source_row:u.source_row,imported_at:new Date().toISOString(),import_batch_id:batchId
+    }));
+
+    const inserted=[];
+    for(let i=0;i<payload.length;i+=100){
+      const chunk=payload.slice(i,i+100);
+      const {data,error}=await sb.from("use_cases").insert(chunk).select("id,import_key");if(error)throw error;inserted.push(...(data||[]));
+      setImportProgress(Math.min(i+chunk.length,fresh.length),fresh.length,`Đã import ${Math.min(i+chunk.length,fresh.length)}/${fresh.length} Use Case...`);
+    }
+    const idByKey=new Map(inserted.map(x=>[x.import_key,x.id]));
+    const txPayload=[];
+    for(const u of fresh){
+      const ucId=idByKey.get(u.import_key);if(!ucId)continue;
+      u.transactions.forEach((t,i)=>txPayload.push({usecase_id:ucId,transaction_no:i+1,transaction_text:t.transaction_text,description:t.description||null,expected_result:t.expected_result||null,note:t.note||null,source_row:t.source_row,sort_order:i+1}));
+    }
+    for(let i=0;i<txPayload.length;i+=250){
+      const chunk=txPayload.slice(i,i+250);const {error}=await sb.from("use_case_transactions").insert(chunk);if(error)throw error;
+      setImportProgress(fresh.length,fresh.length,`Use Case đã xong. Đang lưu Transaction ${Math.min(i+chunk.length,txPayload.length)}/${txPayload.length}...`);
+    }
+    await sb.from("usecase_import_batches").update({status:"completed",completed_at:new Date().toISOString(),note:`Import mới ${fresh.length} Use Case, ${txPayload.length} Transaction; bỏ qua ${skipped} Use Case trùng.`}).eq("id",batchId);
+    setImportProgress(fresh.length,fresh.length,`Hoàn tất: ${fresh.length} Use Case, ${txPayload.length} Transaction. Bỏ qua ${skipped} Use Case trùng.`);
+    await loadAll();switchTab("usecases");
+  }catch(err){
+    if(batchId)await sb.from("usecase_import_batches").update({status:"failed",completed_at:new Date().toISOString(),note:err.message}).eq("id",batchId);
+    setImportProgress(0,1,"Lỗi import: "+err.message);alert("Import thất bại: "+err.message);
+  }finally{
+    importBusy=false;el("cancelImport").disabled=false;el("closeImportModal").disabled=false;updateSelectedCount();
+  }
+}
+
+el("importUcBtn").onclick=openImportPicker;el("importUcTabBtn").onclick=openImportPicker;
+el("ucImportFile").addEventListener("change",e=>{const file=e.target.files?.[0];if(file)handleImportFile(file)});
+el("closeImportModal").onclick=closeImport;el("cancelImport").onclick=closeImport;
+el("importModal").addEventListener("click",e=>{if(e.target===el("importModal"))closeImport()});
+el("importSearch").addEventListener("input",renderImportPreview);
+el("importPreview").addEventListener("change",e=>{if(!e.target.classList.contains("import-check"))return;const idx=Number(e.target.dataset.idx);if(e.target.checked)importSelection.add(idx);else importSelection.delete(idx);updateSelectedCount()});
+el("selectAllImport").onclick=()=>{importSelection=new Set(importRows.map((_,i)=>i));renderImportPreview();updateSelectedCount()};
+el("clearAllImport").onclick=()=>{importSelection.clear();renderImportPreview();updateSelectedCount()};
+el("confirmImport").onclick=runImport;
 el("mobileMenu").onclick=()=>{el("sidebar").classList.add("open");el("overlay").classList.add("show")};el("overlay").onclick=()=>{el("sidebar").classList.remove("open");el("overlay").classList.remove("show")};
 
 (async()=>{

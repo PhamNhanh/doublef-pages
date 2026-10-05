@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dự án | DoubleF Test</title>
+<style>
+:root{--blue:#155eef;--bg:#f5f7fa;--border:#eaecf0;--muted:#667085;--side:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.sidebar{position:fixed;inset:0 auto 0 0;width:var(--side);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}.mark{width:39px;height:39px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px;margin-bottom:3px}.nav a.active,.nav a:hover{background:#eff4ff;color:var(--blue);font-weight:700}.user{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--side)}.top{height:70px;background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between}.logout,.btn{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 13px;cursor:pointer}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.content{padding:26px 28px;max-width:1500px;margin:auto}.head{display:flex;justify-content:space-between;margin-bottom:20px}.head h1{margin:0;font-size:24px}.head p{color:var(--muted);font-size:13px}.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:17px;overflow:hidden}.form{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.form label span{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.full{grid-column:1/-1}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:8px;padding:10px}input,select{height:42px}textarea{resize:vertical}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#f9fafb;color:var(--muted);text-align:left;padding:12px 14px;font-size:10px;text-transform:uppercase}td{padding:14px;border-top:1px solid var(--border)}.badge{padding:5px 8px;background:#f2f4f7;border-radius:999px;font-size:9px;text-transform:uppercase}.hidden{display:none}.menu{display:none}@media(max-width:900px){.sidebar{display:none}.main{margin:0}.menu{display:inline-block}.content{padding:20px 14px}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<div class="brand"><div class="mark">DF</div><strong>DoubleF Test</strong></div>
+<nav class="nav">
+<a href="/kiem-thu/">Tổng quan</a><a class="active" href="/kiem-thu/du-an">Dự án</a><a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a href="/kiem-thu/test-case">Test Case</a><a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a href="/kiem-thu/loi">Quản lý lỗi</a><a href="/kiem-thu/bao-cao">Báo cáo</a><a href="/kiem-thu/thanh-vien">Thành viên</a>
+</nav>
+<div class="user"><strong id="name">...</strong><br><span id="role">...</span></div>
+</aside>
+
+<div class="main">
+<header class="top"><strong>Quản lý dự án</strong><button id="logout" class="logout">Đăng xuất</button></header>
+<main class="content">
+<div class="head"><div><h1>Dự án</h1><p>Danh sách dự án kiểm thử.</p></div><button id="showForm" class="btn primary">+ Tạo dự án</button></div>
+
+<section id="formCard" class="card hidden">
+<form id="projectForm" class="form">
+<label><span>Mã dự án</span><input name="project_code" required></label>
+<label><span>Tên dự án</span><input name="project_name" required></label>
+<label><span>Đơn vị sử dụng</span><input name="client_name"></label>
+<label><span>Trạng thái</span><select name="status"><option value="planning">Planning</option><option value="active">Active</option></select></label>
+<label><span>Ngày bắt đầu</span><input name="start_date" type="date"></label>
+<label><span>Ngày kết thúc</span><input name="end_date" type="date"></label>
+<label class="full"><span>Mô tả</span><textarea name="description" rows="4"></textarea></label>
+<div class="full"><button class="btn primary">Lưu dự án</button></div>
+</form>
+</section>
+
+<section class="card"><div style="overflow:auto"><table>
+<thead><tr><th>Mã</th><th>Tên dự án</th><th>Đơn vị</th><th>Thời gian</th><th>Trạng thái</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table></div></section>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+let currentUser,currentProfile;
+const roles={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
+
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");
+ currentUser=session.user;
+ const {data:p}=await sb.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();currentProfile=p;
+ if(!p||p.active===false)return logout();
+ name.textContent=p.full_name||currentUser.email;role.textContent=roles[p.role]||p.role;
+ if(!["admin","manager"].includes(p.role))showForm.style.display="none";
+ await load();
+}
+async function load(){
+ const {data,error}=await sb.from("projects").select("*").order("created_at",{ascending:false});
+ if(error)return alert(error.message);
+ tbody.innerHTML=(data||[]).map(p=>`<tr><td><strong>${e(p.project_code)}</strong></td><td>${e(p.project_name)}</td><td>${e(p.client_name||"—")}</td><td>${d(p.start_date)} - ${d(p.end_date)}</td><td><span class="badge">${e(p.status)}</span></td></tr>`).join("")||'<tr><td colspan="5">Chưa có dự án.</td></tr>';
+}
+showForm.onclick=()=>formCard.classList.toggle("hidden");
+projectForm.onsubmit=async ev=>{
+ ev.preventDefault();const f=new FormData(projectForm);
+ const payload={project_code:f.get("project_code").trim(),project_name:f.get("project_name").trim(),client_name:f.get("client_name").trim()||null,status:f.get("status"),start_date:f.get("start_date")||null,end_date:f.get("end_date")||null,description:f.get("description").trim()||null,created_by:currentUser.id};
+ const {error}=await sb.from("projects").insert(payload);if(error)return alert(error.message);projectForm.reset();formCard.classList.add("hidden");load();
+};
+async function logout(){await sb.auth.signOut();location.replace("/kiem-thu/login")}logout.onclick=logout;
+function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}function d(v){return v?new Date(v+"T00:00:00").toLocaleDateString("vi-VN"):"—"}
+init();
+</script>
+</body>
+</html>

@@ -35,6 +35,11 @@
     "icon": "🔗"
   },
   {
+    "title": "Dashboard | DoubleF Test Management",
+    "path": "kiem-thu/index.html",
+    "icon": "🏠"
+  },
+  {
     "title": "Đăng nhập | DoubleF Test Management",
     "path": "kiem-thu/login.html",
     "icon": "🔗"

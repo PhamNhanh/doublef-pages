@@ -1,77 +1,144 @@
-
 /* =========================================================
    DOUBLEF TEST MANAGEMENT
-   File: assets/js/config.js
-   Cấu hình kết nối Supabase
+   SUPABASE CONFIG
+   File: /kiem-thu/assets/js/config.js
 ========================================================= */
 
-/*
-  THAY 2 GIÁ TRỊ BÊN DƯỚI BẰNG THÔNG TIN SUPABASE CỦA BẠN.
 
-  Vào:
-  Supabase
-  -> Project Settings
-  -> API
+/* =========================================================
+   1. SUPABASE CONNECTION
+========================================================= */
 
-  Project URL     => SUPABASE_URL
-  anon public key => SUPABASE_ANON_KEY
+const SUPABASE_URL =
+  "https://aizhygivtngtsqcjtvaj.supabase.co";
 
-  TUYỆT ĐỐI KHÔNG dùng service_role key ở frontend.
-*/
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN";
 
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
 
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-
-/* ---------------------------------------------------------
-   Kiểm tra cấu hình
---------------------------------------------------------- */
+/* =========================================================
+   2. KIỂM TRA CẤU HÌNH
+========================================================= */
 
 const isSupabaseConfigured =
-  SUPABASE_URL &&
-  SUPABASE_ANON_KEY &&
-  !SUPABASE_URL.includes("YOUR_PROJECT_ID") &&
-  !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY");
+  typeof SUPABASE_URL === "string" &&
+  typeof SUPABASE_PUBLISHABLE_KEY === "string" &&
+  SUPABASE_URL.startsWith("https://") &&
+  SUPABASE_URL.includes(".supabase.co") &&
+  SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_");
 
-/* ---------------------------------------------------------
-   Khởi tạo Supabase Client
---------------------------------------------------------- */
 
-if (typeof supabase !== "undefined" && isSupabaseConfigured) {
+/* =========================================================
+   3. KHỞI TẠO SUPABASE CLIENT
+========================================================= */
+
+if (
+  typeof supabase !== "undefined" &&
+  isSupabaseConfigured
+) {
+
   window.sb = supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_ANON_KEY,
+    SUPABASE_PUBLISHABLE_KEY,
     {
+      db: {
+        schema: "public"
+      },
+
       auth: {
         persistSession: true,
         autoRefreshToken: true,
         detectSessionInUrl: true
+      },
+
+      global: {
+        headers: {
+          "X-Client-Info":
+            "doublef-test-management"
+        }
       }
     }
   );
 
-  console.log("Supabase đã được khởi tạo.");
+  console.log(
+    "DoubleF: Supabase connected successfully."
+  );
+
 } else {
+
   window.sb = null;
 
-  if (!isSupabaseConfigured) {
-    console.warn(
-      "Chưa cấu hình Supabase. Hãy cập nhật SUPABASE_URL và SUPABASE_ANON_KEY trong config.js"
-    );
-  }
+  console.error(
+    "DoubleF: Supabase chưa được cấu hình hoặc thư viện Supabase chưa được tải."
+  );
+
 }
 
-/* ---------------------------------------------------------
-   Cấu hình chung ứng dụng
---------------------------------------------------------- */
+
+/* =========================================================
+   4. APP CONFIG
+========================================================= */
 
 window.APP_CONFIG = {
-  appName: "DoubleF Test Management",
-  appShortName: "DF Test",
-  version: "1.0.0",
+
+  appName:
+    "DoubleF Test Management",
+
+  appShortName:
+    "DF Test",
+
+  version:
+    "1.0.0",
+
+  basePath:
+    "/kiem-thu",
 
   paths: {
-    dashboard: "./index.html",
-    login: "./login.html"
+
+    login:
+      "/kiem-thu/login",
+
+    dashboard:
+      "/kiem-thu/",
+
+    project:
+      "/kiem-thu/du-an",
+
+    testCase:
+      "/kiem-thu/test-case",
+
+    testRun:
+      "/kiem-thu/thuc-hien",
+
+    defects:
+      "/kiem-thu/loi",
+
+    reports:
+      "/kiem-thu/bao-cao",
+
+    members:
+      "/kiem-thu/thanh-vien"
+
   }
+
+};
+
+
+/* =========================================================
+   5. HELPER
+========================================================= */
+
+window.getSupabaseClient = function () {
+
+  if (!window.sb) {
+
+    console.error(
+      "Supabase client chưa được khởi tạo."
+    );
+
+    return null;
+  }
+
+  return window.sb;
+
 };

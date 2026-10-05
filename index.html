@@ -1,1906 +1,634 @@
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="icon" type="image/png" href="LOGODF.png" />
-  <link rel="shortcut icon" type="image/png" href="LOGODF.png" />
-  <link rel="apple-touch-icon" href="LOGODF.png" />
-  <title>DoubleF Workspace - Enterprise Portal</title>
-
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --card2:#f8fafc;
-      --text:#0f172a;
-      --muted:#64748b;
-      --line:#e2e8f0;
-      --line2:#cbd5e1;
-      --brand:#0f172a;
-      --blue:#2563eb;
-      --shadow:0 18px 45px rgba(15,23,42,.08);
-      --side:280px;
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      color-scheme:light;
-    }
-
-    body.dark{
-      --bg:#0b1220;
-      --card:#111827;
-      --card2:#0f172a;
-      --text:#f8fafc;
-      --muted:#cbd5e1;
-      --line:#243042;
-      --line2:#334155;
-      --brand:#f8fafc;
-      --shadow:0 18px 45px rgba(0,0,0,.28);
-      color-scheme:dark;
-    }
-
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%}
-
-    body{
-      background:
-        radial-gradient(780px 420px at 90% -10%,rgba(37,99,235,.12),transparent 62%),
-        radial-gradient(680px 420px at -8% 8%,rgba(15,118,110,.10),transparent 60%),
-        var(--bg);
-      color:var(--text);
-    }
-
-    button,input,select{font:inherit}
-    button{cursor:pointer;color:inherit}
-    a{color:inherit;text-decoration:none}
-
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:var(--side) minmax(0,1fr)
-    }
-
-    aside{
-      position:sticky;
-      top:0;
-      height:100vh;
-      padding:18px;
-      border-right:1px solid var(--line);
-      background:rgba(255,255,255,.72);
-      backdrop-filter:blur(18px);
-      overflow:auto;
-      z-index:20
-    }
-
-    body.dark aside{background:rgba(15,23,42,.78)}
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:6px 4px 18px;
-      border-bottom:1px solid var(--line);
-      margin-bottom:18px
-    }
-
-    .brand img{
-      width:46px;
-      height:46px;
-      border-radius:14px;
-      object-fit:cover;
-      background:#0f172a;
-      box-shadow:0 12px 28px rgba(15,23,42,.18)
-    }
-
-    .brand b{display:block;font-size:16px;letter-spacing:-.2px}
-    .brand span{display:block;margin-top:3px;color:var(--muted);font-size:12px}
-
-    .side-title{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:#94a3b8;
-      font-weight:900;
-      margin:16px 4px 8px
-    }
-
-    .search{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px 12px;
-      box-shadow:0 6px 18px rgba(15,23,42,.04)
-    }
-
-    .search input{
-      width:100%;
-      border:0;
-      background:transparent;
-      outline:0;
-      color:var(--text);
-      min-width:0
-    }
-
-    .filters{display:grid;gap:8px}
-
-    .filter{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      width:100%;
-      border:1px solid transparent;
-      background:transparent;
-      border-radius:14px;
-      padding:10px 11px;
-      color:var(--muted);
-      font-weight:700
-    }
-
-    .filter:hover{background:var(--card2);border-color:var(--line)}
-    .filter.active{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
-    body.dark .filter.active{
-      background:rgba(96,165,250,.12);
-      border-color:rgba(96,165,250,.35);
-      color:#93c5fd
-    }
-
-    .count{font-size:12px;color:#94a3b8;font-weight:900}
-
-    .side-card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:13px;
-      box-shadow:0 6px 18px rgba(15,23,42,.04)
-    }
-
-    .stat-line{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      color:var(--muted);
-      font-size:13px;
-      margin:8px 0
-    }
-
-    .stat-line b{color:var(--text)}
-    .time{font-size:26px;font-weight:950;color:var(--brand);letter-spacing:-.5px}
-    .date{font-size:12px;color:var(--muted);line-height:1.5;margin-top:2px}
-
-    main{min-width:0;padding:22px}
-
-    .container{
-      max-width:1220px;
-      margin:0 auto;
-      display:grid;
-      gap:16px
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      background:rgba(255,255,255,.72);
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:14px 16px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px)
-    }
-
-    body.dark .topbar{background:rgba(17,24,39,.72)}
-
-    .topbar h1{margin:0;font-size:20px;letter-spacing:-.4px}
-    .topbar p{margin:3px 0 0;color:var(--muted);font-size:13px}
-
-    .actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center
-    }
-
-    .btn{
-      border:1px solid var(--line);
-      background:var(--card);
-      border-radius:13px;
-      padding:10px 13px;
-      font-weight:800;
-      box-shadow:0 6px 18px rgba(15,23,42,.04);
-      transition:.16s ease
-    }
-
-    .btn:hover{border-color:var(--line2);transform:translateY(-1px)}
-    .btn.primary{background:var(--brand);color:var(--card);border-color:var(--brand)}
-
-    .hero{
-      background:linear-gradient(135deg,#0f172a,#111827 56%,#17345f);
-      color:#fff;
-      border-radius:26px;
-      padding:26px;
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:minmax(0,1fr) 280px;
-      gap:20px;
-      overflow:hidden;
-      position:relative
-    }
-
-    .hero:after{
-      content:"";
-      position:absolute;
-      right:-80px;
-      bottom:-150px;
-      width:360px;
-      height:360px;
-      border-radius:50%;
-      background:rgba(96,165,250,.24);
-      filter:blur(12px)
-    }
-
-    .hero>*{position:relative;z-index:1}
-    .hero h2{
-      margin:0;
-      font-size:clamp(28px,4vw,46px);
-      line-height:1.05;
-      letter-spacing:-1.4px
-    }
-
-    .hero p{
-      margin:13px 0 0;
-      color:rgba(255,255,255,.72);
-      line-height:1.65
-    }
-
-    .hero-panel{
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:20px;
-      padding:16px;
-      display:grid;
-      gap:12px
-    }
-
-    .hero-num{font-size:42px;font-weight:950}
-    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .mini{
-      background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:14px;
-      padding:10px
-    }
-    .mini span{display:block;color:rgba(255,255,255,.6);font-size:11px}
-    .mini b{display:block;margin-top:5px;font-size:18px}
-
-    .toolbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:12px;
-      box-shadow:0 6px 18px rgba(15,23,42,.04)
-    }
-
-    .toolbar-left{display:flex;gap:8px;flex-wrap:wrap}
-
-    .select{
-      border:1px solid var(--line);
-      background:var(--card2);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:750;
-      outline:0
-    }
-
-    .view{
-      display:flex;
-      gap:4px;
-      background:var(--card2);
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:3px
-    }
-
-    .view button{
-      border:0;
-      background:transparent;
-      border-radius:9px;
-      padding:8px 10px;
-      color:var(--muted);
-      font-weight:850
-    }
-
-    .view button.active{
-      background:var(--card);
-      color:var(--blue);
-      box-shadow:0 5px 14px rgba(15,23,42,.06)
-    }
-
-    .panel{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:0 8px 24px rgba(15,23,42,.05);
-      overflow:hidden
-    }
-
-    .panel-head{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      padding:18px 18px 0;
-      flex-wrap:wrap
-    }
-
-    .panel-head h3{margin:0;font-size:18px}
-    .panel-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
-    .panel-body{padding:18px}
-
-    .menu{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:14px
-    }
-
-    .menu.list{grid-template-columns:1fr}
-
-    .app-card{
-      position:relative;
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      min-width:0;
-      padding:16px;
-      background:linear-gradient(180deg,var(--card),var(--card2));
-      border:1px solid var(--line);
-      border-radius:20px;
-      overflow:hidden;
-      transition:.18s ease;
-      box-shadow:0 8px 18px rgba(15,23,42,.04)
-    }
-
-    .app-card:before{
-      content:"";
-      position:absolute;
-      width:130px;
-      height:130px;
-      border-radius:50%;
-      right:-50px;
-      top:-55px;
-      background:var(--glow,rgba(37,99,235,.08));
-      filter:blur(2px)
-    }
-
-    .app-card:hover{
-      transform:translateY(-3px);
-      border-color:rgba(37,99,235,.34);
-      box-shadow:0 20px 40px rgba(15,23,42,.10)
-    }
-
-    .app-icon{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      flex:none;
-      display:grid;
-      place-items:center;
-      color:#fff;
-      font-size:28px;
-      font-weight:950;
-      box-shadow:0 12px 24px rgba(15,23,42,.16);
-      position:relative;
-      z-index:1
-    }
-
-    .app-icon img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      border-radius:inherit
-    }
-
-    .app-info{
-      min-width:0;
-      flex:1;
-      position:relative;
-      z-index:1
-    }
-
-    .app-title{
-      font-size:16px;
-      font-weight:950;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis
-    }
-
-    .app-desc{
-      margin-top:5px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
-      min-height:36px
-    }
-
-    .app-path{
-      margin-top:6px;
-      font-size:11px;
-      color:#94a3b8;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis
-    }
-
-    .card-bottom{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      margin-top:12px
-    }
-
-    .badge{
-      display:inline-flex;
-      border:1px solid var(--line);
-      background:var(--card);
-      color:var(--muted);
-      border-radius:999px;
-      padding:4px 8px;
-      font-size:11px;
-      font-weight:850
-    }
-
-    .fav{
-      width:36px;
-      height:36px;
-      border:1px solid var(--line);
-      background:var(--card);
-      border-radius:12px;
-      color:#b7791f;
-      flex:none;
-      position:relative;
-      z-index:2
-    }
-
-    .menu.list .app-card{
-      align-items:center
-    }
-
-    .menu.list .app-desc{min-height:0}
-    .menu.list .app-icon{width:50px;height:50px;border-radius:16px}
-
-    .empty{
-      grid-column:1/-1;
-      border:1px dashed var(--line2);
-      background:var(--card2);
-      border-radius:16px;
-      padding:28px;
-      text-align:center;
-      color:var(--muted)
-    }
-
-    .mobile-menu,.backdrop{display:none}
-
-    .toast{
-      position:fixed;
-      right:18px;
-      bottom:18px;
-      display:grid;
-      gap:10px;
-      z-index:100
-    }
-
-    .toast-item{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      padding:12px 14px;
-      font-size:13px;
-      animation:in .18s ease
-    }
-
-    @keyframes in{
-      from{opacity:0;transform:translateY(8px)}
-      to{opacity:1;transform:none}
-    }
-
-    .cmdk{
-      position:fixed;
-      inset:0;
-      background:rgba(15,23,42,.55);
-      backdrop-filter:blur(8px);
-      z-index:80;
-      display:none;
-      align-items:flex-start;
-      justify-content:center;
-      padding:8vh 16px
-    }
-
-    .cmdk.open{display:flex}
-
-    .cmdk-box{
-      width:min(720px,100%);
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:22px;
-      box-shadow:0 28px 80px rgba(0,0,0,.25);
-      overflow:hidden
-    }
-
-    .cmdk-top{padding:14px;border-bottom:1px solid var(--line)}
-
-    .cmdk-top input{
-      width:100%;
-      border:1px solid var(--line);
-      background:var(--card2);
-      color:var(--text);
-      border-radius:14px;
-      padding:13px;
-      outline:0
-    }
-
-    .cmdk-list{
-      padding:10px;
-      display:grid;
-      gap:8px;
-      max-height:58vh;
-      overflow:auto
-    }
-
-    .cmdk-item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border:1px solid var(--line);
-      background:var(--card2);
-      border-radius:15px;
-      padding:12px;
-      cursor:pointer
-    }
-
-    .cmdk-item.active,.cmdk-item:hover{
-      background:#eff6ff;
-      border-color:#bfdbfe
-    }
-
-    body.dark .cmdk-item.active,
-    body.dark .cmdk-item:hover{
-      background:rgba(96,165,250,.12)
-    }
-
-    .cmdk-foot{
-      border-top:1px solid var(--line);
-      padding:11px 14px;
-      color:var(--muted);
-      font-size:12px;
-      background:var(--card2)
-    }
-
-    @media(max-width:1100px){
-      .menu{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-
-    @media(max-width:980px){
-      :root{--side:0px}
-      .app{grid-template-columns:1fr}
-
-      aside{
-        position:fixed;
-        left:0;
-        top:0;
-        bottom:0;
-        width:min(88vw,320px);
-        height:100dvh;
-        transform:translateX(-105%);
-        transition:.2s ease;
-        box-shadow:0 24px 70px rgba(0,0,0,.22)
-      }
-
-      body.sidebar-open aside{transform:none}
-
-      .backdrop{
-        position:fixed;
-        inset:0;
-        background:rgba(15,23,42,.45);
-        backdrop-filter:blur(3px);
-        z-index:15
-      }
-
-      body.sidebar-open .backdrop{display:block}
-      .mobile-menu{display:inline-flex}
-      .hero{grid-template-columns:1fr}
-      main{padding:14px 14px 84px}
-    }
-
-    @media(max-width:680px){
-      .topbar{border-radius:18px}
-      .topbar h1{font-size:17px}
-      .actions .hide-sm{display:none}
-      .hero{padding:20px;border-radius:22px}
-      .hero h2{font-size:30px}
-      .toolbar{align-items:stretch}
-      .toolbar-left,.select,.view{width:100%}
-      .toolbar-left{display:grid;grid-template-columns:1fr 1fr}
-      .view button{flex:1}
-      .menu{grid-template-columns:1fr}
-      .panel-head,.panel-body{padding:15px}
-      .toast{right:12px;bottom:12px}
-    }
-  </style>
-
-<style id="corporate-overrides">
-  :root{
-    --bg:#f4f6f8;
-    --card:#ffffff;
-    --card2:#f8fafc;
-    --text:#172033;
-    --muted:#667085;
-    --line:#e4e7ec;
-    --line2:#d0d5dd;
-    --brand:#0b1f3a;
-    --blue:#155eef;
-    --blue-soft:#eef4ff;
-    --green:#067647;
-    --shadow-sm:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);
-    --shadow-md:0 8px 24px rgba(16,24,40,.08);
-    --shadow-lg:0 18px 48px rgba(16,24,40,.12);
-    --side:276px;
+<style id="mobile-responsive-fix">
+
+/* =========================================================
+   FIX RESPONSIVE MOBILE
+   Dán đoạn này ngay trước </head>
+   ========================================================= */
+
+@media (max-width: 980px) {
+
+  /* Không cho toàn trang tràn ngang */
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
-  body.dark{
-    --bg:#0d1117;
-    --card:#131a24;
-    --card2:#18212e;
-    --text:#f2f4f7;
-    --muted:#98a2b3;
-    --line:#273142;
-    --line2:#344054;
-    --brand:#f9fafb;
-    --blue:#84adff;
-    --blue-soft:rgba(47,107,255,.12);
-    --shadow-sm:0 1px 2px rgba(0,0,0,.18);
-    --shadow-md:0 10px 30px rgba(0,0,0,.24);
-    --shadow-lg:0 20px 56px rgba(0,0,0,.32);
+  /* QUAN TRỌNG:
+     Bỏ grid desktop khi chuyển sang mobile */
+  .app {
+    display: block !important;
+    grid-template-columns: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
 
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--bg);
-    letter-spacing:-.01em;
+  /* Nội dung chính chiếm toàn màn hình */
+  main {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    padding:
+      16px
+      16px
+      calc(84px + env(safe-area-inset-bottom));
   }
 
-  .app{grid-template-columns:var(--side) minmax(0,1fr)}
-
-  aside{
-    padding:20px 16px;
-    border-right:1px solid #16263d;
-    background:linear-gradient(180deg,#0a1728 0%,#0b1f3a 100%);
-    color:#fff;
-    backdrop-filter:none;
-    box-shadow:10px 0 30px rgba(15,23,42,.06);
-  }
-  body.dark aside{background:linear-gradient(180deg,#08111f 0%,#0a1728 100%)}
-
-  .brand{
-    padding:4px 4px 20px;
-    margin-bottom:20px;
-    border-bottom:1px solid rgba(255,255,255,.10);
-  }
-  .brand img{
-    width:42px;height:42px;border-radius:11px;
-    background:#fff;
-    box-shadow:none;
-  }
-  .brand b{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em}
-  .brand span{font-size:11px;color:#98a2b3;margin-top:2px}
-
-  .side-title{
-    margin:18px 8px 8px;
-    color:#667085;
-    font-size:10px;
-    letter-spacing:.16em;
-    font-weight:800;
+  /* Container không được vượt màn hình */
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 auto;
   }
 
-  .search{
-    background:rgba(255,255,255,.07);
-    border-color:rgba(255,255,255,.10);
-    border-radius:10px;
-    padding:10px 11px;
-    box-shadow:none;
-  }
-  .search span{color:#98a2b3}
-  .search input{color:#fff;font-size:13px}
-  .search input::placeholder{color:#667085}
+  /* Sidebar chuyển thành menu trượt */
+  aside {
+    position: fixed !important;
 
-  .filters{gap:4px}
-  .filter{
-    color:#b7c0ce;
-    border-radius:9px;
-    padding:10px 11px;
-    font-size:13px;
-    font-weight:650;
-  }
-  .filter:hover{
-    background:rgba(255,255,255,.06);
-    border-color:transparent;
-    color:#fff;
-  }
-  .filter.active,
-  body.dark .filter.active{
-    background:rgba(21,94,239,.18);
-    border-color:rgba(132,173,255,.18);
-    color:#fff;
-  }
-  .count{
-    min-width:26px;
-    padding:2px 7px;
-    border-radius:999px;
-    background:rgba(255,255,255,.07);
-    color:#98a2b3;
-    text-align:center;
-  }
-  .filter.active .count{color:#c7d7fe;background:rgba(255,255,255,.08)}
+    left: 0;
+    top: 0;
+    bottom: 0;
 
-  .side-card{
-    background:rgba(255,255,255,.06);
-    border-color:rgba(255,255,255,.09);
-    border-radius:12px;
-    box-shadow:none;
-    color:#fff;
-  }
-  .stat-line{color:#98a2b3}
-  .stat-line b{color:#fff}
-  .time{color:#fff;font-size:24px;font-weight:750;letter-spacing:-.04em}
-  .date{color:#98a2b3}
+    width: min(86vw, 310px) !important;
+    max-width: 310px;
 
-  main{padding:24px 30px 40px}
-  .container{max-width:1380px;gap:20px}
+    height: 100dvh;
 
-  .topbar{
-    position:sticky;
-    top:14px;
-    z-index:12;
-    min-height:66px;
-    border-radius:14px;
-    padding:12px 14px 12px 18px;
-    background:rgba(255,255,255,.92);
-    border:1px solid rgba(228,231,236,.95);
-    box-shadow:var(--shadow-sm);
-    backdrop-filter:blur(16px) saturate(160%);
-  }
-  body.dark .topbar{background:rgba(19,26,36,.92)}
-  .topbar h1{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.03em}
-  .topbar p{font-size:12px;color:var(--muted);margin-top:2px}
+    transform: translateX(-105%);
+    transition: transform .25s ease;
 
-  .actions{gap:7px}
-  .btn{
-    border-radius:9px;
-    padding:9px 12px;
-    min-height:38px;
-    border-color:var(--line);
-    box-shadow:none;
-    font-size:12px;
-    font-weight:700;
-    background:var(--card);
-  }
-  .btn:hover{transform:none;border-color:#b2c5ef;background:var(--card2)}
-  .btn.primary{
-    background:#155eef;
-    color:#fff;
-    border-color:#155eef;
-    box-shadow:0 1px 2px rgba(21,94,239,.22);
-  }
-  body.dark .btn.primary{background:#2f6bff;border-color:#2f6bff;color:#fff}
+    z-index: 50;
 
-  .hero{
-    min-height:290px;
-    grid-template-columns:minmax(0,1.5fr) minmax(300px,.7fr);
-    align-items:stretch;
-    gap:28px;
-    padding:36px 38px;
-    border-radius:18px;
-    color:var(--text);
-    background:
-      radial-gradient(800px 320px at 12% 0%,rgba(21,94,239,.10),transparent 60%),
-      linear-gradient(180deg,#fff,#fbfcfe);
-    border:1px solid var(--line);
-    box-shadow:var(--shadow-sm);
-  }
-  body.dark .hero{
-    background:
-      radial-gradient(700px 320px at 10% 0%,rgba(47,107,255,.14),transparent 60%),
-      linear-gradient(180deg,#131a24,#101720);
-  }
-  .hero:after{
-    right:-120px;bottom:-190px;width:420px;height:420px;
-    background:rgba(21,94,239,.06);filter:blur(4px);
-  }
-  .eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    margin-bottom:14px;
-    color:#155eef;
-    font-size:11px;
-    font-weight:800;
-    letter-spacing:.12em;
-  }
-  .eyebrow:before{
-    content:"";
-    width:24px;height:2px;border-radius:99px;background:#155eef;
-  }
-  .hero h2{
-    max-width:780px;
-    font-size:clamp(34px,4vw,58px);
-    line-height:1.02;
-    letter-spacing:-.055em;
-    color:var(--text);
-    font-weight:800;
-  }
-  .hero p{
-    max-width:760px;
-    margin-top:16px;
-    color:var(--muted);
-    font-size:15px;
-    line-height:1.7;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    padding-top:
+      calc(20px + env(safe-area-inset-top));
+
+    padding-bottom:
+      calc(20px + env(safe-area-inset-bottom));
   }
 
-  .hero-panel{
-    align-self:stretch;
-    align-content:center;
-    background:#0b1f3a;
-    border:0;
-    border-radius:16px;
-    padding:22px;
-    box-shadow:none;
-    color:#fff;
-  }
-  body.dark .hero-panel{background:#0a1728;border:1px solid #243042}
-  .metric-label{color:#98a2b3;font-size:11px;font-weight:700;letter-spacing:.04em}
-  .hero-num{font-size:48px;letter-spacing:-.06em;margin-top:2px}
-  .mini-grid{gap:8px}
-  .mini{
-    background:rgba(255,255,255,.06);
-    border-color:rgba(255,255,255,.08);
-    border-radius:10px;
-    padding:11px 12px;
-  }
-  .mini span{font-size:10px;color:#98a2b3}
-  .mini b{font-size:16px;margin-top:4px;color:#fff}
-
-  .toolbar{
-    border-radius:14px;
-    padding:10px 12px;
-    border-color:var(--line);
-    box-shadow:var(--shadow-sm);
-  }
-  .select{
-    min-height:38px;
-    border-radius:9px;
-    padding:8px 11px;
-    font-size:12px;
-    font-weight:650;
-    background:var(--card);
-  }
-  .view{border-radius:9px;padding:3px;background:var(--card2)}
-  .view button{border-radius:7px;padding:7px 11px;font-size:12px}
-
-  .panel{
-    border-radius:16px;
-    border-color:var(--line);
-    box-shadow:var(--shadow-sm);
-  }
-  .panel-head{padding:22px 22px 0}
-  .panel-head h3{font-size:17px;font-weight:800;letter-spacing:-.02em}
-  .panel-head p{font-size:12px}
-  .panel-body{padding:18px 22px 24px}
-
-  .menu{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-  .app-card{
-    min-height:146px;
-    padding:16px;
-    border-radius:14px;
-    border-color:var(--line);
-    background:var(--card);
-    box-shadow:none;
-    transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
-  }
-  .app-card:before{display:none}
-  .app-card:hover{
-    transform:translateY(-2px);
-    border-color:#b7c7ea;
-    box-shadow:var(--shadow-md);
-  }
-  body.dark .app-card:hover{border-color:#3b82f6}
-
-  .app-icon{
-    width:48px;height:48px;border-radius:11px;
-    font-size:23px;
-    box-shadow:none;
-  }
-  .app-title{font-size:14px;font-weight:800;letter-spacing:-.02em}
-  .app-desc{font-size:12px;line-height:1.55;color:var(--muted);min-height:38px}
-  .app-path{font-size:10px;color:#98a2b3}
-  .card-bottom{margin-top:10px}
-  .badge{
-    border-radius:999px;
-    padding:4px 7px;
-    font-size:10px;
-    font-weight:750;
-    background:var(--card2);
-  }
-  .fav{
-    width:32px;height:32px;border-radius:8px;
-    box-shadow:none;
-  }
-  .fav:hover{background:var(--blue-soft);border-color:#b2c5ef}
-
-  .empty{border-radius:12px}
-  .toast-item{border-radius:10px;box-shadow:var(--shadow-md)}
-  .cmdk-box{border-radius:16px;box-shadow:var(--shadow-lg)}
-  .cmdk-top input{border-radius:10px}
-  .cmdk-item{border-radius:10px}
-
-  @media(max-width:1180px){
-    .menu{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .hero{grid-template-columns:1fr 300px}
+  body.sidebar-open aside {
+    transform: translateX(0);
   }
 
-  @media(max-width:980px){
-    :root{--side:0px}
-    main{padding:16px 16px 84px}
-    .topbar{top:8px}
-    .hero{grid-template-columns:1fr;padding:28px}
-    .hero-panel{min-height:180px}
-    aside{width:min(88vw,310px)}
+  /* Overlay phía sau menu */
+  .backdrop {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(15, 23, 42, .48);
+    backdrop-filter: blur(3px);
+
+    z-index: 40;
   }
 
-  @media(max-width:680px){
-    main{padding:10px 10px 76px}
-    .container{gap:12px}
-    .topbar{
-      border-radius:12px;
-      padding:10px;
-      align-items:center;
-    }
-    .topbar h1{font-size:15px}
-    .topbar p{display:none}
-    .actions{margin-left:auto}
-    .btn{min-height:36px;padding:8px 10px}
-    #cmdBtn{font-size:0}
-    #cmdBtn:before{content:"Tìm kiếm";font-size:12px}
-    .hero{padding:24px 20px;border-radius:14px;min-height:0}
-    .hero h2{font-size:32px;line-height:1.06}
-    .hero p{font-size:13px;line-height:1.6}
-    .hero-panel{padding:16px;border-radius:12px;min-height:0}
-    .hero-num{font-size:40px}
-    .toolbar{border-radius:12px}
-    .toolbar-left{grid-template-columns:1fr 1fr}
-    .panel{border-radius:12px}
-    .panel-head,.panel-body{padding-left:14px;padding-right:14px}
-    .menu{grid-template-columns:1fr}
-    .app-card{min-height:0;border-radius:12px;padding:14px}
-    .app-icon{width:46px;height:46px;border-radius:10px}
-    .app-desc{min-height:0}
+  body.sidebar-open .backdrop {
+    display: block;
   }
 
-  @media(max-width:430px){
-    .actions{gap:5px}
-    .actions .btn{padding:8px 9px}
-    #reloadBtn{display:none}
-    .toolbar-left{grid-template-columns:1fr}
-    .hero h2{font-size:29px}
-    .mini-grid{grid-template-columns:1fr 1fr}
-  }
-</style>
-
-
-<style id="mobile-enhancements">
-  /* Mobile-first refinements */
-  html,body{max-width:100%;overflow-x:hidden}
-  button,a,select,input{-webkit-tap-highlight-color:transparent}
-  button,.btn,.filter,.fav,.view button,.app-card{touch-action:manipulation}
-
-  @media(max-width:980px){
-    body.sidebar-open,body.modal-open{overflow:hidden}
-    aside{
-      padding-top:max(16px,env(safe-area-inset-top));
-      padding-bottom:max(20px,env(safe-area-inset-bottom));
-      overscroll-behavior:contain;
-      -webkit-overflow-scrolling:touch;
-    }
-    .backdrop{touch-action:none}
-    .mobile-menu{
-      width:40px;height:40px;padding:0;
-      display:inline-grid;place-items:center;
-      font-size:20px;line-height:1;flex:none;
-    }
-    .topbar{
-      position:sticky;
-      top:max(6px,env(safe-area-inset-top));
-    }
+  /* Hiện nút menu mobile */
+  .mobile-menu {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
-  @media(max-width:680px){
-    body{font-size:14px}
-    main{
-      padding:
-        max(8px,env(safe-area-inset-top))
-        max(8px,env(safe-area-inset-right))
-        calc(72px + env(safe-area-inset-bottom))
-        max(8px,env(safe-area-inset-left));
-    }
-    .container{gap:10px}
+  /* TOP BAR */
+  .topbar {
+    width: 100%;
+    max-width: 100%;
 
-    .topbar{
-      display:grid;
-      grid-template-columns:auto minmax(0,1fr) auto;
-      gap:8px;
-      width:100%;
-      padding:8px;
-      border-radius:12px;
-    }
-    .topbar>div:nth-child(2){min-width:0}
-    .topbar h1{
-      font-size:14px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .actions{
-      margin:0;
-      flex-wrap:nowrap;
-      gap:4px;
-    }
-    .actions .btn{
-      min-width:40px;
-      height:40px;
-      padding:0 10px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      white-space:nowrap;
-    }
-    #cmdBtn{font-size:0;width:40px;padding:0}
-    #cmdBtn:before{content:"⌕";font-size:22px;font-weight:700}
-    #themeBtn,#reloadBtn{display:none}
+    top: 8px;
 
-    .hero{
-      padding:18px 16px;
-      border-radius:12px;
-      gap:16px;
-    }
-    .hero h2{font-size:clamp(25px,8vw,31px);line-height:1.08}
-    .hero p{margin-top:10px;font-size:12.5px;line-height:1.55}
-    .eyebrow{margin-bottom:10px}
-    .hero-panel{padding:14px;border-radius:11px}
-    .hero-num{font-size:36px}
-    .mini{padding:9px 10px}
+    flex-wrap: nowrap;
 
-    .toolbar{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:8px;
-      padding:8px;
-    }
-    .toolbar-left{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      width:100%;
-    }
-    .select{
-      width:100%;
-      min-width:0;
-      min-height:44px;
-      font-size:13px;
-    }
-    .view{width:100%;height:44px}
-    .view button{min-height:36px;font-size:13px}
-
-    .panel-head{
-      padding:14px 12px 0;
-      align-items:center;
-    }
-    .panel-head h3{font-size:16px}
-    .panel-head p{display:none}
-    .panel-body{padding:12px}
-
-    .menu{gap:9px}
-    .app-card{
-      display:grid;
-      grid-template-columns:48px minmax(0,1fr);
-      gap:11px;
-      padding:12px;
-      min-height:96px;
-      border-radius:12px;
-      align-items:start;
-    }
-    .app-icon{width:48px;height:48px;border-radius:11px;font-size:23px}
-    .app-title{
-      font-size:14px;
-      white-space:normal;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      line-height:1.3;
-    }
-    .app-desc{
-      margin-top:4px;
-      font-size:11.5px;
-      line-height:1.45;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-    }
-    .app-path{display:none}
-    .card-bottom{margin-top:8px}
-    .badge{font-size:10px}
-    .fav{width:36px;height:36px;border-radius:10px;font-size:18px}
-
-    .cmdk{
-      align-items:flex-end;
-      padding:0;
-      background:rgba(15,23,42,.42);
-    }
-    .cmdk-box{
-      width:100%;
-      max-height:88dvh;
-      border-radius:18px 18px 0 0;
-      padding-bottom:env(safe-area-inset-bottom);
-    }
-    .cmdk-top{padding:12px}
-    .cmdk-top input{
-      min-height:48px;
-      font-size:16px; /* tránh iOS tự zoom khi focus */
-      border-radius:12px;
-    }
-    .cmdk-list{max-height:62dvh;padding:8px}
-    .cmdk-item{min-height:58px;padding:11px}
-    .cmdk-foot{display:none}
-
-    .toast{
-      left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));
-    }
-    .toast-item{text-align:center}
+    overflow: hidden;
   }
 
-  @media(max-width:430px){
-    .toolbar-left{grid-template-columns:1fr}
-    .hero{padding:16px 14px}
-    .hero h2{font-size:26px}
-    .mini-grid{gap:6px}
-    .mini b{font-size:15px}
-    .panel-head{gap:8px}
-    #resultInfo{flex:none}
+  .topbar > div:not(.actions) {
+    min-width: 0;
+    flex: 1;
   }
 
-  @media(max-width:360px){
-    .topbar h1{font-size:13px}
-    .mobile-menu,#cmdBtn{width:38px;height:38px}
-    .app-card{grid-template-columns:44px minmax(0,1fr);padding:10px}
-    .app-icon{width:44px;height:44px}
-    .hero h2{font-size:24px}
-  }
-</style>
-
-</head>
-
-<body>
-  <div class="app">
-    <aside id="sidebar">
-      <div class="brand">
-        <img src="LOGODF.png" alt="DF" onerror="this.style.display='none';this.nextElementSibling.style.marginLeft='0'" />
-        <div>
-          <b>DoubleF Workspace</b>
-          <span>Enterprise application portal</span>
-        </div>
-      </div>
-
-      <div class="side-title">Tìm kiếm</div>
-      <div class="search">
-        <span>⌕</span>
-        <input id="q" placeholder="Tìm trang, công cụ..." />
-      </div>
-
-      <div class="side-title">Bộ lọc</div>
-      <div class="filters">
-        <button class="filter active" data-filter="all">
-          <span>Tất cả trang</span>
-          <span class="count" id="countAll">0</span>
-        </button>
-        <button class="filter" data-filter="tools">
-          <span>Công cụ</span>
-          <span class="count" id="countTools">0</span>
-        </button>
-        <button class="filter" data-filter="games">
-          <span>Game</span>
-          <span class="count" id="countGames">0</span>
-        </button>
-        <button class="filter" data-filter="fav">
-          <span>Đã ghim</span>
-          <span class="count" id="countFav">0</span>
-        </button>
-      </div>
-
-      <div class="side-title">Thời gian</div>
-      <div class="side-card">
-        <div class="time" id="time">--:--</div>
-        <div class="date" id="date">--</div>
-      </div>
-
-      <div class="side-title">Thống kê</div>
-      <div class="side-card">
-        <div class="stat-line"><span>Tổng trang</span><b id="statTotal">0</b></div>
-        <div class="stat-line"><span>Công cụ</span><b id="statTools">0</b></div>
-        <div class="stat-line"><span>Game</span><b id="statGames">0</b></div>
-        <div class="stat-line"><span>Đã ghim</span><b id="statFav">0</b></div>
-      </div>
-    </aside>
-
-    <div class="backdrop" id="backdrop"></div>
-
-    <main>
-      <div class="container">
-        <section class="topbar">
-          <button class="btn mobile-menu" id="sidebarBtn">☰</button>
-          <div>
-            <h1>Professional Portal</h1>
-            <p>Truy cập nhanh toàn bộ trang và công cụ của bạn</p>
-          </div>
-          <div class="actions">
-            <button class="btn hide-sm" id="themeBtn">Chế độ</button>
-            <button class="btn" id="cmdBtn">Tìm nhanh ⌘K</button>
-            <button class="btn primary" id="reloadBtn">Đồng bộ</button>
-          </div>
-        </section>
-
-        <section class="hero">
-          <div>
-            <h2>Cổng truy cập gọn gàng cho hệ thống web DoubleF.</h2>
-            <p>Danh sách được lấy tự động từ <b>pages.json</b>. Mỗi website được gán một icon và màu riêng để dễ nhận diện, tìm kiếm và mở nhanh.</p>
-          </div>
-
-          <div class="hero-panel">
-            <div>
-              <span class="metric-label">Ứng dụng khả dụng</span>
-              <div class="hero-num" id="miniTotal">0</div>
-            </div>
-            <div class="mini-grid">
-              <div class="mini"><span>Công cụ</span><b id="miniTools">0</b></div>
-              <div class="mini"><span>Game</span><b id="miniGames">0</b></div>
-              <div class="mini"><span>Đã ghim</span><b id="miniFav">0</b></div>
-              <div class="mini"><span>Giao diện</span><b id="themeName">Light</b></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="toolbar">
-          <div class="toolbar-left">
-            <select class="select" id="sortMode">
-              <option value="fav">Ghim trước</option>
-              <option value="az">Sắp xếp A-Z</option>
-              <option value="group">Theo nhóm</option>
-            </select>
-
-            <select class="select" id="openMode">
-              <option value="same">Mở cùng tab</option>
-              <option value="new">Mở tab mới</option>
-            </select>
-          </div>
-
-          <div class="view">
-            <button class="active" data-view="grid">Lưới</button>
-            <button data-view="list">Danh sách</button>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Danh sách ứng dụng</h3>
-              <p>Bấm vào thẻ để mở trang, bấm dấu sao để ghim.</p>
-            </div>
-            <span class="badge" id="resultInfo">0 kết quả</span>
-          </div>
-
-          <div class="panel-body">
-            <div class="menu" id="menu"></div>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
-
-  <div class="cmdk" id="cmdk">
-    <div class="cmdk-box">
-      <div class="cmdk-top">
-        <input id="cmdInput" placeholder="Gõ tên trang hoặc đường dẫn..." />
-      </div>
-      <div class="cmdk-list" id="cmdList"></div>
-      <div class="cmdk-foot">Enter: mở trang • ↑↓: chọn • Esc: đóng • Ctrl/⌘ + K</div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-<script>
-const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-
-const FAV_KEY='doublef_favs_normal_v1';
-const THEME_KEY='doublef_theme_normal_v1';
-
-let allPages=[];
-let filter='all';
-let view='grid';
-let selected=0;
-
-const els={
-  q:$('#q'),
-  menu:$('#menu'),
-  cmdk:$('#cmdk'),
-  cmdInput:$('#cmdInput'),
-  cmdList:$('#cmdList'),
-  toast:$('#toast'),
-  themeName:$('#themeName')
-};
-
-function esc(s){
-  return String(s??'').replace(/[&<>"']/g,m=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#039;'
-  }[m]));
-}
-
-function norm(s){
-  return String(s??'')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g,'');
-}
-
-function favs(){
-  try{return JSON.parse(localStorage.getItem(FAV_KEY)||'[]')}
-  catch{return[]}
-}
-
-function saveFavs(a){
-  localStorage.setItem(FAV_KEY,JSON.stringify(a))
-}
-
-function isFav(path){
-  return favs().includes(String(path||''))
-}
-
-function clean(){
-  return allPages.filter(p=>p&&p.path&&norm(p.path)!=='index.html')
-}
-
-function typeOf(p){
-  const t=norm((p.title||'')+' '+(p.path||'')+' '+(p.group||'')+' '+(p.desc||''));
-
-  if(
-    t.includes('game')||
-    t.includes('tom')||
-    t.includes('jerry')||
-    t.includes('survival')||
-    t.includes('runner')
-  ) return 'games';
-
-  if(
-    t.includes('tool')||
-    t.includes('cong cu')||
-    t.includes('tinh')||
-    t.includes('thi cong')||
-    t.includes('bao gia')||
-    t.includes('ssvb')
-  ) return 'tools';
-
-  return 'page';
-}
-
-function label(p){
-  return typeOf(p)==='games'?'Game':
-         typeOf(p)==='tools'?'Công cụ':'Trang';
-}
-
-function randomIconFor(p){
-  if(p.icon)return p.icon;
-
-  const title=norm((p.title||'')+' '+(p.path||''));
-
-  const keywordIcons=[
-    [['phong thi nghiem','hoa hoc'],'🧪'],
-    [['dia chi','ban do','maps'],'📍'],
-    [['xu phat','giao thong','phap luat'],'⚖️'],
-    [['word','doc','van ban'],'📄'],
-    [['excel','bang tinh'],'📊'],
-    [['pdf'],'📕'],
-    [['so do','tu duy','mindmap'],'🧠'],
-    [['chat','tro chuyen'],'💬'],
-    [['bao gia','gia tien'],'💰'],
-    [['du an','thi cong','xay dung'],'🏗️'],
-    [['tinh tien','tinh toan'],'🧮'],
-    [['chinh ta','spell'],'✍️'],
-    [['tu vi','cung hoang dao'],'🔮'],
-    [['game'],'🎮'],
-    [['camera','hinh anh'],'📷'],
-    [['mail','email'],'✉️'],
-    [['bao cao','thong ke'],'📈'],
-    [['ai','robot'],'🤖'],
-    [['am nhac','music'],'🎵'],
-    [['video'],'🎬'],
-    [['lich','calendar'],'📅']
-  ];
-
-  for(const [keys,icon] of keywordIcons){
-    if(keys.some(k=>title.includes(k)))return icon;
+  .topbar h1 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  const fallbackIcons=['🚀','⚡','🌐','🧩','🛠️','📦','🎯','🛰️','💡','🔗','🗂️','🧭','🪄','📚','🧰'];
-  const hash=[...String(p.title||p.path||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
-
-  return fallbackIcons[hash%fallbackIcons.length];
-}
-
-function subtitle(p){
-  if(p.desc&&String(p.desc).trim())return p.desc;
-
-  const t=norm(p.title||'');
-
-  if(t.includes('phong thi nghiem'))return'Mô phỏng hóa học và bảng tuần hoàn';
-  if(t.includes('dia chi'))return'Tra cứu địa chỉ sau sáp nhập';
-  if(t.includes('xu phat'))return'Tra cứu lỗi và mức xử phạt';
-  if(t.includes('word'))return'Xử lý và so sánh tài liệu Word';
-  if(t.includes('so do'))return'Tạo sơ đồ và nội dung trực quan';
-  if(t.includes('chat'))return'Trao đổi trực tuyến nhanh chóng';
-  if(t.includes('bao gia'))return'Tạo và quản lý báo giá';
-  if(t.includes('du an'))return'Quản lý danh sách dự án';
-  if(t.includes('tinh tien'))return'Tính toán chi phí thi công';
-
-  return'Mở ứng dụng trong hệ thống DoubleF';
-}
-
-function colorsFor(p,index=0){
-  if(p.color){
-    return [p.color,p.color];
+  .actions {
+    flex: none;
+    margin-left: auto;
+    flex-wrap: nowrap;
   }
 
-  const palettes=[
-    ['#2563eb','#60a5fa'],
-    ['#7c3aed','#c084fc'],
-    ['#0f766e','#2dd4bf'],
-    ['#ea580c','#fb923c'],
-    ['#be123c','#fb7185'],
-    ['#0369a1','#38bdf8'],
-    ['#4d7c0f','#a3e635'],
-    ['#b45309','#fbbf24'],
-    ['#4338ca','#818cf8'],
-    ['#334155','#94a3b8'],
-    ['#0f766e','#14b8a6'],
-    ['#a21caf','#e879f9']
-  ];
+  /* HERO */
+  .hero {
+    width: 100%;
+    max-width: 100%;
 
-  const hash=[...String(p.title||p.path||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
-  return palettes[(hash+index)%palettes.length];
-}
+    grid-template-columns: minmax(0, 1fr) !important;
 
-function setTheme(t){
-  document.body.classList.toggle('dark',t==='dark');
-  localStorage.setItem(THEME_KEY,t);
-  els.themeName.textContent=t==='dark'?'Dark':'Light';
-}
+    overflow: hidden;
+  }
 
-setTheme(localStorage.getItem(THEME_KEY)||'light');
+  .hero > * {
+    min-width: 0;
+  }
 
-$('#themeBtn').onclick=()=>{
-  setTheme(document.body.classList.contains('dark')?'light':'dark')
-};
+  .hero h2 {
+    max-width: 100%;
 
-function toast(t){
-  const d=document.createElement('div');
-  d.className='toast-item';
-  d.textContent=t;
-  els.toast.appendChild(d);
-  setTimeout(()=>d.remove(),2500)
-}
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
 
-function toggleSidebar(on){
-  const open=on??!document.body.classList.contains('sidebar-open');
-  document.body.classList.toggle('sidebar-open',open);
-}
+  .hero p {
+    max-width: 100%;
+  }
 
-$('#sidebarBtn').onclick=()=>toggleSidebar();
-$('#backdrop').onclick=()=>toggleSidebar(false);
+  .hero-panel {
+    width: 100%;
+    max-width: 100%;
+  }
 
-function updateStats(){
-  const p=clean();
-  const tools=p.filter(x=>typeOf(x)==='tools').length;
-  const games=p.filter(x=>typeOf(x)==='games').length;
-  const fav=favs().filter(x=>p.some(y=>String(y.path)===String(x))).length;
+  /* TOOLBAR */
+  .toolbar {
+    width: 100%;
+    max-width: 100%;
+  }
 
-  [
-    ['statTotal',p.length],
-    ['statTools',tools],
-    ['statGames',games],
-    ['statFav',fav],
-    ['countAll',p.length],
-    ['countTools',tools],
-    ['countGames',games],
-    ['countFav',fav],
-    ['miniTotal',p.length],
-    ['miniTools',tools],
-    ['miniGames',games],
-    ['miniFav',fav]
-  ].forEach(([id,v])=>{
-    const e=$('#'+id);
-    if(e)e.textContent=v
-  })
-}
+  .toolbar-left {
+    min-width: 0;
+    flex: 1;
+  }
 
-function filtered(){
-  const q=norm(els.q.value).trim();
+  .select {
+    max-width: 100%;
+  }
 
-  let p=clean().filter(x=>{
-    const hay=norm(
-      (x.title||'')+' '+
-      (x.path||'')+' '+
-      (x.desc||'')
-    );
+  /* PANEL */
+  .panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 
-    if(q&&!hay.includes(q))return false;
-    if(filter==='fav')return isFav(x.path);
-    if(filter==='tools')return typeOf(x)==='tools';
-    if(filter==='games')return typeOf(x)==='games';
+  .panel-head,
+  .panel-body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 
-    return true
-  });
+  /* Danh sách ứng dụng */
+  .menu {
+    width: 100%;
+    max-width: 100%;
 
-  const mode=$('#sortMode').value;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
 
-  p.sort((a,b)=>{
-    if(mode==='fav'){
-      const fa=isFav(a.path)?1:0;
-      const fb=isFav(b.path)?1:0;
-      if(fa!==fb)return fb-fa
-    }
+  .app-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 
-    if(mode==='group'){
-      const ga=typeOf(a);
-      const gb=typeOf(b);
-      if(ga!==gb)return ga.localeCompare(gb)
-    }
+  .app-info {
+    min-width: 0;
+  }
 
-    return String(a.title||a.path).localeCompare(
-      String(b.title||b.path),
-      'vi',
-      {sensitivity:'base'}
-    )
-  });
-
-  return p
-}
-
-function openPage(path){
-  if($('#openMode').value==='new'){
-    window.open(path,'_blank','noopener,noreferrer')
-  }else{
-    location.href=path
+  .app-title {
+    max-width: 100%;
   }
 }
 
-function toggleFav(path){
-  let a=favs();
-  const i=a.indexOf(path);
 
-  if(i>=0)a.splice(i,1);
-  else a.unshift(path);
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
-  saveFavs(a);
-  render();
-  toast('Đã cập nhật ghim')
-}
+@media (max-width: 680px) {
 
-function iconMarkup(p){
-  const ic=randomIconFor(p);
-
-  if(/\.(png|jpg|jpeg|webp|svg)$/i.test(ic)){
-    return `<img src="${esc(ic)}" alt="">`
+  main {
+    padding:
+      10px
+      10px
+      calc(76px + env(safe-area-inset-bottom)) !important;
   }
 
-  return esc(ic)
-}
-
-function render(){
-  updateStats();
-
-  const pages=filtered();
-  els.menu.className='menu '+(view==='list'?'list':'');
-  $('#resultInfo').textContent=pages.length+' kết quả';
-
-  if(!pages.length){
-    els.menu.innerHTML='<div class="empty">Không tìm thấy trang phù hợp.</div>';
-    return
+  .container {
+    gap: 12px;
   }
 
-  els.menu.innerHTML=pages.map((p,index)=>{
-    const [c1,c2]=colorsFor(p,index);
+  /* =============================
+     TOPBAR
+     ============================= */
 
-    return `
-      <a
-        class="app-card"
-        href="${esc(p.path)}"
-        data-path="${esc(p.path)}"
-        style="--glow:${c1}22"
-      >
-        <div
-          class="app-icon"
-          style="background:linear-gradient(135deg,${c1},${c2})"
-        >
-          ${iconMarkup(p)}
-        </div>
+  .topbar {
+    min-height: 58px;
 
-        <div class="app-info">
-          <div class="app-title">
-            ${esc(p.title||p.path)}
-            ${isFav(p.path)?'★':''}
-          </div>
+    padding: 8px;
 
-          <div class="app-desc">
-            ${esc(subtitle(p))}
-          </div>
+    border-radius: 12px;
 
-          <div class="app-path">
-            ${esc(p.path)}
-          </div>
-
-          <div class="card-bottom">
-            <span class="badge">${esc(label(p))}</span>
-            <button
-              class="fav"
-              data-fav="${esc(p.path)}"
-              title="Ghim trang"
-            >
-              ${isFav(p.path)?'★':'☆'}
-            </button>
-          </div>
-        </div>
-      </a>
-    `
-  }).join('');
-
-  $$('.app-card',els.menu).forEach(card=>{
-    card.onclick=e=>{
-      if(e.target.closest('[data-fav]'))return;
-      e.preventDefault();
-      openPage(card.dataset.path)
-    }
-  });
-
-  $$('[data-fav]',els.menu).forEach(btn=>{
-    btn.onclick=e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      toggleFav(btn.dataset.fav)
-    }
-  })
-}
-
-async function loadPages(){
-  try{
-    const res=await fetch(
-      'pages.json?v='+Date.now(),
-      {cache:'no-store'}
-    );
-
-    if(!res.ok)throw new Error('HTTP '+res.status);
-
-    const data=await res.json();
-
-    if(!Array.isArray(data)){
-      throw new Error('pages.json không phải mảng')
-    }
-
-    allPages=data;
-    render();
-    toast('Đã tải pages.json')
-  }catch(e){
-    console.error(e);
-    allPages=[];
-    render();
-    toast('Không đọc được pages.json')
+    gap: 7px;
   }
-}
 
-function renderCmd(){
-  const q=norm(els.cmdInput.value).trim();
+  .mobile-menu {
+    width: 42px;
+    height: 42px;
 
-  const p=clean()
-    .filter(x=>{
-      const hay=norm(
-        (x.title||'')+' '+
-        (x.path||'')+' '+
-        subtitle(x)
+    flex: 0 0 42px;
+
+    padding: 0 !important;
+
+    font-size: 20px;
+  }
+
+  .topbar h1 {
+    font-size: 14px;
+  }
+
+  .topbar p {
+    display: none;
+  }
+
+  .actions {
+    gap: 5px;
+  }
+
+  .actions .btn {
+    min-height: 42px;
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+  }
+
+  /* Ẩn chế độ theme trên mobile */
+  .actions .hide-sm {
+    display: none;
+  }
+
+  /* Nút tìm kiếm chỉ hiện icon */
+  #cmdBtn {
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    font-size: 0;
+  }
+
+  #cmdBtn::before {
+    content: "⌕";
+
+    display: block;
+
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  /* Ẩn đồng bộ trên điện thoại */
+  #reloadBtn {
+    display: none;
+  }
+
+
+  /* =============================
+     HERO
+     ============================= */
+
+  .hero {
+    padding: 20px 18px;
+
+    border-radius: 14px;
+
+    min-height: 0;
+  }
+
+  .hero h2 {
+    margin: 0;
+
+    font-size: clamp(28px, 9vw, 38px);
+
+    line-height: 1.08;
+
+    letter-spacing: -.045em;
+  }
+
+  .hero p {
+    margin-top: 14px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+  }
+
+  .hero-panel {
+    margin-top: 4px;
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    min-height: 0;
+  }
+
+  .hero-num {
+    font-size: 40px;
+  }
+
+  .mini-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .mini {
+    min-width: 0;
+  }
+
+
+  /* =============================
+     TOOLBAR
+     ============================= */
+
+  .toolbar {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    border-radius: 12px;
+  }
+
+  .toolbar-left {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    width: 100%;
+
+    gap: 8px;
+  }
+
+  .select {
+    width: 100%;
+
+    min-width: 0;
+
+    /* Tránh Safari zoom khi bấm */
+    font-size: 16px;
+  }
+
+  .view {
+    display: flex;
+
+    width: 100%;
+  }
+
+  .view button {
+    flex: 1;
+
+    min-height: 40px;
+  }
+
+
+  /* =============================
+     APP LIST
+     ============================= */
+
+  .menu {
+    grid-template-columns: 1fr !important;
+
+    gap: 10px;
+  }
+
+  .panel {
+    border-radius: 12px;
+  }
+
+  .panel-head {
+    padding: 16px 14px 0;
+  }
+
+  .panel-body {
+    padding: 14px;
+  }
+
+  .app-card {
+    min-height: 0;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    gap: 12px;
+  }
+
+  .app-icon {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    border-radius: 11px;
+  }
+
+  .app-title {
+    font-size: 14px;
+
+    /*
+      Cho phép tên dài xuống dòng
+      thay vì bị cắt ...
+    */
+    white-space: normal;
+
+    overflow: visible;
+
+    text-overflow: clip;
+
+    line-height: 1.35;
+
+    overflow-wrap: anywhere;
+  }
+
+  .app-desc {
+    min-height: 0;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+  /* Mobile không cần hiện đường dẫn */
+  .app-path {
+    display: none;
+  }
+
+  .card-bottom {
+    margin-top: 9px;
+  }
+
+  .fav {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    font-size: 18px;
+  }
+
+
+  /* =============================
+     SEARCH COMMAND
+     Dạng bottom sheet trên mobile
+     ============================= */
+
+  .cmdk {
+    align-items: flex-end;
+
+    padding:
+      0
+      0
+      env(safe-area-inset-bottom);
+  }
+
+  .cmdk-box {
+    width: 100%;
+    max-width: 100%;
+
+    max-height: 82dvh;
+
+    border-radius:
+      20px
+      20px
+      0
+      0;
+  }
+
+  .cmdk-top {
+    padding: 12px;
+  }
+
+  .cmdk-top input {
+    width: 100%;
+
+    min-height: 48px;
+
+    /*
+       Quan trọng:
+       iPhone Safari sẽ không tự zoom
+       khi font >= 16px
+    */
+    font-size: 16px;
+  }
+
+  .cmdk-list {
+    max-height: 60dvh;
+  }
+
+  .cmdk-item {
+    min-height: 58px;
+  }
+
+  .cmdk-foot {
+    padding-bottom:
+      calc(
+        11px +
+        env(safe-area-inset-bottom)
       );
+  }
 
-      return !q||hay.includes(q)
-    })
-    .slice(0,14);
 
-  if(selected>=p.length)selected=p.length-1;
-  if(selected<0)selected=0;
+  /* =============================
+     SEARCH SIDEBAR
+     ============================= */
 
-  els.cmdList.innerHTML=p.length
-    ?p.map((x,i)=>`
-      <div
-        class="cmdk-item ${i===selected?'active':''}"
-        data-path="${esc(x.path)}"
-      >
-        <span>
-          ${esc(randomIconFor(x))}
-          <b>${esc(x.title||x.path)}</b>
-          <br>
-          <small>${esc(subtitle(x))}</small>
-        </span>
-        <span class="badge">Enter</span>
-      </div>
-    `).join('')
-    :'<div class="empty">Không có kết quả.</div>';
+  .search input {
+    font-size: 16px;
+  }
 
-  $$('.cmdk-item',els.cmdList).forEach(x=>{
-    x.onclick=()=>{
-      openPage(x.dataset.path);
-      closeCmd()
-    }
-  })
+
+  /* =============================
+     TOAST
+     ============================= */
+
+  .toast {
+    left: 10px;
+    right: 10px;
+
+    bottom:
+      calc(
+        10px +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .toast-item {
+    width: 100%;
+  }
 }
 
-function openCmd(){
-  els.cmdk.classList.add('open');
-  document.body.classList.add('modal-open');
-  selected=0;
-  renderCmd();
-  setTimeout(()=>els.cmdInput.focus(),80)
+
+/* =========================================================
+   ĐIỆN THOẠI RẤT NHỎ
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .toolbar-left {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h2 {
+    font-size: 29px;
+  }
+
+  .hero {
+    padding:
+      20px
+      16px;
+  }
+
+  .hero-panel {
+    padding: 14px;
+  }
+
+  .mini-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .app-card {
+    padding: 12px;
+  }
+
+  .app-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-basis: 44px;
+  }
 }
 
-function closeCmd(){
-  els.cmdk.classList.remove('open');
-  document.body.classList.remove('modal-open')
-}
-
-$('#cmdBtn').onclick=openCmd;
-
-els.cmdk.onclick=e=>{
-  if(e.target===els.cmdk)closeCmd()
-};
-
-els.cmdInput.oninput=()=>{
-  selected=0;
-  renderCmd()
-};
-
-$$('.filter').forEach(b=>{
-  b.onclick=()=>{
-    filter=b.dataset.filter;
-
-    $$('.filter').forEach(x=>{
-      x.classList.toggle('active',x===b)
-    });
-
-    render();
-    if(matchMedia('(max-width: 980px)').matches)toggleSidebar(false)
-  }
-});
-
-$$('.view button').forEach(b=>{
-  b.onclick=()=>{
-    view=b.dataset.view;
-
-    $$('.view button').forEach(x=>{
-      x.classList.toggle('active',x===b)
-    });
-
-    render()
-  }
-});
-
-els.q.oninput=render;
-$('#sortMode').onchange=render;
-$('#reloadBtn').onclick=loadPages;
-
-addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&document.body.classList.contains('sidebar-open')){
-    toggleSidebar(false);
-  }
-
-  const mod=navigator.platform.toLowerCase().includes('mac')
-    ?e.metaKey
-    :e.ctrlKey;
-
-  if(mod&&e.key.toLowerCase()==='k'){
-    e.preventDefault();
-    openCmd();
-    return
-  }
-
-  if(!els.cmdk.classList.contains('open'))return;
-
-  if(e.key==='Escape'){
-    e.preventDefault();
-    closeCmd()
-  }
-
-  if(e.key==='ArrowDown'){
-    e.preventDefault();
-    selected++;
-    renderCmd()
-  }
-
-  if(e.key==='ArrowUp'){
-    e.preventDefault();
-    selected--;
-    renderCmd()
-  }
-
-  if(e.key==='Enter'){
-    e.preventDefault();
-
-    const item=$$('.cmdk-item',els.cmdList)[selected];
-
-    if(item){
-      openPage(item.dataset.path);
-      closeCmd()
-    }
-  }
-});
-
-function tick(){
-  const d=new Date();
-
-  $('#time').textContent=d.toLocaleTimeString(
-    'vi-VN',
-    {
-      hour:'2-digit',
-      minute:'2-digit',
-      second:'2-digit'
-    }
-  );
-
-  $('#date').textContent=d.toLocaleDateString(
-    'vi-VN',
-    {
-      weekday:'long',
-      day:'2-digit',
-      month:'long',
-      year:'numeric'
-    }
-  )
-}
-
-setInterval(tick,500);
-tick();
-loadPages();
-</script>
-</body>
-</html>
+</style>

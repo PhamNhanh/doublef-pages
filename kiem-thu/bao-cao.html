@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Báo cáo kiểm thử</title>
+<style>
+:root{--b:#155eef;--bg:#f5f7fa;--bd:#eaecf0;--m:#667085;--s:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.side{position:fixed;inset:0 auto 0 0;width:var(--s);background:#fff;border-right:1px solid var(--bd);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd)}.logo{width:39px;height:39px;background:var(--b);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px}.nav a.active,.nav a:hover{background:#eff4ff;color:var(--b);font-weight:700}.who{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--s)}.top{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.btn{padding:10px 13px;border-radius:8px;border:1px solid var(--bd);background:#fff}.content{padding:26px 28px;max-width:1500px;margin:auto}.card{background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden}table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;background:#f9fafb;color:var(--m);font-size:10px;padding:12px;text-transform:uppercase}td{padding:14px;border-top:1px solid var(--bd)}.pass{color:#079455}.fail{color:#d92d20}.block{color:#dc6803}@media(max-width:900px){.side{display:none}.main{margin:0}.content{padding:20px 14px}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="brand"><div class="logo">DF</div><strong>DoubleF Test</strong></div><nav class="nav"><a href="/kiem-thu/">Tổng quan</a><a href="/kiem-thu/du-an">Dự án</a><a href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a href="/kiem-thu/test-case">Test Case</a><a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a href="/kiem-thu/loi">Quản lý lỗi</a><a class="active" href="/kiem-thu/bao-cao">Báo cáo</a><a href="/kiem-thu/thanh-vien">Thành viên</a></nav><div class="who" id="who">...</div></aside>
+<div class="main"><header class="top"><strong>Báo cáo</strong><button id="logout" class="btn">Đăng xuất</button></header><main class="content">
+<h1>Báo cáo kết quả kiểm thử</h1><p style="color:#667085">Tổng hợp theo từng dự án.</p>
+<div class="card" style="overflow:auto"><table><thead><tr><th>Dự án</th><th>Test Case</th><th>Pass</th><th>Fail</th><th>Blocked</th><th>Chưa kiểm thử</th><th>Defect</th><th>Tiến độ</th></tr></thead><tbody id="body"></tbody></table></div>
+</main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");
+ const {data:p}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();who.textContent=p?.full_name||session.user.email;
+ const r=await Promise.all([sb.from("projects").select("*"),sb.from("test_cases").select("*"),sb.from("test_runs").select("*").order("tested_at",{ascending:false}),sb.from("defects").select("*")]);
+ const projects=r[0].data||[],cases=r[1].data||[],runs=r[2].data||[],defects=r[3].data||[];
+ const latest=new Map();runs.forEach(x=>{if(!latest.has(x.test_case_id))latest.set(x.test_case_id,x)});
+ body.innerHTML=projects.map(project=>{
+   const cs=cases.filter(c=>c.project_id===project.id);let pass=0,fail=0,blocked=0;
+   cs.forEach(c=>{const x=latest.get(c.id);if(x?.result==="PASS")pass++;if(x?.result==="FAIL")fail++;if(x?.result==="BLOCKED")blocked++});
+   const done=pass+fail+blocked,notTested=cs.length-done,pct=cs.length?Math.round(done/cs.length*100):0,bugs=defects.filter(d=>d.project_id===project.id).length;
+   return `<tr><td><strong>${e(project.project_name)}</strong></td><td>${cs.length}</td><td class="pass">${pass}</td><td class="fail">${fail}</td><td class="block">${blocked}</td><td>${notTested}</td><td>${bugs}</td><td>${pct}%</td></tr>`;
+ }).join("")||'<tr><td colspan="8">Chưa có dữ liệu.</td></tr>';
+}
+logout.onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}init();
+</script>
+</body>
+</html>

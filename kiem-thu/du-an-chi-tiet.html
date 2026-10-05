@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chi tiết dự án | DoubleF Test</title>
+<style>
+:root{
+  --blue:#155eef;--blue2:#004eeb;--bg:#f5f7fa;--card:#fff;--border:#eaecf0;
+  --text:#101828;--muted:#667085;--green:#067647;--red:#b42318;--orange:#b54708;
+  --purple:#6938ef;--gray:#475467;--sidebar:250px
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.hidden{display:none!important}
+.sidebar{position:fixed;z-index:100;inset:0 auto 0 0;width:var(--sidebar);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column}
+.brand{height:70px;padding:0 18px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--border)}
+.logo{width:40px;height:40px;border-radius:11px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.brand strong{display:block;font-size:14px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.nav{padding:14px 11px;flex:1;overflow:auto}.nav-title{padding:10px 10px 5px;color:#98a2b3;font-size:9px;font-weight:800;letter-spacing:.08em}
+.nav a{display:flex;align-items:center;gap:9px;padding:11px 12px;margin:2px 0;border-radius:9px;font-size:12px;color:#344054}.nav a:hover,.nav a.active{background:#eff4ff;color:var(--blue);font-weight:700}
+.side-user{margin:12px;padding:11px;border-radius:10px;background:#f9fafb}.side-user strong,.side-user span{display:block}.side-user strong{font-size:11px}.side-user span{font-size:9px;color:var(--muted);margin-top:3px}
+.main{margin-left:var(--sidebar);min-height:100vh}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.top-left{display:flex;gap:10px;align-items:center}.back{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}.topbar strong{display:block;font-size:13px}.topbar small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.logout,.btn{border:1px solid var(--border);border-radius:9px;background:#fff;padding:9px 12px;cursor:pointer;font-weight:650;font-size:11px}.btn:hover,.logout:hover{background:#f9fafb}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.primary:hover{background:var(--blue2)}
+.content{max-width:1550px;margin:auto;padding:24px 26px 48px}
+.notice{padding:12px 14px;border:1px solid #b2ddff;background:#eff8ff;color:#175cd3;border-radius:10px;font-size:11px;margin-bottom:15px}.notice.error{border-color:#fecdca;background:#fef3f2;color:#b42318}
+.project-head{background:linear-gradient(135deg,#0b2458,#155eef);color:#fff;border-radius:16px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}.project-head:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.06);right:-80px;top:-130px}.project-row{position:relative;z-index:1;display:flex;justify-content:space-between;gap:20px}.project-code{font-size:10px;font-weight:800;letter-spacing:.07em;color:#b9d1ff;text-transform:uppercase}.project-head h1{font-size:25px;margin:6px 0 7px}.project-head p{margin:0;max-width:900px;line-height:1.6;font-size:12px;color:rgba(255,255,255,.78)}
+.project-actions{position:relative;z-index:1;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}.project-actions .btn{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.24);color:#fff}.project-actions .btn.primary{background:#fff;color:#155eef;border-color:#fff}
+.project-meta{position:relative;z-index:1;display:flex;gap:24px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.15)}.project-meta div span{display:block;font-size:9px;color:#b9d1ff}.project-meta div strong{font-size:11px;margin-top:3px}
+.tabs{display:flex;background:#fff;border:1px solid var(--border);border-radius:12px;padding:5px;gap:4px;overflow:auto;margin-bottom:16px;position:sticky;top:82px;z-index:35}.tab{white-space:nowrap;border:0;background:transparent;padding:10px 13px;border-radius:8px;font-size:11px;font-weight:700;color:#667085;cursor:pointer}.tab:hover{background:#f9fafb}.tab.active{background:#eff4ff;color:var(--blue)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:16px}.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px}.stat span{font-size:10px;color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:9px}.stat.pass strong{color:var(--green)}.stat.fail strong{color:var(--red)}.stat.blocked strong{color:var(--orange)}
+.grid2{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.card{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}.card-head{padding:15px 17px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center}.card-head h2{font-size:14px;margin:0}.card-head p{font-size:10px;color:var(--muted);margin:4px 0 0}.card-body{padding:16px 17px}
+.progress{height:10px;background:#eef2f6;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#155eef,#528bff);border-radius:999px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:14px}.result-box{border:1px solid var(--border);border-radius:10px;padding:11px}.result-box span{font-size:9px;color:var(--muted)}.result-box strong{display:block;font-size:17px;margin-top:5px}.result-box.pass strong{color:var(--green)}.result-box.fail strong{color:var(--red)}.result-box.blocked strong{color:var(--orange)}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.section-head h2{margin:0;font-size:19px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:11px}.actions{display:flex;gap:7px;flex-wrap:wrap}
+.toolbar{display:flex;gap:8px;margin-bottom:12px}.field{height:39px;border:1px solid #d0d5dd;border-radius:9px;padding:0 11px;background:#fff;outline:none;font-size:11px}.field:focus{border-color:#84adff;box-shadow:0 0 0 3px #eff4ff}.search{flex:1;min-width:190px}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:780px}.table th{background:#f9fafb;text-align:left;padding:11px 13px;font-size:9px;text-transform:uppercase;color:#667085;letter-spacing:.03em}.table td{padding:12px 13px;border-top:1px solid var(--border);font-size:11px;vertical-align:top}.table td strong{font-size:11px}.sub{display:block;color:#667085;font-size:9px;margin-top:4px;line-height:1.45}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:999px;background:#f2f4f7;color:#475467;font-size:9px;font-weight:800;text-transform:uppercase}.badge.active,.badge.PASS,.badge.completed{background:#ecfdf3;color:#067647}.badge.FAIL{background:#fef3f2;color:#b42318}.badge.BLOCKED{background:#fffaeb;color:#b54708}.badge.IN_PROGRESS{background:#eff8ff;color:#175cd3}.badge.NOT_TESTED,.badge.NO_SCENARIO,.badge.draft{background:#f2f4f7;color:#475467}.badge.N\2f A{background:#f4f3ff;color:#5925dc}.badge.manager{background:#eef4ff;color:#3538cd}.badge.tester{background:#ecfdf3;color:#067647}.badge.viewer{background:#f2f4f7;color:#475467}
+.usecase-group{margin-bottom:13px}.group-title{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;background:#f2f4f7;border-radius:9px;font-size:11px;font-weight:800;color:#344054;margin-bottom:8px}.uc-card{background:#fff;border:1px solid var(--border);border-radius:11px;margin-bottom:8px;overflow:hidden}.uc-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 14px;cursor:pointer}.uc-head:hover{background:#fcfcfd}.uc-left{display:flex;gap:10px;align-items:flex-start}.chev{width:25px;height:25px;border-radius:7px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:#667085;font-size:10px}.uc-code{font-size:9px;color:var(--blue);font-weight:800}.uc-name{font-size:12px;font-weight:750;margin-top:3px}.uc-meta{font-size:9px;color:#667085;margin-top:4px}.uc-summary{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.pill{font-size:8px;padding:5px 7px;background:#f9fafb;border:1px solid var(--border);border-radius:999px;color:#475467}.tc-list{border-top:1px solid var(--border);background:#fcfcfd;padding:7px 12px 10px}.tc-row{display:grid;grid-template-columns:minmax(240px,1fr) 100px 125px 80px 32px;align-items:center;gap:8px;border-bottom:1px solid var(--border);padding:10px 5px;cursor:pointer}.tc-row:last-child{border-bottom:0}.tc-row:hover{background:#f9fafb}.tc-title strong{font-size:10px}.tc-title span{display:block;font-size:9px;color:#667085;margin-top:3px}.tc-progress{font-size:9px;color:#667085}.arrow{color:#98a2b3;font-size:16px}.empty{padding:38px 20px;text-align:center;color:#667085}.empty strong{display:block;color:#344054;font-size:13px;margin-bottom:5px}.empty span{font-size:10px}
+.member-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.member{border:1px solid var(--border);border-radius:11px;padding:13px;background:#fff}.avatar{width:36px;height:36px;border-radius:50%;background:#eff4ff;color:#155eef;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-bottom:9px}.member strong{display:block;font-size:11px}.member small{display:block;color:#667085;font-size:9px;margin-top:3px}.member .badge{margin-top:9px}
+.report-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.metric-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:11px}.metric-row:last-child{border:0}.metric-row span{color:#667085}.metric-row strong{font-size:12px}
+.loading{padding:45px;text-align:center;color:#667085;font-size:12px}
+.mobile-menu,.overlay{display:none}
+@media(max-width:1150px){.stats{grid-template-columns:repeat(3,1fr)}.member-list{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:inline-flex;width:36px;height:36px;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff;border-radius:9px}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(16,24,40,.45)}.grid2{grid-template-columns:1fr}.tabs{top:78px}.project-row{display:block}.project-actions{margin-top:15px}}
+@media(max-width:650px){.content{padding:16px 12px 36px}.topbar{padding:0 12px}.stats{grid-template-columns:repeat(2,1fr)}.result-grid{grid-template-columns:repeat(2,1fr)}.member-list,.report-grid{grid-template-columns:1fr}.section-head{display:block}.actions{margin-top:10px}.toolbar{flex-direction:column}.field{width:100%}.project-head{padding:18px}.project-head h1{font-size:20px}.tc-row{grid-template-columns:1fr 95px}.tc-row .tc-progress,.tc-row .bug-col,.tc-row .arrow{display:none}}
+</style>
+</head>
+<body>
+<div id="overlay" class="overlay"></div>
+<aside id="sidebar" class="sidebar">
+  <div class="brand"><div class="logo">DF</div><div><strong>DoubleF Test</strong><small>Quản lý kiểm thử</small></div></div>
+  <nav id="nav" class="nav"></nav>
+  <div class="side-user"><strong id="sideName">...</strong><span id="sideRole">...</span></div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="top-left">
+      <button id="mobileMenu" class="mobile-menu" type="button">☰</button>
+      <button class="back" type="button" onclick="location.href='/kiem-thu/du-an'">←</button>
+      <div><strong>Chi tiết dự án</strong><small id="crumb">Đang tải...</small></div>
+    </div>
+    <button id="logoutBtn" class="logout" type="button">Đăng xuất</button>
+  </header>
+
+  <main class="content">
+    <div id="notice" class="notice">Đang tải dữ liệu dự án...</div>
+
+    <section id="projectHeader" class="project-head hidden">
+      <div class="project-row">
+        <div>
+          <div id="projectCode" class="project-code">...</div>
+          <h1 id="projectName">...</h1>
+          <p id="projectDescription"></p>
+        </div>
+        <div class="project-actions">
+          <button id="editProjectBtn" class="btn hidden" type="button">Sửa dự án</button>
+          <button id="importUcBtn" class="btn primary hidden" type="button">Import Use Case</button>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div><span>Đơn vị</span><strong id="projectClient">—</strong></div>
+        <div><span>Trạng thái</span><strong id="projectStatus">—</strong></div>
+        <div><span>Bắt đầu</span><strong id="projectStart">—</strong></div>
+        <div><span>Kết thúc</span><strong id="projectEnd">—</strong></div>
+        <div><span>Quyền của bạn</span><strong id="projectRole">—</strong></div>
+      </div>
+    </section>
+
+    <div id="tabs" class="tabs hidden">
+      <button class="tab active" data-tab="overview">Tổng quan</button>
+      <button class="tab" data-tab="plans">Kế hoạch kiểm thử</button>
+      <button class="tab" data-tab="usecases">Use Case & Test Case</button>
+      <button class="tab" data-tab="members">Thành viên</button>
+      <button class="tab" data-tab="report">Báo cáo</button>
+    </div>
+
+    <section id="panel-overview" class="tab-panel active">
+      <div class="stats">
+        <div class="stat"><span>Kế hoạch kiểm thử</span><strong id="statPlans">0</strong></div>
+        <div class="stat"><span>Use Case</span><strong id="statUsecases">0</strong></div>
+        <div class="stat"><span>Test Case</span><strong id="statCases">0</strong></div>
+        <div class="stat pass"><span>PASS</span><strong id="statPass">0</strong></div>
+        <div class="stat fail"><span>FAIL</span><strong id="statFail">0</strong></div>
+        <div class="stat blocked"><span>Bug đang mở</span><strong id="statBugs">0</strong></div>
+      </div>
+
+      <div class="grid2">
+        <article class="card">
+          <div class="card-head"><div><h2>Tiến độ kiểm thử</h2><p>Tính theo số kịch bản đã có kết quả kiểm thử mới nhất</p></div><strong id="progressText">0%</strong></div>
+          <div class="card-body">
+            <div class="progress"><div id="progressBar" style="width:0%"></div></div>
+            <div class="result-grid">
+              <div class="result-box pass"><span>Test Case PASS</span><strong id="overviewPass">0</strong></div>
+              <div class="result-box fail"><span>Test Case FAIL</span><strong id="overviewFail">0</strong></div>
+              <div class="result-box blocked"><span>Blocked</span><strong id="overviewBlocked">0</strong></div>
+              <div class="result-box"><span>Chưa hoàn tất</span><strong id="overviewPending">0</strong></div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><div><h2>Tóm tắt dự án</h2><p>Cấu trúc dữ liệu hiện tại</p></div></div>
+          <div class="card-body" id="overviewInfo"></div>
+        </article>
+      </div>
+
+      <article class="card">
+        <div class="card-head"><div><h2>Use Case cần chú ý</h2><p>Các Use Case còn Test Case lỗi hoặc chưa kiểm thử</p></div></div>
+        <div id="attentionUsecases" class="card-body"></div>
+      </article>
+    </section>
+
+    <section id="panel-plans" class="tab-panel">
+      <div class="section-head">
+        <div><h2>Kế hoạch kiểm thử</h2><p>Một dự án có thể có nhiều kế hoạch kiểm thử.</p></div>
+        <div class="actions"><button id="managePlansBtn" class="btn primary hidden" type="button">+ Quản lý kế hoạch</button></div>
+      </div>
+      <div class="card table-wrap"><table class="table"><thead><tr><th>Mã</th><th>Tên kế hoạch</th><th>Loại kiểm thử</th><th>Thời gian</th><th>Quản lý</th><th>Trạng thái</th></tr></thead><tbody id="planBody"></tbody></table></div>
+    </section>
+
+    <section id="panel-usecases" class="tab-panel">
+      <div class="section-head">
+        <div><h2>Use Case & Test Case</h2><p>Mở từng Use Case để xem danh sách Test Case và tình trạng kiểm thử.</p></div>
+        <div class="actions"><button id="manageUcBtn" class="btn hidden" type="button">+ Quản lý Use Case</button><button id="importUcTabBtn" class="btn primary hidden" type="button">Import Excel</button></div>
+      </div>
+      <div class="toolbar">
+        <input id="ucSearch" class="field search" placeholder="Tìm mã Use Case, tên Use Case, Test Case...">
+        <select id="tcStatusFilter" class="field"><option value="">Tất cả trạng thái</option><option value="PASS">PASS</option><option value="FAIL">FAIL</option><option value="BLOCKED">BLOCKED</option><option value="IN_PROGRESS">Đang kiểm thử</option><option value="NOT_TESTED">Chưa kiểm thử</option></select>
+      </div>
+      <div id="usecaseTree"></div>
+    </section>
+
+    <section id="panel-members" class="tab-panel">
+      <div class="section-head">
+        <div><h2>Thành viên dự án</h2><p>Chỉ các thành viên được phân công mới có quyền xem dự án này.</p></div>
+        <div class="actions"><button id="manageMembersBtn" class="btn primary hidden" type="button">+ Quản lý thành viên</button></div>
+      </div>
+      <div id="memberList" class="member-list"></div>
+    </section>
+
+    <section id="panel-report" class="tab-panel">
+      <div class="section-head"><div><h2>Báo cáo nhanh</h2><p>Tổng hợp tình trạng kiểm thử của riêng dự án này.</p></div></div>
+      <div class="report-grid">
+        <article class="card"><div class="card-head"><h2>Kết quả Test Case</h2></div><div id="caseMetrics" class="card-body"></div></article>
+        <article class="card"><div class="card-head"><h2>Bug</h2></div><div id="bugMetrics" class="card-body"></div></article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient(
+  "https://aizhygivtngtsqcjtvaj.supabase.co",
+  "sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN"
+);
+
+const roleLabels={admin:"Quản trị viên",manager:"Quản lý",tester:"Kiểm thử viên",viewer:"Người xem"};
+const planStatusLabels={draft:"Nháp",active:"Đang thực hiện",completed:"Hoàn thành",archived:"Lưu trữ"};
+const projectStatusLabels={planning:"Lập kế hoạch",active:"Đang thực hiện",on_hold:"Tạm dừng",paused:"Tạm dừng",completed:"Hoàn thành",archived:"Lưu trữ",closed:"Đã đóng"};
+const resultLabels={PASS:"PASS",FAIL:"FAIL",BLOCKED:"BLOCKED",IN_PROGRESS:"Đang kiểm thử",NOT_TESTED:"Chưa kiểm thử",NO_SCENARIO:"Chưa có kịch bản","N/A":"N/A"};
+
+let currentUser=null,currentProfile=null,currentProject=null,currentProjectRole=null;
+let plans=[],usecases=[],caseStatus=[],members=[],profiles=[],defects=[];
+
+const el=id=>document.getElementById(id);
+const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const dateVN=v=>v?new Date(v+(String(v).includes("T")?"":"T00:00:00")).toLocaleDateString("vi-VN"):"—";
+const q=new URLSearchParams(location.search);
+const projectId=q.get("id")||localStorage.getItem("doublef_current_project");
+
+function showNotice(text,type="info"){
+  el("notice").textContent=text;el("notice").className="notice"+(type==="error"?" error":"");el("notice").classList.remove("hidden");
+}
+function hideNotice(){el("notice").classList.add("hidden")}
+function canManage(){return currentProfile?.role==="admin"||currentProjectRole==="manager"}
+function canTest(){return currentProfile?.role==="admin"||["manager","tester"].includes(currentProjectRole)}
+
+function buildMenu(){
+  const r=currentProfile.role;
+  let html=`<div class="nav-title">TỔNG QUAN</div><a href="/kiem-thu/">⌂ Tổng quan</a><div class="nav-title">DỰ ÁN</div><a class="active" href="/kiem-thu/du-an">▣ Dự án của tôi</a>`;
+  if(["admin","manager","tester"].includes(r)) html+=`<div class="nav-title">CÔNG VIỆC</div><a href="/kiem-thu/thuc-hien">✓ Thực hiện kiểm thử</a><a href="/kiem-thu/loi">⚑ Quản lý lỗi</a>`;
+  html+=`<div class="nav-title">BÁO CÁO</div><a href="/kiem-thu/bao-cao">▤ Báo cáo</a>`;
+  if(r==="admin") html+=`<div class="nav-title">QUẢN TRỊ</div><a href="/kiem-thu/thanh-vien">♙ Thành viên</a>`;
+  el("nav").innerHTML=html;
+}
+
+async function requireAuth(){
+  const {data:{session},error}=await sb.auth.getSession();
+  if(error||!session){location.replace("/kiem-thu/login");return false}
+  currentUser=session.user;
+  const {data:p,error:pe}=await sb.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+  if(pe||!p||p.active===false){await sb.auth.signOut();location.replace("/kiem-thu/login");return false}
+  currentProfile=p;
+  el("sideName").textContent=p.full_name||p.email||currentUser.email;
+  el("sideRole").textContent=roleLabels[p.role]||p.role;
+  buildMenu();
+  return true;
+}
+
+async function resolveProjectRole(){
+  if(currentProfile.role==="admin"){currentProjectRole="admin";return}
+  const {data,error}=await sb.from("project_members").select("role,active").eq("project_id",projectId).eq("user_id",currentUser.id).maybeSingle();
+  if(error||!data||data.active===false) throw new Error("Bạn chưa được phân quyền truy cập dự án này.");
+  currentProjectRole=data.role;
+}
+
+async function loadAll(){
+  if(!projectId){showNotice("Không xác định được dự án. Hãy quay lại danh sách dự án và bấm Mở dự án.","error");return}
+  showNotice("Đang tải dữ liệu dự án...");
+
+  const {data:project,error:pError}=await sb.from("projects").select("*").eq("id",projectId).maybeSingle();
+  if(pError||!project){showNotice("Không tìm thấy dự án hoặc tài khoản của bạn không có quyền truy cập.","error");return}
+  currentProject=project;
+
+  try{await resolveProjectRole()}catch(err){showNotice(err.message,"error");return}
+
+  const [planRes,ucRes,caseRes,memberRes,profileRes,defectRes]=await Promise.all([
+    sb.from("test_plans").select("*").eq("project_id",projectId).order("start_date",{ascending:true}),
+    sb.from("use_cases").select("*").eq("project_id",projectId).order("group_name",{ascending:true,nullsFirst:false}).order("source_stt",{ascending:true,nullsFirst:false}).order("usecase_code",{ascending:true}),
+    sb.from("v_test_case_status").select("*").eq("project_id",projectId).order("test_code",{ascending:true}),
+    sb.from("project_members").select("*").eq("project_id",projectId).eq("active",true).order("created_at",{ascending:true}),
+    sb.from("profiles").select("id,email,full_name,role,department,phone,active"),
+    sb.from("defects").select("id,status,severity,priority,test_case_id,usecase_id,assigned_to,reported_by").eq("project_id",projectId)
+  ]);
+
+  const errors=[planRes.error,ucRes.error,caseRes.error,memberRes.error,profileRes.error,defectRes.error].filter(Boolean);
+  if(errors.length){showNotice("Một phần dữ liệu không tải được: "+errors[0].message,"error")}
+  else hideNotice();
+
+  plans=planRes.data||[];usecases=ucRes.data||[];caseStatus=caseRes.data||[];members=memberRes.data||[];profiles=profileRes.data||[];defects=defectRes.data||[];
+  localStorage.setItem("doublef_current_project",projectId);
+  renderProjectHeader();renderRoleActions();renderOverview();renderPlans();renderUsecaseTree();renderMembers();renderReport();
+  el("projectHeader").classList.remove("hidden");el("tabs").classList.remove("hidden");
+}
+
+function renderProjectHeader(){
+  el("projectCode").textContent=currentProject.project_code||"CHƯA CÓ MÃ";
+  el("projectName").textContent=currentProject.project_name||"Dự án";
+  el("projectDescription").textContent=currentProject.description||"Chưa có mô tả dự án.";
+  el("projectClient").textContent=currentProject.client_name||"—";
+  el("projectStatus").textContent=projectStatusLabels[currentProject.status]||currentProject.status||"—";
+  el("projectStart").textContent=dateVN(currentProject.start_date);
+  el("projectEnd").textContent=dateVN(currentProject.end_date);
+  el("projectRole").textContent=currentProfile.role==="admin"?"Quản trị viên":(roleLabels[currentProjectRole]||currentProjectRole);
+  el("crumb").textContent=(currentProject.project_code?currentProject.project_code+" · ":"")+currentProject.project_name;
+  document.title=currentProject.project_name+" | DoubleF Test";
+}
+
+function renderRoleActions(){
+  if(canManage()){
+    ["editProjectBtn","importUcBtn","managePlansBtn","manageUcBtn","importUcTabBtn","manageMembersBtn"].forEach(id=>el(id).classList.remove("hidden"));
+  }
+  if(currentProfile.role!=="admin" && currentProjectRole!=="manager") el("manageMembersBtn").classList.add("hidden");
+}
+
+function statusCount(name){return caseStatus.filter(x=>x.test_result===name).length}
+function scenarioTotals(){return caseStatus.reduce((a,x)=>({total:a.total+(Number(x.total_scenarios)||0),executed:a.executed+(Number(x.executed_scenarios)||0)}),{total:0,executed:0})}
+function openBugCount(){return defects.filter(d=>!["closed","rejected","duplicate","wont_fix"].includes(d.status)).length}
+
+function renderOverview(){
+  const s=scenarioTotals();
+  const pct=s.total?Math.round(s.executed/s.total*100):0;
+  const pass=statusCount("PASS"),fail=statusCount("FAIL"),blocked=statusCount("BLOCKED");
+  const pending=caseStatus.length-pass-fail-blocked;
+  el("statPlans").textContent=plans.length;el("statUsecases").textContent=usecases.length;el("statCases").textContent=caseStatus.length;
+  el("statPass").textContent=pass;el("statFail").textContent=fail;el("statBugs").textContent=openBugCount();
+  el("progressText").textContent=pct+"%";el("progressBar").style.width=pct+"%";
+  el("overviewPass").textContent=pass;el("overviewFail").textContent=fail;el("overviewBlocked").textContent=blocked;el("overviewPending").textContent=pending;
+
+  el("overviewInfo").innerHTML=`
+    <div class="metric-row"><span>Tổng kịch bản kiểm thử</span><strong>${s.total}</strong></div>
+    <div class="metric-row"><span>Kịch bản đã thực hiện</span><strong>${s.executed}</strong></div>
+    <div class="metric-row"><span>Thành viên dự án</span><strong>${members.length}</strong></div>
+    <div class="metric-row"><span>Bug toàn dự án</span><strong>${defects.length}</strong></div>
+    <div class="metric-row"><span>Bug đang mở</span><strong>${openBugCount()}</strong></div>`;
+
+  const summaryByUc=new Map(usecases.map(u=>[u.id,{uc:u,cases:caseStatus.filter(t=>t.usecase_id===u.id)}]));
+  const attention=[...summaryByUc.values()].filter(x=>x.cases.some(t=>["FAIL","BLOCKED","IN_PROGRESS","NOT_TESTED","NO_SCENARIO"].includes(t.test_result))).slice(0,6);
+  el("attentionUsecases").innerHTML=attention.length?attention.map(x=>{
+    const fail=x.cases.filter(t=>t.test_result==="FAIL").length;
+    const nt=x.cases.filter(t=>["NOT_TESTED","NO_SCENARIO","IN_PROGRESS"].includes(t.test_result)).length;
+    return `<div class="metric-row"><span><strong>${escapeHtml(x.uc.usecase_code)}</strong> · ${escapeHtml(x.uc.usecase_name)}</span><strong>${fail?fail+" FAIL":nt+" chưa hoàn tất"}</strong></div>`;
+  }).join(""):`<div class="empty"><strong>Không có Use Case cần chú ý</strong><span>Các Test Case hiện không có lỗi hoặc tồn đọng đáng chú ý.</span></div>`;
+}
+
+function renderPlans(){
+  const profileById=new Map(profiles.map(p=>[p.id,p]));
+  el("planBody").innerHTML=plans.length?plans.map(p=>{
+    const manager=profileById.get(p.manager_id);
+    return `<tr><td><strong>${escapeHtml(p.plan_code)}</strong></td><td><strong>${escapeHtml(p.plan_name)}</strong><span class="sub">${escapeHtml(p.description||"")}</span></td><td>${escapeHtml(p.test_type||"—")}</td><td>${dateVN(p.start_date)} → ${dateVN(p.end_date)}</td><td>${escapeHtml(manager?.full_name||manager?.email||"—")}</td><td><span class="badge ${escapeHtml(p.status)}">${escapeHtml(planStatusLabels[p.status]||p.status)}</span></td></tr>`;
+  }).join(""):`<tr><td colspan="6"><div class="empty"><strong>Chưa có kế hoạch kiểm thử</strong><span>Manager có thể tạo nhiều kế hoạch kiểm thử cho dự án.</span></div></td></tr>`;
+}
+
+function normalizeResult(x){return x==="NO_SCENARIO"?"NOT_TESTED":x}
+function renderUsecaseTree(){
+  const key=el("ucSearch").value.trim().toLowerCase();
+  const statusFilter=el("tcStatusFilter").value;
+  const groups=new Map();
+
+  for(const uc of usecases){
+    let cases=caseStatus.filter(t=>t.usecase_id===uc.id);
+    if(statusFilter) cases=cases.filter(t=>normalizeResult(t.test_result)===statusFilter);
+    const text=[uc.usecase_code,uc.usecase_name,uc.actor,uc.group_name,...cases.map(t=>t.test_code+" "+t.test_name)].join(" ").toLowerCase();
+    if(key&&!text.includes(key))continue;
+    if(statusFilter&&!cases.length)continue;
+    const group=uc.group_name||"Không phân nhóm";
+    if(!groups.has(group))groups.set(group,[]);
+    groups.get(group).push({uc,cases});
+  }
+
+  if(!groups.size){el("usecaseTree").innerHTML=`<div class="card empty"><strong>Không tìm thấy dữ liệu phù hợp</strong><span>Hãy thay đổi từ khóa hoặc bộ lọc trạng thái.</span></div>`;return}
+
+  let html="";
+  for(const [group,items] of groups){
+    html+=`<section class="usecase-group"><div class="group-title"><span>${escapeHtml(group)}</span><span>${items.length} Use Case</span></div>`;
+    html+=items.map(({uc,cases})=>{
+      const allCases=caseStatus.filter(t=>t.usecase_id===uc.id);
+      const p=allCases.filter(t=>t.test_result==="PASS").length,f=allCases.filter(t=>t.test_result==="FAIL").length,b=allCases.filter(t=>t.test_result==="BLOCKED").length;
+      return `<article class="uc-card">
+        <div class="uc-head" onclick="toggleUc('${uc.id}')">
+          <div class="uc-left"><div id="chev-${uc.id}" class="chev">⌄</div><div><div class="uc-code">${escapeHtml(uc.usecase_code||uc.source_stt||"USE CASE")}</div><div class="uc-name">${escapeHtml(uc.usecase_name)}</div><div class="uc-meta">${escapeHtml(uc.actor?"Tác nhân: "+uc.actor:uc.description||"")}</div></div></div>
+          <div class="uc-summary"><span class="pill">${allCases.length} Test Case</span>${p?`<span class="pill">${p} PASS</span>`:""}${f?`<span class="pill">${f} FAIL</span>`:""}${b?`<span class="pill">${b} BLOCKED</span>`:""}</div>
+        </div>
+        <div id="uc-${uc.id}" class="tc-list">
+          ${cases.length?cases.map(t=>`<div class="tc-row" onclick="openTestCase('${t.test_case_id}')"><div class="tc-title"><strong>${escapeHtml(t.test_code)} · ${escapeHtml(t.test_name)}</strong><span>${escapeHtml(t.priority||"")} · ${Number(t.total_scenarios)||0} kịch bản</span></div><div><span class="badge ${escapeHtml(t.test_result)}">${escapeHtml(resultLabels[t.test_result]||t.test_result)}</span></div><div class="tc-progress">${Number(t.executed_scenarios)||0}/${Number(t.total_scenarios)||0} đã kiểm thử</div><div class="bug-col">${Number(t.open_bug_count)||0} bug mở</div><div class="arrow">›</div></div>`).join(""):`<div class="empty"><strong>Chưa có Test Case</strong><span>Use Case này chưa có Test Case phù hợp bộ lọc.</span></div>`}
+        </div>
+      </article>`;
+    }).join("");
+    html+="</section>";
+  }
+  el("usecaseTree").innerHTML=html;
+}
+window.toggleUc=id=>{const box=el("uc-"+id),chev=el("chev-"+id);box.classList.toggle("hidden");chev.textContent=box.classList.contains("hidden")?"›":"⌄"};
+window.openTestCase=id=>{localStorage.setItem("doublef_current_project",projectId);location.href="/kiem-thu/test-case-chi-tiet?id="+encodeURIComponent(id)};
+
+function initials(name){return String(name||"?").trim().split(/\s+/).slice(-2).map(x=>x[0]).join("").toUpperCase()}
+function renderMembers(){
+  const pmap=new Map(profiles.map(p=>[p.id,p]));
+  el("memberList").innerHTML=members.length?members.map(m=>{
+    const p=pmap.get(m.user_id)||{};
+    return `<article class="member"><div class="avatar">${escapeHtml(initials(p.full_name||p.email))}</div><strong>${escapeHtml(p.full_name||p.email||"Thành viên")}</strong><small>${escapeHtml(p.email||"")}</small><small>${escapeHtml(p.department||"")}</small><span class="badge ${escapeHtml(m.role)}">${escapeHtml(roleLabels[m.role]||m.role)}</span></article>`;
+  }).join(""):`<div class="empty"><strong>Chưa có thành viên</strong><span>Dự án chưa được phân công thành viên.</span></div>`;
+}
+
+function metric(label,value){return `<div class="metric-row"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`}
+function renderReport(){
+  const total=caseStatus.length,pass=statusCount("PASS"),fail=statusCount("FAIL"),blocked=statusCount("BLOCKED"),inProgress=statusCount("IN_PROGRESS"),notTested=statusCount("NOT_TESTED")+statusCount("NO_SCENARIO");
+  const passRate=total?Math.round(pass/total*100):0;
+  el("caseMetrics").innerHTML=metric("Tổng Test Case",total)+metric("PASS",pass)+metric("FAIL",fail)+metric("BLOCKED",blocked)+metric("Đang kiểm thử",inProgress)+metric("Chưa kiểm thử",notTested)+metric("Tỷ lệ PASS",passRate+"%");
+  const open=openBugCount(),critical=defects.filter(d=>d.severity==="critical").length,high=defects.filter(d=>d.severity==="high").length,fixed=defects.filter(d=>d.status==="fixed"||d.status==="retest").length,closed=defects.filter(d=>d.status==="closed").length;
+  el("bugMetrics").innerHTML=metric("Tổng Bug",defects.length)+metric("Bug đang mở",open)+metric("Critical",critical)+metric("High",high)+metric("Đã Fixed / chờ Retest",fixed)+metric("Đã đóng",closed);
+}
+
+function switchTab(name){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===name));
+  document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+name));
+  history.replaceState(null,"",location.pathname+"?id="+encodeURIComponent(projectId)+"&tab="+encodeURIComponent(name));
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>switchTab(t.dataset.tab)));
+el("ucSearch").addEventListener("input",renderUsecaseTree);el("tcStatusFilter").addEventListener("change",renderUsecaseTree);
+el("logoutBtn").onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+el("editProjectBtn").onclick=()=>location.href="/kiem-thu/du-an?edit="+encodeURIComponent(projectId);
+el("managePlansBtn").onclick=()=>location.href="/kiem-thu/ke-hoach?project="+encodeURIComponent(projectId);
+el("manageUcBtn").onclick=()=>location.href="/kiem-thu/usecase?project="+encodeURIComponent(projectId);
+el("manageMembersBtn").onclick=()=>location.href="/kiem-thu/thanh-vien?project="+encodeURIComponent(projectId);
+function importLater(){alert("Chức năng Import Use Case từ Excel sẽ được bổ sung ở Bước 5. Dự án hiện tại đã được ghi nhớ để import đúng dự án.")}
+el("importUcBtn").onclick=importLater;el("importUcTabBtn").onclick=importLater;
+el("mobileMenu").onclick=()=>{el("sidebar").classList.add("open");el("overlay").classList.add("show")};el("overlay").onclick=()=>{el("sidebar").classList.remove("open");el("overlay").classList.remove("show")};
+
+(async()=>{
+  if(!await requireAuth())return;
+  await loadAll();
+  const requested=q.get("tab");if(["overview","plans","usecases","members","report"].includes(requested))switchTab(requested);
+})();
+</script>
+</body>
+</html>

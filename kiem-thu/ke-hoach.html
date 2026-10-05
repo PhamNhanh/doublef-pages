@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kế hoạch kiểm thử</title>
+<style>
+:root{--b:#155eef;--bg:#f5f7fa;--bd:#eaecf0;--m:#667085;--s:255px}*{box-sizing:border-box}body{margin:0;font-family:Arial;background:var(--bg);color:#101828}a{text-decoration:none;color:inherit}.side{position:fixed;inset:0 auto 0 0;width:var(--s);background:#fff;border-right:1px solid var(--bd);display:flex;flex-direction:column}.brand{height:70px;padding:0 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bd)}.logo{width:39px;height:39px;border-radius:10px;background:var(--b);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}.nav{padding:16px 12px;flex:1}.nav a{display:block;padding:12px;border-radius:9px;font-size:13px;margin-bottom:3px}.nav a:hover,.nav a.active{background:#eff4ff;color:var(--b);font-weight:700}.who{margin:14px;padding:10px;background:#f9fafb;border-radius:9px;font-size:11px}.main{margin-left:var(--s)}.top{height:70px;background:#fff;border-bottom:1px solid var(--bd);padding:0 28px;display:flex;align-items:center;justify-content:space-between}.btn{border:1px solid var(--bd);border-radius:8px;padding:10px 13px;background:#fff;cursor:pointer}.primary{background:var(--b);color:#fff;border-color:var(--b)}.content{padding:26px 28px;max-width:1500px;margin:auto}.head{display:flex;justify-content:space-between;margin-bottom:20px}.head h1{margin:0;font-size:24px}.head p{font-size:13px;color:var(--m)}.card{background:#fff;border:1px solid var(--bd);border-radius:12px;margin-bottom:16px}.form{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.form span{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.full{grid-column:1/-1}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:8px;padding:10px}input,select{height:42px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.module{padding:18px;min-height:170px;display:flex;flex-direction:column;justify-content:space-between}.module h2{font-size:17px;margin:7px 0}.module p{font-size:12px;color:var(--m);line-height:1.6}.code{font-size:10px;color:var(--b);font-weight:800}.meta{font-size:10px;color:var(--m);display:flex;justify-content:space-between}.hidden{display:none}@media(max-width:900px){.side{display:none}.main{margin:0}.content{padding:20px 14px}.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<aside class="side"><div class="brand"><div class="logo">DF</div><strong>DoubleF Test</strong></div><nav class="nav"><a href="/kiem-thu/">Tổng quan</a><a href="/kiem-thu/du-an">Dự án</a><a class="active" href="/kiem-thu/ke-hoach">Kế hoạch kiểm thử</a><a href="/kiem-thu/test-case">Test Case</a><a href="/kiem-thu/thuc-hien">Thực hiện kiểm thử</a><a href="/kiem-thu/loi">Quản lý lỗi</a><a href="/kiem-thu/bao-cao">Báo cáo</a><a href="/kiem-thu/thanh-vien">Thành viên</a></nav><div class="who"><strong id="name">...</strong><br><span id="role">...</span></div></aside>
+
+<div class="main"><header class="top"><strong>Kế hoạch kiểm thử</strong><button id="logout" class="btn">Đăng xuất</button></header>
+<main class="content">
+<div class="head"><div><h1>Phân hệ kiểm thử</h1><p>Quản lý phạm vi và nhóm chức năng cần kiểm thử.</p></div><button id="open" class="btn primary">+ Thêm phân hệ</button></div>
+
+<section id="formBox" class="card hidden"><form id="form" class="form">
+<label><span>Dự án</span><select id="project" name="project_id" required></select></label>
+<label><span>Mã phân hệ</span><input name="module_code" required></label>
+<label><span>Tên phân hệ</span><input name="module_name" required></label>
+<label><span>Đường dẫn chức năng</span><input name="module_url"></label>
+<label class="full"><span>Mô tả</span><textarea name="description" rows="4"></textarea></label>
+<div class="full"><button class="btn primary">Lưu phân hệ</button></div>
+</form></section>
+
+<section id="modules" class="grid"></section>
+</main></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aizhygivtngtsqcjtvaj.supabase.co","sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN");
+let me,profile,projects=[],testCases=[];
+const rn={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.replace("/kiem-thu/login");me=session.user;
+ const {data:p}=await sb.from("profiles").select("*").eq("id",me.id).maybeSingle();profile=p;if(!p)return location.replace("/kiem-thu/login");
+ name.textContent=p.full_name||me.email;role.textContent=rn[p.role]||p.role;if(!["admin","manager"].includes(p.role))open.style.display="none";
+ await load();
+}
+async function load(){
+ const r=await Promise.all([sb.from("projects").select("*"),sb.from("test_modules").select("*").order("sort_order"),sb.from("test_cases").select("id,module_id")]);
+ projects=r[0].data||[];const mods=r[1].data||[];testCases=r[2].data||[];
+ project.innerHTML=projects.map(p=>`<option value="${p.id}">${e(p.project_name)}</option>`).join("");
+ modules.innerHTML=mods.map(m=>{const p=projects.find(x=>x.id===m.project_id);const n=testCases.filter(t=>t.module_id===m.id).length;return `<article class="card module"><div><span class="code">${e(m.module_code||"MODULE")}</span><h2>${e(m.module_name)}</h2><p>${e(m.description||"Không có mô tả.")}</p></div><div class="meta"><span>${e(p?.project_name||"")}</span><strong>${n} Test Case</strong></div></article>`}).join("")||"<p>Chưa có phân hệ.</p>";
+}
+open.onclick=()=>formBox.classList.toggle("hidden");
+form.onsubmit=async ev=>{ev.preventDefault();const f=new FormData(form);const {error}=await sb.from("test_modules").insert({project_id:f.get("project_id"),module_code:f.get("module_code").trim(),module_name:f.get("module_name").trim(),module_url:f.get("module_url").trim()||null,description:f.get("description").trim()||null,sort_order:Date.now()%100000});if(error)return alert(error.message);form.reset();formBox.classList.add("hidden");load()};
+logout.onclick=async()=>{await sb.auth.signOut();location.replace("/kiem-thu/login")};
+function e(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+init();
+</script>
+</body>
+</html>

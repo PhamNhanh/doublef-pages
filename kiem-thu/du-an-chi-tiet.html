@@ -420,7 +420,6 @@ async function fetchAllUseCasesForProject(){
       .from("use_cases")
       .select("*")
       .eq("project_id",projectId)
-      .order("group_name",{ascending:true,nullsFirst:false})
       .order("source_stt",{ascending:true,nullsFirst:false})
       .order("usecase_code",{ascending:true})
       .range(from,from+pageSize-1);
@@ -489,7 +488,17 @@ async function loadAll(){
   else hideNotice();
 
   plans=planRes.data||[];
-  usecases=ucResult.data||[];
+  usecases=(ucResult.data||[]).sort((a,b)=>{
+    const getNo=u=>{
+      const n=Number(u?.source_stt);
+      if(Number.isFinite(n)&&n>0)return n;
+      const m=String(u?.usecase_code||"").match(/\d+/);
+      return m?Number(m[0]):Number.MAX_SAFE_INTEGER;
+    };
+    const na=getNo(a), nb=getNo(b);
+    if(na!==nb)return na-nb;
+    return String(a?.usecase_code||"").localeCompare(String(b?.usecase_code||""),"vi",{numeric:true,sensitivity:"base"});
+  });
   caseStatus=caseResult.data||[];
   members=memberRes.data||[];
   profiles=profileRes.data||[];
@@ -861,7 +870,9 @@ function parseUcSheet(sheet){
     }
   }
   finish();
-  return result.filter(x=>x.source_stt&&x.usecase_name);
+  return result
+    .filter(x=>x.source_stt&&x.usecase_name)
+    .sort((a,b)=>Number(a.source_stt)-Number(b.source_stt));
 }
 
 function openImportPicker(){

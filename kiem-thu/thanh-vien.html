@@ -12,17 +12,21 @@
 const DF={url:"https://aizhygivtngtsqcjtvaj.supabase.co",key:"sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN",bucket:"test-evidence"};
 const sb=supabase.createClient(DF.url,DF.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const ROLE_LABEL={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
-const NAV=[
- ["dashboard","/kiem-thu/","⌂","Tổng quan"],
- ["projects","/kiem-thu/du-an","▣","Dự án"],
- ["plans","/kiem-thu/ke-hoach","▤","Kế hoạch kiểm thử"],
- ["usecases","/kiem-thu/usecase","◇","Use Case"],
- ["testcases","/kiem-thu/test-case","✓","Test Case & Kịch bản"],
- ["execute","/kiem-thu/thuc-hien","▶","Thực hiện kiểm thử"],
- ["defects","/kiem-thu/loi","!","Quản lý Bug"],
- ["reports","/kiem-thu/bao-cao","▥","Báo cáo"],
- ["members","/kiem-thu/thanh-vien","♙","Thành viên"]
-];
+function navItems(role){
+  const items=[
+    ["dashboard","/kiem-thu/","⌂","Tổng quan","TỔNG QUAN"],
+    ["projects","/kiem-thu/du-an","▣","Dự án của tôi","DỰ ÁN"]
+  ];
+  if(["admin","manager","tester"].includes(role)){
+    items.push(["execute","/kiem-thu/thuc-hien","▶","Thực hiện kiểm thử","CÔNG VIỆC"]);
+    items.push(["defects","/kiem-thu/loi","!","Quản lý Bug","CÔNG VIỆC"]);
+  }
+  items.push(["reports","/kiem-thu/bao-cao","▥","Báo cáo","BÁO CÁO"]);
+  if(["admin","manager"].includes(role)){
+    items.push(["members","/kiem-thu/thanh-vien","♙",role==="admin"?"Thành viên":"Thành viên dự án","QUẢN TRỊ"]);
+  }
+  return items;
+}
 function e(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function fmtDate(v){if(!v)return "—";const d=new Date(v.length===10?v+"T00:00:00":v);return isNaN(d)?"—":d.toLocaleDateString("vi-VN")}
 function fmtDateTime(v){if(!v)return "—";const d=new Date(v);return isNaN(d)?"—":d.toLocaleString("vi-VN")}
@@ -32,13 +36,21 @@ function toast(msg,bad=false){let x=document.getElementById("dfToast");if(!x){x=
 function errMsg(error){return error?.message||String(error||"Có lỗi xảy ra")}
 async function requireAuth(){const {data:{session},error}=await sb.auth.getSession();if(error||!session){location.replace("/kiem-thu/login");return null}const {data:profile,error:pe}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();if(pe||!profile||profile.active===false){await sb.auth.signOut();location.replace("/kiem-thu/login");return null}return {session,user:session.user,profile}}
 async function visibleProjects(){const {data,error}=await sb.from("projects").select("*").order("created_at",{ascending:false});if(error)throw error;return data||[]}
-async function projectRole(projectId,userId){if(!projectId)return null;const {data}=await sb.from("project_members").select("role").eq("project_id",projectId).eq("user_id",userId).maybeSingle();return data?.role||null}
+async function projectRole(projectId,userId){if(!projectId)return null;const {data}=await sb.from("project_members").select("role,active").eq("project_id",projectId).eq("user_id",userId).eq("active",true).maybeSingle();return data?.role||null}
 function canManage(ctx){return ctx.profile.role==="admin"||ctx.projectRole==="manager"}
 function canTest(ctx){return ctx.profile.role==="admin"||["manager","tester"].includes(ctx.projectRole)}
 async function logout(){await sb.auth.signOut();location.replace("/kiem-thu/login")}
-function navHtml(active){return NAV.map((n,i)=>`${i===0?'<div class="nav-group">Quản lý kiểm thử</div>':''}<a class="${n[0]===active?'active':''}" href="${n[1]}"><span class="ico">${n[2]}</span><span>${n[3]}</span></a>`).join("")}
-function shell(active,title,ctx){const projectOptions=ctx.projects.length?ctx.projects.map(p=>`<option value="${p.id}" ${p.id===ctx.projectId?'selected':''}>${e(p.project_code)} - ${e(p.project_name)}</option>`).join(""):'<option value="">Chưa có dự án</option>';document.getElementById("app").className="app";document.getElementById("app").innerHTML=`<div id="overlay" class="overlay"></div><aside id="sidebar" class="sidebar"><div class="brand"><div class="brand-logo">DF</div><div><strong>DoubleF Test</strong><small>Project Test Management</small></div></div><nav class="nav">${navHtml(active)}</nav><div class="side-user"><div class="avatar">${e(initials(ctx.profile.full_name||ctx.user.email))}</div><div><strong>${e(ctx.profile.full_name||ctx.user.email)}</strong><small>${e(ROLE_LABEL[ctx.profile.role]||ctx.profile.role)}</small></div></div></aside><div class="main"><header class="topbar"><div class="top-left"><button id="menuBtn" class="btn menu-btn">☰</button><div><strong>${e(title)}</strong><small>${ctx.projectId?'Đang làm việc trong dự án đã chọn':'Chọn dự án để làm việc'}</small></div></div><div class="top-actions"><select id="projectSelect" class="project-select">${projectOptions}</select><span class="user-meta"><strong style="font-size:10.5px">${e(ctx.profile.full_name||ctx.user.email)}</strong></span><button id="logoutBtn" class="btn">Đăng xuất</button></div></header><main id="pageContent" class="content"><div class="loading">Đang tải dữ liệu...</div></main></div>`;document.getElementById("logoutBtn").onclick=logout;const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("overlay");document.getElementById("menuBtn").onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};document.getElementById("projectSelect").onchange=ev=>{localStorage.setItem("df_project_id",ev.target.value);location.reload()}}
-async function boot(active,title,{projectRequired=true}={}){try{const auth=await requireAuth();if(!auth)return null;const projects=await visibleProjects();let projectId=localStorage.getItem("df_project_id");if(!projects.some(p=>p.id===projectId))projectId=projects[0]?.id||"";if(projectId)localStorage.setItem("df_project_id",projectId);const pr=projectId?await projectRole(projectId,auth.user.id):null;const ctx={...auth,projects,projectId,project:projects.find(p=>p.id===projectId)||null,projectRole:pr};shell(active,title,ctx);if(projectRequired&&!projectId){document.getElementById("pageContent").innerHTML='<div class="notice">Chưa có dự án. Hãy tạo dự án trước.</div>';return null}return ctx}catch(error){document.getElementById("app").innerHTML=`<div class="error" style="margin:30px">${e(errMsg(error))}</div>`;return null}}
+function navHtml(active,ctx){
+  const activeKey=["plans","usecases","testcases"].includes(active)?"projects":active;
+  let lastGroup="";
+  return navItems(ctx.profile.role).map(n=>{
+    const group=n[4]!==lastGroup?`<div class="nav-group">${n[4]}</div>`:"";
+    lastGroup=n[4];
+    return `${group}<a class="${n[0]===activeKey?'active':''}" href="${n[1]}"><span class="ico">${n[2]}</span><span>${n[3]}</span></a>`;
+  }).join("");
+}
+function shell(active,title,ctx){const projectOptions=ctx.projects.length?ctx.projects.map(p=>`<option value="${p.id}" ${p.id===ctx.projectId?'selected':''}>${e(p.project_code)} - ${e(p.project_name)}</option>`).join(""):'<option value="">Chưa có dự án</option>';document.getElementById("app").className="app";document.getElementById("app").innerHTML=`<div id="overlay" class="overlay"></div><aside id="sidebar" class="sidebar"><div class="brand"><div class="brand-logo">DF</div><div><strong>DoubleF Test</strong><small>Project Test Management</small></div></div><nav class="nav">${navHtml(active,ctx)}</nav><div class="side-user"><div class="avatar">${e(initials(ctx.profile.full_name||ctx.user.email))}</div><div><strong>${e(ctx.profile.full_name||ctx.user.email)}</strong><small>${e(ROLE_LABEL[ctx.profile.role]||ctx.profile.role)}</small></div></div></aside><div class="main"><header class="topbar"><div class="top-left"><button id="menuBtn" class="btn menu-btn">☰</button><div><strong>${e(title)}</strong><small>${ctx.projectId?'Đang làm việc trong dự án đã chọn':'Chọn dự án để làm việc'}</small></div></div><div class="top-actions"><select id="projectSelect" class="project-select">${projectOptions}</select><span class="user-meta"><strong style="font-size:10.5px">${e(ctx.profile.full_name||ctx.user.email)}</strong></span><button id="logoutBtn" class="btn">Đăng xuất</button></div></header><main id="pageContent" class="content"><div class="loading">Đang tải dữ liệu...</div></main></div>`;document.getElementById("logoutBtn").onclick=logout;const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("overlay");document.getElementById("menuBtn").onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};document.getElementById("projectSelect").onchange=ev=>{localStorage.setItem("doublef_current_project",ev.target.value);location.reload()}}
+async function boot(active,title,{projectRequired=true}={}){try{const auth=await requireAuth();if(!auth)return null;const projects=await visibleProjects();let projectId=localStorage.getItem("doublef_current_project");if(!projects.some(p=>p.id===projectId))projectId=projects[0]?.id||"";if(projectId)localStorage.setItem("doublef_current_project",projectId);const pr=projectId?await projectRole(projectId,auth.user.id):null;const ctx={...auth,projects,projectId,project:projects.find(p=>p.id===projectId)||null,projectRole:pr};shell(active,title,ctx);if(projectRequired&&!projectId){document.getElementById("pageContent").innerHTML='<div class="notice">Chưa có dự án. Hãy tạo dự án trước.</div>';return null}return ctx}catch(error){document.getElementById("app").innerHTML=`<div class="error" style="margin:30px">${e(errMsg(error))}</div>`;return null}}
 function openModal(title,body){closeModal();const b=document.createElement("div");b.id="dfModal";b.className="modal-backdrop";b.innerHTML=`<div class="modal"><div class="modal-head"><h3>${e(title)}</h3><button class="btn sm" id="modalClose">Đóng</button></div><div class="modal-body">${body}</div></div>`;document.body.appendChild(b);document.getElementById("modalClose").onclick=closeModal;b.addEventListener("click",ev=>{if(ev.target===b)closeModal()})}
 function closeModal(){document.getElementById("dfModal")?.remove()}
 function tcResultMap(testCases,scenarios,executions){const latest=new Map();[...(executions||[])].sort((a,b)=>new Date(b.completed_at||b.created_at)-new Date(a.completed_at||a.created_at)).forEach(x=>{if(!latest.has(x.scenario_id))latest.set(x.scenario_id,x)});const map=new Map();for(const tc of testCases||[]){const ss=(scenarios||[]).filter(s=>s.test_case_id===tc.id&&s.active!==false);if(!ss.length){map.set(tc.id,"NOT_TESTED");continue}const rs=ss.map(s=>latest.get(s.id)?.result||"NOT_TESTED");let r="NOT_TESTED";if(rs.includes("FAIL"))r="FAIL";else if(rs.includes("BLOCKED"))r="BLOCKED";else if(rs.every(x=>["PASS","N/A"].includes(x)))r="PASS";else if(rs.some(x=>x==="PASS"))r="IN_PROGRESS";map.set(tc.id,r)}return {map,latest}}
@@ -47,10 +59,73 @@ async function viewFile(path){try{const url=await signedFile(path);window.open(u
 function safeFileName(name){return String(name||"file").normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g,"-").replace(/-+/g,"-")}
 
 
-let CTX=null,MEMBERS=[],PROFILES=[];function memberForm(){return `<form id="memberForm" class="form-grid"><div class="field"><span>Người dùng</span><select class="control" name="user_id">${PROFILES.map(p=>`<option value="${p.id}">${e(p.full_name||p.email)} (${e(p.email)})</option>`).join("")}</select></div><div class="field"><span>Vai trò trong dự án</span><select class="control" name="role"><option>manager</option><option selected>tester</option><option>viewer</option></select></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Hủy</button><button class="btn primary">Lưu phân quyền</button></div></form>`}
-async function loadMembers(){const [m,p]=await Promise.all([sb.from("project_members").select("*").eq("project_id",CTX.projectId),sb.from("profiles").select("*").order("full_name")]);if(m.error)throw m.error;if(p.error)throw p.error;MEMBERS=m.data||[];PROFILES=p.data||[];renderMembers()}
-function renderMembers(){const manage=canManage(CTX),pm=new Map(PROFILES.map(x=>[x.id,x]));document.getElementById("pageContent").innerHTML=`<div class="page-head"><div><h1>Thành viên dự án</h1><p>Vai trò dự án độc lập với quyền toàn hệ thống. Một người có thể là Manager ở dự án A và Tester ở dự án B.</p></div><div class="page-head-actions">${manage?'<button id="addMember" class="btn primary">+ Phân quyền dự án</button>':''}</div></div><section class="card"><div class="table-wrap"><table><thead><tr><th>Họ tên</th><th>Email</th><th>Quyền hệ thống</th><th>Quyền dự án</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>${MEMBERS.length?MEMBERS.map(m=>{const p=pm.get(m.user_id);return `<tr><td><strong>${e(p?.full_name||"—")}</strong></td><td>${e(p?.email||"")}</td><td>${badge(p?.role||"viewer")}</td><td>${badge(m.role)}</td><td>${p?.active?badge("active"):badge("inactive")}</td><td>${manage?`<div class="actions"><button class="btn sm" onclick="changeMember('${m.id}','${m.role}')">Đổi quyền</button><button class="btn sm danger" onclick="removeMember('${m.id}')">Gỡ</button></div>`:"—"}</td></tr>`}).join(""):`<tr><td colspan="6"><div class="empty">Chưa có thành viên.</div></td></tr>`}</tbody></table></div></section>${CTX.profile.role==='admin'?`<section class="card"><div class="card-head"><div><h2>Quyền toàn hệ thống</h2><p>Chỉ Admin được phép thay đổi.</p></div></div><div class="table-wrap"><table><thead><tr><th>Người dùng</th><th>Email</th><th>Vai trò hệ thống</th><th>Hoạt động</th></tr></thead><tbody>${PROFILES.map(p=>`<tr><td>${e(p.full_name||"—")}</td><td>${e(p.email)}</td><td><select class="control" style="width:150px" onchange="changeGlobalRole('${p.id}',this.value)">${["admin","manager","tester","viewer"].map(r=>`<option ${p.role===r?'selected':''}>${r}</option>`).join("")}</select></td><td><input type="checkbox" ${p.active?'checked':''} onchange="changeActive('${p.id}',this.checked)"></td></tr>`).join("")}</tbody></table></div></section>`:""}`;document.getElementById("addMember")?.addEventListener("click",()=>{openModal("Phân quyền thành viên",memberForm());document.getElementById("memberForm").onsubmit=async ev=>{ev.preventDefault();const f=new FormData(ev.target);const {error}=await sb.from("project_members").upsert({project_id:CTX.projectId,user_id:f.get("user_id"),role:f.get("role")},{onConflict:"project_id,user_id"});if(error)return toast(errMsg(error),true);closeModal();toast("Đã cập nhật thành viên");loadMembers()}})}
-function changeMember(id,current){openModal("Đổi quyền dự án",`<form id="roleForm" class="form-grid"><div class="field full"><span>Vai trò</span><select class="control" name="role">${["manager","tester","viewer"].map(r=>`<option ${r===current?'selected':''}>${r}</option>`).join("")}</select></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Hủy</button><button class="btn primary">Lưu</button></div></form>`);document.getElementById("roleForm").onsubmit=async ev=>{ev.preventDefault();const role=new FormData(ev.target).get("role");const {error}=await sb.from("project_members").update({role}).eq("id",id);if(error)return toast(errMsg(error),true);closeModal();toast("Đã đổi quyền");loadMembers()}}
+let CTX=null,MEMBERS=[],PROFILES=[];
+
+function passwordValue(){
+  const upper="ABCDEFGHJKLMNPQRSTUVWXYZ",lower="abcdefghijkmnopqrstuvwxyz",digit="23456789",symbol="@#%_-!";
+  const all=upper+lower+digit+symbol;
+  const pick=s=>s[Math.floor(Math.random()*s.length)];
+  let value=pick(upper)+pick(lower)+pick(digit)+pick(symbol);
+  for(let i=0;i<8;i++)value+=pick(all);
+  return [...value].sort(()=>Math.random()-.5).join("");
+}
+
+function accountForm(){return `<form id="accountForm" class="form-grid">
+  <div class="field"><span>Họ và tên *</span><input class="control" name="full_name" required maxlength="150" placeholder="Nguyễn Văn A"></div>
+  <div class="field"><span>Email đăng nhập *</span><input class="control" name="email" type="email" required placeholder="user@company.vn"></div>
+  <div class="field"><span>Vai trò hệ thống</span><select class="control" name="role"><option value="viewer">Người xem</option><option value="tester" selected>Kiểm thử viên</option><option value="manager">Quản lý</option><option value="admin">Quản trị viên</option></select></div>
+  <div class="field"><span>Phòng/Bộ phận</span><input class="control" name="department" maxlength="150"></div>
+  <div class="field"><span>Số điện thoại</span><input class="control" name="phone" maxlength="50"></div>
+  <div class="field"><span>Mật khẩu ban đầu *</span><div style="display:flex;gap:7px"><input id="newPassword" class="control" name="password" type="text" required minlength="8" autocomplete="new-password"><button id="genPassword" class="btn" type="button">Tạo</button></div></div>
+  <div class="field full" style="padding:10px 12px;background:#f9fafb;border-radius:9px;border:1px solid #eaecf0"><label style="display:flex;align-items:center;gap:8px;font-weight:600"><input id="assignCurrentProject" name="assign_project" type="checkbox" checked> Thêm tài khoản này vào dự án đang chọn</label></div>
+  <div id="newProjectRoleWrap" class="field full"><span>Vai trò trong dự án</span><select class="control" name="project_role"><option value="manager">Manager</option><option value="tester" selected>Tester</option><option value="viewer">Viewer</option></select></div>
+  <div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Hủy</button><button id="createAccountSubmit" class="btn primary">Tạo tài khoản</button></div>
+</form>`}
+
+async function openCreateAccount(){
+  if(CTX.profile.role!=="admin")return toast("Chỉ Admin được tạo tài khoản.",true);
+  openModal("Thêm tài khoản",accountForm());
+  const form=document.getElementById("accountForm");
+  const password=document.getElementById("newPassword");
+  password.value=passwordValue();
+  document.getElementById("genPassword").onclick=()=>{password.value=passwordValue();password.select()};
+  document.getElementById("assignCurrentProject").onchange=ev=>document.getElementById("newProjectRoleWrap").classList.toggle("hidden",!ev.target.checked);
+  form.onsubmit=async ev=>{
+    ev.preventDefault();
+    const fd=new FormData(form),button=document.getElementById("createAccountSubmit");
+    button.disabled=true;button.textContent="Đang tạo...";
+    try{
+      const {data:{session}}=await sb.auth.getSession();
+      if(!session)throw new Error("Phiên đăng nhập đã hết hạn.");
+      const payload={
+        full_name:String(fd.get("full_name")||"").trim(),
+        email:String(fd.get("email")||"").trim(),
+        password:String(fd.get("password")||""),
+        role:String(fd.get("role")||"viewer"),
+        department:String(fd.get("department")||"").trim(),
+        phone:String(fd.get("phone")||"").trim(),
+        active:true
+      };
+      const response=await fetch("/api/admin-create-user",{method:"POST",headers:{"content-type":"application/json",Authorization:`Bearer ${session.access_token}`},body:JSON.stringify(payload)});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(result.error||"Không tạo được tài khoản.");
+      if(fd.get("assign_project")==="on"&&CTX.projectId&&result.user?.id){
+        const {error}=await sb.from("project_members").upsert({project_id:CTX.projectId,user_id:result.user.id,role:String(fd.get("project_role")||"tester"),active:true,assigned_by:CTX.user.id},{onConflict:"project_id,user_id"});
+        if(error)throw new Error("Tài khoản đã tạo nhưng chưa thêm được vào dự án: "+error.message);
+      }
+      closeModal();toast("Đã tạo tài khoản "+payload.email);await loadMembers();
+    }catch(error){toast(errMsg(error),true)}finally{button.disabled=false;button.textContent="Tạo tài khoản"}
+  };
+}
+
+function memberForm(){return `<form id="memberForm" class="form-grid"><div class="field"><span>Người dùng</span><select class="control" name="user_id">${PROFILES.filter(p=>p.active!==false).map(p=>`<option value="${p.id}">${e(p.full_name||p.email)} (${e(p.email)})</option>`).join("")}</select></div><div class="field"><span>Vai trò trong dự án</span><select class="control" name="role"><option>manager</option><option selected>tester</option><option>viewer</option></select></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Hủy</button><button class="btn primary">Lưu phân quyền</button></div></form>`}
+async function loadMembers(){const [m,p]=await Promise.all([sb.from("project_members").select("*").eq("project_id",CTX.projectId).eq("active",true),sb.from("profiles").select("*").order("full_name")]);if(m.error)throw m.error;if(p.error)throw p.error;MEMBERS=m.data||[];PROFILES=p.data||[];renderMembers()}
+function renderMembers(){const manage=canManage(CTX),isAdmin=CTX.profile.role==='admin',pm=new Map(PROFILES.map(x=>[x.id,x]));document.getElementById("pageContent").innerHTML=`<div class="page-head"><div><h1>Thành viên dự án</h1><p>Vai trò dự án độc lập với quyền toàn hệ thống. Một người có thể là Manager ở dự án A và Tester ở dự án B.</p></div><div class="page-head-actions">${isAdmin?'<button id="createAccount" class="btn">+ Thêm tài khoản</button>':''}${manage?'<button id="addMember" class="btn primary">+ Phân quyền dự án</button>':''}</div></div><section class="card"><div class="table-wrap"><table><thead><tr><th>Họ tên</th><th>Email</th><th>Quyền hệ thống</th><th>Quyền dự án</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>${MEMBERS.length?MEMBERS.map(m=>{const p=pm.get(m.user_id);return `<tr><td><strong>${e(p?.full_name||"—")}</strong></td><td>${e(p?.email||"")}</td><td>${badge(p?.role||"viewer")}</td><td>${badge(m.role)}</td><td>${p?.active?badge("active"):badge("inactive")}</td><td>${manage?`<div class="actions"><button class="btn sm" onclick="changeMember('${m.id}','${m.role}')">Đổi quyền</button><button class="btn sm danger" onclick="removeMember('${m.id}')">Gỡ</button></div>`:"—"}</td></tr>`}).join(""):`<tr><td colspan="6"><div class="empty">Chưa có thành viên.</div></td></tr>`}</tbody></table></div></section>${isAdmin?`<section class="card"><div class="card-head"><div><h2>Tài khoản toàn hệ thống</h2><p>Admin có thể tạo tài khoản, thay đổi vai trò và khóa/mở tài khoản.</p></div><button id="createAccount2" class="btn primary">+ Thêm tài khoản</button></div><div class="table-wrap"><table><thead><tr><th>Người dùng</th><th>Email</th><th>Phòng/Bộ phận</th><th>Vai trò hệ thống</th><th>Hoạt động</th></tr></thead><tbody>${PROFILES.map(p=>`<tr><td><strong>${e(p.full_name||"—")}</strong></td><td>${e(p.email)}</td><td>${e(p.department||"—")}</td><td><select class="control" style="width:150px" onchange="changeGlobalRole('${p.id}',this.value)">${["admin","manager","tester","viewer"].map(r=>`<option value="${r}" ${p.role===r?'selected':''}>${ROLE_LABEL[r]||r}</option>`).join("")}</select></td><td><label style="display:flex;align-items:center;gap:7px"><input type="checkbox" ${p.active?'checked':''} onchange="changeActive('${p.id}',this.checked)"> ${p.active?'Đang hoạt động':'Đã khóa'}</label></td></tr>`).join("")}</tbody></table></div></section>`:""}`;
+  document.getElementById("createAccount")?.addEventListener("click",openCreateAccount);
+  document.getElementById("createAccount2")?.addEventListener("click",openCreateAccount);
+  document.getElementById("addMember")?.addEventListener("click",()=>{openModal("Phân quyền thành viên",memberForm());document.getElementById("memberForm").onsubmit=async ev=>{ev.preventDefault();const f=new FormData(ev.target);const {error}=await sb.from("project_members").upsert({project_id:CTX.projectId,user_id:f.get("user_id"),role:f.get("role"),active:true,assigned_by:CTX.user.id},{onConflict:"project_id,user_id"});if(error)return toast(errMsg(error),true);closeModal();toast("Đã cập nhật thành viên");loadMembers()}})
+}
+function changeMember(id,current){openModal("Đổi quyền dự án",`<form id="roleForm" class="form-grid"><div class="field full"><span>Vai trò</span><select class="control" name="role">${["manager","tester","viewer"].map(r=>`<option ${r===current?'selected':''}>${r}</option>`).join("")}</select></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Hủy</button><button class="btn primary">Lưu</button></div></form>`);document.getElementById("roleForm").onsubmit=async ev=>{ev.preventDefault();const role=new FormData(ev.target).get("role");const {error}=await sb.from("project_members").update({role,active:true,assigned_by:CTX.user.id}).eq("id",id);if(error)return toast(errMsg(error),true);closeModal();toast("Đã đổi quyền");loadMembers()}}
 async function removeMember(id){if(!confirm("Gỡ thành viên khỏi dự án?"))return;const {error}=await sb.from("project_members").delete().eq("id",id);if(error)return toast(errMsg(error),true);toast("Đã gỡ thành viên");loadMembers()}
 async function changeGlobalRole(id,role){const {error}=await sb.from("profiles").update({role}).eq("id",id);if(error)return toast(errMsg(error),true);toast("Đã cập nhật quyền hệ thống");loadMembers()}
 async function changeActive(id,active){const {error}=await sb.from("profiles").update({active}).eq("id",id);if(error)return toast(errMsg(error),true);toast("Đã cập nhật trạng thái tài khoản")}

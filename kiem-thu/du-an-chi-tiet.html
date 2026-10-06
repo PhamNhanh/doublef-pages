@@ -319,7 +319,7 @@ button,input,select{font:inherit}
     <div class="modal-head">
       <div>
         <h2 id="scenarioImportTitle">Import Kịch bản kiểm thử</h2>
-        <p id="scenarioImportFileInfo">Đọc sheet “Kich bản kiểm thử” và tự nối Kịch bản vào đúng Test Case theo mã UCx_TCy.z hoặc UCx_TCy_z.</p>
+        <p id="scenarioImportFileInfo">Tự nhận diện sheet Kịch bản kiểm thử (kể cả tên không dấu/khác dấu) và nối Kịch bản vào đúng Test Case theo mã UCx_TCy.z hoặc UCx_TCy_z.</p>
       </div>
       <button id="closeScenarioImportModal" class="modal-close" type="button" aria-label="Đóng">×</button>
     </div>
@@ -773,6 +773,16 @@ function cleanText(v){
 }
 function upperCompact(v){
   return cleanText(v).toLocaleUpperCase("vi-VN").replace(/\s+/g," ");
+}
+function asciiCompact(v){
+  return cleanText(v)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/Đ/g,"D")
+    .replace(/đ/g,"d")
+    .toUpperCase()
+    .replace(/\s+/g," ")
+    .trim();
 }
 function isNumericStt(v){return /^\d+(?:\.0+)?$/.test(cleanText(v))}
 function sourceStt(v){const n=Number(cleanText(v));return Number.isFinite(n)?String(Math.trunc(n)):cleanText(v)}
@@ -1442,8 +1452,10 @@ async function handleScenarioImportFile(file){
 
     const buffer=await file.arrayBuffer();
     const wb=XLSX.read(buffer,{type:"array"});
-    const sheetName=wb.SheetNames.find(n=>upperCompact(n).includes("KỊCH BẢN KIỂM THỬ"))||wb.SheetNames.find(n=>upperCompact(n).includes("KICH BAN KIEM THU"));
-    if(!sheetName)throw new Error("Không tìm thấy sheet ‘Kich bản kiểm thử’ trong file.");
+    const sheetName=wb.SheetNames.find(n=>asciiCompact(n).includes("KICH BAN KIEM THU"));
+    if(!sheetName){
+      throw new Error(`Không tìm thấy sheet Kịch bản kiểm thử. Các sheet đang có: ${wb.SheetNames.join(", ")}`);
+    }
 
     scenarioImportRows=parseScenarioSheet(wb.Sheets[sheetName]);
     scenarioImportMeta={fileName:file.name,sheetName};

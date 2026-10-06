@@ -319,7 +319,7 @@ button,input,select{font:inherit}
     <div class="modal-head">
       <div>
         <h2 id="scenarioImportTitle">Import Kịch bản kiểm thử</h2>
-        <p id="scenarioImportFileInfo">Tự nhận diện sheet Kịch bản kiểm thử (kể cả tên không dấu/khác dấu) và nối Kịch bản vào đúng Test Case theo mã UCx_TCy.z hoặc UCx_TCy_z.</p>
+        <p id="scenarioImportFileInfo">Tên file và tên sheet có thể bất kỳ. Hệ thống tự quét nội dung workbook, nhận diện đúng sheet theo cấu trúc cột và nối Kịch bản vào đúng Test Case theo mã UCx_TCy.z hoặc UCx_TCy_z.</p>
       </div>
       <button id="closeScenarioImportModal" class="modal-close" type="button" aria-label="Đóng">×</button>
     </div>
@@ -1261,35 +1261,84 @@ function parseScenarioSteps(text){
   return rows;
 }
 
-function parseScenarioSheet(sheet){
+function detectScenarioLayout(sheet){
   const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:"",raw:false,blankrows:true});
-  if(rows.length<3)throw new Error("Sheet Kịch bản kiểm thử không có dữ liệu.");
+  const maxScan=Math.min(rows.length,30);
 
-  const header=(rows[1]||[]).map(cleanText);
-  const hA=upperCompact(header[0]),hB=upperCompact(header[1]),hC=upperCompact(header[2]);
-  if(hA!=="ID"||!hB.includes("HẠNG MỤC")||!hC.includes("CÁC BƯỚC")){
-    throw new Error("Cấu trúc sheet không đúng mẫu: ID | Hạng mục/Giao diện | Các bước thực hiện | Yêu cầu đầu vào | Dữ liệu kiểm thử | Kết quả mong đợi...");
+  for(let i=0;i<maxScan;i++){
+    const row=(rows[i]||[]).map(asciiCompact);
+    const idx={
+      id:row.findIndex(x=>x==="ID"||x==="MA KICH BAN"||x==="MA KB"),
+      name:row.findIndex(x=>x.includes("HANG MUC")||x.includes("GIAO DIEN")||x.includes("TEN KICH BAN")),
+      steps:row.findIndex(x=>x.includes("CAC BUOC")||x.includes("BUOC THUC HIEN")||x.includes("CAC BUOC THUC HIEN")),
+      precondition:row.findIndex(x=>x.includes("YEU CAU DAU VAO")||x.includes("DIEU KIEN TRUOC")),
+      testData:row.findIndex(x=>x.includes("DU LIEU KIEM THU")||x.includes("TEST DATA")),
+      expected:row.findIndex(x=>x.includes("KET QUA MONG DOI")||x.includes("KET QUA KY VONG")),
+      result:row.findIndex(x=>x==="KET QUA"||x.includes("KET QUA THUC TE")),
+      reference:row.findIndex(x=>x.includes("MA UC")&&x.includes("TKCT")),
+      ucName:row.findIndex(x=>x.includes("TEN UC")&&x.includes("TKCT"))
+    };
+
+    if(idx.id>=0&&idx.steps>=0&&idx.expected>=0){
+      if(idx.name<0)idx.name=1;
+      return {rows,headerRow:i,idx};
+    }
   }
 
+  return null;
+}
+
+function isScenarioSheet(sheet){
+  const layout=detectScenarioLayout(sheet);
+  if(!layout)return false;
+  const idRe=/^UC\s*(\d+)\s*_\s*TC\s*(\d+)\s*[\._]\s*(\d+)\s*$/i;
+  const start=layout.headerRow+1;
+  const stop=Math.min(layout.rows.length,start+80);
+  for(let i=start;i<stop;i++){
+    const rawId=cleanText((layout.rows[i]||[])[layout.idx.id]).replace(/\s+/g,"");
+    if(idRe.test(rawId))return true;
+  }
+  return false;
+}
+
+function findScenarioSheetName(wb){
+  const preferred=wb.SheetNames.find(n=>{
+    const a=asciiCompact(n);
+    return a.includes("KICH BAN KIEM THU")||a.includes("KBKT")||a.includes("TEST SCENARIO");
+  });
+  if(preferred&&isScenarioSheet(wb.Sheets[preferred]))return preferred;
+
+  for(const name of wb.SheetNames){
+    if(isScenarioSheet(wb.Sheets[name]))return name;
+  }
+  return null;
+}
+
+function parseScenarioSheet(sheet){
+  const layout=detectScenarioLayout(sheet);
+  if(!layout)throw new Error("Không nhận diện được cấu trúc Kịch bản kiểm thử trong sheet.");
+
+  const {rows,headerRow,idx}=layout;
   const result=[];
   const idRe=/^UC\s*(\d+)\s*_\s*TC\s*(\d+)\s*[\._]\s*(\d+)\s*$/i;
 
-  for(let i=2;i<rows.length;i++){
+  for(let i=headerRow+1;i<rows.length;i++){
     const row=rows[i]||[];
-    const rawId=cleanText(row[0]).replace(/\s+/g,"");
+    const rawId=cleanText(row[idx.id]).replace(/\s+/g,"");
     const m=rawId.match(idRe);
     if(!m)continue;
 
     const ucNo=Number(m[1]),tcNo=Number(m[2]),scenarioNo=Number(m[3]);
-    const name=cleanText(row[1])||rawId;
-    const stepsText=cleanScenarioText(row[2]);
-    const steps=parseScenarioSteps(row[2]);
-    const precondition=cleanScenarioText(row[3]);
-    const testData=cleanScenarioText(row[4]);
-    const expected=cleanScenarioText(row[5]);
-    const sourceResult=cleanScenarioText(row[6]);
-    const sourceReference=cleanScenarioText(row[7]);
-    const sourceUcName=cleanScenarioText(row[8]);
+    const val=(key)=>idx[key]>=0?row[idx[key]]:"";
+    const name=cleanText(val("name"))||rawId;
+    const stepsText=cleanScenarioText(val("steps"));
+    const steps=parseScenarioSteps(val("steps"));
+    const precondition=cleanScenarioText(val("precondition"));
+    const testData=cleanScenarioText(val("testData"));
+    const expected=cleanScenarioText(val("expected"));
+    const sourceResult=cleanScenarioText(val("result"));
+    const sourceReference=cleanScenarioText(val("reference"));
+    const sourceUcName=cleanScenarioText(val("ucName"));
 
     result.push({
       source_row:i+1,
@@ -1452,9 +1501,9 @@ async function handleScenarioImportFile(file){
 
     const buffer=await file.arrayBuffer();
     const wb=XLSX.read(buffer,{type:"array"});
-    const sheetName=wb.SheetNames.find(n=>asciiCompact(n).includes("KICH BAN KIEM THU"));
+    const sheetName=findScenarioSheetName(wb);
     if(!sheetName){
-      throw new Error(`Không tìm thấy sheet Kịch bản kiểm thử. Các sheet đang có: ${wb.SheetNames.join(", ")}`);
+      throw new Error(`Không tìm thấy sheet có cấu trúc Kịch bản kiểm thử. Tên file và tên sheet có thể bất kỳ; hệ thống đã quét toàn bộ các sheet: ${wb.SheetNames.join(", ")}`);
     }
 
     scenarioImportRows=parseScenarioSheet(wb.Sheets[sheetName]);

@@ -1,4 +1,4 @@
-<!doctype html>
+!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
@@ -304,7 +304,8 @@ function showNotice(text,type="info"){
 }
 function hideNotice(){el("notice").classList.add("hidden")}
 function canManage(){return currentProfile?.role==="admin"||currentProjectRole==="manager"}
-function canTest(){return currentProfile?.role==="admin"||["manager","tester"].includes(currentProjectRole)}
+function canDesign(){return currentProfile?.role==="admin"||["manager","tester"].includes(currentProjectRole)}
+function canTest(){return canDesign()}
 
 function buildMenu(){
   const r=currentProfile.role;
@@ -378,10 +379,19 @@ function renderProjectHeader(){
 }
 
 function renderRoleActions(){
+  /* Quan tri du an: chi Admin / Manager */
   if(canManage()){
-    ["editProjectBtn","importUcBtn","managePlansBtn","addUcBtn","addTcBtn","manageUcBtn","importUcTabBtn","manageMembersBtn"].forEach(id=>el(id).classList.remove("hidden"));
+    ["editProjectBtn","managePlansBtn","manageMembersBtn"].forEach(id=>el(id).classList.remove("hidden"));
   }
-  if(currentProfile.role!=="admin" && currentProjectRole!=="manager") el("manageMembersBtn").classList.add("hidden");
+
+  /* Thiet ke kiem thu + Import: Admin / Manager / Tester */
+  if(canDesign()){
+    ["importUcBtn","addUcBtn","addTcBtn","manageUcBtn","importUcTabBtn"].forEach(id=>el(id).classList.remove("hidden"));
+  }
+
+  if(currentProfile.role!=="admin" && currentProjectRole!=="manager"){
+    el("manageMembersBtn").classList.add("hidden");
+  }
 }
 
 function statusCount(name){return caseStatus.filter(x=>x.test_result===name).length}
@@ -450,7 +460,7 @@ function renderUsecaseTree(){
       return `<article class="uc-card">
         <div class="uc-head" onclick="toggleUc('${uc.id}')">
           <div class="uc-left"><div id="chev-${uc.id}" class="chev">⌄</div><div><div class="uc-code">${escapeHtml(uc.usecase_code||uc.source_stt||"USE CASE")}</div><div class="uc-name">${escapeHtml(uc.usecase_name)}</div><div class="uc-meta">${escapeHtml(uc.actor?"Tác nhân: "+uc.actor:uc.description||"")}</div></div></div>
-          <div class="uc-summary"><span class="pill">${allCases.length} Test Case</span>${p?`<span class="pill">${p} PASS</span>`:""}${f?`<span class="pill">${f} FAIL</span>`:""}${b?`<span class="pill">${b} BLOCKED</span>`:""}${canManage()?`<button class="btn tiny" type="button" onclick="event.stopPropagation();openAddTestCase('${uc.id}')">+ Test Case</button>`:""}</div>
+          <div class="uc-summary"><span class="pill">${allCases.length} Test Case</span>${p?`<span class="pill">${p} PASS</span>`:""}${f?`<span class="pill">${f} FAIL</span>`:""}${b?`<span class="pill">${b} BLOCKED</span>`:""}${canDesign()?`<button class="btn tiny" type="button" onclick="event.stopPropagation();openAddTestCase('${uc.id}')">+ Test Case</button>`:""}</div>
         </div>
         <div id="uc-${uc.id}" class="tc-list">
           ${cases.length?cases.map(t=>`<div class="tc-row" onclick="openTestCase('${t.test_case_id}')"><div class="tc-title"><strong>${escapeHtml(t.test_code)} · ${escapeHtml(t.test_name)}</strong><span>${escapeHtml(t.priority||"")} · ${Number(t.total_scenarios)||0} kịch bản</span></div><div><span class="badge ${escapeHtml(t.test_result)}">${escapeHtml(resultLabels[t.test_result]||t.test_result)}</span></div><div class="tc-progress">${Number(t.executed_scenarios)||0}/${Number(t.total_scenarios)||0} đã kiểm thử</div><div class="bug-col">${Number(t.open_bug_count)||0} bug mở</div><div class="arrow">›</div></div>`).join(""):`<div class="empty"><strong>Chưa có Test Case</strong><span>Use Case này chưa có Test Case phù hợp bộ lọc.</span></div>`}
@@ -512,7 +522,7 @@ function openSimpleModal(id){el(id).classList.remove("hidden")}
 function closeSimpleModal(id){el(id).classList.add("hidden")}
 
 function openAddUseCase(){
-  if(!canManage())return alert("Chỉ Admin hoặc Manager của dự án được thêm Use Case.");
+  if(!canDesign())return alert("Tài khoản của bạn không có quyền thêm Use Case.");
   const form=el("ucCreateForm");form.reset();
   el("newUcCode").value=nextEntityCode("UC",usecases,"usecase_code",3);
   openSimpleModal("ucCreateModal");
@@ -529,7 +539,7 @@ function fillTestCaseSelectors(selectedUcId=""){
   el("newTcAssignee").innerHTML=`<option value="">-- Chưa phân công --</option>`+projectPeopleOptions().filter(x=>["manager","tester"].includes(x.member.role)||x.profile.role==="admin").map(x=>`<option value="${escapeHtml(x.profile.id)}">${escapeHtml(x.profile.full_name||x.profile.email)} (${escapeHtml(roleLabels[x.member.role]||x.member.role)})</option>`).join("");
 }
 function openAddTestCase(usecaseId=""){
-  if(!canManage())return alert("Chỉ Admin hoặc Manager của dự án được thêm Test Case.");
+  if(!canDesign())return alert("Tài khoản của bạn không có quyền thêm Test Case.");
   if(!usecases.length)return alert("Dự án chưa có Use Case. Hãy thêm Use Case trước.");
   const form=el("tcCreateForm");form.reset();fillTestCaseSelectors(usecaseId);
   el("newTcCode").value=nextEntityCode("TC",caseStatus,"test_code",3);
@@ -718,7 +728,7 @@ function parseUcSheet(sheet){
 }
 
 function openImportPicker(){
-  if(!canManage())return alert("Chỉ Admin hoặc Manager của dự án được Import Use Case.");
+  if(!canDesign())return alert("Tài khoản của bạn không có quyền Import Use Case.");
   if(typeof XLSX==="undefined")return alert("Không tải được thư viện đọc Excel. Hãy tải lại trang và thử lại.");
   el("ucImportFile").value="";el("ucImportFile").click();
 }

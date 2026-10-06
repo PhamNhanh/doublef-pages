@@ -59,5 +59,91 @@ async function viewFile(path){try{const url=await signedFile(path);window.open(u
 function safeFileName(name){return String(name||"file").normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g,"-").replace(/-+/g,"-")}
 
 
-(async()=>{const ctx=await boot("dashboard","Tổng quan");if(!ctx)return;try{const pid=ctx.projectId;const [plansR,ucsR,tcsR,scR,exR,bugR]=await Promise.all([sb.from("test_plans").select("*").eq("project_id",pid),sb.from("use_cases").select("*").eq("project_id",pid),sb.from("test_cases").select("*").eq("project_id",pid),sb.from("test_scenarios").select("*").in("test_case_id",(await sb.from("test_cases").select("id").eq("project_id",pid)).data?.map(x=>x.id)||[]),sb.from("test_executions").select("*").eq("project_id",pid).order("created_at",{ascending:false}),sb.from("defects").select("*").eq("project_id",pid).order("created_at",{ascending:false})]);for(const r of [plansR,ucsR,tcsR,scR,exR,bugR])if(r.error)throw r.error;const plans=plansR.data||[],ucs=ucsR.data||[],tcs=tcsR.data||[],sc=scR.data||[],ex=exR.data||[],bugs=bugR.data||[];const res=tcResultMap(tcs,sc,ex);let pass=0,fail=0,blocked=0,inprog=0;for(const v of res.map.values()){if(v==="PASS")pass++;else if(v==="FAIL")fail++;else if(v==="BLOCKED")blocked++;else if(v==="IN_PROGRESS")inprog++}const tested=pass+fail+blocked+inprog,pct=tcs.length?Math.round(tested/tcs.length*100):0,passRate=tested?Math.round(pass/tested*100):0,openBugs=bugs.filter(b=>!["closed","rejected","duplicate","wont_fix"].includes(b.status)).length;const recent=ex.slice(0,8);document.getElementById("pageContent").innerHTML=`<div class="page-head"><div><h1>${e(ctx.project?.project_name||"Tổng quan")}</h1><p>Tổng hợp cấu trúc và kết quả kiểm thử theo dự án.</p></div><div class="page-head-actions"><a class="btn primary" href="/kiem-thu/thuc-hien">▶ Thực hiện kiểm thử</a></div></div><div class="stats"><div class="stat"><span>Kế hoạch</span><strong>${plans.length}</strong><small>Test Plan</small></div><div class="stat"><span>Use Case</span><strong>${ucs.length}</strong><small>Nghiệp vụ</small></div><div class="stat"><span>Test Case</span><strong>${tcs.length}</strong><small>Bộ kiểm thử</small></div><div class="stat"><span>Kịch bản</span><strong>${sc.length}</strong><small>Scenario</small></div><div class="stat success"><span>PASS</span><strong>${pass}</strong><small>Test Case đạt</small></div><div class="stat danger"><span>Bug đang mở</span><strong>${openBugs}</strong><small>Cần xử lý</small></div></div><div class="grid-2"><section class="card"><div class="card-head"><div><h2>Tiến độ kiểm thử</h2><p>Tính theo Test Case đã có kết quả ở các kịch bản</p></div><strong style="color:var(--primary)">${pct}%</strong></div><div class="card-body"><div class="progress"><div style="width:${pct}%"></div></div><div class="summary-line"><span>Đã thực hiện: <b>${tested}/${tcs.length}</b></span><span>Pass rate: <b>${passRate}%</b></span></div><div class="grid-3" style="margin-top:16px"><div class="kv"><span>PASS</span><strong class="text-success">${pass}</strong></div><div class="kv"><span>FAIL</span><strong class="text-danger">${fail}</strong></div><div class="kv"><span>BLOCKED / IN PROGRESS</span><strong class="text-warning">${blocked+inprog}</strong></div></div></div></section><section class="card"><div class="card-head"><div><h2>Bug theo mức độ</h2><p>Tất cả Bug của dự án</p></div></div><div class="card-body">${["critical","high","medium","low"].map(s=>`<div class="summary-line" style="padding:6px 0"><span>${badge(s)}</span><strong>${bugs.filter(b=>b.severity===s).length}</strong></div>`).join("")}</div></section></div><section class="card"><div class="card-head"><div><h2>Thực hiện gần đây</h2><p>Lịch sử Test Execution mới nhất</p></div></div><div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Tester</th><th>Test Case</th><th>Kịch bản</th><th>Kết quả</th><th>Kết quả thực tế</th></tr></thead><tbody id="recentRows"></tbody></table></div></section>`;const prof=(await sb.from("profiles").select("id,full_name,email")).data||[];const pmap=new Map(prof.map(x=>[x.id,x]));const tcmap=new Map(tcs.map(x=>[x.id,x]));const smap=new Map(sc.map(x=>[x.id,x]));document.getElementById("recentRows").innerHTML=recent.length?recent.map(x=>`<tr><td>${fmtDateTime(x.completed_at||x.created_at)}</td><td>${e(pmap.get(x.tester_id)?.full_name||pmap.get(x.tester_id)?.email||"")}</td><td>${e(tcmap.get(x.test_case_id)?.test_code||"")}</td><td>${e(smap.get(x.scenario_id)?.scenario_name||"")}</td><td>${badge(x.result)}</td><td>${e(x.actual_result||"—")}</td></tr>`).join(""):`<tr><td colspan="6"><div class="empty">Chưa có lần thực hiện kiểm thử.</div></td></tr>`}catch(error){document.getElementById("pageContent").innerHTML=`<div class="error">${e(errMsg(error))}</div>`}})();
+let DASH_CTX=null;
+let DASH_DATA={plans:[],ucs:[],tcs:[],scenarios:[],executions:[],bugs:[],profiles:[]};
+
+function dashboardScopeOptions(ctx,selected){
+  const allLabel=ctx.profile.role==="admin"?"Tất cả dự án":"Tất cả dự án được phân";
+  return `<option value="ALL" ${selected==="ALL"?"selected":""}>${allLabel}</option>`+
+    ctx.projects.map(p=>`<option value="${p.id}" ${selected===p.id?"selected":""}>${e(p.project_code)} - ${e(p.project_name)}</option>`).join("");
+}
+function allowedScope(ctx,scope){return scope==="ALL"||ctx.projects.some(p=>p.id===scope)?scope:"ALL"}
+function scopeProjectIds(ctx,scope){return scope==="ALL"?ctx.projects.map(p=>p.id):[scope].filter(Boolean)}
+async function queryByProjects(table,ids,extra){
+  let q=sb.from(table).select("*");
+  if(ids.length===1)q=q.eq("project_id",ids[0]);
+  else if(ids.length>1)q=q.in("project_id",ids);
+  else return {data:[],error:null};
+  if(extra)q=extra(q);
+  return await q;
+}
+async function loadDashboard(scope){
+  const ids=scopeProjectIds(DASH_CTX,scope);
+  const [plansR,ucsR,tcsR,exR,bugR,scR,profR]=await Promise.all([
+    queryByProjects("test_plans",ids),
+    queryByProjects("use_cases",ids),
+    queryByProjects("test_cases",ids),
+    queryByProjects("test_executions",ids,q=>q.order("created_at",{ascending:false})),
+    queryByProjects("defects",ids,q=>q.order("created_at",{ascending:false})),
+    sb.from("test_scenarios").select("*"),
+    sb.from("profiles").select("id,full_name,email")
+  ]);
+  for(const r of [plansR,ucsR,tcsR,exR,bugR,scR,profR])if(r.error)throw r.error;
+  const tcs=tcsR.data||[],tcIds=new Set(tcs.map(x=>x.id));
+  DASH_DATA={plans:plansR.data||[],ucs:ucsR.data||[],tcs,scenarios:(scR.data||[]).filter(x=>tcIds.has(x.test_case_id)),executions:exR.data||[],bugs:bugR.data||[],profiles:profR.data||[]};
+  renderDashboard(scope);
+}
+function projectMetrics(projectId){
+  const d=DASH_DATA,tcs=d.tcs.filter(x=>x.project_id===projectId),tcIds=new Set(tcs.map(x=>x.id));
+  const scenarios=d.scenarios.filter(x=>tcIds.has(x.test_case_id));
+  const executions=d.executions.filter(x=>x.project_id===projectId);
+  const bugs=d.bugs.filter(x=>x.project_id===projectId);
+  const r=tcResultMap(tcs,scenarios,executions),vals=[...r.map.values()];
+  const pass=vals.filter(x=>x==="PASS").length,fail=vals.filter(x=>x==="FAIL").length,blocked=vals.filter(x=>x==="BLOCKED").length,inprog=vals.filter(x=>x==="IN_PROGRESS").length;
+  const tested=vals.filter(x=>x!=="NOT_TESTED").length,pct=tcs.length?Math.round(tested/tcs.length*100):0;
+  const openBugs=bugs.filter(b=>!["closed","rejected","duplicate","wont_fix"].includes(String(b.status||"").toLowerCase())).length;
+  return {tcs:tcs.length,pass,fail,blocked,inprog,tested,pct,openBugs};
+}
+function dashboardActions(ctx){
+  if(ctx.profile.role==="admin")return `<a class="btn" href="/kiem-thu/du-an">▣ Quản lý dự án</a><a class="btn primary" href="/kiem-thu/thanh-vien">👥 Thành viên</a>`;
+  if(ctx.profile.role==="manager")return `<a class="btn" href="/kiem-thu/du-an">▣ Dự án của tôi</a><a class="btn primary" href="/kiem-thu/thuc-hien">▶ Thực hiện kiểm thử</a>`;
+  if(ctx.profile.role==="tester")return `<a class="btn primary" href="/kiem-thu/thuc-hien">▶ Thực hiện kiểm thử</a>`;
+  return `<a class="btn" href="/kiem-thu/du-an">▣ Dự án của tôi</a>`;
+}
+function renderDashboard(scope){
+  const ctx=DASH_CTX,d=DASH_DATA,r=tcResultMap(d.tcs,d.scenarios,d.executions),vals=[...r.map.values()];
+  const pass=vals.filter(x=>x==="PASS").length,fail=vals.filter(x=>x==="FAIL").length,blocked=vals.filter(x=>x==="BLOCKED").length,inprog=vals.filter(x=>x==="IN_PROGRESS").length,notTested=vals.filter(x=>x==="NOT_TESTED").length;
+  const tested=vals.length-notTested,pct=d.tcs.length?Math.round(tested/d.tcs.length*100):0,finished=pass+fail+blocked,passRate=finished?Math.round(pass/finished*100):0;
+  const openBugs=d.bugs.filter(b=>!["closed","rejected","duplicate","wont_fix"].includes(String(b.status||"").toLowerCase())).length;
+  const projectIds=scopeProjectIds(ctx,scope),projectRows=ctx.projects.filter(p=>projectIds.includes(p.id));
+  const recent=d.executions.slice(0,10),pmap=new Map(d.profiles.map(x=>[x.id,x])),tcmap=new Map(d.tcs.map(x=>[x.id,x])),smap=new Map(d.scenarios.map(x=>[x.id,x])),projMap=new Map(ctx.projects.map(x=>[x.id,x]));
+  const title=scope==="ALL"?(ctx.profile.role==="admin"?"Tổng quan toàn hệ thống":"Tổng quan các dự án được phân"):(projMap.get(scope)?.project_name||"Tổng quan");
+  const sub=scope==="ALL"?(ctx.profile.role==="admin"?"Dữ liệu tổng hợp trên toàn bộ dự án trong hệ thống.":"Chỉ tổng hợp các dự án tài khoản của bạn được phân công."):"Dữ liệu của riêng dự án đang chọn trong phạm vi báo cáo.";
+  document.getElementById("pageContent").innerHTML=`
+    <div class="page-head"><div><h1>${e(title)}</h1><p>${e(sub)}</p></div><div class="page-head-actions"><select id="dashboardScope" class="project-select">${dashboardScopeOptions(ctx,scope)}</select>${dashboardActions(ctx)}</div></div>
+    <div class="stats">
+      <div class="stat"><span>Dự án</span><strong>${projectRows.length}</strong><small>${ctx.profile.role==="admin"?"Trong phạm vi báo cáo":"Được phân quyền"}</small></div>
+      <div class="stat"><span>Use Case</span><strong>${d.ucs.length}</strong><small>Nghiệp vụ</small></div>
+      <div class="stat"><span>Test Case</span><strong>${d.tcs.length}</strong><small>Bộ kiểm thử</small></div>
+      <div class="stat success"><span>PASS</span><strong>${pass}</strong><small>Test Case đạt</small></div>
+      <div class="stat danger"><span>FAIL</span><strong>${fail}</strong><small>Test Case lỗi</small></div>
+      <div class="stat warning"><span>Bug đang mở</span><strong>${openBugs}</strong><small>Cần xử lý</small></div>
+    </div>
+    <div class="grid-2">
+      <section class="card"><div class="card-head"><div><h2>Tiến độ kiểm thử</h2><p>Kết quả được tổng hợp từ trạng thái mới nhất của từng kịch bản.</p></div><strong style="color:var(--primary)">${pct}%</strong></div><div class="card-body"><div class="progress"><div style="width:${pct}%"></div></div><div class="summary-line"><span>Đã có kết quả: <b>${tested}/${d.tcs.length}</b></span><span>Pass rate: <b>${passRate}%</b></span></div><div class="grid-3" style="margin-top:16px"><div class="kv"><span>BLOCKED</span><strong class="text-warning">${blocked}</strong></div><div class="kv"><span>ĐANG KIỂM THỬ</span><strong>${inprog}</strong></div><div class="kv"><span>CHƯA KIỂM THỬ</span><strong>${notTested}</strong></div></div></div></section>
+      <section class="card"><div class="card-head"><div><h2>Bug theo mức độ</h2><p>${d.bugs.length} Bug trong phạm vi đang xem</p></div></div><div class="card-body">${["critical","high","medium","low"].map(s=>`<div class="summary-line" style="padding:6px 0"><span>${badge(s)}</span><strong>${d.bugs.filter(b=>String(b.severity||"").toLowerCase()===s).length}</strong></div>`).join("")}</div></section>
+    </div>
+    <section class="card"><div class="card-head"><div><h2>Tình hình theo dự án</h2><p>Chỉ hiển thị các dự án tài khoản hiện tại có quyền xem.</p></div></div><div class="table-wrap"><table><thead><tr><th>Dự án</th><th>Test Case</th><th>PASS</th><th>FAIL</th><th>BLOCKED</th><th>Tiến độ</th><th>Bug mở</th><th></th></tr></thead><tbody>${projectRows.length?projectRows.map(p=>{const m=projectMetrics(p.id);return `<tr><td><strong>${e(p.project_code)}</strong><span class="sub">${e(p.project_name)}</span></td><td>${m.tcs}</td><td class="text-success">${m.pass}</td><td class="text-danger">${m.fail}</td><td class="text-warning">${m.blocked}</td><td><strong>${m.pct}%</strong></td><td>${m.openBugs}</td><td><a class="btn sm" href="/kiem-thu/du-an-chi-tiet?id=${encodeURIComponent(p.id)}">Mở dự án →</a></td></tr>`}).join(""):`<tr><td colspan="8"><div class="empty">Không có dự án trong phạm vi này.</div></td></tr>`}</tbody></table></div></section>
+    <section class="card"><div class="card-head"><div><h2>Thực hiện kiểm thử gần đây</h2><p>10 lần thực hiện mới nhất trong phạm vi đang xem.</p></div></div><div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Dự án</th><th>Tester</th><th>Test Case</th><th>Kịch bản</th><th>Kết quả</th><th>Kết quả thực tế</th></tr></thead><tbody>${recent.length?recent.map(x=>`<tr><td>${fmtDateTime(x.completed_at||x.created_at)}</td><td>${e(projMap.get(x.project_id)?.project_code||"")}</td><td>${e(pmap.get(x.tester_id)?.full_name||pmap.get(x.tester_id)?.email||"")}</td><td>${e(tcmap.get(x.test_case_id)?.test_code||"")}</td><td>${e(smap.get(x.scenario_id)?.scenario_name||"")}</td><td>${badge(x.result)}</td><td>${e(x.actual_result||"—")}</td></tr>`).join(""):`<tr><td colspan="7"><div class="empty">Chưa có lần thực hiện kiểm thử.</div></td></tr>`}</tbody></table></div></section>`;
+  document.getElementById("dashboardScope").onchange=async ev=>{const next=allowedScope(ctx,ev.target.value);localStorage.setItem("doublef_dashboard_scope",next);document.getElementById("pageContent").innerHTML='<div class="loading">Đang tải dữ liệu...</div>';try{await loadDashboard(next)}catch(error){document.getElementById("pageContent").innerHTML=`<div class="error">${e(errMsg(error))}</div>`}};
+}
+
+(async()=>{
+  DASH_CTX=await boot("dashboard","Tổng quan",{projectRequired:false});
+  if(!DASH_CTX)return;
+  if(!DASH_CTX.projects.length){document.getElementById("pageContent").innerHTML='<div class="notice">Tài khoản hiện chưa có dự án nào được phép xem.</div>';return}
+  let scope=allowedScope(DASH_CTX,localStorage.getItem("doublef_dashboard_scope")||"ALL");
+  localStorage.setItem("doublef_dashboard_scope",scope);
+  try{await loadDashboard(scope)}catch(error){document.getElementById("pageContent").innerHTML=`<div class="error">${e(errMsg(error))}</div>`}
+})();
 </script></body></html>

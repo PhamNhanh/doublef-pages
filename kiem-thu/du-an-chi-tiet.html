@@ -159,7 +159,7 @@ button,input,select{font:inherit}
     <section id="panel-usecases" class="tab-panel">
       <div class="section-head">
         <div><h2>Use Case & Test Case</h2><p>Mở từng Use Case để xem danh sách Test Case và tình trạng kiểm thử.</p></div>
-        <div class="actions"><button id="addUcBtn" class="btn primary hidden" type="button">+ Thêm Use Case</button><button id="addTcBtn" class="btn hidden" type="button">+ Thêm Test Case</button><button id="manageUcBtn" class="btn hidden" type="button">Quản lý nâng cao</button><button id="importUcTabBtn" class="btn hidden" type="button">Import Excel</button><button id="deleteAllUcBtn" class="btn danger hidden" type="button">Xóa toàn bộ UC</button></div>
+        <div class="actions"><button id="addUcBtn" class="btn primary hidden" type="button">+ Thêm Use Case</button><button id="addTcBtn" class="btn hidden" type="button">+ Thêm Test Case</button><button id="manageUcBtn" class="btn hidden" type="button">Quản lý nâng cao</button><button id="importUcTabBtn" class="btn hidden" type="button">Import UC + Test Case</button><button id="importScenarioBtn" class="btn primary hidden" type="button">Import Kịch bản</button><button id="deleteAllUcBtn" class="btn danger hidden" type="button">Xóa toàn bộ UC</button></div>
       </div>
       <div class="toolbar">
         <input id="ucSearch" class="field search" placeholder="Tìm mã Use Case, tên Use Case, Test Case...">
@@ -308,6 +308,47 @@ button,input,select{font:inherit}
     <div class="modal-foot">
       <span id="importFootText" style="font-size:11px;color:var(--muted)">Chưa chọn file.</span>
       <div class="actions"><button id="cancelImport" class="btn" type="button">Hủy</button><button id="confirmImport" class="btn primary" type="button" disabled>Import UC + Test Case</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT KỊCH BẢN KIỂM THỬ -->
+<input id="scenarioImportFile" type="file" accept=".xlsx,.xls" class="hidden">
+<div id="scenarioImportModal" class="modal-backdrop hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="scenarioImportTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="scenarioImportTitle">Import Kịch bản kiểm thử</h2>
+        <p id="scenarioImportFileInfo">Đọc sheet “Kich bản kiểm thử” và tự nối Kịch bản vào đúng Test Case theo mã UCx_TCy.z hoặc UCx_TCy_z.</p>
+      </div>
+      <button id="closeScenarioImportModal" class="modal-close" type="button" aria-label="Đóng">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="scenarioImportWarning" class="warning hidden"></div>
+      <div class="import-summary">
+        <div class="sum"><span>Use Case trong file</span><strong id="scenarioImportUcCount">0</strong></div>
+        <div class="sum"><span>Test Case tham chiếu</span><strong id="scenarioImportTcCount">0</strong></div>
+        <div class="sum"><span>Kịch bản phát hiện</span><strong id="scenarioImportScenarioCount">0</strong></div>
+        <div class="sum"><span>Bước thực hiện</span><strong id="scenarioImportStepCount">0</strong></div>
+      </div>
+      <div class="import-summary">
+        <div class="sum"><span>Test Case khớp hệ thống</span><strong id="scenarioImportMatchedCount">0</strong></div>
+        <div class="sum"><span>Test Case chưa khớp</span><strong id="scenarioImportUnmatchedCount">0</strong></div>
+        <div class="sum"><span>Kịch bản đã tồn tại</span><strong id="scenarioImportExistingCount">0</strong></div>
+        <div class="sum"><span>Kịch bản sẽ tạo mới</span><strong id="scenarioImportNewCount">0</strong></div>
+      </div>
+      <div id="scenarioImportPreview" class="import-list"></div>
+      <div id="scenarioImportProgressBox" class="hidden">
+        <div class="import-progress"><div id="scenarioImportProgressBar"></div></div>
+        <div id="scenarioImportLog" class="import-log"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span id="scenarioImportFootText" style="font-size:11px;color:var(--muted)">Chưa chọn file.</span>
+      <div class="actions">
+        <button id="cancelScenarioImport" class="btn" type="button">Hủy</button>
+        <button id="confirmScenarioImport" class="btn primary" type="button" disabled>Import Kịch bản</button>
+      </div>
     </div>
   </div>
 </div>
@@ -482,7 +523,7 @@ function renderRoleActions(){
 
   /* Thiet ke kiem thu + Import: Admin / Manager / Tester */
   if(canDesign()){
-    ["importUcBtn","addUcBtn","addTcBtn","manageUcBtn","importUcTabBtn"].forEach(id=>el(id).classList.remove("hidden"));
+    ["importUcBtn","addUcBtn","addTcBtn","manageUcBtn","importUcTabBtn","importScenarioBtn"].forEach(id=>el(id).classList.remove("hidden"));
   }
 
   if(currentProfile.role!=="admin" && currentProjectRole!=="manager"){
@@ -1167,6 +1208,346 @@ async function deleteAllProjectUsecases(){
     el("confirmDeleteAllUc").disabled=el("deleteAllUcConfirmText").value.trim()!=="XOA TOAN BO UC";
   }
 }
+
+
+/* ================= IMPORT KỊCH BẢN KIỂM THỬ ================= */
+let scenarioImportRows=[];
+let scenarioImportMeta=null;
+let scenarioImportBusy=false;
+let scenarioImportMatchMap=new Map();
+let scenarioExistingKeys=new Set();
+
+function cleanScenarioText(v){
+  return String(v??"")
+    .replace(/_x000D_/gi,"\n")
+    .replace(/\r\n?/g,"\n")
+    .replace(/[ \t]+\n/g,"\n")
+    .replace(/\n{3,}/g,"\n\n")
+    .trim();
+}
+
+function parseScenarioSteps(text){
+  const src=cleanScenarioText(text);
+  if(!src)return [];
+  const rows=[];
+  const re=/(?:^|\n)\s*(\d+)\s*[\.\)]\s*([\s\S]*?)(?=(?:\n\s*\d+\s*[\.\)]\s*)|$)/g;
+  let m;
+  while((m=re.exec(src))){
+    const action=cleanScenarioText(m[2]).replace(/\n+/g," ").replace(/\s+/g," ").trim();
+    if(action)rows.push({step_no:Number(m[1]),action});
+  }
+  if(!rows.length)return [{step_no:1,action:src.replace(/\n+/g," ").replace(/\s+/g," ").trim()}];
+  return rows;
+}
+
+function parseScenarioSheet(sheet){
+  const rows=XLSX.utils.sheet_to_json(sheet,{header:1,defval:"",raw:false,blankrows:true});
+  if(rows.length<3)throw new Error("Sheet Kịch bản kiểm thử không có dữ liệu.");
+
+  const header=(rows[1]||[]).map(cleanText);
+  const hA=upperCompact(header[0]),hB=upperCompact(header[1]),hC=upperCompact(header[2]);
+  if(hA!=="ID"||!hB.includes("HẠNG MỤC")||!hC.includes("CÁC BƯỚC")){
+    throw new Error("Cấu trúc sheet không đúng mẫu: ID | Hạng mục/Giao diện | Các bước thực hiện | Yêu cầu đầu vào | Dữ liệu kiểm thử | Kết quả mong đợi...");
+  }
+
+  const result=[];
+  const idRe=/^UC\s*(\d+)\s*_\s*TC\s*(\d+)\s*[\._]\s*(\d+)\s*$/i;
+
+  for(let i=2;i<rows.length;i++){
+    const row=rows[i]||[];
+    const rawId=cleanText(row[0]).replace(/\s+/g,"");
+    const m=rawId.match(idRe);
+    if(!m)continue;
+
+    const ucNo=Number(m[1]),tcNo=Number(m[2]),scenarioNo=Number(m[3]);
+    const name=cleanText(row[1])||rawId;
+    const stepsText=cleanScenarioText(row[2]);
+    const steps=parseScenarioSteps(row[2]);
+    const precondition=cleanScenarioText(row[3]);
+    const testData=cleanScenarioText(row[4]);
+    const expected=cleanScenarioText(row[5]);
+    const sourceResult=cleanScenarioText(row[6]);
+    const sourceReference=cleanScenarioText(row[7]);
+    const sourceUcName=cleanScenarioText(row[8]);
+
+    result.push({
+      source_row:i+1,
+      source_uc_no:ucNo,
+      source_tc_no:tcNo,
+      source_scenario_no:scenarioNo,
+      scenario_code:rawId,
+      scenario_name:name,
+      steps_text:stepsText,
+      steps,
+      precondition,
+      test_data:testData,
+      expected_result:expected,
+      source_result:sourceResult,
+      source_reference:sourceReference,
+      source_uc_name:sourceUcName,
+      import_key:`kbkt:${ucNo}:${tcNo}:${scenarioNo}`,
+      match_key:`${ucNo}:${tcNo}`,
+      test_case_id:null,
+      matched_test_code:null,
+      exists:false
+    });
+  }
+
+  if(!result.length)throw new Error("Không tìm thấy dòng Kịch bản có ID dạng UC1_TC1.1 hoặc UC14_TC1_1.");
+  return result;
+}
+
+async function fetchAllRawTestCasesForScenarioImport(){
+  const all=[];const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb.from("test_cases")
+      .select("id,usecase_id,test_code,test_name,source_transaction_no")
+      .eq("project_id",projectId)
+      .range(from,from+pageSize-1);
+    if(error)throw error;
+    all.push(...(data||[]));
+    if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+
+async function fetchAllExistingScenariosForProject(){
+  const all=[];const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb.from("test_scenarios")
+      .select("id,test_case_id,scenario_code,import_key,test_cases!inner(project_id)")
+      .eq("test_cases.project_id",projectId)
+      .range(from,from+pageSize-1);
+    if(error)throw error;
+    all.push(...(data||[]));
+    if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+
+function setScenarioImportProgress(done,total,message){
+  const pct=total?Math.round(done/total*100):0;
+  el("scenarioImportProgressBar").style.width=pct+"%";
+  el("scenarioImportLog").textContent=message;
+  el("scenarioImportFootText").textContent=message;
+}
+
+function renderScenarioImportPreview(){
+  const matchedPairs=new Set(scenarioImportRows.filter(x=>x.test_case_id).map(x=>x.match_key));
+  const allPairs=new Set(scenarioImportRows.map(x=>x.match_key));
+  const unmatchedPairs=[...allPairs].filter(k=>!matchedPairs.has(k));
+  const existing=scenarioImportRows.filter(x=>x.exists).length;
+  const willCreate=scenarioImportRows.filter(x=>x.test_case_id&&!x.exists).length;
+  const ucCount=new Set(scenarioImportRows.map(x=>x.source_uc_no)).size;
+  const stepCount=scenarioImportRows.reduce((n,x)=>n+x.steps.length,0);
+
+  el("scenarioImportUcCount").textContent=ucCount.toLocaleString("vi-VN");
+  el("scenarioImportTcCount").textContent=allPairs.size.toLocaleString("vi-VN");
+  el("scenarioImportScenarioCount").textContent=scenarioImportRows.length.toLocaleString("vi-VN");
+  el("scenarioImportStepCount").textContent=stepCount.toLocaleString("vi-VN");
+  el("scenarioImportMatchedCount").textContent=matchedPairs.size.toLocaleString("vi-VN");
+  el("scenarioImportUnmatchedCount").textContent=unmatchedPairs.length.toLocaleString("vi-VN");
+  el("scenarioImportExistingCount").textContent=existing.toLocaleString("vi-VN");
+  el("scenarioImportNewCount").textContent=willCreate.toLocaleString("vi-VN");
+
+  if(unmatchedPairs.length){
+    el("scenarioImportWarning").classList.remove("hidden");
+    el("scenarioImportWarning").innerHTML=`<strong>Có ${unmatchedPairs.length} Test Case tham chiếu chưa khớp.</strong> Các kịch bản thuộc các mã này sẽ được bỏ qua.<br><span style="font-size:10px">Ví dụ: ${unmatchedPairs.slice(0,20).map(x=>"UC"+x.split(":")[0]+" - TC"+x.split(":")[1]).join(", ")}${unmatchedPairs.length>20?"...":""}</span>`;
+  }else{
+    el("scenarioImportWarning").classList.add("hidden");
+  }
+
+  const sample=scenarioImportRows.slice(0,120);
+  el("scenarioImportPreview").innerHTML=sample.length?sample.map(x=>`
+    <div class="import-item" style="grid-template-columns:95px 110px minmax(260px,1fr) 120px 95px">
+      <div><strong>${escapeHtml(x.scenario_code)}</strong></div>
+      <div>${x.test_case_id?`<span class="badge active">${escapeHtml(x.matched_test_code||"Đã khớp")}</span>`:`<span class="badge FAIL">Chưa khớp</span>`}</div>
+      <div><div class="uc-title">${escapeHtml(x.scenario_name)}</div><div class="muted">${x.steps.length} bước · ${escapeHtml(x.source_reference||`UC${x.source_uc_no} - TC${x.source_tc_no}`)}</div></div>
+      <div>${x.exists?`<span class="badge">Đã có</span>`:`<span class="badge ${x.test_case_id?"active":"FAIL"}">${x.test_case_id?"Tạo mới":"Bỏ qua"}</span>`}</div>
+      <div>Dòng ${x.source_row}</div>
+    </div>`).join(""):`<div class="empty">Không có dữ liệu xem trước.</div>`;
+
+  if(scenarioImportRows.length>sample.length){
+    el("scenarioImportPreview").insertAdjacentHTML("beforeend",`<div class="empty"><span>Đang hiển thị ${sample.length}/${scenarioImportRows.length} kịch bản để xem trước. Toàn bộ dữ liệu vẫn được import.</span></div>`);
+  }
+
+  el("confirmScenarioImport").disabled=willCreate===0||scenarioImportBusy;
+  el("scenarioImportFootText").textContent=`Sẵn sàng: ${willCreate.toLocaleString("vi-VN")} kịch bản mới, ${stepCount.toLocaleString("vi-VN")} bước trong file.`;
+}
+
+async function prepareScenarioImportMatches(){
+  const [rawCases,existingScenarios]=await Promise.all([
+    fetchAllRawTestCasesForScenarioImport(),
+    fetchAllExistingScenariosForProject()
+  ]);
+
+  const ucById=new Map(usecases.map(u=>[u.id,u]));
+  scenarioImportMatchMap=new Map();
+  for(const tc of rawCases){
+    const uc=ucById.get(tc.usecase_id);
+    const ucNo=Number(uc?.source_stt);
+    const tcNo=Number(tc.source_transaction_no);
+    if(Number.isFinite(ucNo)&&Number.isFinite(tcNo)&&ucNo>0&&tcNo>0){
+      scenarioImportMatchMap.set(`${ucNo}:${tcNo}`,tc);
+    }
+  }
+
+  scenarioExistingKeys=new Set();
+  const existingCodes=new Set();
+  for(const x of existingScenarios){
+    if(x.import_key)scenarioExistingKeys.add(`${x.test_case_id}|${x.import_key}`);
+    if(x.scenario_code)existingCodes.add(`${x.test_case_id}|${upperCompact(x.scenario_code)}`);
+  }
+
+  for(const row of scenarioImportRows){
+    const tc=scenarioImportMatchMap.get(row.match_key);
+    if(tc){
+      row.test_case_id=tc.id;
+      row.matched_test_code=tc.test_code;
+      row.exists=scenarioExistingKeys.has(`${tc.id}|${row.import_key}`)||existingCodes.has(`${tc.id}|${upperCompact(row.scenario_code)}`);
+    }
+  }
+}
+
+function openScenarioImportPicker(){
+  if(!canDesign())return alert("Tài khoản của bạn không có quyền Import Kịch bản kiểm thử.");
+  el("scenarioImportFile").value="";
+  el("scenarioImportFile").click();
+}
+
+function closeScenarioImport(){
+  if(scenarioImportBusy)return;
+  el("scenarioImportModal").classList.add("hidden");
+}
+
+async function handleScenarioImportFile(file){
+  if(!file)return;
+  try{
+    el("scenarioImportModal").classList.remove("hidden");
+    el("scenarioImportPreview").innerHTML='<div class="loading">Đang đọc file và đối chiếu Test Case...</div>';
+    el("confirmScenarioImport").disabled=true;
+    el("scenarioImportWarning").classList.add("hidden");
+    el("scenarioImportProgressBox").classList.add("hidden");
+
+    const buffer=await file.arrayBuffer();
+    const wb=XLSX.read(buffer,{type:"array"});
+    const sheetName=wb.SheetNames.find(n=>upperCompact(n).includes("KỊCH BẢN KIỂM THỬ"))||wb.SheetNames.find(n=>upperCompact(n).includes("KICH BAN KIEM THU"));
+    if(!sheetName)throw new Error("Không tìm thấy sheet ‘Kich bản kiểm thử’ trong file.");
+
+    scenarioImportRows=parseScenarioSheet(wb.Sheets[sheetName]);
+    scenarioImportMeta={fileName:file.name,sheetName};
+    el("scenarioImportFileInfo").textContent=`File: ${file.name} · Sheet: ${sheetName}`;
+
+    await prepareScenarioImportMatches();
+    renderScenarioImportPreview();
+  }catch(err){
+    console.error(err);
+    el("scenarioImportPreview").innerHTML=`<div class="empty"><strong>Không đọc được file</strong><span>${escapeHtml(err.message||String(err))}</span></div>`;
+    el("scenarioImportFootText").textContent="Không thể import file này.";
+  }
+}
+
+async function runScenarioImport(){
+  if(scenarioImportBusy||!scenarioImportRows.length||!scenarioImportMeta)return;
+  const rows=scenarioImportRows.filter(x=>x.test_case_id&&!x.exists);
+  if(!rows.length)return alert("Không có kịch bản mới để import.");
+
+  const totalSteps=rows.reduce((n,x)=>n+x.steps.length,0);
+  const unmatched=new Set(scenarioImportRows.filter(x=>!x.test_case_id).map(x=>x.match_key)).size;
+  if(!confirm(`Import ${rows.length.toLocaleString("vi-VN")} kịch bản và khoảng ${totalSteps.toLocaleString("vi-VN")} bước thực hiện vào dự án?${unmatched?`\n\n${unmatched} Test Case tham chiếu chưa khớp sẽ được bỏ qua.`:""}`))return;
+
+  scenarioImportBusy=true;
+  el("confirmScenarioImport").disabled=true;
+  el("cancelScenarioImport").disabled=true;
+  el("closeScenarioImportModal").disabled=true;
+  el("scenarioImportProgressBox").classList.remove("hidden");
+
+  try{
+    const scenarioPayload=rows.map((x,i)=>({
+      test_case_id:x.test_case_id,
+      scenario_code:x.scenario_code,
+      scenario_name:x.scenario_name,
+      description:x.steps_text||null,
+      precondition:x.precondition||null,
+      test_data:x.test_data||null,
+      expected_result:x.expected_result||null,
+      priority:"medium",
+      assigned_to:null,
+      sort_order:x.source_scenario_no||i+1,
+      active:true,
+      created_by:currentUser.id,
+      import_key:x.import_key,
+      import_source:scenarioImportMeta.fileName,
+      source_row:x.source_row,
+      source_uc_no:x.source_uc_no,
+      source_tc_no:x.source_tc_no,
+      source_scenario_no:x.source_scenario_no,
+      source_result:x.source_result||null,
+      source_reference:x.source_reference||null,
+      source_uc_name:x.source_uc_name||null,
+      imported_at:new Date().toISOString()
+    }));
+
+    const scenarioIdByKey=new Map();
+    let createdScenarios=0;
+    for(let i=0;i<scenarioPayload.length;i+=100){
+      const chunk=scenarioPayload.slice(i,i+100);
+      const {data,error}=await sb.from("test_scenarios").insert(chunk).select("id,import_key,test_case_id");
+      if(error)throw error;
+      for(const x of data||[])scenarioIdByKey.set(`${x.test_case_id}|${x.import_key}`,x.id);
+      createdScenarios+=(data||[]).length;
+      setScenarioImportProgress(Math.min(i+chunk.length,scenarioPayload.length),scenarioPayload.length,`Đã tạo ${Math.min(i+chunk.length,scenarioPayload.length).toLocaleString("vi-VN")}/${scenarioPayload.length.toLocaleString("vi-VN")} kịch bản...`);
+    }
+
+    const stepPayload=[];
+    for(const x of rows){
+      const scenarioId=scenarioIdByKey.get(`${x.test_case_id}|${x.import_key}`);
+      if(!scenarioId)continue;
+      x.steps.forEach((st,idx)=>stepPayload.push({
+        scenario_id:scenarioId,
+        step_no:Number(st.step_no)||idx+1,
+        action:st.action,
+        test_data:null,
+        expected_result:null,
+        sort_order:Number(st.step_no)||idx+1
+      }));
+    }
+
+    let createdSteps=0;
+    for(let i=0;i<stepPayload.length;i+=250){
+      const chunk=stepPayload.slice(i,i+250);
+      const {error}=await sb.from("test_steps").insert(chunk);
+      if(error)throw error;
+      createdSteps+=chunk.length;
+      setScenarioImportProgress(Math.min(i+chunk.length,stepPayload.length),Math.max(stepPayload.length,1),`Đang lưu bước thực hiện: ${Math.min(i+chunk.length,stepPayload.length).toLocaleString("vi-VN")}/${stepPayload.length.toLocaleString("vi-VN")}...`);
+    }
+
+    const note=`Import hoàn tất: ${createdScenarios.toLocaleString("vi-VN")} kịch bản, ${createdSteps.toLocaleString("vi-VN")} bước thực hiện.`;
+    setScenarioImportProgress(1,1,note);
+    alert(note);
+    await loadAll();
+    switchTab("usecases");
+
+    for(const x of rows)x.exists=true;
+    renderScenarioImportPreview();
+  }catch(err){
+    console.error(err);
+    setScenarioImportProgress(0,1,"Import thất bại: "+(err.message||String(err)));
+    alert("Import Kịch bản thất bại: "+(err.message||String(err)));
+  }finally{
+    scenarioImportBusy=false;
+    el("cancelScenarioImport").disabled=false;
+    el("closeScenarioImportModal").disabled=false;
+    renderScenarioImportPreview();
+  }
+}
+
+el("importScenarioBtn").onclick=openScenarioImportPicker;
+el("scenarioImportFile").addEventListener("change",e=>{const file=e.target.files?.[0];if(file)handleScenarioImportFile(file)});
+el("closeScenarioImportModal").onclick=closeScenarioImport;
+el("cancelScenarioImport").onclick=closeScenarioImport;
+el("scenarioImportModal").addEventListener("click",e=>{if(e.target===el("scenarioImportModal"))closeScenarioImport()});
+el("confirmScenarioImport").onclick=runScenarioImport;
 
 el("deleteAllUcBtn").onclick=openDeleteAllUcModal;
 el("closeDeleteAllUcModal").onclick=()=>closeSimpleModal("deleteAllUcModal");

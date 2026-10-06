@@ -1,68 +1,942 @@
 <!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#155eef"><title>Quản lý Bug | DoubleF Test Management</title><style>
-:root{--primary:#155eef;--primary2:#004eeb;--blue-soft:#eff4ff;--success:#079455;--success-soft:#ecfdf3;--danger:#d92d20;--danger-soft:#fef3f2;--warning:#dc6803;--warning-soft:#fffaeb;--purple:#6938ef;--purple-soft:#f4f3ff;--bg:#f5f7fa;--surface:#fff;--surface2:#f9fafb;--text:#101828;--text2:#344054;--muted:#667085;--muted2:#98a2b3;--border:#eaecf0;--border2:#d0d5dd;--side:265px;--top:70px;--shadow:0 1px 2px rgba(16,24,40,.04),0 4px 12px rgba(16,24,40,.05)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}.page-loading{min-height:100vh;display:grid;place-items:center;color:var(--muted)}
-.app{min-height:100vh}.sidebar{position:fixed;z-index:100;left:0;top:0;bottom:0;width:var(--side);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:transform .22s ease}.brand{height:var(--top);padding:0 20px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--border)}.brand-logo{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#155eef,#0040c1);color:#fff;display:grid;place-items:center;font-weight:800;box-shadow:0 7px 18px rgba(21,94,239,.18)}.brand strong{display:block;font-size:14px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.nav{padding:15px 12px;flex:1;overflow:auto}.nav-group{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2);font-weight:800;padding:9px 12px 6px}.nav a{min-height:43px;padding:0 12px;border-radius:9px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--text2);margin:2px 0}.nav a:hover,.nav a.active{background:var(--blue-soft);color:var(--primary);font-weight:700}.nav .ico{width:19px;text-align:center}.side-user{margin:12px;padding:11px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:50%;background:#dbe7ff;color:var(--primary);display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto}.side-user strong,.side-user small{display:block;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.side-user strong{font-size:11.5px}.side-user small{font-size:9.5px;color:var(--muted);margin-top:2px}.main{margin-left:var(--side);min-height:100vh}.topbar{position:sticky;z-index:50;top:0;height:var(--top);padding:0 26px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:18px}.top-left{display:flex;align-items:center;gap:11px;min-width:0}.top-left strong{display:block;font-size:14px}.top-left small{display:block;color:var(--muted);font-size:9.5px;margin-top:2px}.top-actions{display:flex;align-items:center;gap:9px}.project-select{height:39px;min-width:250px;max-width:360px;border:1px solid var(--border2);border-radius:9px;background:#fff;padding:0 10px;color:var(--text2);font-size:11.5px}.menu-btn{display:none}.btn{min-height:39px;padding:0 13px;border-radius:8px;border:1px solid var(--border2);background:#fff;color:var(--text2);font-size:11.5px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:6px}.btn:hover{background:#f9fafb}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}.btn.danger{color:var(--danger);border-color:#fecdca;background:#fff}.btn.success{color:#fff;background:var(--success);border-color:var(--success)}.btn.sm{min-height:31px;padding:0 9px;font-size:10px}.btn:disabled{opacity:.55;cursor:not-allowed}.content{max-width:1650px;margin:0 auto;padding:25px 27px 50px}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}.page-head h1{margin:0;font-size:23px;letter-spacing:-.4px}.page-head p{margin:6px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}.page-head-actions{display:flex;gap:8px;flex-wrap:wrap}.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);margin-bottom:16px}.card-head{min-height:58px;padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}.card-head h2{font-size:13.5px;margin:0}.card-head p{font-size:10px;color:var(--muted);margin:3px 0 0}.card-body{padding:18px}.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:16px}.stat{background:#fff;border:1px solid var(--border);border-radius:11px;padding:16px;box-shadow:var(--shadow)}.stat span{display:block;color:var(--muted);font-size:10.5px}.stat strong{display:block;font-size:26px;margin-top:11px;letter-spacing:-.5px}.stat small{display:block;color:var(--muted);font-size:9.5px;margin-top:6px}.stat.success strong{color:var(--success)}.stat.danger strong{color:var(--danger)}.stat.warning strong{color:var(--warning)}.stat.purple strong{color:var(--purple)}.grid-2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.75fr);gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.progress{height:10px;background:#eef2f6;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,#155eef,#528bff);border-radius:inherit}.summary-line{display:flex;justify-content:space-between;gap:10px;margin-top:11px;font-size:10.5px;color:var(--muted)}
-.table-wrap{width:100%;overflow:auto}table{width:100%;border-collapse:collapse;font-size:11.5px}th{padding:11px 13px;background:#f9fafb;color:var(--muted);text-align:left;text-transform:uppercase;font-size:9px;letter-spacing:.25px;white-space:nowrap}td{padding:12px 13px;border-top:1px solid var(--border);vertical-align:top}td strong{font-size:11.5px}.sub{display:block;color:var(--muted);font-size:9.5px;line-height:1.5;margin-top:3px}.actions{display:flex;gap:5px;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;min-height:23px;padding:0 8px;border-radius:999px;background:#f2f4f7;color:var(--text2);font-size:8.5px;font-weight:800;text-transform:uppercase;white-space:nowrap}.badge.pass,.badge.completed,.badge.active,.badge.closed{background:var(--success-soft);color:#067647}.badge.fail,.badge.critical,.badge.reopened{background:var(--danger-soft);color:#b42318}.badge.blocked,.badge.high,.badge.open,.badge.assigned{background:var(--warning-soft);color:#b54708}.badge.ready,.badge.in_progress,.badge.retest,.badge.planning{background:var(--blue-soft);color:#175cd3}.badge.medium{background:var(--purple-soft);color:#5925dc}.badge.low,.badge.draft,.badge.not_tested{background:#f2f4f7;color:#475467}.empty{padding:32px 18px;text-align:center;color:var(--muted);font-size:11.5px}.loading{padding:40px;text-align:center;color:var(--muted)}.notice{padding:12px 14px;border:1px solid #b2ddff;background:#eff8ff;color:#175cd3;border-radius:9px;font-size:11px;line-height:1.55;margin-bottom:14px}.error{padding:12px 14px;border:1px solid #fecdca;background:#fef3f2;color:#b42318;border-radius:9px;font-size:11px;line-height:1.5;margin-bottom:14px}
-.form-panel{padding:18px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.form-grid .full{grid-column:1/-1}.field label,.field>span{display:block;color:var(--text2);font-size:10.5px;font-weight:700;margin-bottom:5px}.control{width:100%;height:41px;border:1px solid var(--border2);border-radius:8px;padding:0 10px;background:#fff;color:var(--text);outline:none;font-size:11.5px}.control:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(21,94,239,.08)}textarea.control{height:auto;min-height:88px;padding:9px 10px;resize:vertical;line-height:1.5}.form-actions{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end;padding-top:3px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.filters .control{width:auto;min-width:160px}.search{min-width:250px!important}.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.8fr);gap:16px}.detail-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.detail-title h3{font-size:14px;margin:0}.detail-title p{font-size:10px;color:var(--muted);margin:4px 0 0}.scenario{border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden}.scenario-head{padding:12px 14px;background:#fbfcfd;display:flex;justify-content:space-between;gap:12px}.scenario-body{padding:13px 14px}.scenario-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.kv{padding:9px;background:#f9fafb;border-radius:8px}.kv span{display:block;color:var(--muted);font-size:9px;margin-bottom:3px}.kv strong{font-size:10.5px;line-height:1.4}.steps{border:1px solid var(--border);border-radius:8px;overflow:hidden}.step{display:grid;grid-template-columns:45px minmax(180px,1fr) minmax(160px,.7fr) minmax(180px,1fr) auto;border-top:1px solid var(--border)}.step:first-child{border-top:0}.step>div{padding:9px 10px;font-size:10.5px}.step-no{background:#f9fafb;font-weight:800;text-align:center}.step-head{background:#f9fafb;color:var(--muted);font-size:8.5px;text-transform:uppercase;font-weight:800}.evidence-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.evidence{border:1px solid var(--border);border-radius:8px;padding:9px;font-size:10px;overflow:hidden}.evidence strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.evidence small{color:var(--muted)}.timeline-item{padding:11px 0;border-bottom:1px solid var(--border)}.timeline-item:last-child{border:0}.timeline-item strong{font-size:11px}.timeline-item p{font-size:10px;color:var(--muted);margin:4px 0 0;line-height:1.45}.muted{color:var(--muted)}.text-success{color:var(--success)}.text-danger{color:var(--danger)}.text-warning{color:var(--warning)}.toast{position:fixed;z-index:9999;right:22px;bottom:22px;max-width:380px;padding:12px 15px;border-radius:9px;background:#101828;color:#fff;box-shadow:0 12px 30px rgba(16,24,40,.25);font-size:11px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}.toast.bad{background:#b42318}.overlay{display:none}.modal-backdrop{position:fixed;z-index:1000;inset:0;background:rgba(16,24,40,.48);display:grid;place-items:center;padding:18px}.modal{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:13px;box-shadow:0 24px 60px rgba(16,24,40,.25)}.modal-head{padding:15px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.modal-head h3{margin:0;font-size:14px}.modal-body{padding:18px}
-@media(max-width:1250px){.stats{grid-template-columns:repeat(3,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.evidence-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:960px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu-btn{display:inline-flex}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(16,24,40,.42)}.topbar{padding:0 14px}.content{padding:20px 14px 40px}.project-select{min-width:180px;max-width:240px}.top-actions .user-meta{display:none}.grid-2{grid-template-columns:1fr}.step{grid-template-columns:40px 1fr}.step>div:nth-child(3),.step>div:nth-child(4){grid-column:2}.step>div:last-child{grid-column:2}.step-head{display:none}}
-@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}.page-head{display:block}.page-head-actions{margin-top:12px}.form-grid{grid-template-columns:1fr}.form-grid .full,.form-actions{grid-column:auto}.project-select{min-width:135px;max-width:160px}.top-left small{display:none}.content{padding:16px 10px 30px}.filters .control,.search{width:100%!important;min-width:0!important}.evidence-grid{grid-template-columns:1fr 1fr}}
-</style></head><body><div id="app" class="page-loading">Đang khởi tạo hệ thống...</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-const DF={url:"https://aizhygivtngtsqcjtvaj.supabase.co",key:"sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN",bucket:"test-evidence"};
-const sb=supabase.createClient(DF.url,DF.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-const ROLE_LABEL={admin:"Quản trị viên",manager:"Quản lý dự án",tester:"Kiểm thử viên",viewer:"Người xem"};
-function navItems(role){
-  const items=[
-    ["dashboard","/kiem-thu/","⌂","Tổng quan","TỔNG QUAN"],
-    ["projects","/kiem-thu/du-an","▣","Dự án của tôi","DỰ ÁN"]
-  ];
-  if(["admin","manager","tester"].includes(role)){
-    items.push(["execute","/kiem-thu/thuc-hien","▶","Thực hiện kiểm thử","CÔNG VIỆC"]);
-    items.push(["defects","/kiem-thu/loi","!","Quản lý Bug","CÔNG VIỆC"]);
-  }
-  items.push(["reports","/kiem-thu/bao-cao","▥","Báo cáo","BÁO CÁO"]);
-  if(["admin","manager"].includes(role)){
-    items.push(["members","/kiem-thu/thanh-vien","♙",role==="admin"?"Thành viên":"Thành viên dự án","QUẢN TRỊ"]);
-  }
-  return items;
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quản lý Bug | DoubleF Test</title>
+
+<style>
+:root{
+  --blue:#155eef;
+  --blue2:#004eeb;
+  --bg:#f5f7fa;
+  --card:#fff;
+  --border:#e4e7ec;
+  --text:#101828;
+  --muted:#667085;
+  --green:#067647;
+  --red:#b42318;
+  --orange:#b54708;
+  --purple:#5925dc;
+  --side:320px;
 }
-function e(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-function fmtDate(v){if(!v)return "—";const d=new Date(v.length===10?v+"T00:00:00":v);return isNaN(d)?"—":d.toLocaleDateString("vi-VN")}
-function fmtDateTime(v){if(!v)return "—";const d=new Date(v);return isNaN(d)?"—":d.toLocaleString("vi-VN")}
-function initials(n){const a=String(n||"U").trim().split(/\s+/);return (a.length>1?a[a.length-2][0]+a[a.length-1][0]:a[0].slice(0,2)).toUpperCase()}
-function badge(v){const s=String(v||"").toLowerCase().replaceAll(" ","_");return `<span class="badge ${e(s)}">${e(v||"—")}</span>`}
-function toast(msg,bad=false){let x=document.getElementById("dfToast");if(!x){x=document.createElement("div");x.id="dfToast";document.body.appendChild(x)}x.className="toast"+(bad?" bad":"");x.textContent=msg;requestAnimationFrame(()=>x.classList.add("show"));setTimeout(()=>x.classList.remove("show"),2800)}
-function errMsg(error){return error?.message||String(error||"Có lỗi xảy ra")}
-async function requireAuth(){const {data:{session},error}=await sb.auth.getSession();if(error||!session){location.replace("/kiem-thu/login");return null}const {data:profile,error:pe}=await sb.from("profiles").select("*").eq("id",session.user.id).maybeSingle();if(pe||!profile||profile.active===false){await sb.auth.signOut();location.replace("/kiem-thu/login");return null}return {session,user:session.user,profile}}
-async function visibleProjects(){const {data,error}=await sb.from("projects").select("*").order("created_at",{ascending:false});if(error)throw error;return data||[]}
-async function projectRole(projectId,userId){if(!projectId)return null;const {data}=await sb.from("project_members").select("role,active").eq("project_id",projectId).eq("user_id",userId).eq("active",true).maybeSingle();return data?.role||null}
-function canManage(ctx){return ctx.profile.role==="admin"||ctx.projectRole==="manager"}
-function canTest(ctx){return ctx.profile.role==="admin"||["manager","tester"].includes(ctx.projectRole)}
-async function logout(){await sb.auth.signOut();location.replace("/kiem-thu/login")}
-function navHtml(active,ctx){
-  const activeKey=["plans","usecases","testcases"].includes(active)?"projects":active;
-  let lastGroup="";
-  return navItems(ctx.profile.role).map(n=>{
-    const group=n[4]!==lastGroup?`<div class="nav-group">${n[4]}</div>`:"";
-    lastGroup=n[4];
-    return `${group}<a class="${n[0]===activeKey?'active':''}" href="${n[1]}"><span class="ico">${n[2]}</span><span>${n[3]}</span></a>`;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+a{text-decoration:none;color:inherit}
+button,select,input{font:inherit}
+
+.sidebar{
+  position:fixed;inset:0 auto 0 0;width:var(--side);
+  background:#fff;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:30;
+}
+.brand{
+  height:84px;padding:0 24px;display:flex;align-items:center;gap:14px;
+  border-bottom:1px solid var(--border);
+}
+.brand-logo{
+  width:50px;height:50px;border-radius:12px;background:var(--blue);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:18px;
+}
+.brand strong{display:block;font-size:16px}
+.brand small{display:block;color:var(--muted);margin-top:3px;font-size:11px}
+
+.nav{padding:24px 14px;flex:1;overflow:auto}
+.nav-title{
+  padding:10px 14px 8px;color:#98a2b3;font-size:10px;
+  font-weight:800;letter-spacing:.08em;
+}
+.nav a{
+  display:flex;align-items:center;gap:11px;
+  padding:13px 14px;border-radius:9px;margin-bottom:3px;
+  font-size:13px;color:#344054;
+}
+.nav a:hover,.nav a.active{
+  background:#eef4ff;color:var(--blue);font-weight:700;
+}
+.user-box{
+  margin:16px;padding:14px;border-top:1px solid var(--border);
+  font-size:12px;
+}
+.user-box strong,.user-box span{display:block}
+.user-box span{color:var(--muted);margin-top:4px;font-size:11px}
+
+.main{margin-left:var(--side)}
+.topbar{
+  height:84px;background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;position:sticky;top:0;z-index:20;
+}
+.top-left{display:flex;align-items:center;gap:16px}
+.menu-btn{
+  width:44px;height:44px;border:1px solid var(--border);
+  background:#fff;border-radius:10px;cursor:pointer;
+}
+.page-title strong{display:block;font-size:16px}
+.page-title small{display:block;color:var(--muted);margin-top:3px}
+.top-right{display:flex;align-items:center;gap:12px}
+.project-select{
+  min-width:340px;height:46px;padding:0 14px;border:1px solid #d0d5dd;
+  border-radius:10px;background:#fff;
+}
+.logout{
+  height:44px;padding:0 16px;border:1px solid #d0d5dd;
+  background:#fff;border-radius:10px;font-weight:700;cursor:pointer;
+}
+
+.content{max-width:1600px;margin:auto;padding:34px 32px 60px}
+.head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:18px;margin-bottom:24px;
+}
+.head h1{margin:0;font-size:28px;letter-spacing:-.5px}
+.head p{margin:7px 0 0;color:var(--muted);font-size:14px}
+
+.summary{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px;
+}
+.stat{
+  background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+}
+.stat span{font-size:11px;color:var(--muted)}
+.stat strong{display:block;font-size:26px;margin-top:9px}
+.stat.open strong{color:var(--red)}
+.stat.fixed strong{color:var(--orange)}
+.stat.closed strong{color:var(--green)}
+
+.filters{
+  display:grid;grid-template-columns:minmax(280px,1fr) 210px 210px 210px;
+  gap:10px;margin-bottom:16px;
+}
+.filters input,.filters select{
+  height:46px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;
+  padding:0 13px;outline:none;
+}
+.filters input:focus,.filters select:focus{
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,94,239,.08);
+}
+
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:13px;
+  overflow:hidden;box-shadow:0 4px 16px rgba(16,24,40,.04);
+}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1450px}
+th{
+  background:#f9fafb;padding:12px 14px;text-align:left;
+  color:#667085;font-size:10px;text-transform:uppercase;letter-spacing:.03em;
+  border-bottom:1px solid var(--border);
+}
+td{
+  padding:14px;border-bottom:1px solid var(--border);
+  font-size:12px;vertical-align:top;
+}
+tr:last-child td{border-bottom:0}
+.cell-title{font-weight:750;line-height:1.4}
+.cell-sub{color:var(--muted);font-size:10px;margin-top:4px;line-height:1.4}
+.code{color:var(--blue);font-weight:800}
+.badge{
+  display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;
+  background:#f2f4f7;font-size:9px;font-weight:800;text-transform:uppercase;
+  white-space:nowrap;
+}
+.status-open,.status-reopened{background:#fef3f2;color:#b42318}
+.status-assigned,.status-in_progress{background:#eff8ff;color:#175cd3}
+.status-fixed,.status-retest{background:#fffaeb;color:#b54708}
+.status-closed{background:#ecfdf3;color:#067647}
+.status-rejected{background:#f2f4f7;color:#475467}
+
+.sev-critical{background:#fef3f2;color:#b42318}
+.sev-high{background:#fff4ed;color:#b93815}
+.sev-medium{background:#fffaeb;color:#b54708}
+.sev-low{background:#ecfdf3;color:#067647}
+
+.action-row{display:flex;gap:7px;flex-wrap:wrap}
+.btn{
+  border:1px solid #d0d5dd;background:#fff;border-radius:8px;
+  min-height:34px;padding:7px 10px;font-size:11px;font-weight:700;cursor:pointer;
+}
+.btn:hover{background:#f9fafb}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:var(--blue2)}
+.status-select{
+  min-width:128px;height:34px;border:1px solid #d0d5dd;
+  border-radius:8px;background:#fff;padding:0 7px;font-size:10px;
+}
+
+.empty{padding:70px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--text);font-size:14px;margin-bottom:7px}
+
+.modal-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(16,24,40,.48);
+  z-index:100;align-items:center;justify-content:center;padding:20px;
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  width:min(860px,100%);max-height:88vh;overflow:auto;background:#fff;
+  border-radius:16px;box-shadow:0 24px 80px rgba(16,24,40,.28);
+}
+.modal-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 22px;border-bottom:1px solid var(--border);
+}
+.modal-head h2{margin:0;font-size:19px}
+.close{
+  width:38px;height:38px;border:1px solid var(--border);background:#fff;
+  border-radius:9px;cursor:pointer;
+}
+.modal-body{padding:22px}
+.detail-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+.detail-item{
+  border:1px solid var(--border);border-radius:10px;padding:13px;
+}
+.detail-item.full{grid-column:1/-1}
+.detail-item span{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.detail-item strong,.detail-item div{font-size:12px;line-height:1.6;white-space:pre-wrap}
+
+.overlay{display:none}
+
+@media(max-width:1100px){
+  .sidebar{transform:translateX(-100%);transition:.2s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .overlay.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:25}
+  .summary{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  .content{padding:22px 14px}
+  .topbar{padding:0 14px}
+  .top-right .project-select{min-width:0;width:190px}
+  .summary,.filters{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-item.full{grid-column:auto}
+}
+</style>
+</head>
+
+<body>
+<div id="overlay" class="overlay"></div>
+
+<aside id="sidebar" class="sidebar">
+  <div class="brand">
+    <div class="brand-logo">DF</div>
+    <div><strong>DoubleF Test</strong><small>Project Test Management</small></div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-title">TỔNG QUAN</div>
+    <a href="/kiem-thu/">⌂ <span>Tổng quan</span></a>
+
+    <div class="nav-title">DỰ ÁN</div>
+    <a href="/kiem-thu/du-an">▣ <span>Dự án của tôi</span></a>
+
+    <div class="nav-title">CÔNG VIỆC</div>
+    <a href="/kiem-thu/thuc-hien">▶ <span>Thực hiện kiểm thử</span></a>
+    <a class="active" href="/kiem-thu/loi">! <span>Quản lý Bug</span></a>
+
+    <div class="nav-title">BÁO CÁO</div>
+    <a href="/kiem-thu/bao-cao">▥ <span>Báo cáo</span></a>
+
+    <div id="adminNav" style="display:none">
+      <div class="nav-title">QUẢN TRỊ</div>
+      <a href="/kiem-thu/thanh-vien">♙ <span>Thành viên</span></a>
+    </div>
+  </nav>
+
+  <div class="user-box">
+    <strong id="userName">...</strong>
+    <span id="userRole">...</span>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="top-left">
+      <button id="menuBtn" class="menu-btn">☰</button>
+      <div class="page-title">
+        <strong>Quản lý Bug</strong>
+        <small id="projectSub">Theo dự án đang chọn</small>
+      </div>
+    </div>
+
+    <div class="top-right">
+      <select id="projectSelect" class="project-select"></select>
+      <strong id="topRole" style="font-size:12px">...</strong>
+      <button id="logout" class="logout">Đăng xuất</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="head">
+      <div>
+        <h1>Danh sách Bug theo dự án</h1>
+        <p>Mỗi Bug hiển thị rõ Use Case, Test Case, Kịch bản kiểm thử và người xử lý.</p>
+      </div>
+    </div>
+
+    <section class="summary">
+      <div class="stat"><span>Tổng Bug</span><strong id="stTotal">0</strong></div>
+      <div class="stat open"><span>Bug đang mở</span><strong id="stOpen">0</strong></div>
+      <div class="stat fixed"><span>Fixed / Retest</span><strong id="stFixed">0</strong></div>
+      <div class="stat closed"><span>Đã Closed</span><strong id="stClosed">0</strong></div>
+      <div class="stat"><span>Critical / High</span><strong id="stSevere">0</strong></div>
+    </section>
+
+    <section class="filters">
+      <input id="search" placeholder="Tìm mã Bug, tiêu đề, UC, TC, Kịch bản...">
+      <select id="statusFilter">
+        <option value="">Tất cả trạng thái</option>
+        <option value="open">Open</option>
+        <option value="assigned">Assigned</option>
+        <option value="in_progress">In Progress</option>
+        <option value="fixed">Fixed</option>
+        <option value="retest">Retest</option>
+        <option value="reopened">Reopened</option>
+        <option value="closed">Closed</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <select id="severityFilter">
+        <option value="">Tất cả Severity</option>
+        <option value="critical">Critical</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <select id="ucFilter">
+        <option value="">Tất cả Use Case</option>
+      </select>
+    </section>
+
+    <section class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Bug</th>
+              <th>Use Case</th>
+              <th>Test Case</th>
+              <th>Kịch bản</th>
+              <th>Severity</th>
+              <th>Priority</th>
+              <th>Trạng thái</th>
+              <th>Người báo</th>
+              <th>Người xử lý</th>
+              <th>Ngày tạo</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="empty" class="empty" style="display:none">
+        <strong>Không có Bug phù hợp</strong>
+        <span>Thử thay đổi bộ lọc hoặc dự án.</span>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="detailModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Chi tiết Bug</h2>
+      <button class="close" onclick="closeDetail()">×</button>
+    </div>
+    <div id="detailBody" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = supabase.createClient(
+  "https://aizhygivtngtsqcjtvaj.supabase.co",
+  "sb_publishable_T5kmdBx5e9EdE7WMxj3J4w_BWiJi8MN"
+);
+
+const STATE = {
+  me:null,
+  profile:null,
+  projects:[],
+  projectId:"",
+  projectRole:"",
+  defects:[],
+  useCases:[],
+  testCases:[],
+  scenarios:[],
+  executions:[],
+  profiles:[]
+};
+
+const ROLE_LABEL = {
+  admin:"Quản trị hệ thống",
+  manager:"Quản lý",
+  tester:"Kiểm thử viên",
+  viewer:"Người xem"
+};
+
+const STATUS_LABEL = {
+  open:"Open",
+  assigned:"Assigned",
+  in_progress:"In Progress",
+  fixed:"Fixed",
+  retest:"Retest",
+  reopened:"Reopened",
+  closed:"Closed",
+  rejected:"Rejected"
+};
+
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+async function fetchAll(table, builderFn){
+  const pageSize = 1000;
+  let from = 0;
+  let result = [];
+
+  while(true){
+    let q = sb.from(table).select("*");
+    if(builderFn) q = builderFn(q);
+    q = q.range(from, from + pageSize - 1);
+
+    const {data,error} = await q;
+    if(error) throw error;
+
+    const rows = data || [];
+    result = result.concat(rows);
+
+    if(rows.length < pageSize) break;
+    from += pageSize;
+  }
+  return result;
+}
+
+async function init(){
+  try{
+    const {data:{session}} = await sb.auth.getSession();
+    if(!session){
+      location.replace("/kiem-thu/login");
+      return;
+    }
+
+    STATE.me = session.user;
+
+    const {data:profile,error:pErr} = await sb
+      .from("profiles")
+      .select("*")
+      .eq("id",STATE.me.id)
+      .maybeSingle();
+
+    if(pErr) throw pErr;
+    if(!profile || profile.active === false){
+      await sb.auth.signOut();
+      location.replace("/kiem-thu/login");
+      return;
+    }
+
+    STATE.profile = profile;
+    userName.textContent = profile.full_name || STATE.me.email;
+    userRole.textContent = ROLE_LABEL[profile.role] || profile.role;
+    topRole.textContent = ROLE_LABEL[profile.role] || profile.role;
+
+    if(profile.role === "admin") adminNav.style.display = "block";
+
+    await loadProjects();
+    await loadCurrentProject();
+  }catch(err){
+    console.error(err);
+    alert("Không tải được dữ liệu Bug: " + (err.message || err));
+  }
+}
+
+async function loadProjects(){
+  const {data,error} = await sb
+    .from("projects")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error) throw error;
+
+  STATE.projects = data || [];
+
+  projectSelect.innerHTML = STATE.projects.length
+    ? STATE.projects.map(p=>`
+        <option value="${p.id}">
+          ${esc(p.project_code)} - ${esc(p.project_name)}
+        </option>
+      `).join("")
+    : `<option value="">Không có dự án</option>`;
+
+  const saved = localStorage.getItem("doublef_current_project");
+  const exists = STATE.projects.some(p=>p.id === saved);
+
+  STATE.projectId = exists
+    ? saved
+    : (STATE.projects[0]?.id || "");
+
+  projectSelect.value = STATE.projectId;
+}
+
+async function loadCurrentProject(){
+  if(!STATE.projectId){
+    clearData();
+    render();
+    return;
+  }
+
+  localStorage.setItem("doublef_current_project",STATE.projectId);
+
+  const project = STATE.projects.find(p=>p.id===STATE.projectId);
+  projectSub.textContent = project
+    ? `${project.project_code} - ${project.project_name}`
+    : "Theo dự án đang chọn";
+
+  if(STATE.profile.role === "admin"){
+    STATE.projectRole = "manager";
+  }else{
+    const {data:member} = await sb
+      .from("project_members")
+      .select("role,active")
+      .eq("project_id",STATE.projectId)
+      .eq("user_id",STATE.me.id)
+      .eq("active",true)
+      .maybeSingle();
+
+    STATE.projectRole = member?.role || "";
+  }
+
+  await loadBugData();
+}
+
+async function loadBugData(){
+  const pid = STATE.projectId;
+
+  const [
+    defects,
+    useCases,
+    testCases,
+    scenarios,
+    executions,
+    profiles
+  ] = await Promise.all([
+    fetchAll("defects", q=>q.eq("project_id",pid).order("created_at",{ascending:false})),
+    fetchAll("use_cases", q=>q.eq("project_id",pid)),
+    fetchAll("test_cases", q=>q.eq("project_id",pid)),
+    fetchAll("test_scenarios", q=>q),
+    fetchAll("test_executions", q=>q.eq("project_id",pid)),
+    fetchAll("profiles", q=>q)
+  ]);
+
+  STATE.defects = defects;
+  STATE.useCases = useCases;
+  STATE.testCases = testCases;
+
+  const testCaseIds = new Set(testCases.map(x=>x.id));
+  STATE.scenarios = scenarios.filter(x=>testCaseIds.has(x.test_case_id));
+
+  const executionIds = new Set(executions.map(x=>x.id));
+  STATE.executions = executions;
+
+  STATE.profiles = profiles;
+
+  buildUcFilter();
+  render();
+}
+
+function clearData(){
+  STATE.defects=[];
+  STATE.useCases=[];
+  STATE.testCases=[];
+  STATE.scenarios=[];
+  STATE.executions=[];
+  STATE.profiles=[];
+}
+
+function resolveRelations(defect){
+  let execution = defect.execution_id
+    ? STATE.executions.find(x=>x.id===defect.execution_id)
+    : null;
+
+  let scenarioId = defect.scenario_id || execution?.scenario_id || null;
+  let scenario = scenarioId
+    ? STATE.scenarios.find(x=>x.id===scenarioId)
+    : null;
+
+  let testCaseId =
+    defect.test_case_id ||
+    execution?.test_case_id ||
+    scenario?.test_case_id ||
+    null;
+
+  let testCase = testCaseId
+    ? STATE.testCases.find(x=>x.id===testCaseId)
+    : null;
+
+  let useCaseId =
+    defect.usecase_id ||
+    testCase?.usecase_id ||
+    null;
+
+  let useCase = useCaseId
+    ? STATE.useCases.find(x=>x.id===useCaseId)
+    : null;
+
+  let reporter = defect.reported_by
+    ? STATE.profiles.find(x=>x.id===defect.reported_by)
+    : null;
+
+  let assignee = defect.assigned_to
+    ? STATE.profiles.find(x=>x.id===defect.assigned_to)
+    : null;
+
+  return {execution,scenario,testCase,useCase,reporter,assignee};
+}
+
+function buildUcFilter(){
+  const sorted = [...STATE.useCases].sort((a,b)=>{
+    const na = Number(a.source_stt || String(a.usecase_code||"").match(/\d+/)?.[0] || 999999);
+    const nb = Number(b.source_stt || String(b.usecase_code||"").match(/\d+/)?.[0] || 999999);
+    return na-nb;
+  });
+
+  ucFilter.innerHTML =
+    `<option value="">Tất cả Use Case</option>` +
+    sorted.map(u=>`
+      <option value="${u.id}">
+        ${esc(u.usecase_code || "")} - ${esc(u.usecase_name || "")}
+      </option>
+    `).join("");
+}
+
+function getFiltered(){
+  const keyword = search.value.trim().toLowerCase();
+  const status = statusFilter.value;
+  const severity = severityFilter.value;
+  const ucId = ucFilter.value;
+
+  return STATE.defects.filter(d=>{
+    const r = resolveRelations(d);
+
+    if(status && d.status !== status) return false;
+    if(severity && d.severity !== severity) return false;
+    if(ucId && r.useCase?.id !== ucId) return false;
+
+    if(keyword){
+      const text = [
+        d.defect_code,d.title,d.description,
+        r.useCase?.usecase_code,r.useCase?.usecase_name,
+        r.testCase?.test_code,r.testCase?.test_name,
+        r.scenario?.scenario_code,r.scenario?.scenario_name
+      ].join(" ").toLowerCase();
+
+      if(!text.includes(keyword)) return false;
+    }
+
+    return true;
+  });
+}
+
+function render(){
+  const rows = getFiltered();
+
+  updateStats();
+
+  tbody.innerHTML = rows.map(d=>{
+    const r = resolveRelations(d);
+
+    const uc = r.useCase;
+    const tc = r.testCase;
+    const sc = r.scenario;
+
+    return `
+      <tr>
+        <td>
+          <div class="code">${esc(d.defect_code || "BUG")}</div>
+          <div class="cell-title">${esc(d.title || "Không có tiêu đề")}</div>
+        </td>
+
+        <td>
+          ${
+            uc
+            ? `
+              <div class="code">${esc(uc.usecase_code || "")}</div>
+              <div class="cell-title">${esc(uc.usecase_name || "")}</div>
+            `
+            : `<span class="cell-sub">Không xác định</span>`
+          }
+        </td>
+
+        <td>
+          ${
+            tc
+            ? `
+              <div class="code">${esc(tc.test_code || "")}</div>
+              <div class="cell-title">${esc(tc.test_name || "")}</div>
+            `
+            : `<span class="cell-sub">Không xác định</span>`
+          }
+        </td>
+
+        <td>
+          ${
+            sc
+            ? `
+              <div class="code">${esc(sc.scenario_code || "")}</div>
+              <div class="cell-title">${esc(sc.scenario_name || "")}</div>
+            `
+            : `<span class="cell-sub">—</span>`
+          }
+        </td>
+
+        <td>
+          <span class="badge sev-${esc(d.severity || "")}">
+            ${esc(d.severity || "—")}
+          </span>
+        </td>
+
+        <td>
+          <span class="badge">${esc(d.priority || "—")}</span>
+        </td>
+
+        <td>
+          ${renderStatusCell(d)}
+        </td>
+
+        <td>
+          <div class="cell-title">${esc(r.reporter?.full_name || r.reporter?.email || "—")}</div>
+        </td>
+
+        <td>
+          <div class="cell-title">${esc(r.assignee?.full_name || r.assignee?.email || "Chưa gán")}</div>
+        </td>
+
+        <td>
+          ${d.created_at ? new Date(d.created_at).toLocaleString("vi-VN") : "—"}
+        </td>
+
+        <td>
+          <div class="action-row">
+            <button class="btn" onclick="openDetail('${d.id}')">Chi tiết</button>
+            ${
+              tc
+              ? `<button class="btn btn-primary" onclick="openTestCase('${tc.id}')">Mở TC</button>`
+              : ""
+            }
+          </div>
+        </td>
+      </tr>
+    `;
   }).join("");
+
+  empty.style.display = rows.length ? "none" : "block";
 }
-function shell(active,title,ctx){const projectOptions=ctx.projects.length?ctx.projects.map(p=>`<option value="${p.id}" ${p.id===ctx.projectId?'selected':''}>${e(p.project_code)} - ${e(p.project_name)}</option>`).join(""):'<option value="">Chưa có dự án</option>';document.getElementById("app").className="app";document.getElementById("app").innerHTML=`<div id="overlay" class="overlay"></div><aside id="sidebar" class="sidebar"><div class="brand"><div class="brand-logo">DF</div><div><strong>DoubleF Test</strong><small>Project Test Management</small></div></div><nav class="nav">${navHtml(active,ctx)}</nav><div class="side-user"><div class="avatar">${e(initials(ctx.profile.full_name||ctx.user.email))}</div><div><strong>${e(ctx.profile.full_name||ctx.user.email)}</strong><small>${e(ROLE_LABEL[ctx.profile.role]||ctx.profile.role)}</small></div></div></aside><div class="main"><header class="topbar"><div class="top-left"><button id="menuBtn" class="btn menu-btn">☰</button><div><strong>${e(title)}</strong><small>${ctx.projectId?'Đang làm việc trong dự án đã chọn':'Chọn dự án để làm việc'}</small></div></div><div class="top-actions"><select id="projectSelect" class="project-select">${projectOptions}</select><span class="user-meta"><strong style="font-size:10.5px">${e(ctx.profile.full_name||ctx.user.email)}</strong></span><button id="logoutBtn" class="btn">Đăng xuất</button></div></header><main id="pageContent" class="content"><div class="loading">Đang tải dữ liệu...</div></main></div>`;document.getElementById("logoutBtn").onclick=logout;const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("overlay");document.getElementById("menuBtn").onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")};overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};document.getElementById("projectSelect").onchange=ev=>{localStorage.setItem("doublef_current_project",ev.target.value);location.reload()}}
-async function boot(active,title,{projectRequired=true}={}){try{const auth=await requireAuth();if(!auth)return null;const projects=await visibleProjects();let projectId=localStorage.getItem("doublef_current_project");if(!projects.some(p=>p.id===projectId))projectId=projects[0]?.id||"";if(projectId)localStorage.setItem("doublef_current_project",projectId);const pr=projectId?await projectRole(projectId,auth.user.id):null;const ctx={...auth,projects,projectId,project:projects.find(p=>p.id===projectId)||null,projectRole:pr};shell(active,title,ctx);if(projectRequired&&!projectId){document.getElementById("pageContent").innerHTML='<div class="notice">Chưa có dự án. Hãy tạo dự án trước.</div>';return null}return ctx}catch(error){document.getElementById("app").innerHTML=`<div class="error" style="margin:30px">${e(errMsg(error))}</div>`;return null}}
-function openModal(title,body){closeModal();const b=document.createElement("div");b.id="dfModal";b.className="modal-backdrop";b.innerHTML=`<div class="modal"><div class="modal-head"><h3>${e(title)}</h3><button class="btn sm" id="modalClose">Đóng</button></div><div class="modal-body">${body}</div></div>`;document.body.appendChild(b);document.getElementById("modalClose").onclick=closeModal;b.addEventListener("click",ev=>{if(ev.target===b)closeModal()})}
-function closeModal(){document.getElementById("dfModal")?.remove()}
-function tcResultMap(testCases,scenarios,executions){const latest=new Map();[...(executions||[])].sort((a,b)=>new Date(b.completed_at||b.created_at)-new Date(a.completed_at||a.created_at)).forEach(x=>{if(!latest.has(x.scenario_id))latest.set(x.scenario_id,x)});const map=new Map();for(const tc of testCases||[]){const ss=(scenarios||[]).filter(s=>s.test_case_id===tc.id&&s.active!==false);if(!ss.length){map.set(tc.id,"NOT_TESTED");continue}const rs=ss.map(s=>latest.get(s.id)?.result||"NOT_TESTED");let r="NOT_TESTED";if(rs.includes("FAIL"))r="FAIL";else if(rs.includes("BLOCKED"))r="BLOCKED";else if(rs.every(x=>["PASS","N/A"].includes(x)))r="PASS";else if(rs.some(x=>x==="PASS"))r="IN_PROGRESS";map.set(tc.id,r)}return {map,latest}}
-async function signedFile(path,seconds=120){const {data,error}=await sb.storage.from(DF.bucket).createSignedUrl(path,seconds);if(error)throw error;return data.signedUrl}
-async function viewFile(path){try{const url=await signedFile(path);window.open(url,"_blank","noopener")}catch(error){toast(errMsg(error),true)}}
-function safeFileName(name){return String(name||"file").normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g,"-").replace(/-+/g,"-")}
 
+function renderStatusCell(d){
+  const canUpdate =
+    STATE.profile?.role === "admin" ||
+    STATE.projectRole === "manager" ||
+    STATE.projectRole === "tester";
 
-let CTX=null,BUGS=[],TCS=[],SC=[],EX=[],PROFILES=[];function bugEditForm(b={}){return `<form id="bugEditForm" class="form-grid"><input type="hidden" name="id" value="${e(b.id||"")}"><div class="field"><span>Mã Bug</span><input class="control" name="defect_code" required value="${e(b.defect_code||"")}"></div><div class="field"><span>Severity</span><select class="control" name="severity">${["low","medium","high","critical"].map(v=>`<option ${b.severity===v?'selected':''}>${v}</option>`).join("")}</select></div><div class="field"><span>Priority</span><select class="control" name="priority">${["low","medium","high","critical"].map(v=>`<option ${b.priority===v?'selected':''}>${v}</option>`).join("")}</select></div><div class="field"><span>Trạng thái</span><select class="control" name="status">${["open","assigned","in_progress","fixed","retest","reopened","closed","rejected","duplicate","wont_fix"].map(v=>`<option ${b.status===v?'selected':''}>${v}</option>`).join("")}</select></div><div class="field"><span>Giao xử lý</span><select class="control" name="assigned_to"><option value="">-- Chưa giao --</option>${PROFILES.map(p=>`<option value="${p.id}" ${b.assigned_to===p.id?'selected':''}>${e(p.full_name||p.email)}</option>`).join("")}</select></div><div class="field full"><span>Tiêu đề</span><input class="control" name="title" required value="${e(b.title||"")}"></div><div class="field full"><span>Mô tả</span><textarea class="control" name="description">${e(b.description||"")}</textarea></div><div class="field full"><span>Bước tái hiện</span><textarea class="control" name="steps_to_reproduce">${e(b.steps_to_reproduce||"")}</textarea></div><div class="field full"><span>Kết quả mong muốn</span><textarea class="control" name="expected_result">${e(b.expected_result||"")}</textarea></div><div class="field full"><span>Kết quả thực tế</span><textarea class="control" name="actual_result">${e(b.actual_result||"")}</textarea></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Hủy</button><button class="btn primary">Lưu Bug</button></div></form>`}
-async function loadBugs(){const [b,t,s,x,p]=await Promise.all([sb.from("defects").select("*").eq("project_id",CTX.projectId).order("created_at",{ascending:false}),sb.from("test_cases").select("*").eq("project_id",CTX.projectId),sb.from("test_scenarios").select("*"),sb.from("test_executions").select("*").eq("project_id",CTX.projectId),sb.from("profiles").select("id,full_name,email")]);for(const r of [b,t,s,x,p])if(r.error)throw r.error;BUGS=b.data||[];TCS=t.data||[];const ids=new Set(TCS.map(z=>z.id));SC=(s.data||[]).filter(z=>ids.has(z.test_case_id));EX=x.data||[];PROFILES=p.data||[];renderBugs()}
-function renderBugs(){const testable=canTest(CTX),manage=canManage(CTX),tm=new Map(TCS.map(x=>[x.id,x])),sm=new Map(SC.map(x=>[x.id,x])),pm=new Map(PROFILES.map(x=>[x.id,x]));const status=document.getElementById("bugStatus")?.value||"",sev=document.getElementById("bugSeverity")?.value||"",q=(document.getElementById("bugSearch")?.value||"").toLowerCase();const rows=BUGS.filter(b=>(!status||b.status===status)&&(!sev||b.severity===sev)&&(!q||`${b.defect_code} ${b.title}`.toLowerCase().includes(q)));document.getElementById("pageContent").innerHTML=`<div class="page-head"><div><h1>Quản lý Bug</h1><p>${testable?"Theo dõi và cập nhật Bug từ Open đến Fixed, Retest và Closed/Reopened.":"Tài khoản của bạn ở chế độ chỉ xem danh sách Bug của dự án."}</p></div></div><div class="filters"><input id="bugSearch" class="control search" placeholder="Tìm mã hoặc tiêu đề Bug..." value="${e(q)}"><select id="bugStatus" class="control"><option value="">Tất cả trạng thái</option>${["open","assigned","in_progress","fixed","retest","reopened","closed","rejected","duplicate","wont_fix"].map(v=>`<option ${status===v?'selected':''}>${v}</option>`).join("")}</select><select id="bugSeverity" class="control"><option value="">Tất cả Severity</option>${["critical","high","medium","low"].map(v=>`<option ${sev===v?'selected':''}>${v}</option>`).join("")}</select></div><section class="card"><div class="table-wrap"><table><thead><tr><th>Bug</th><th>Test Case / Kịch bản</th><th>Severity</th><th>Priority</th><th>Trạng thái</th><th>Người xử lý</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead><tbody>${rows.length?rows.map(b=>`<tr><td><strong>${e(b.defect_code)}</strong><span class="sub">${e(b.title)}</span></td><td>${e(tm.get(b.test_case_id)?.test_code||"—")}<span class="sub">${e(sm.get(b.scenario_id)?.scenario_name||"")}</span></td><td>${badge(b.severity)}</td><td>${badge(b.priority)}</td><td>${badge(b.status)}</td><td>${e(pm.get(b.assigned_to)?.full_name||"—")}</td><td>${fmtDateTime(b.created_at)}</td><td><div class="actions">${testable?`<button class="btn sm" onclick="editBug('${b.id}')">Cập nhật</button>`:''}${manage?`<button class="btn sm danger" onclick="deleteBug('${b.id}')">Xóa</button>`:''}</div></td></tr>`).join(""):`<tr><td colspan="8"><div class="empty">Không có Bug phù hợp.</div></td></tr>`}</tbody></table></div></section>`;document.getElementById("bugSearch").oninput=renderBugs;document.getElementById("bugStatus").onchange=renderBugs;document.getElementById("bugSeverity").onchange=renderBugs}
-function editBug(id){openModal("Cập nhật Bug",bugEditForm(BUGS.find(x=>x.id===id)||{}));document.getElementById("bugEditForm").onsubmit=async ev=>{ev.preventDefault();const f=new FormData(ev.target),status=f.get("status"),payload={defect_code:f.get("defect_code").trim(),title:f.get("title").trim(),description:f.get("description").trim()||null,steps_to_reproduce:f.get("steps_to_reproduce").trim()||null,expected_result:f.get("expected_result").trim()||null,actual_result:f.get("actual_result").trim()||null,severity:f.get("severity"),priority:f.get("priority"),status,assigned_to:f.get("assigned_to")||null,closed_at:status==="closed"?new Date().toISOString():null};const {error}=await sb.from("defects").update(payload).eq("id",id);if(error)return toast(errMsg(error),true);closeModal();toast("Đã cập nhật Bug");loadBugs()}}
-async function deleteBug(id){if(!confirm("Xóa Bug này?"))return;const {error}=await sb.from("defects").delete().eq("id",id);if(error)return toast(errMsg(error),true);toast("Đã xóa Bug");loadBugs()}
-(async()=>{CTX=await boot("defects","Quản lý Bug");if(!CTX)return;try{await loadBugs()}catch(error){document.getElementById("pageContent").innerHTML=`<div class="error">${e(errMsg(error))}</div>`}})();
-</script></body></html>
+  if(!canUpdate){
+    return `<span class="badge status-${esc(d.status)}">${esc(STATUS_LABEL[d.status] || d.status)}</span>`;
+  }
+
+  return `
+    <select class="status-select" onchange="changeStatus('${d.id}',this.value)">
+      ${Object.entries(STATUS_LABEL).map(([v,l])=>`
+        <option value="${v}" ${d.status===v?"selected":""}>${l}</option>
+      `).join("")}
+    </select>
+  `;
+}
+
+function updateStats(){
+  const all = STATE.defects;
+
+  stTotal.textContent = all.length;
+
+  stOpen.textContent = all.filter(x=>
+    ["open","assigned","in_progress","reopened"].includes(x.status)
+  ).length;
+
+  stFixed.textContent = all.filter(x=>
+    ["fixed","retest"].includes(x.status)
+  ).length;
+
+  stClosed.textContent = all.filter(x=>x.status==="closed").length;
+
+  stSevere.textContent = all.filter(x=>
+    ["critical","high"].includes(x.severity)
+  ).length;
+}
+
+async function changeStatus(id,status){
+  const old = STATE.defects.find(x=>x.id===id)?.status;
+
+  const payload = {status,updated_at:new Date().toISOString()};
+  if(status==="closed") payload.closed_at = new Date().toISOString();
+
+  const {error} = await sb.from("defects").update(payload).eq("id",id);
+
+  if(error){
+    alert("Không cập nhật được trạng thái: " + error.message);
+    await loadBugData();
+    return;
+  }
+
+  const item = STATE.defects.find(x=>x.id===id);
+  if(item){
+    item.status=status;
+    if(status==="closed") item.closed_at=payload.closed_at;
+  }
+
+  render();
+}
+
+function openTestCase(id){
+  location.href = `/kiem-thu/test-case-chi-tiet?id=${encodeURIComponent(id)}`;
+}
+
+function openDetail(id){
+  const d = STATE.defects.find(x=>x.id===id);
+  if(!d) return;
+
+  const r = resolveRelations(d);
+
+  detailBody.innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item">
+        <span>Mã Bug</span>
+        <strong>${esc(d.defect_code || "—")}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Trạng thái</span>
+        <strong>${esc(STATUS_LABEL[d.status] || d.status || "—")}</strong>
+      </div>
+
+      <div class="detail-item full">
+        <span>Tiêu đề</span>
+        <strong>${esc(d.title || "—")}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Use Case</span>
+        <div>${esc(r.useCase?.usecase_code || "—")} - ${esc(r.useCase?.usecase_name || "")}</div>
+      </div>
+
+      <div class="detail-item">
+        <span>Test Case</span>
+        <div>${esc(r.testCase?.test_code || "—")} - ${esc(r.testCase?.test_name || "")}</div>
+      </div>
+
+      <div class="detail-item full">
+        <span>Kịch bản kiểm thử</span>
+        <div>${esc(r.scenario?.scenario_code || "—")} - ${esc(r.scenario?.scenario_name || "")}</div>
+      </div>
+
+      <div class="detail-item">
+        <span>Severity</span>
+        <strong>${esc(d.severity || "—")}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Priority</span>
+        <strong>${esc(d.priority || "—")}</strong>
+      </div>
+
+      <div class="detail-item">
+        <span>Người báo</span>
+        <div>${esc(r.reporter?.full_name || r.reporter?.email || "—")}</div>
+      </div>
+
+      <div class="detail-item">
+        <span>Người xử lý</span>
+        <div>${esc(r.assignee?.full_name || r.assignee?.email || "Chưa gán")}</div>
+      </div>
+
+      <div class="detail-item full">
+        <span>Mô tả</span>
+        <div>${esc(d.description || "—")}</div>
+      </div>
+
+      <div class="detail-item full">
+        <span>Các bước tái hiện</span>
+        <div>${esc(d.steps_to_reproduce || "—")}</div>
+      </div>
+
+      <div class="detail-item full">
+        <span>Kết quả mong muốn</span>
+        <div>${esc(d.expected_result || "—")}</div>
+      </div>
+
+      <div class="detail-item full">
+        <span>Kết quả thực tế</span>
+        <div>${esc(d.actual_result || "—")}</div>
+      </div>
+    </div>
+
+    ${
+      r.testCase
+      ? `
+        <div style="margin-top:18px;text-align:right">
+          <button class="btn btn-primary" onclick="openTestCase('${r.testCase.id}')">
+            Mở Test Case
+          </button>
+        </div>
+      `
+      : ""
+    }
+  `;
+
+  detailModal.classList.add("show");
+}
+
+function closeDetail(){
+  detailModal.classList.remove("show");
+}
+
+projectSelect.onchange = async ()=>{
+  STATE.projectId = projectSelect.value;
+  await loadCurrentProject();
+};
+
+search.oninput = render;
+statusFilter.onchange = render;
+severityFilter.onchange = render;
+ucFilter.onchange = render;
+
+logout.onclick = async ()=>{
+  await sb.auth.signOut();
+  location.replace("/kiem-thu/login");
+};
+
+menuBtn.onclick = ()=>{
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+};
+
+overlay.onclick = ()=>{
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+};
+
+detailModal.addEventListener("click",e=>{
+  if(e.target===detailModal) closeDetail();
+});
+
+init();
+</script>
+</body>
+</html>

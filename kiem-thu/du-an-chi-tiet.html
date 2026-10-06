@@ -55,10 +55,11 @@ button,input,select{font:inherit}
 .modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .modal-head h2{margin:0;font-size:18px}.modal-head p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.modal-close{border:0;background:#f2f4f7;width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:18px}
 .modal-body{padding:18px 20px;overflow:auto}.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-group{display:flex;flex-direction:column;gap:6px}.form-group.full{grid-column:1/-1}.form-group label{font-size:10px;font-weight:750;color:#344054}.form-control{width:100%;min-height:40px;border:1px solid #d0d5dd;border-radius:9px;padding:9px 11px;background:#fff;color:#101828;outline:none;font-size:11px}.form-control:focus{border-color:#84adff;box-shadow:0 0 0 3px #eff4ff}.form-control.textarea{min-height:84px;resize:vertical;font-family:inherit;line-height:1.5}.form-help{font-size:9px;color:#667085;line-height:1.45}.required{color:#d92d20}.uc-action-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.btn.tiny{padding:6px 8px;font-size:9px;border-radius:7px}
 .import-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.import-summary .sum{border:1px solid var(--border);border-radius:11px;padding:12px;background:#f9fafb}.sum span{display:block;color:var(--muted);font-size:10px}.sum strong{display:block;margin-top:6px;font-size:18px}
 .import-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.import-toolbar .field{flex:1;min-width:220px}.mini-btn{border:1px solid var(--border);background:#fff;border-radius:8px;padding:8px 10px;font-size:11px;cursor:pointer}
 .import-list{border:1px solid var(--border);border-radius:12px;overflow:hidden}.import-group{background:#f2f4f7;padding:9px 12px;font-size:11px;font-weight:800;color:#344054;position:sticky;top:0}.import-item{display:grid;grid-template-columns:28px 82px minmax(280px,1fr) 150px 90px;gap:9px;align-items:start;padding:10px 12px;border-top:1px solid var(--border);font-size:11px}.import-item:hover{background:#f9fafb}.import-item input{margin-top:2px}.import-item .uc-title{font-weight:700}.import-item .muted{color:var(--muted);font-size:10px;margin-top:3px}.import-progress{height:10px;background:#eaecf0;border-radius:999px;overflow:hidden;margin-top:8px}.import-progress div{height:100%;background:var(--blue);width:0%;transition:.2s}.import-log{margin-top:10px;padding:10px 12px;border-radius:9px;background:#f9fafb;color:#475467;font-size:11px;white-space:pre-wrap;max-height:100px;overflow:auto}.warning{padding:10px 12px;border:1px solid #fedf89;background:#fffaeb;color:#93370d;border-radius:9px;font-size:11px;margin-bottom:12px}
-@media(max-width:760px){.import-summary{grid-template-columns:1fr 1fr}.import-item{grid-template-columns:24px 68px 1fr}.import-item .actor,.import-item .tx-count{display:none}.modal-backdrop{padding:0}.modal{max-height:100vh;height:100vh;border-radius:0}}
+@media(max-width:760px){.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.import-summary{grid-template-columns:1fr 1fr}.import-item{grid-template-columns:24px 68px 1fr}.import-item .actor,.import-item .tx-count{display:none}.modal-backdrop{padding:0}.modal{max-height:100vh;height:100vh;border-radius:0}}
 
 </style>
 </head>
@@ -158,7 +159,7 @@ button,input,select{font:inherit}
     <section id="panel-usecases" class="tab-panel">
       <div class="section-head">
         <div><h2>Use Case & Test Case</h2><p>Mở từng Use Case để xem danh sách Test Case và tình trạng kiểm thử.</p></div>
-        <div class="actions"><button id="manageUcBtn" class="btn hidden" type="button">+ Quản lý Use Case</button><button id="importUcTabBtn" class="btn primary hidden" type="button">Import Excel</button></div>
+        <div class="actions"><button id="addUcBtn" class="btn primary hidden" type="button">+ Thêm Use Case</button><button id="addTcBtn" class="btn hidden" type="button">+ Thêm Test Case</button><button id="manageUcBtn" class="btn hidden" type="button">Quản lý nâng cao</button><button id="importUcTabBtn" class="btn hidden" type="button">Import Excel</button></div>
       </div>
       <div class="toolbar">
         <input id="ucSearch" class="field search" placeholder="Tìm mã Use Case, tên Use Case, Test Case...">
@@ -183,6 +184,63 @@ button,input,select{font:inherit}
       </div>
     </section>
   </main>
+</div>
+
+
+<!-- MODAL THÊM USE CASE -->
+<div id="ucCreateModal" class="modal-backdrop hidden">
+  <div class="modal" style="width:min(900px,100%)" role="dialog" aria-modal="true" aria-labelledby="ucCreateTitle">
+    <div class="modal-head">
+      <div><h2 id="ucCreateTitle">Thêm Use Case</h2><p>Tạo Use Case trực tiếp trong dự án hiện tại.</p></div>
+      <button id="closeUcCreateModal" class="modal-close" type="button" aria-label="Đóng">×</button>
+    </div>
+    <form id="ucCreateForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group"><label>Mã Use Case <span class="required">*</span></label><input id="newUcCode" name="usecase_code" class="form-control" required placeholder="Ví dụ: UC-001"></div>
+          <div class="form-group"><label>Tên Use Case <span class="required">*</span></label><input name="usecase_name" class="form-control" required placeholder="Tên chức năng/nghiệp vụ"></div>
+          <div class="form-group"><label>Phân hệ / Nhóm</label><input name="group_name" class="form-control" placeholder="Ví dụ: Phân hệ quản lý người dùng"></div>
+          <div class="form-group"><label>Tác nhân</label><input name="actor" class="form-control" placeholder="Ví dụ: Quản trị viên, Người dùng"></div>
+          <div class="form-group"><label>Mức ưu tiên</label><select name="priority" class="form-control"><option value="low">Thấp</option><option value="medium" selected>Trung bình</option><option value="high">Cao</option><option value="critical">Khẩn cấp</option></select></div>
+          <div class="form-group"><label>Trạng thái</label><select name="status" class="form-control"><option value="draft">Nháp</option><option value="active" selected>Đang sử dụng</option><option value="inactive">Tạm ngưng</option><option value="archived">Lưu trữ</option></select></div>
+          <div class="form-group full"><label>Mô tả</label><textarea name="description" class="form-control textarea" placeholder="Mô tả Use Case"></textarea></div>
+          <div class="form-group full"><label>Điều kiện trước</label><textarea name="precondition" class="form-control textarea" placeholder="Điều kiện cần có trước khi thực hiện"></textarea></div>
+          <div class="form-group full"><label>Luồng nghiệp vụ</label><textarea name="business_flow" class="form-control textarea" placeholder="Các giao dịch/luồng xử lý chính"></textarea></div>
+          <div class="form-group full"><label>Kết quả mong đợi</label><textarea name="expected_result" class="form-control textarea" placeholder="Kết quả mong đợi của Use Case"></textarea></div>
+          <div class="form-group full"><label>Điều kiện sau</label><textarea name="postcondition" class="form-control textarea" placeholder="Trạng thái hệ thống sau khi hoàn thành"></textarea></div>
+          <div class="form-group full"><label>Ghi chú</label><textarea name="note" class="form-control textarea" placeholder="Ghi chú khác"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-foot"><span class="form-help">Chỉ Admin hoặc Manager của dự án được thêm Use Case.</span><div class="actions"><button id="cancelUcCreate" class="btn" type="button">Hủy</button><button id="saveUcBtn" class="btn primary" type="submit">Lưu Use Case</button></div></div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL THÊM TEST CASE -->
+<div id="tcCreateModal" class="modal-backdrop hidden">
+  <div class="modal" style="width:min(900px,100%)" role="dialog" aria-modal="true" aria-labelledby="tcCreateTitle">
+    <div class="modal-head">
+      <div><h2 id="tcCreateTitle">Thêm Test Case</h2><p>Tạo Test Case dưới một Use Case của dự án hiện tại.</p></div>
+      <button id="closeTcCreateModal" class="modal-close" type="button" aria-label="Đóng">×</button>
+    </div>
+    <form id="tcCreateForm">
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group"><label>Use Case <span class="required">*</span></label><select id="newTcUsecase" name="usecase_id" class="form-control" required></select></div>
+          <div class="form-group"><label>Kế hoạch kiểm thử</label><select id="newTcPlan" name="plan_id" class="form-control"></select></div>
+          <div class="form-group"><label>Mã Test Case <span class="required">*</span></label><input id="newTcCode" name="test_code" class="form-control" required placeholder="Ví dụ: TC-001"></div>
+          <div class="form-group"><label>Tên Test Case <span class="required">*</span></label><input name="test_name" class="form-control" required placeholder="Tên trường hợp kiểm thử"></div>
+          <div class="form-group"><label>Mức ưu tiên</label><select name="priority" class="form-control"><option value="low">Thấp</option><option value="medium" selected>Trung bình</option><option value="high">Cao</option><option value="critical">Khẩn cấp</option></select></div>
+          <div class="form-group"><label>Trạng thái thiết kế</label><select name="status" class="form-control"><option value="draft">Nháp</option><option value="ready" selected>Sẵn sàng kiểm thử</option><option value="in_progress">Đang thực hiện</option><option value="completed">Hoàn thành</option><option value="archived">Lưu trữ</option></select></div>
+          <div class="form-group full"><label>Phân công Tester</label><select id="newTcAssignee" name="assigned_to" class="form-control"></select><span class="form-help">Có thể để trống và phân công sau.</span></div>
+          <div class="form-group full"><label>Mô tả</label><textarea name="description" class="form-control textarea" placeholder="Mô tả Test Case"></textarea></div>
+          <div class="form-group full"><label>Yêu cầu cần kiểm tra</label><textarea name="requirement" class="form-control textarea" placeholder="Yêu cầu/chức năng mà Test Case cần xác minh"></textarea></div>
+          <div class="form-group full"><label>Ghi chú</label><textarea name="note" class="form-control textarea" placeholder="Ghi chú khác"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-foot"><span class="form-help">Sau khi tạo Test Case, mở Test Case để thêm nhiều kịch bản kiểm thử và các bước thực hiện.</span><div class="actions"><button id="cancelTcCreate" class="btn" type="button">Hủy</button><button id="saveTcBtn" class="btn primary" type="submit">Lưu Test Case</button></div></div>
+    </form>
+  </div>
 </div>
 
 
@@ -321,7 +379,7 @@ function renderProjectHeader(){
 
 function renderRoleActions(){
   if(canManage()){
-    ["editProjectBtn","importUcBtn","managePlansBtn","manageUcBtn","importUcTabBtn","manageMembersBtn"].forEach(id=>el(id).classList.remove("hidden"));
+    ["editProjectBtn","importUcBtn","managePlansBtn","addUcBtn","addTcBtn","manageUcBtn","importUcTabBtn","manageMembersBtn"].forEach(id=>el(id).classList.remove("hidden"));
   }
   if(currentProfile.role!=="admin" && currentProjectRole!=="manager") el("manageMembersBtn").classList.add("hidden");
 }
@@ -392,7 +450,7 @@ function renderUsecaseTree(){
       return `<article class="uc-card">
         <div class="uc-head" onclick="toggleUc('${uc.id}')">
           <div class="uc-left"><div id="chev-${uc.id}" class="chev">⌄</div><div><div class="uc-code">${escapeHtml(uc.usecase_code||uc.source_stt||"USE CASE")}</div><div class="uc-name">${escapeHtml(uc.usecase_name)}</div><div class="uc-meta">${escapeHtml(uc.actor?"Tác nhân: "+uc.actor:uc.description||"")}</div></div></div>
-          <div class="uc-summary"><span class="pill">${allCases.length} Test Case</span>${p?`<span class="pill">${p} PASS</span>`:""}${f?`<span class="pill">${f} FAIL</span>`:""}${b?`<span class="pill">${b} BLOCKED</span>`:""}</div>
+          <div class="uc-summary"><span class="pill">${allCases.length} Test Case</span>${p?`<span class="pill">${p} PASS</span>`:""}${f?`<span class="pill">${f} FAIL</span>`:""}${b?`<span class="pill">${b} BLOCKED</span>`:""}${canManage()?`<button class="btn tiny" type="button" onclick="event.stopPropagation();openAddTestCase('${uc.id}')">+ Test Case</button>`:""}</div>
         </div>
         <div id="uc-${uc.id}" class="tc-list">
           ${cases.length?cases.map(t=>`<div class="tc-row" onclick="openTestCase('${t.test_case_id}')"><div class="tc-title"><strong>${escapeHtml(t.test_code)} · ${escapeHtml(t.test_name)}</strong><span>${escapeHtml(t.priority||"")} · ${Number(t.total_scenarios)||0} kịch bản</span></div><div><span class="badge ${escapeHtml(t.test_result)}">${escapeHtml(resultLabels[t.test_result]||t.test_result)}</span></div><div class="tc-progress">${Number(t.executed_scenarios)||0}/${Number(t.total_scenarios)||0} đã kiểm thử</div><div class="bug-col">${Number(t.open_bug_count)||0} bug mở</div><div class="arrow">›</div></div>`).join(""):`<div class="empty"><strong>Chưa có Test Case</strong><span>Use Case này chưa có Test Case phù hợp bộ lọc.</span></div>`}
@@ -437,6 +495,117 @@ el("editProjectBtn").onclick=()=>location.href="/kiem-thu/du-an?edit="+encodeURI
 el("managePlansBtn").onclick=()=>location.href="/kiem-thu/ke-hoach?project="+encodeURIComponent(projectId);
 el("manageUcBtn").onclick=()=>location.href="/kiem-thu/usecase?project="+encodeURIComponent(projectId);
 el("manageMembersBtn").onclick=()=>location.href="/kiem-thu/thanh-vien?project="+encodeURIComponent(projectId);
+
+/* ================= THÊM USE CASE / TEST CASE ================= */
+function nextEntityCode(prefix,items,field,width=3){
+  const used=new Set(items.map(x=>String(x[field]||"").toUpperCase()));
+  let max=0;
+  for(const code of used){
+    const m=code.match(new RegExp("^"+prefix+"[-_ ]?(\\d+)$","i"));
+    if(m)max=Math.max(max,Number(m[1])||0);
+  }
+  let n=max+1,code="";
+  do{code=prefix+"-"+String(n).padStart(width,"0");n++}while(used.has(code.toUpperCase()));
+  return code;
+}
+function openSimpleModal(id){el(id).classList.remove("hidden")}
+function closeSimpleModal(id){el(id).classList.add("hidden")}
+
+function openAddUseCase(){
+  if(!canManage())return alert("Chỉ Admin hoặc Manager của dự án được thêm Use Case.");
+  const form=el("ucCreateForm");form.reset();
+  el("newUcCode").value=nextEntityCode("UC",usecases,"usecase_code",3);
+  openSimpleModal("ucCreateModal");
+  setTimeout(()=>el("newUcCode").focus(),50);
+}
+
+function projectPeopleOptions(){
+  const pmap=new Map(profiles.map(p=>[p.id,p]));
+  return members.map(m=>({member:m,profile:pmap.get(m.user_id)})).filter(x=>x.profile&&x.profile.active!==false);
+}
+function fillTestCaseSelectors(selectedUcId=""){
+  el("newTcUsecase").innerHTML=usecases.length?usecases.map(u=>`<option value="${escapeHtml(u.id)}" ${u.id===selectedUcId?"selected":""}>${escapeHtml(u.usecase_code||u.source_stt||"UC")} - ${escapeHtml(u.usecase_name)}</option>`).join(""):`<option value="">Chưa có Use Case</option>`;
+  el("newTcPlan").innerHTML=`<option value="">-- Không gắn kế hoạch --</option>`+plans.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.plan_code)} - ${escapeHtml(p.plan_name)}</option>`).join("");
+  el("newTcAssignee").innerHTML=`<option value="">-- Chưa phân công --</option>`+projectPeopleOptions().filter(x=>["manager","tester"].includes(x.member.role)||x.profile.role==="admin").map(x=>`<option value="${escapeHtml(x.profile.id)}">${escapeHtml(x.profile.full_name||x.profile.email)} (${escapeHtml(roleLabels[x.member.role]||x.member.role)})</option>`).join("");
+}
+function openAddTestCase(usecaseId=""){
+  if(!canManage())return alert("Chỉ Admin hoặc Manager của dự án được thêm Test Case.");
+  if(!usecases.length)return alert("Dự án chưa có Use Case. Hãy thêm Use Case trước.");
+  const form=el("tcCreateForm");form.reset();fillTestCaseSelectors(usecaseId);
+  el("newTcCode").value=nextEntityCode("TC",caseStatus,"test_code",3);
+  openSimpleModal("tcCreateModal");
+  setTimeout(()=>el("newTcCode").focus(),50);
+}
+window.openAddTestCase=openAddTestCase;
+
+el("ucCreateForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!canManage())return alert("Bạn không có quyền thực hiện thao tác này.");
+  const fd=new FormData(e.currentTarget);
+  const payload={
+    project_id:projectId,
+    usecase_code:String(fd.get("usecase_code")||"").trim(),
+    usecase_name:String(fd.get("usecase_name")||"").trim(),
+    group_name:String(fd.get("group_name")||"").trim()||null,
+    actor:String(fd.get("actor")||"").trim()||null,
+    priority:String(fd.get("priority")||"medium"),
+    status:String(fd.get("status")||"active"),
+    description:String(fd.get("description")||"").trim()||null,
+    precondition:String(fd.get("precondition")||"").trim()||null,
+    business_flow:String(fd.get("business_flow")||"").trim()||null,
+    expected_result:String(fd.get("expected_result")||"").trim()||null,
+    postcondition:String(fd.get("postcondition")||"").trim()||null,
+    note:String(fd.get("note")||"").trim()||null,
+    created_by:currentUser.id
+  };
+  if(!payload.usecase_code||!payload.usecase_name)return alert("Vui lòng nhập mã và tên Use Case.");
+  const btn=el("saveUcBtn");btn.disabled=true;btn.textContent="Đang lưu...";
+  const {data,error}=await sb.from("use_cases").insert(payload).select("id").single();
+  btn.disabled=false;btn.textContent="Lưu Use Case";
+  if(error){alert("Không tạo được Use Case: "+error.message);return}
+  closeSimpleModal("ucCreateModal");
+  await loadAll();switchTab("usecases");
+  if(data?.id){const box=el("uc-"+data.id);if(box)box.classList.remove("hidden")}
+});
+
+el("tcCreateForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!canManage())return alert("Bạn không có quyền thực hiện thao tác này.");
+  const fd=new FormData(e.currentTarget);
+  const payload={
+    project_id:projectId,
+    usecase_id:String(fd.get("usecase_id")||"").trim()||null,
+    plan_id:String(fd.get("plan_id")||"").trim()||null,
+    test_code:String(fd.get("test_code")||"").trim(),
+    test_name:String(fd.get("test_name")||"").trim(),
+    priority:String(fd.get("priority")||"medium"),
+    status:String(fd.get("status")||"ready"),
+    assigned_to:String(fd.get("assigned_to")||"").trim()||null,
+    description:String(fd.get("description")||"").trim()||null,
+    requirement:String(fd.get("requirement")||"").trim()||null,
+    note:String(fd.get("note")||"").trim()||null,
+    created_by:currentUser.id
+  };
+  if(!payload.usecase_id)return alert("Vui lòng chọn Use Case.");
+  if(!payload.test_code||!payload.test_name)return alert("Vui lòng nhập mã và tên Test Case.");
+  const btn=el("saveTcBtn");btn.disabled=true;btn.textContent="Đang lưu...";
+  const {data,error}=await sb.from("test_cases").insert(payload).select("id").single();
+  btn.disabled=false;btn.textContent="Lưu Test Case";
+  if(error){alert("Không tạo được Test Case: "+error.message);return}
+  closeSimpleModal("tcCreateModal");
+  await loadAll();switchTab("usecases");
+  if(data?.id && confirm("Đã tạo Test Case. Bạn có muốn mở Test Case để thêm kịch bản kiểm thử ngay không?"))openTestCase(data.id);
+});
+
+el("addUcBtn").onclick=openAddUseCase;
+el("addTcBtn").onclick=()=>openAddTestCase("");
+el("closeUcCreateModal").onclick=()=>closeSimpleModal("ucCreateModal");
+el("cancelUcCreate").onclick=()=>closeSimpleModal("ucCreateModal");
+el("closeTcCreateModal").onclick=()=>closeSimpleModal("tcCreateModal");
+el("cancelTcCreate").onclick=()=>closeSimpleModal("tcCreateModal");
+el("ucCreateModal").addEventListener("click",e=>{if(e.target===el("ucCreateModal"))closeSimpleModal("ucCreateModal")});
+el("tcCreateModal").addEventListener("click",e=>{if(e.target===el("tcCreateModal"))closeSimpleModal("tcCreateModal")});
+
 /* ================= IMPORT USE CASE EXCEL ================= */
 let importRows=[];
 let importSelection=new Set();

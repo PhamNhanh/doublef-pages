@@ -371,6 +371,59 @@ async function resolveProjectRole(){
   currentProjectRole=data.role;
 }
 
+async function fetchAllUseCasesForProject(){
+  const all=[];
+  const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb
+      .from("use_cases")
+      .select("*")
+      .eq("project_id",projectId)
+      .order("group_name",{ascending:true,nullsFirst:false})
+      .order("source_stt",{ascending:true,nullsFirst:false})
+      .order("usecase_code",{ascending:true})
+      .range(from,from+pageSize-1);
+    if(error)throw error;
+    all.push(...(data||[]));
+    if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+
+async function fetchAllTestCaseStatusForProject(){
+  const all=[];
+  const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb
+      .from("v_test_case_status")
+      .select("*")
+      .eq("project_id",projectId)
+      .order("test_code",{ascending:true})
+      .range(from,from+pageSize-1);
+    if(error)throw error;
+    all.push(...(data||[]));
+    if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+
+async function fetchAllDefectsForProject(){
+  const all=[];
+  const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb
+      .from("defects")
+      .select("id,status,severity,priority,test_case_id,usecase_id,assigned_to,reported_by")
+      .eq("project_id",projectId)
+      .order("created_at",{ascending:true})
+      .range(from,from+pageSize-1);
+    if(error)throw error;
+    all.push(...(data||[]));
+    if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+
 async function loadAll(){
   if(!projectId){showNotice("Không xác định được dự án. Hãy quay lại danh sách dự án và bấm Mở dự án.","error");return}
   showNotice("Đang tải dữ liệu dự án...");
@@ -381,20 +434,28 @@ async function loadAll(){
 
   try{await resolveProjectRole()}catch(err){showNotice(err.message,"error");return}
 
-  const [planRes,ucRes,caseRes,memberRes,profileRes,defectRes]=await Promise.all([
+  const [planRes,memberRes,profileRes,ucResult,caseResult,defectResult]=await Promise.all([
     sb.from("test_plans").select("*").eq("project_id",projectId).order("start_date",{ascending:true}),
-    sb.from("use_cases").select("*").eq("project_id",projectId).order("group_name",{ascending:true,nullsFirst:false}).order("source_stt",{ascending:true,nullsFirst:false}).order("usecase_code",{ascending:true}),
-    sb.from("v_test_case_status").select("*").eq("project_id",projectId).order("test_code",{ascending:true}),
     sb.from("project_members").select("*").eq("project_id",projectId).eq("active",true).order("created_at",{ascending:true}),
     sb.from("profiles").select("id,email,full_name,role,department,phone,active"),
-    sb.from("defects").select("id,status,severity,priority,test_case_id,usecase_id,assigned_to,reported_by").eq("project_id",projectId)
+    fetchAllUseCasesForProject().then(data=>({data,error:null})).catch(error=>({data:[],error})),
+    fetchAllTestCaseStatusForProject().then(data=>({data,error:null})).catch(error=>({data:[],error})),
+    fetchAllDefectsForProject().then(data=>({data,error:null})).catch(error=>({data:[],error}))
   ]);
 
-  const errors=[planRes.error,ucRes.error,caseRes.error,memberRes.error,profileRes.error,defectRes.error].filter(Boolean);
+  const errors=[planRes.error,memberRes.error,profileRes.error,ucResult.error,caseResult.error,defectResult.error].filter(Boolean);
   if(errors.length){showNotice("Một phần dữ liệu không tải được: "+errors[0].message,"error")}
   else hideNotice();
 
-  plans=planRes.data||[];usecases=ucRes.data||[];caseStatus=caseRes.data||[];members=memberRes.data||[];profiles=profileRes.data||[];defects=defectRes.data||[];
+  plans=planRes.data||[];
+  usecases=ucResult.data||[];
+  caseStatus=caseResult.data||[];
+  members=memberRes.data||[];
+  profiles=profileRes.data||[];
+  defects=defectResult.data||[];
+
+  console.info(`[DoubleF] Đã tải ${usecases.length} Use Case và ${caseStatus.length} Test Case của dự án.`);
+
   localStorage.setItem("doublef_current_project",projectId);
   renderProjectHeader();renderRoleActions();renderOverview();renderPlans();renderUsecaseTree();renderMembers();renderReport();
   el("projectHeader").classList.remove("hidden");el("tabs").classList.remove("hidden");

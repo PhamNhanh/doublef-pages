@@ -50,6 +50,8 @@ button{cursor:pointer}
 @media(max-width:1150px){.projects{grid-template-columns:repeat(2,minmax(0,1fr))}.summary{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.menu-btn{display:inline-flex}.overlay.show{display:block;position:fixed;z-index:90;inset:0;background:rgba(16,24,40,.45)}.content{padding:20px 14px}.topbar{padding:0 14px}.toolbar{grid-template-columns:1fr}.projects{grid-template-columns:1fr}}
 @media(max-width:600px){.page-head{display:block}.page-head .btn{margin-top:14px;width:100%}.summary{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}.full,.form-actions{grid-column:auto}.form-actions{flex-direction:column-reverse}.form-actions .btn{width:100%}.project-footer{align-items:stretch;flex-direction:column}.project-footer .left-buttons{display:grid;grid-template-columns:1fr 1fr}.open-btn{width:100%}}
+
+.member-block{grid-column:1/-1;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.member-block-head{padding:12px 14px;background:#f9fafb;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;align-items:center}.member-block-head strong{font-size:11.5px}.member-block-head span{font-size:9.5px;color:var(--muted)}.member-list{max-height:280px;overflow:auto}.member-row{display:grid;grid-template-columns:28px minmax(180px,1fr) 150px;gap:10px;align-items:center;padding:10px 13px;border-top:1px solid var(--border)}.member-row:first-child{border-top:0}.member-row .person strong{display:block;font-size:11px}.member-row .person small{display:block;color:var(--muted);font-size:9.5px;margin-top:2px}.member-row select{height:34px!important;padding:0 8px!important;font-size:10.5px}.member-empty{padding:18px;text-align:center;color:var(--muted);font-size:10.5px}@media(max-width:650px){.member-row{grid-template-columns:28px 1fr}.member-row select{grid-column:2}}
 </style>
 </head>
 <body>
@@ -138,6 +140,10 @@ button{cursor:pointer}
       <label><span>Ngày bắt đầu</span><input id="startDate" type="date"></label>
       <label><span>Ngày kết thúc</span><input id="endDate" type="date"></label>
       <label class="full"><span>Mô tả dự án</span><textarea id="description" placeholder="Mô tả phạm vi, mục tiêu hoặc ghi chú dự án..."></textarea></label>
+      <section class="member-block">
+        <div class="member-block-head"><div><strong>Nhân sự tham gia dự án</strong><br><span>Chọn tài khoản và vai trò ngay khi tạo/cập nhật dự án.</span></div><button id="selectAllMembers" class="btn" type="button">Chọn tất cả</button></div>
+        <div id="memberPicker" class="member-list"><div class="member-empty">Đang tải danh sách nhân sự...</div></div>
+      </section>
       <div class="form-actions"><button id="cancelBtn" class="btn" type="button">Hủy</button><button id="saveBtn" class="btn primary" type="submit">Lưu dự án</button></div>
     </form>
   </div>
@@ -151,7 +157,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const roleLabels={admin:"Quản trị viên",manager:"Quản lý",tester:"Kiểm thử viên",viewer:"Người xem"};
 const statusLabels={planning:"Lập kế hoạch",active:"Đang thực hiện",paused:"Tạm dừng",on_hold:"Tạm dừng",completed:"Hoàn thành",closed:"Đã đóng",cancelled:"Đã hủy"};
-let currentUser=null,currentProfile=null,allProjects=[],projectMemberships=new Map();
+let currentUser=null,currentProfile=null,allProjects=[],projectMemberships=new Map(),allProfiles=[],modalMemberMap=new Map();
 
 const el=id=>document.getElementById(id);
 const escapeHtml=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
@@ -259,10 +265,74 @@ function openProject(id){
   location.href="/kiem-thu/du-an-chi-tiet?id="+encodeURIComponent(id);
 }
 
-function showProjectModal(project=null){
+async function loadProfilesForPicker(){
+  const {data,error}=await sb.from("profiles").select("id,email,full_name,role,department,active").eq("active",true).order("full_name");
+  if(error)throw error;
+  allProfiles=data||[];
+}
+
+async function loadProjectMemberMap(projectId){
+  const map=new Map();
+  if(projectId){
+    const {data,error}=await sb.from("project_members").select("user_id,role,active").eq("project_id",projectId);
+    if(error)throw error;
+    (data||[]).filter(x=>x.active!==false).forEach(x=>map.set(x.user_id,x.role));
+  }
+  return map;
+}
+
+function renderMemberPicker(){
+  const wrap=el("memberPicker");
+  if(!allProfiles.length){wrap.innerHTML='<div class="member-empty">Chưa có tài khoản hoạt động để phân công.</div>';return}
+  wrap.innerHTML=allProfiles.map(p=>{
+    const selected=modalMemberMap.has(p.id);
+    const isCurrent=p.id===currentUser.id;
+    const lockCurrent=currentProfile.role==="manager"&&isCurrent;
+    const role=modalMemberMap.get(p.id)||(isCurrent?"manager":(p.role==="viewer"?"viewer":"tester"));
+    return `<div class="member-row">
+      <input class="member-check" type="checkbox" data-user="${p.id}" ${selected?'checked':''} ${lockCurrent?'disabled':''}>
+      <div class="person"><strong>${escapeHtml(p.full_name||p.email)}</strong><small>${escapeHtml(p.email||"")} · ${escapeHtml(roleLabels[p.role]||p.role)}${p.department?' · '+escapeHtml(p.department):''}</small></div>
+      <select class="member-role" data-user="${p.id}" ${selected?'':'disabled'} ${lockCurrent?'disabled':''}><option value="manager" ${role==='manager'?'selected':''}>Manager</option><option value="tester" ${role==='tester'?'selected':''}>Tester</option><option value="viewer" ${role==='viewer'?'selected':''}>Viewer</option></select>
+    </div>`;
+  }).join("");
+  wrap.querySelectorAll(".member-check").forEach(cb=>cb.addEventListener("change",()=>{
+    const id=cb.dataset.user,select=wrap.querySelector(`.member-role[data-user="${id}"]`);
+    select.disabled=!cb.checked;
+    if(cb.checked)modalMemberMap.set(id,select.value);else modalMemberMap.delete(id);
+  }));
+  wrap.querySelectorAll(".member-role").forEach(select=>select.addEventListener("change",()=>{if(wrap.querySelector(`.member-check[data-user="${select.dataset.user}"]`)?.checked)modalMemberMap.set(select.dataset.user,select.value)}));
+}
+
+async function syncProjectMembers(projectId){
+  const selected=[...modalMemberMap.entries()].map(([user_id,role])=>({project_id:projectId,user_id,role,active:true,assigned_by:currentUser.id}));
+  if(currentProfile.role==="manager"&&!modalMemberMap.has(currentUser.id))selected.push({project_id:projectId,user_id:currentUser.id,role:"manager",active:true,assigned_by:currentUser.id});
+  if(selected.length){
+    const {error}=await sb.from("project_members").upsert(selected,{onConflict:"project_id,user_id"});
+    if(error)throw error;
+  }
+  const {data:existing,error:readError}=await sb.from("project_members").select("user_id,active").eq("project_id",projectId);
+  if(readError)throw readError;
+  const keep=new Set(selected.map(x=>x.user_id));
+  const remove=(existing||[]).filter(x=>x.active!==false&&!keep.has(x.user_id)).map(x=>x.user_id);
+  if(remove.length){
+    const {error}=await sb.from("project_members").update({active:false,assigned_by:currentUser.id}).eq("project_id",projectId).in("user_id",remove);
+    if(error)throw error;
+  }
+}
+
+async function showProjectModal(project=null){
   el("projectForm").reset();
   el("projectId").value=project?.id||"";
   el("modalTitle").textContent=project?"Cập nhật dự án":"Tạo dự án";
+  try{
+    await loadProfilesForPicker();
+    modalMemberMap=await loadProjectMemberMap(project?.id||"");
+    if(!project)modalMemberMap.set(currentUser.id,"manager");
+    if(currentProfile.role==="manager")modalMemberMap.set(currentUser.id,"manager");
+    renderMemberPicker();
+  }catch(error){
+    el("memberPicker").innerHTML=`<div class="member-empty">Không tải được danh sách nhân sự: ${escapeHtml(error.message||error)}</div>`;
+  }
   if(project){
     el("projectCode").value=project.project_code||"";
     el("projectName").value=project.project_name||"";
@@ -276,10 +346,10 @@ function showProjectModal(project=null){
 }
 function hideProjectModal(){el("modalWrap").classList.add("hidden")}
 
-window.editProject=id=>{
+window.editProject=async id=>{
   const p=allProjects.find(x=>x.id===id);
   if(!p||!canManageProject(p))return alert("Bạn không có quyền sửa dự án này.");
-  showProjectModal(p);
+  await showProjectModal(p);
 };
 window.deleteProject=async id=>{
   if(!canDeleteProject())return alert("Chỉ Admin được phép xóa dự án.");
@@ -313,17 +383,13 @@ el("projectForm").addEventListener("submit",async e=>{
       const project=allProjects.find(x=>x.id===id);
       if(!project||!canManageProject(project))throw new Error("Bạn không có quyền cập nhật dự án này.");
       const {error}=await sb.from("projects").update(payload).eq("id",id);if(error)throw error;
+      await syncProjectMembers(id);
     }else{
       if(!["admin","manager"].includes(currentProfile.role))throw new Error("Bạn không có quyền tạo dự án.");
       payload.created_by=currentUser.id;
       const {data:newProject,error}=await sb.from("projects").insert(payload).select("*").single();if(error)throw error;
 
-      // Người tạo dự án được tự động thêm làm Manager để dự án không biến mất khỏi tài khoản Manager sau khi tạo.
-      if(newProject && currentProfile.role!=="admin"){
-        const memberPayload={project_id:newProject.id,user_id:currentUser.id,role:"manager",active:true};
-        const {error:mError}=await sb.from("project_members").upsert(memberPayload,{onConflict:"project_id,user_id"});
-        if(mError)console.warn("Không thể tự thêm thành viên dự án:",mError.message);
-      }
+      if(newProject)await syncProjectMembers(newProject.id);
     }
     hideProjectModal();
     await loadProjects();
@@ -335,6 +401,7 @@ function showNotice(text,type="info"){el("notice").innerHTML=`<div class="notice
 function clearNotice(){el("notice").innerHTML=""}
 
 el("createBtn").onclick=()=>showProjectModal();
+el("selectAllMembers").onclick=()=>{const allSelected=allProfiles.length>0&&allProfiles.every(p=>modalMemberMap.has(p.id));modalMemberMap.clear();if(!allSelected)allProfiles.forEach(p=>modalMemberMap.set(p.id,p.id===currentUser.id?"manager":(p.role==="viewer"?"viewer":"tester")));if(currentProfile.role==="manager")modalMemberMap.set(currentUser.id,"manager");renderMemberPicker();};
 el("closeModal").onclick=hideProjectModal;el("cancelBtn").onclick=hideProjectModal;
 el("modalWrap").addEventListener("click",e=>{if(e.target===el("modalWrap"))hideProjectModal()});
 el("searchInput").oninput=render;el("statusFilter").onchange=render;el("sortSelect").onchange=render;

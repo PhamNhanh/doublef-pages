@@ -1,4 +1,4 @@
-!doctype html>
+<!doctype html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
@@ -248,7 +248,7 @@ button,input,select{font:inherit}
 <div id="importModal" class="modal-backdrop hidden">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
     <div class="modal-head">
-      <div><h2 id="importTitle">Import Use Case từ Excel</h2><p id="importFileInfo">Đọc dữ liệu từ sheet UC và xem trước trước khi ghi vào dự án.</p></div>
+      <div><h2 id="importTitle">Import Use Case + Test Case từ Excel</h2><p id="importFileInfo">Đọc sheet UC: mỗi Use Case được import cùng toàn bộ Transaction; mỗi Transaction được tạo thành 01 Test Case.</p></div>
       <button id="closeImportModal" class="modal-close" type="button" aria-label="Đóng">×</button>
     </div>
     <div class="modal-body">
@@ -256,7 +256,7 @@ button,input,select{font:inherit}
       <div class="import-summary">
         <div class="sum"><span>Phân hệ/nhóm</span><strong id="importGroupCount">0</strong></div>
         <div class="sum"><span>Use Case phát hiện</span><strong id="importUcCount">0</strong></div>
-        <div class="sum"><span>Transaction</span><strong id="importTxCount">0</strong></div>
+        <div class="sum"><span>Test Case từ Transaction</span><strong id="importTxCount">0</strong></div>
         <div class="sum"><span>Đang chọn</span><strong id="importSelectedCount">0</strong></div>
       </div>
       <div class="import-toolbar">
@@ -272,7 +272,7 @@ button,input,select{font:inherit}
     </div>
     <div class="modal-foot">
       <span id="importFootText" style="font-size:11px;color:var(--muted)">Chưa chọn file.</span>
-      <div class="actions"><button id="cancelImport" class="btn" type="button">Hủy</button><button id="confirmImport" class="btn primary" type="button" disabled>Import vào dự án</button></div>
+      <div class="actions"><button id="cancelImport" class="btn" type="button">Hủy</button><button id="confirmImport" class="btn primary" type="button" disabled>Import UC + Test Case</button></div>
     </div>
   </div>
 </div>
@@ -748,7 +748,7 @@ function renderImportPreview(){
     html+=`<div class="import-group">${escapeHtml(group)} · ${items.length} Use Case</div>`;
     html+=items.map(u=>{
       const idx=importRows.indexOf(u);const checked=importSelection.has(idx)?"checked":"";
-      return `<label class="import-item"><input class="import-check" type="checkbox" data-idx="${idx}" ${checked}><div><strong>${escapeHtml(u.source_stt)}</strong></div><div><div class="uc-title">${escapeHtml(u.usecase_name)}</div><div class="muted">Dòng Excel ${u.source_row}</div></div><div class="actor">${escapeHtml(u.actor||"—")}</div><div class="tx-count">${u.transactions.length} giao dịch</div></label>`;
+      return `<label class="import-item"><input class="import-check" type="checkbox" data-idx="${idx}" ${checked}><div><strong>${escapeHtml(u.source_stt)}</strong></div><div><div class="uc-title">${escapeHtml(u.usecase_name)}</div><div class="muted">Dòng Excel ${u.source_row}</div></div><div class="actor">${escapeHtml(u.actor||"—")}</div><div class="tx-count">${u.transactions.length} Test Case</div></label>`;
     }).join("");
   }
   el("importPreview").innerHTML=html||`<div class="empty"><strong>Không có dữ liệu phù hợp</strong><span>Thay đổi nội dung tìm kiếm.</span></div>`;
@@ -772,7 +772,7 @@ async function handleImportFile(file){
     const txCount=parsed.reduce((n,x)=>n+x.transactions.length,0);
     el("importFileInfo").textContent=`${file.name} · Sheet ${sheetName}`;
     el("importGroupCount").textContent=groupCount;el("importUcCount").textContent=parsed.length;el("importTxCount").textContent=txCount;
-    el("importWarning").textContent=`Hệ thống chỉ import Use Case và Transaction. Không tự tạo Test Case. Các Use Case trùng khóa import sẽ được bỏ qua để không làm mất Test Case/Kịch bản đã tạo.`;
+    el("importWarning").textContent=`Hệ thống sẽ import Use Case và tự tạo 01 Test Case cho mỗi Transaction trong file. Use Case/Test Case đã import trước đó sẽ được nhận diện để không tạo trùng. File không có cột Kịch bản kiểm thử nên Kịch bản vẫn được tạo sau trong từng Test Case.`;
     el("importWarning").classList.remove("hidden");
     renderImportPreview();updateSelectedCount();
   }catch(err){
@@ -789,6 +789,24 @@ async function fetchAllUsecaseKeys(){
     if(error)throw error;all.push(...(data||[]));if(!data||data.length<pageSize)break;
   }
   return all;
+}
+async function fetchAllImportedTestCases(){
+  const all=[];const pageSize=1000;
+  for(let from=0;;from+=pageSize){
+    const {data,error}=await sb.from("test_cases").select("id,test_code,import_key,usecase_id").eq("project_id",projectId).range(from,from+pageSize-1);
+    if(error)throw error;all.push(...(data||[]));if(!data||data.length<pageSize)break;
+  }
+  return all;
+}
+function makeUniqueTestCode(stt,txNo,used){
+  const raw=String(stt||"").replace(/\D/g,"")||"0";
+  const tx=String(txNo||1).replace(/\D/g,"")||"1";
+  let base=`TC-${raw.padStart(4,"0")}-${tx.padStart(2,"0")}`;let code=base,n=1;
+  while(used.has(code)){code=`${base}-I${n++}`}
+  used.add(code);return code;
+}
+function makeTestCaseImportKey(u,t,idx){
+  return `${u.import_key}:tc:${idx+1}:${simpleHash(upperCompact(t.transaction_text))}`;
 }
 function makeUniqueCode(stt,used){
   const raw=String(stt||"").replace(/\D/g,"")||"0";
@@ -811,56 +829,175 @@ function setImportProgress(done,total,message){
 
 async function runImport(){
   if(importBusy||!importSelection.size||!importFileMeta)return;
-  if(!confirm(`Import ${importSelection.size} Use Case vào dự án "${currentProject.project_name}"?`))return;
-  importBusy=true;el("confirmImport").disabled=true;el("cancelImport").disabled=true;el("closeImportModal").disabled=true;el("importProgressBox").classList.remove("hidden");
+  const selected=[...importSelection].sort((a,b)=>a-b).map(i=>importRows[i]);
+  const txSourceCount=selected.reduce((n,u)=>n+u.transactions.length,0);
+  if(!confirm(`Import ${selected.length} Use Case và tối đa ${txSourceCount} Test Case vào dự án "${currentProject.project_name}"?`))return;
+
+  importBusy=true;
+  el("confirmImport").disabled=true;
+  el("cancelImport").disabled=true;
+  el("closeImportModal").disabled=true;
+  el("importProgressBox").classList.remove("hidden");
+
   let batchId=null;
   try{
-    const selected=[...importSelection].sort((a,b)=>a-b).map(i=>importRows[i]);
-    const txSourceCount=selected.reduce((n,u)=>n+u.transactions.length,0);
-    setImportProgress(0,selected.length,"Đang kiểm tra dữ liệu đã có trong dự án...");
-    const existing=await fetchAllUsecaseKeys();
-    const existingKeys=new Set(existing.map(x=>x.import_key).filter(Boolean));
-    const usedCodes=new Set(existing.map(x=>x.usecase_code).filter(Boolean));
-    const fresh=selected.filter(u=>!existingKeys.has(u.import_key));
-    const skipped=selected.length-fresh.length;
+    setImportProgress(0,selected.length,"Đang kiểm tra Use Case và Test Case đã có trong dự án...");
 
-    const {data:batch,error:bErr}=await sb.from("usecase_import_batches").insert({project_id:projectId,file_name:importFileMeta.fileName,sheet_name:importFileMeta.sheetName,source_hash:importFileMeta.sourceHash,status:"importing",total_usecases:selected.length,total_transactions:txSourceCount,imported_by:currentUser.id,note:skipped?`Bỏ qua ${skipped} Use Case đã import trước đó.`:null}).select("id").single();
-    if(bErr)throw bErr;batchId=batch.id;
+    const [existingUc,existingTc]=await Promise.all([
+      fetchAllUsecaseKeys(),
+      fetchAllImportedTestCases()
+    ]);
 
-    if(!fresh.length){
-      await sb.from("usecase_import_batches").update({status:"completed",completed_at:new Date().toISOString(),note:`Không có dữ liệu mới. Đã bỏ qua ${skipped} Use Case trùng.`}).eq("id",batchId);
-      setImportProgress(selected.length,selected.length,`Hoàn tất: không có Use Case mới; bỏ qua ${skipped} Use Case đã tồn tại.`);return;
-    }
+    const existingUcByKey=new Map(existingUc.filter(x=>x.import_key).map(x=>[x.import_key,x]));
+    const usedUcCodes=new Set(existingUc.map(x=>x.usecase_code).filter(Boolean));
+    const existingTcKeys=new Set(existingTc.map(x=>x.import_key).filter(Boolean));
+    const usedTcCodes=new Set(existingTc.map(x=>x.test_code).filter(Boolean));
 
-    const payload=fresh.map(u=>({
-      project_id:projectId,usecase_code:makeUniqueCode(u.source_stt,usedCodes),usecase_name:u.usecase_name,description:null,actor:u.actor||null,precondition:null,postcondition:null,business_flow:u.business_flow||null,priority:"medium",status:"active",created_by:currentUser.id,
-      group_name:u.group_name||null,source_stt:u.source_stt,expected_result:u.expected_result||null,note:u.note||null,import_source:importFileMeta.fileName,import_sheet:importFileMeta.sheetName,import_key:u.import_key,source_row:u.source_row,imported_at:new Date().toISOString(),import_batch_id:batchId
+    const newUcRows=selected.filter(u=>!existingUcByKey.has(u.import_key));
+    const skippedUc=selected.length-newUcRows.length;
+
+    const {data:batch,error:bErr}=await sb.from("usecase_import_batches").insert({
+      project_id:projectId,
+      file_name:importFileMeta.fileName,
+      sheet_name:importFileMeta.sheetName,
+      source_hash:importFileMeta.sourceHash,
+      status:"importing",
+      total_usecases:selected.length,
+      total_transactions:txSourceCount,
+      imported_by:currentUser.id,
+      note:skippedUc?`Có ${skippedUc} Use Case đã tồn tại; hệ thống vẫn kiểm tra và bổ sung Test Case còn thiếu.`:null
+    }).select("id").single();
+    if(bErr)throw bErr;
+    batchId=batch.id;
+
+    /* 1. Tao Use Case moi. Use Case da import truoc do duoc tai su dung. */
+    const ucPayload=newUcRows.map(u=>({
+      project_id:projectId,
+      usecase_code:makeUniqueCode(u.source_stt,usedUcCodes),
+      usecase_name:u.usecase_name,
+      description:null,
+      actor:u.actor||null,
+      precondition:null,
+      postcondition:null,
+      business_flow:u.business_flow||null,
+      priority:"medium",
+      status:"active",
+      created_by:currentUser.id,
+      group_name:u.group_name||null,
+      source_stt:u.source_stt,
+      expected_result:u.expected_result||null,
+      note:u.note||null,
+      import_source:importFileMeta.fileName,
+      import_sheet:importFileMeta.sheetName,
+      import_key:u.import_key,
+      source_row:u.source_row,
+      imported_at:new Date().toISOString(),
+      import_batch_id:batchId
     }));
 
-    const inserted=[];
-    for(let i=0;i<payload.length;i+=100){
-      const chunk=payload.slice(i,i+100);
-      const {data,error}=await sb.from("use_cases").insert(chunk).select("id,import_key");if(error)throw error;inserted.push(...(data||[]));
-      setImportProgress(Math.min(i+chunk.length,fresh.length),fresh.length,`Đã import ${Math.min(i+chunk.length,fresh.length)}/${fresh.length} Use Case...`);
+    const insertedUc=[];
+    for(let i=0;i<ucPayload.length;i+=100){
+      const chunk=ucPayload.slice(i,i+100);
+      const {data,error}=await sb.from("use_cases").insert(chunk).select("id,import_key");
+      if(error)throw error;
+      insertedUc.push(...(data||[]));
+      setImportProgress(Math.min(i+chunk.length,ucPayload.length),Math.max(ucPayload.length,1),`Đã tạo ${Math.min(i+chunk.length,ucPayload.length)}/${ucPayload.length} Use Case mới...`);
     }
-    const idByKey=new Map(inserted.map(x=>[x.import_key,x.id]));
+
+    const ucIdByKey=new Map(existingUcByKey);
+    insertedUc.forEach(x=>ucIdByKey.set(x.import_key,x));
+
+    /* 2. Luu Transaction chi cho Use Case moi de tranh lap lai du lieu cu. */
     const txPayload=[];
-    for(const u of fresh){
-      const ucId=idByKey.get(u.import_key);if(!ucId)continue;
-      u.transactions.forEach((t,i)=>txPayload.push({usecase_id:ucId,transaction_no:i+1,transaction_text:t.transaction_text,description:t.description||null,expected_result:t.expected_result||null,note:t.note||null,source_row:t.source_row,sort_order:i+1}));
+    for(const u of newUcRows){
+      const uc=ucIdByKey.get(u.import_key);
+      const ucId=uc?.id;
+      if(!ucId)continue;
+      u.transactions.forEach((t,i)=>txPayload.push({
+        usecase_id:ucId,
+        transaction_no:i+1,
+        transaction_text:t.transaction_text,
+        description:t.description||null,
+        expected_result:t.expected_result||null,
+        note:t.note||null,
+        source_row:t.source_row,
+        sort_order:i+1
+      }));
     }
     for(let i=0;i<txPayload.length;i+=250){
-      const chunk=txPayload.slice(i,i+250);const {error}=await sb.from("use_case_transactions").insert(chunk);if(error)throw error;
-      setImportProgress(fresh.length,fresh.length,`Use Case đã xong. Đang lưu Transaction ${Math.min(i+chunk.length,txPayload.length)}/${txPayload.length}...`);
+      const chunk=txPayload.slice(i,i+250);
+      const {error}=await sb.from("use_case_transactions").insert(chunk);
+      if(error)throw error;
+      setImportProgress(1,1,`Đang lưu Transaction ${Math.min(i+chunk.length,txPayload.length)}/${txPayload.length}...`);
     }
-    await sb.from("usecase_import_batches").update({status:"completed",completed_at:new Date().toISOString(),note:`Import mới ${fresh.length} Use Case, ${txPayload.length} Transaction; bỏ qua ${skipped} Use Case trùng.`}).eq("id",batchId);
-    setImportProgress(fresh.length,fresh.length,`Hoàn tất: ${fresh.length} Use Case, ${txPayload.length} Transaction. Bỏ qua ${skipped} Use Case trùng.`);
-    await loadAll();switchTab("usecases");
+
+    /* 3. Moi Transaction = 01 Test Case. Ap dung ca Use Case moi va Use Case da import truoc do. */
+    const tcPayload=[];
+    for(const u of selected){
+      const uc=ucIdByKey.get(u.import_key);
+      const ucId=uc?.id;
+      if(!ucId)continue;
+
+      u.transactions.forEach((t,i)=>{
+        const importKey=makeTestCaseImportKey(u,t,i);
+        if(existingTcKeys.has(importKey))return;
+        existingTcKeys.add(importKey);
+        tcPayload.push({
+          project_id:projectId,
+          usecase_id:ucId,
+          plan_id:null,
+          test_code:makeUniqueTestCode(u.source_stt,i+1,usedTcCodes),
+          test_name:cleanText(t.transaction_text),
+          description:t.description||null,
+          requirement:cleanText(t.transaction_text),
+          expected_result:t.expected_result||null,
+          priority:"medium",
+          assigned_to:null,
+          status:"ready",
+          note:t.note||null,
+          created_by:currentUser.id,
+          import_key:importKey,
+          import_source:importFileMeta.fileName,
+          source_row:t.source_row||null,
+          source_transaction_no:i+1,
+          imported_at:new Date().toISOString(),
+          import_batch_id:batchId
+        });
+      });
+    }
+
+    for(let i=0;i<tcPayload.length;i+=100){
+      const chunk=tcPayload.slice(i,i+100);
+      const {error}=await sb.from("test_cases").insert(chunk);
+      if(error)throw error;
+      setImportProgress(Math.min(i+chunk.length,tcPayload.length),Math.max(tcPayload.length,1),`Đang tạo Test Case ${Math.min(i+chunk.length,tcPayload.length)}/${tcPayload.length}...`);
+    }
+
+    const finalNote=`Import hoàn tất: ${newUcRows.length} Use Case mới, ${txPayload.length} Transaction mới, ${tcPayload.length} Test Case mới; ${skippedUc} Use Case đã có được giữ nguyên.`;
+    await sb.from("usecase_import_batches").update({
+      status:"completed",
+      completed_at:new Date().toISOString(),
+      note:finalNote
+    }).eq("id",batchId);
+
+    setImportProgress(1,1,finalNote);
+    await loadAll();
+    switchTab("usecases");
   }catch(err){
-    if(batchId)await sb.from("usecase_import_batches").update({status:"failed",completed_at:new Date().toISOString(),note:err.message}).eq("id",batchId);
-    setImportProgress(0,1,"Lỗi import: "+err.message);alert("Import thất bại: "+err.message);
+    if(batchId){
+      await sb.from("usecase_import_batches").update({
+        status:"failed",
+        completed_at:new Date().toISOString(),
+        note:err.message
+      }).eq("id",batchId);
+    }
+    setImportProgress(0,1,"Lỗi import: "+err.message);
+    alert("Import thất bại: "+err.message);
   }finally{
-    importBusy=false;el("cancelImport").disabled=false;el("closeImportModal").disabled=false;updateSelectedCount();
+    importBusy=false;
+    el("cancelImport").disabled=false;
+    el("closeImportModal").disabled=false;
+    updateSelectedCount();
   }
 }
 

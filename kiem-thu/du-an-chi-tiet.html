@@ -24,7 +24,7 @@ button,input,select{font:inherit}
 .side-user{margin:12px;padding:11px;border-radius:10px;background:#f9fafb}.side-user strong,.side-user span{display:block}.side-user strong{font-size:11px}.side-user span{font-size:9px;color:var(--muted);margin-top:3px}
 .main{margin-left:var(--sidebar);min-height:100vh}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--border);padding:0 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
 .top-left{display:flex;gap:10px;align-items:center}.back{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}.topbar strong{display:block;font-size:13px}.topbar small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.logout,.btn{border:1px solid var(--border);border-radius:9px;background:#fff;padding:9px 12px;cursor:pointer;font-weight:650;font-size:11px}.btn:hover,.logout:hover{background:#f9fafb}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.primary:hover{background:var(--blue2)}
+.logout,.btn{border:1px solid var(--border);border-radius:9px;background:#fff;padding:9px 12px;cursor:pointer;font-weight:650;font-size:11px}.btn:hover,.logout:hover{background:#f9fafb}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.primary:hover{background:var(--blue2)}.btn.danger{background:#fff;border-color:#fda29b;color:#b42318}.btn.danger:hover{background:#fef3f2;border-color:#f04438}.btn.danger:disabled{opacity:.55;cursor:not-allowed}
 .content{max-width:1550px;margin:auto;padding:24px 26px 48px}
 .notice{padding:12px 14px;border:1px solid #b2ddff;background:#eff8ff;color:#175cd3;border-radius:10px;font-size:11px;margin-bottom:15px}.notice.error{border-color:#fecdca;background:#fef3f2;color:#b42318}
 .project-head{background:linear-gradient(135deg,#0b2458,#155eef);color:#fff;border-radius:16px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}.project-head:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.06);right:-80px;top:-130px}.project-row{position:relative;z-index:1;display:flex;justify-content:space-between;gap:20px}.project-code{font-size:10px;font-weight:800;letter-spacing:.07em;color:#b9d1ff;text-transform:uppercase}.project-head h1{font-size:25px;margin:6px 0 7px}.project-head p{margin:0;max-width:900px;line-height:1.6;font-size:12px;color:rgba(255,255,255,.78)}
@@ -159,7 +159,7 @@ button,input,select{font:inherit}
     <section id="panel-usecases" class="tab-panel">
       <div class="section-head">
         <div><h2>Use Case & Test Case</h2><p>Mở từng Use Case để xem danh sách Test Case và tình trạng kiểm thử.</p></div>
-        <div class="actions"><button id="addUcBtn" class="btn primary hidden" type="button">+ Thêm Use Case</button><button id="addTcBtn" class="btn hidden" type="button">+ Thêm Test Case</button><button id="manageUcBtn" class="btn hidden" type="button">Quản lý nâng cao</button><button id="importUcTabBtn" class="btn hidden" type="button">Import Excel</button></div>
+        <div class="actions"><button id="addUcBtn" class="btn primary hidden" type="button">+ Thêm Use Case</button><button id="addTcBtn" class="btn hidden" type="button">+ Thêm Test Case</button><button id="manageUcBtn" class="btn hidden" type="button">Quản lý nâng cao</button><button id="importUcTabBtn" class="btn hidden" type="button">Import Excel</button><button id="deleteAllUcBtn" class="btn danger hidden" type="button">Xóa toàn bộ UC</button></div>
       </div>
       <div class="toolbar">
         <input id="ucSearch" class="field search" placeholder="Tìm mã Use Case, tên Use Case, Test Case...">
@@ -243,6 +243,41 @@ button,input,select{font:inherit}
   </div>
 </div>
 
+
+
+<!-- MODAL XÓA TOÀN BỘ USE CASE -->
+<div id="deleteAllUcModal" class="modal-backdrop hidden">
+  <div class="modal" style="width:min(720px,100%)" role="dialog" aria-modal="true" aria-labelledby="deleteAllUcTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="deleteAllUcTitle" style="color:#b42318">Xóa toàn bộ Use Case</h2>
+        <p>Thao tác này chỉ dành cho Admin hoặc Manager của dự án và không thể hoàn tác.</p>
+      </div>
+      <button id="closeDeleteAllUcModal" class="modal-close" type="button" aria-label="Đóng">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="warning" style="display:block">
+        <strong>Cảnh báo:</strong> hệ thống sẽ xóa toàn bộ Use Case của dự án, toàn bộ Test Case thuộc các Use Case đó, Kịch bản, Bước kiểm thử, Lịch sử thực hiện, Bug và metadata file minh chứng liên quan. Kế hoạch kiểm thử và thành viên dự án không bị xóa.
+      </div>
+      <div class="import-summary" style="margin-top:14px">
+        <div class="sum"><span>Use Case sẽ xóa</span><strong id="deleteUcCount">0</strong></div>
+        <div class="sum"><span>Test Case sẽ xóa</span><strong id="deleteTcCount">0</strong></div>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label>Nhập chính xác <strong>XOA TOAN BO UC</strong> để xác nhận</label>
+        <input id="deleteAllUcConfirmText" class="form-control" autocomplete="off" placeholder="XOA TOAN BO UC">
+      </div>
+      <div id="deleteAllUcProgress" class="form-help" style="margin-top:10px"></div>
+    </div>
+    <div class="modal-foot">
+      <span class="form-help">Nên chỉ dùng khi cần làm sạch dữ liệu UC/TC để import lại từ đầu.</span>
+      <div class="actions">
+        <button id="cancelDeleteAllUc" class="btn" type="button">Hủy</button>
+        <button id="confirmDeleteAllUc" class="btn danger" type="button" disabled>Xóa toàn bộ UC</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <input id="ucImportFile" type="file" accept=".xlsx,.xls" class="hidden">
 <div id="importModal" class="modal-backdrop hidden">
@@ -381,7 +416,7 @@ function renderProjectHeader(){
 function renderRoleActions(){
   /* Quan tri du an: chi Admin / Manager */
   if(canManage()){
-    ["editProjectBtn","managePlansBtn","manageMembersBtn"].forEach(id=>el(id).classList.remove("hidden"));
+    ["editProjectBtn","managePlansBtn","manageMembersBtn","deleteAllUcBtn"].forEach(id=>el(id).classList.remove("hidden"));
   }
 
   /* Thiet ke kiem thu + Import: Admin / Manager / Tester */
@@ -1000,6 +1035,83 @@ async function runImport(){
     updateSelectedCount();
   }
 }
+
+
+function openDeleteAllUcModal(){
+  if(!canManage()){
+    alert("Chỉ Admin hoặc Manager của dự án mới được xóa toàn bộ Use Case.");
+    return;
+  }
+  el("deleteUcCount").textContent=usecases.length;
+  el("deleteTcCount").textContent=caseStatus.filter(x=>x.usecase_id).length;
+  el("deleteAllUcConfirmText").value="";
+  el("confirmDeleteAllUc").disabled=true;
+  el("deleteAllUcProgress").textContent="";
+  openSimpleModal("deleteAllUcModal");
+  setTimeout(()=>el("deleteAllUcConfirmText").focus(),50);
+}
+
+function closeDeleteAllUcModal(){
+  if(el("confirmDeleteAllUc").disabled && el("deleteAllUcProgress").textContent.startsWith("Đang xóa")) return;
+  closeSimpleModal("deleteAllUcModal");
+}
+
+el("deleteAllUcConfirmText").addEventListener("input",()=>{
+  el("confirmDeleteAllUc").disabled=el("deleteAllUcConfirmText").value.trim()!=="XOA TOAN BO UC";
+});
+
+async function removeEvidenceFiles(paths){
+  const unique=[...new Set((paths||[]).filter(Boolean))];
+  if(!unique.length)return {removed:0,failed:0};
+  let removed=0,failed=0;
+  for(let i=0;i<unique.length;i+=100){
+    const chunk=unique.slice(i,i+100);
+    const {error}=await sb.storage.from("test-evidence").remove(chunk);
+    if(error)failed+=chunk.length;else removed+=chunk.length;
+  }
+  return {removed,failed};
+}
+
+async function deleteAllProjectUsecases(){
+  if(!canManage())return alert("Bạn không có quyền thực hiện thao tác này.");
+  if(el("deleteAllUcConfirmText").value.trim()!=="XOA TOAN BO UC")return;
+
+  const btn=el("confirmDeleteAllUc");
+  btn.disabled=true;
+  el("cancelDeleteAllUc").disabled=true;
+  el("closeDeleteAllUcModal").disabled=true;
+  el("deleteAllUcProgress").textContent="Đang xóa toàn bộ Use Case và dữ liệu liên quan...";
+
+  try{
+    const {data,error}=await sb.rpc("delete_all_project_usecases",{p_project_id:projectId});
+    if(error)throw error;
+
+    const result=(Array.isArray(data)?data[0]:data)||{};
+    const storage=await removeEvidenceFiles(result.storage_paths||[]);
+
+    el("deleteAllUcProgress").textContent=`Đã xóa ${result.use_cases||0} Use Case, ${result.test_cases||0} Test Case, ${result.scenarios||0} kịch bản, ${result.executions||0} lần kiểm thử và ${result.defects||0} Bug.${storage.failed?` Có ${storage.failed} file Storage chưa xóa được.`:""}`;
+
+    await loadAll();
+    setTimeout(()=>{
+      closeSimpleModal("deleteAllUcModal");
+      alert("Đã xóa toàn bộ Use Case của dự án. Bạn có thể Import Excel lại từ đầu.");
+    },350);
+  }catch(err){
+    console.error(err);
+    el("deleteAllUcProgress").textContent="Không xóa được: "+(err.message||String(err));
+    alert("Không xóa được toàn bộ Use Case: "+(err.message||String(err)));
+  }finally{
+    el("cancelDeleteAllUc").disabled=false;
+    el("closeDeleteAllUcModal").disabled=false;
+    el("confirmDeleteAllUc").disabled=el("deleteAllUcConfirmText").value.trim()!=="XOA TOAN BO UC";
+  }
+}
+
+el("deleteAllUcBtn").onclick=openDeleteAllUcModal;
+el("closeDeleteAllUcModal").onclick=()=>closeSimpleModal("deleteAllUcModal");
+el("cancelDeleteAllUc").onclick=()=>closeSimpleModal("deleteAllUcModal");
+el("deleteAllUcModal").addEventListener("click",e=>{if(e.target===el("deleteAllUcModal"))closeSimpleModal("deleteAllUcModal")});
+el("confirmDeleteAllUc").onclick=deleteAllProjectUsecases;
 
 el("importUcBtn").onclick=openImportPicker;el("importUcTabBtn").onclick=openImportPicker;
 el("ucImportFile").addEventListener("change",e=>{const file=e.target.files?.[0];if(file)handleImportFile(file)});

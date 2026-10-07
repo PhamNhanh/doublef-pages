@@ -3,441 +3,217 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Xếp hạng 34 tỉnh/thành Việt Nam</title>
+<meta name="theme-color" content="#0f172a">
+<title>Thông tin & xếp hạng 34 tỉnh/thành Việt Nam</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <style>
-:root{
-  --bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#667085;--line:#e4e7ec;
-  --blue:#155eef;--blue2:#0b5ed7;--soft:#f8fafc;--avg:#f59e0b;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-.wrap{max-width:1600px;margin:auto;padding:18px}
-.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}
-.header h1{margin:0;font-size:28px}
-.header p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
-.source{max-width:520px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--muted)}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.filters{display:grid;grid-template-columns:160px 260px 260px 1fr;gap:10px;padding:12px;margin-bottom:14px}
-label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
-select,input{width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:#fff}
-.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
-.card{padding:15px}
-.card .t{font-size:11px;color:var(--muted)}
-.card .v{font-size:24px;font-weight:700;margin-top:7px}
-.card .h{font-size:11px;color:var(--muted);margin-top:6px}
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-bottom:14px}
-.head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
-.head h2{margin:0;font-size:17px}
-.head small{color:var(--muted)}
-#map,#compare,#trend{height:510px}
-.rank{max-height:510px;overflow:auto}
-table{width:100%;border-collapse:collapse}
-th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-size:10px;text-transform:uppercase;text-align:left;padding:10px;border-bottom:1px solid var(--line)}
-td{padding:10px;border-bottom:1px solid #f1f5f9;font-size:12px}
-tr:nth-child(even){background:#fcfdff}
-tr.active{background:#eef4ff}
-.detail{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.detailBox{padding:15px}
-.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 12px;font-size:12px}
-.kv>div:nth-child(odd){color:var(--muted)}
-.tag{display:inline-block;margin:4px 6px 0 0;padding:5px 8px;border-radius:999px;background:#eef4ff;color:#1d4ed8;font-size:11px}
-.note{padding:14px;color:var(--muted);font-size:12px;line-height:1.6}
-.map-fallback{height:510px;display:grid;place-items:center;padding:18px}
-.province-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
-.province-chip{border:1px solid var(--line);background:#f8fafc;border-radius:10px;padding:10px;font-size:11px;cursor:pointer;box-shadow:0 5px 0 #dbe3ee}
-.province-chip.active{background:#155eef;color:white;border-color:#155eef;box-shadow:0 5px 0 #0b4abf}
-@media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.detail{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}}
-@media(max-width:700px){.header{display:block}.source{margin-top:10px}.cards,.filters{grid-template-columns:1fr}.province-grid{grid-template-columns:repeat(2,1fr)}}
+:root{--bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#667085;--line:#e4e7ec;--blue:#155eef;--blue2:#0b4fc4;--soft:#eef4ff;--green:#067647;--amber:#b54708;--red:#b42318;--shadow:0 1px 3px rgba(16,24,40,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}button,input,select{font:inherit}.wrap{max-width:1720px;margin:auto;padding:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}.header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:12px}.header h1{margin:0;font-size:27px;letter-spacing:-.02em}.header p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.55}.status{min-width:350px;max-width:580px;padding:11px 13px}.status-line{display:flex;align-items:center;gap:7px;font-size:11px;margin:4px 0;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:#98a2b3;flex:none}.dot.ok{background:#12b76a}.dot.loading{background:#f79009}.dot.err{background:#f04438}.filters{display:grid;grid-template-columns:120px 245px 245px minmax(240px,1fr) auto;gap:9px;padding:11px;margin-bottom:12px;align-items:end}label{display:block;margin-bottom:5px;color:var(--muted);font-size:10px;font-weight:700}select,input{width:100%;height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);padding:0 10px;outline:none}select:focus,input:focus{border-color:#84adff;box-shadow:0 0 0 3px rgba(21,94,239,.08)}.btn{height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:0 12px;font-size:11px;font-weight:700;cursor:pointer}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}.card{padding:14px}.card .t{font-size:10px;color:var(--muted)}.card .v{margin-top:6px;font-size:22px;font-weight:750;line-height:1.2}.card .h{margin-top:5px;font-size:10px;color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(390px,.8fr);gap:12px;margin-bottom:12px}.head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.head h2{margin:0;font-size:16px}.head small{color:var(--muted);font-size:10px}.map-wrap{padding:12px}.map-3d{perspective:1200px;padding:8px 12px 22px}.map-frame{height:520px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 18px 30px rgba(15,23,42,.12);transform:rotateX(1.6deg);transform-origin:center bottom;background:#dbeafe}.leaflet-container{font-family:inherit}.photo-card{display:grid;grid-template-columns:180px minmax(0,1fr);gap:12px;margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.photo-box{height:132px;background:#f2f4f7;display:grid;place-items:center;overflow:hidden}.photo-box img{width:100%;height:100%;object-fit:cover}.photo-info{padding:12px 12px 12px 0;min-width:0}.photo-info h3{margin:0 0 6px;font-size:15px}.photo-info p{margin:4px 0;color:var(--muted);font-size:10px;line-height:1.5}.source-link{color:var(--blue);text-decoration:none}.rank{max-height:710px;overflow:auto}table{width:100%;border-collapse:collapse}th{position:sticky;top:0;z-index:2;background:#f8fafc;color:var(--muted);font-size:9px;text-transform:uppercase;text-align:left;padding:10px;border-bottom:1px solid var(--line)}td{padding:9px 10px;border-bottom:1px solid #f1f5f9;font-size:11px}tr:nth-child(even){background:#fcfdff}tr.active{background:#eef4ff}tbody tr{cursor:pointer}.rank-num{font-weight:800;color:#344054}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.detail-body{padding:14px}.kv{display:grid;grid-template-columns:155px minmax(0,1fr);gap:7px 12px;font-size:11px}.kv>div:nth-child(odd){color:var(--muted)}.tags{margin-top:6px}.tag{display:inline-block;padding:5px 8px;margin:3px 4px 0 0;border-radius:999px;background:#eef4ff;color:#175cd3;font-size:10px}.badge{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:700;background:#f2f4f7;color:#475467}.badge.official{background:#ecfdf3;color:#067647}.badge.derived{background:#fff7ed;color:#b54708}.badge.external{background:#eef4ff;color:#175cd3}.chart{height:480px}.chart-panel{margin-bottom:12px}.note{padding:12px 14px;color:var(--muted);font-size:10px;line-height:1.55;border-top:1px solid var(--line)}.loader{display:none;position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:9999;align-items:center;justify-content:center}.loader.show{display:flex}.loader-box{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.2);font-size:12px;font-weight:700}.spinner{display:inline-block;width:16px;height:16px;border:2px solid #d0d5dd;border-top-color:#155eef;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:1180px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.detail-grid{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.status{min-width:0}}
+@media(max-width:720px){.wrap{padding:8px}.header{display:block}.status{margin-top:10px}.filters,.cards{grid-template-columns:1fr}.grid{display:block}.grid>.panel{margin-bottom:10px}.map-frame{height:420px}.photo-card{grid-template-columns:120px 1fr}.photo-box{height:115px}.chart{height:430px}}
 </style>
 </head>
 <body>
+<div class="loader" id="loader"><div class="loader-box"><span class="spinner"></span><span id="loaderText">Đang tải dữ liệu...</span></div></div>
 <div class="wrap">
-
   <div class="header">
     <div>
       <h1>Thông tin & xếp hạng 34 tỉnh/thành Việt Nam</h1>
-      <p>So sánh theo năm, theo tỉnh/thành, theo chỉ tiêu; xếp hạng 1–34 và đối chiếu với trung bình cả nước.</p>
+      <p>Dữ liệu nhiều năm được quy đổi/đối chiếu theo 34 đơn vị hành chính cấp tỉnh hiện hành. Ảnh tỉnh được lấy trực tuyến từ Wikimedia Commons.</p>
     </div>
-    <div class="source">
-      <b>Nguồn khuyến nghị:</b> Cục Thống kê/NSO, Niên giám thống kê, Bộ Nội vụ, Bộ Công Thương, Trung tâm Dự báo KTTV Quốc gia.
-      <br><br>
-      <b>Lưu ý:</b> file này là một HTML duy nhất. Dữ liệu được khai báo ngay trong biến <code>DATA</code> phía dưới.
+    <div class="panel status" id="statusPanel">
+      <div class="status-line"><span class="dot" id="sNSO"></span><span><b>NSO:</b> dân số, GRDP, thu nhập</span></div>
+      <div class="status-line"><span class="dot" id="sTrade"></span><span><b>Hải quan:</b> xuất khẩu, nhập khẩu</span></div>
+      <div class="status-line"><span class="dot" id="sClimate"></span><span><b>Khí hậu:</b> Open-Meteo theo tọa độ trung tâm tỉnh</span></div>
+      <div class="status-line"><span class="dot" id="sPhoto"></span><span><b>Ảnh:</b> Wikimedia Commons</span></div>
     </div>
   </div>
 
   <div class="panel filters">
-    <div>
-      <label>Năm</label>
-      <select id="year"></select>
-    </div>
-    <div>
-      <label>Tỉnh/Thành phố</label>
-      <select id="province"></select>
-    </div>
-    <div>
-      <label>Chỉ tiêu xếp hạng</label>
-      <select id="metric"></select>
-    </div>
-    <div>
-      <label>Tìm tỉnh/thành</label>
-      <input id="search" placeholder="Ví dụ: Lâm Đồng">
-    </div>
+    <div><label>Năm</label><select id="year"></select></div>
+    <div><label>Tỉnh/Thành phố</label><select id="province"></select></div>
+    <div><label>Chỉ tiêu xếp hạng</label><select id="metric"></select></div>
+    <div><label>Tìm tỉnh/thành</label><input id="search" placeholder="Ví dụ: Lâm Đồng"></div>
+    <div><label>&nbsp;</label><button class="btn primary" id="reloadBtn">Cập nhật dữ liệu</button></div>
   </div>
 
   <div class="cards">
-    <div class="panel card"><div class="t">Tỉnh đang chọn</div><div class="v" id="kProvince">-</div><div class="h">Theo năm đang chọn</div></div>
-    <div class="panel card"><div class="t">Thứ hạng</div><div class="v" id="kRank">-</div><div class="h">Trong 34 tỉnh/thành</div></div>
-    <div class="panel card"><div class="t">Giá trị</div><div class="v" id="kValue">-</div><div class="h" id="kValueLabel">-</div></div>
-    <div class="panel card"><div class="t">Trung bình cả nước</div><div class="v" id="kAvg">-</div><div class="h">Đường tham chiếu trên biểu đồ</div></div>
-    <div class="panel card"><div class="t">So với trung bình</div><div class="v" id="kGap">-</div><div class="h" id="kGapLabel">-</div></div>
+    <div class="panel card"><div class="t">Tỉnh đang chọn</div><div class="v" id="kProvince">-</div><div class="h" id="kYear">-</div></div>
+    <div class="panel card"><div class="t">Thứ hạng</div><div class="v" id="kRank">-</div><div class="h">Trong các tỉnh có dữ liệu</div></div>
+    <div class="panel card"><div class="t">Giá trị</div><div class="v" id="kValue">-</div><div class="h" id="kMetric">-</div></div>
+    <div class="panel card"><div class="t">Trung bình 34 tỉnh/thành</div><div class="v" id="kAvg">-</div><div class="h">Đường tham chiếu trên biểu đồ</div></div>
+    <div class="panel card"><div class="t">So với trung bình</div><div class="v" id="kGap">-</div><div class="h" id="kGapText">-</div></div>
   </div>
 
   <div class="grid">
     <div class="panel">
-      <div class="head">
-        <div><h2>Bản đồ Việt Nam 34 tỉnh/thành</h2><small>Bản xem nhanh 3D dạng khối; có thể thay bằng GeoJSON thật ngay trong cùng file.</small></div>
+      <div class="head"><div><h2>Bản đồ tương tác 34 tỉnh/thành</h2><small>Bản đồ nền OpenStreetMap; điểm tỉnh được tô theo chỉ tiêu đang chọn, hiển thị theo phối cảnh nổi.</small></div><span class="badge external">34 tỉnh/thành</span></div>
+      <div class="map-wrap">
+        <div class="map-3d"><div id="map" class="map-frame"></div></div>
+        <div class="photo-card">
+          <div class="photo-box" id="photoBox"><span style="font-size:11px;color:#667085">Đang tải ảnh...</span></div>
+          <div class="photo-info">
+            <h3 id="photoTitle">-</h3>
+            <p id="photoCaption">Ảnh đại diện địa phương được tìm tự động trên Wikimedia Commons.</p>
+            <p><a class="source-link" id="photoSource" target="_blank" rel="noopener">Mở nguồn ảnh</a></p>
+          </div>
+        </div>
       </div>
-      <div id="map"></div>
     </div>
 
     <div class="panel">
-      <div class="head">
-        <div><h2>Bảng xếp hạng</h2><small>So sánh tỉnh đang chọn với 33 tỉnh/thành còn lại</small></div>
-      </div>
+      <div class="head"><div><h2>Bảng xếp hạng</h2><small>So sánh tỉnh đang chọn với 33 tỉnh/thành còn lại.</small></div><span class="badge" id="rankBadge">-</span></div>
       <div class="rank">
-        <table>
-          <thead><tr><th>Hạng</th><th>Tỉnh/Thành</th><th>Giá trị</th></tr></thead>
-          <tbody id="rankBody"></tbody>
-        </table>
+        <table><thead><tr><th>Hạng</th><th>Tỉnh/Thành</th><th>Giá trị</th><th>Nguồn</th></tr></thead><tbody id="rankBody"></tbody></table>
       </div>
     </div>
   </div>
 
-  <div class="detail">
+  <div class="detail-grid">
     <div class="panel">
-      <div class="head"><div><h2>Thông tin chi tiết</h2><small>Thông tin tỉnh/thành đang chọn</small></div></div>
-      <div class="detailBox">
+      <div class="head"><div><h2>Thông tin chi tiết</h2><small>Dữ liệu theo năm đang chọn.</small></div></div>
+      <div class="detail-body">
         <div class="kv" id="detailBox"></div>
-        <div style="margin-top:14px"><b style="font-size:13px">Ngành trọng yếu</b><div id="sectorBox"></div></div>
+        <div style="margin-top:12px"><b style="font-size:11px">Ngành trọng yếu</b><div class="tags" id="sectorBox"></div></div>
       </div>
     </div>
-
     <div class="panel">
-      <div class="head"><div><h2>Nguồn dữ liệu</h2><small>Ghi chú nguồn cho từng nhóm chỉ tiêu</small></div></div>
-      <div class="detailBox"><div class="kv" id="sourceBox"></div></div>
+      <div class="head"><div><h2>Nguồn & phương pháp</h2><small>Mỗi chỉ tiêu có nguồn riêng, không trộn dữ liệu không rõ nguồn.</small></div></div>
+      <div class="detail-body"><div class="kv" id="sourceBox"></div></div>
     </div>
   </div>
 
-  <div class="panel" style="margin-bottom:14px">
-    <div class="head"><div><h2>Xu hướng theo năm</h2><small>Tỉnh/thành đang chọn</small></div></div>
-    <div id="trend"></div>
+  <div class="panel chart-panel">
+    <div class="head"><div><h2>Xu hướng theo năm</h2><small>Tỉnh/thành đang chọn.</small></div></div>
+    <div id="trend" class="chart"></div>
   </div>
 
-  <div class="panel">
-    <div class="head"><div><h2>So sánh với 33 tỉnh/thành còn lại</h2><small>Có đường trung bình cả nước</small></div></div>
-    <div id="compare"></div>
-    <div class="note">
-      Quy ước dữ liệu đề xuất: diện tích (km²), dân số (người), xuất/nhập khẩu (USD),
-      GRDP và tổng thu nhập (tỷ đồng), lượng mưa (mm/năm), nhiệt độ (°C bình quân năm).
-    </div>
+  <div class="panel chart-panel">
+    <div class="head"><div><h2>So sánh 34 tỉnh/thành</h2><small>Đường gạch ngang là mức trung bình các tỉnh có dữ liệu.</small></div></div>
+    <div id="compare" class="chart" style="height:740px"></div>
+    <div class="note">Diện tích dùng ranh giới 34 tỉnh hiện hành. Dữ liệu các năm trước 2025 được đối chiếu/quy đổi sang 34 tỉnh mới khi nguồn cho phép. GRDP tổng được suy ra từ GRDP bình quân đầu người × dân số; tổng thu nhập được ước tính từ thu nhập bình quân đầu người/tháng × dân số × 12. Khí hậu là giá trị tại tọa độ đại diện trung tâm tỉnh, không phải bình quân diện tích toàn tỉnh.</div>
   </div>
-
 </div>
-
 <script>
-/* =========================================================
-   1 FILE DUY NHẤT:
-   - HTML + CSS + JS + DATA đều nằm trong file này.
-   - Hãy thay dữ liệu null bằng số liệu chính thức.
-   ========================================================= */
+const YEARS=["2022","2023","2024","2025"];
+const METRICS={
+ area:{label:"Diện tích",unit:"km²",dec:2,source:"Hành chính 2025",kind:"static"},
+ population:{label:"Dân số",unit:"người",dec:0,source:"NSO",kind:"official"},
+ exports:{label:"Xuất khẩu",unit:"USD",dec:0,source:"Cục Hải quan",kind:"official"},
+ imports:{label:"Nhập khẩu",unit:"USD",dec:0,source:"Cục Hải quan",kind:"official"},
+ grdp:{label:"GRDP",unit:"tỷ đồng",dec:0,source:"NSO - suy ra",kind:"derived"},
+ grdpPerCapita:{label:"GRDP bình quân đầu người",unit:"triệu đồng/người",dec:1,source:"NSO",kind:"official"},
+ totalIncome:{label:"Tổng thu nhập ước tính",unit:"tỷ đồng/năm",dec:0,source:"NSO - suy ra",kind:"derived"},
+ incomePerCapita:{label:"Thu nhập bình quân đầu người",unit:"nghìn đồng/người/tháng",dec:0,source:"NSO",kind:"official"},
+ rainfall:{label:"Lượng mưa",unit:"mm/năm",dec:1,source:"Open-Meteo",kind:"external"},
+ temperature:{label:"Nhiệt độ trung bình",unit:"°C",dec:1,source:"Open-Meteo",kind:"external"}
+};
 
-const PROVINCES_34 = [
-  ["01","Hà Nội"],["04","Cao Bằng"],["08","Tuyên Quang"],["11","Điện Biên"],
-  ["12","Lai Châu"],["14","Sơn La"],["15","Lào Cai"],["19","Thái Nguyên"],
-  ["20","Lạng Sơn"],["22","Quảng Ninh"],["24","Bắc Ninh"],["25","Phú Thọ"],
-  ["31","Hải Phòng"],["33","Hưng Yên"],["37","Ninh Bình"],["38","Thanh Hóa"],
-  ["40","Nghệ An"],["42","Hà Tĩnh"],["44","Quảng Trị"],["46","Huế"],
-  ["48","Đà Nẵng"],["51","Quảng Ngãi"],["52","Gia Lai"],["56","Khánh Hòa"],
-  ["66","Đắk Lắk"],["68","Lâm Đồng"],["75","Đồng Nai"],["79","Thành phố Hồ Chí Minh"],
-  ["80","Tây Ninh"],["82","Đồng Tháp"],["86","Vĩnh Long"],["91","An Giang"],
-  ["92","Cần Thơ"],["96","Cà Mau"]
+const P=[
+{code:"01",name:"Hà Nội",area:3359.82,pop2025:8718000,lat:21.0285,lon:105.8542,old:["Ha Noi"],customs:"Ha Noi",sectors:["Dịch vụ","Tài chính - ngân hàng","CNTT","Công nghiệp chế biến"]},
+{code:"04",name:"Cao Bằng",area:6700.4,pop2025:555809,lat:22.6666,lon:106.2639,old:["Cao Bang"],customs:"Cao Bang",sectors:["Nông - lâm nghiệp","Khoáng sản","Du lịch","Thương mại biên giới"]},
+{code:"08",name:"Tuyên Quang",area:13795.50,pop2025:1865270,lat:21.8236,lon:105.2142,old:["Tuyen Quang","Ha Giang"],customs:"Tuyen Quang",sectors:["Lâm nghiệp","Nông nghiệp","Thủy điện","Du lịch"]},
+{code:"11",name:"Điện Biên",area:9539.9,pop2025:653422,lat:21.3860,lon:103.0230,old:["Dien Bien"],customs:"Dien Bien",sectors:["Nông - lâm nghiệp","Thủy điện","Du lịch","Dịch vụ"]},
+{code:"12",name:"Lai Châu",area:9068.7,pop2025:494626,lat:22.3964,lon:103.4582,old:["Lai Chau"],customs:"Lai Chau",sectors:["Thủy điện","Nông - lâm nghiệp","Khoáng sản","Dược liệu"]},
+{code:"14",name:"Sơn La",area:14109.8,pop2025:1327430,lat:21.3256,lon:103.9188,old:["Son La"],customs:"Son La",sectors:["Nông nghiệp","Chế biến nông sản","Thủy điện","Du lịch"]},
+{code:"15",name:"Lào Cai",area:13256.92,pop2025:1778785,lat:22.4856,lon:103.9707,old:["Lao Cai","Yen Bai"],customs:"Lao Cai",sectors:["Khoáng sản - luyện kim","Du lịch","Nông - lâm nghiệp","Logistics biên giới"]},
+{code:"19",name:"Thái Nguyên",area:8375.21,pop2025:1799489,lat:21.5942,lon:105.8482,old:["Thai Nguyen","Bac Can"],customs:"Thai Nguyen",sectors:["Điện tử","Luyện kim","Khai khoáng","Chè và nông nghiệp"]},
+{code:"20",name:"Lạng Sơn",area:8310.2,pop2025:813978,lat:21.8537,lon:106.7610,old:["Lang Son"],customs:"Lang Son",sectors:["Thương mại biên giới","Logistics","Nông - lâm nghiệp","Du lịch"]},
+{code:"22",name:"Quảng Ninh",area:6207.9,pop2025:1429841,lat:20.9712,lon:107.0448,old:["Quang Ninh"],customs:"Quang Ninh",sectors:["Khai khoáng","Du lịch","Cảng biển - logistics","Năng lượng"]},
+{code:"24",name:"Bắc Ninh",area:4718.6,pop2025:3619433,lat:21.1861,lon:106.0763,old:["Bac Ninh","Bac Giang"],customs:"Bac Ninh",sectors:["Điện tử","Chế biến chế tạo","Logistics","Nông nghiệp"]},
+{code:"25",name:"Phú Thọ",area:9361.38,pop2025:4022638,lat:21.3227,lon:105.4019,old:["Phu Tho","Vinh Phuc","Hoa Binh"],customs:"Phu Tho",sectors:["Ô tô - xe máy","Điện tử","Hóa chất","Du lịch"]},
+{code:"31",name:"Hải Phòng",area:3194.72,pop2025:4664124,lat:20.8449,lon:106.6881,old:["Hai Phong","Hai Duong"],customs:"Hai Phong",sectors:["Cảng biển - logistics","Công nghiệp chế tạo","Điện tử","Ô tô"]},
+{code:"33",name:"Hưng Yên",area:2514.81,pop2025:3567943,lat:20.8526,lon:106.0169,old:["Hung Yen","Thai Binh"],customs:"Hung Yen",sectors:["Chế biến chế tạo","Dệt may","Nông nghiệp","Logistics"]},
+{code:"37",name:"Ninh Bình",area:3942.62,pop2025:4412264,lat:20.2506,lon:105.9745,old:["Ninh Binh","Nam Dinh","Ha Nam"],customs:"Ninh Binh",sectors:["Công nghiệp chế tạo","Dệt may","Vật liệu xây dựng","Du lịch"]},
+{code:"38",name:"Thanh Hóa",area:11114.7,pop2025:3760650,lat:19.8067,lon:105.7852,old:["Thanh Hoa"],customs:"Thanh Hoa",sectors:["Lọc hóa dầu","Công nghiệp nặng","Nông - lâm - thủy sản","Du lịch"]},
+{code:"40",name:"Nghệ An",area:16493.7,pop2025:3470988,lat:18.6796,lon:105.6813,old:["Nghe An"],customs:"Nghe An",sectors:["Công nghiệp chế biến","Nông - lâm nghiệp","Cảng - logistics","Du lịch"]},
+{code:"42",name:"Hà Tĩnh",area:5994.4,pop2025:1622901,lat:18.3428,lon:105.9057,old:["Ha Tinh"],customs:"Ha Tinh",sectors:["Thép","Cảng biển","Năng lượng","Nông nghiệp"]},
+{code:"44",name:"Quảng Trị",area:12700,pop2025:1870845,lat:16.8163,lon:107.1003,old:["Quang Tri","Quang Binh"],customs:"Quang Tri",sectors:["Năng lượng","Logistics","Du lịch","Nông - lâm nghiệp"]},
+{code:"46",name:"Huế",area:4947.1,pop2025:1236393,lat:16.4637,lon:107.5909,old:["Thua Thien-Hue","Thua Thien Hue"],customs:"Hue",sectors:["Du lịch - di sản","Dịch vụ","CNTT","Dệt may"]},
+{code:"48",name:"Đà Nẵng",area:11859.59,pop2025:3065628,lat:16.0544,lon:108.2022,old:["Da Nang","Quang Nam"],customs:"Da Nang",sectors:["Du lịch","CNTT","Cơ khí - ô tô","Logistics"]},
+{code:"51",name:"Quảng Ngãi",area:14832.55,pop2025:2161755,lat:15.1205,lon:108.7923,old:["Quang Ngai","Kon Tum"],customs:"Quang Ngai",sectors:["Lọc hóa dầu","Chế biến","Nông - lâm nghiệp","Năng lượng"]},
+{code:"52",name:"Gia Lai",area:21576.53,pop2025:3583693,lat:13.9833,lon:108.0000,old:["Gia Lai","Binh Dinh"],customs:"Gia Lai",sectors:["Nông nghiệp","Chế biến","Cảng - logistics","Năng lượng tái tạo"]},
+{code:"56",name:"Khánh Hòa",area:8555.86,pop2025:2243554,lat:12.2388,lon:109.1967,old:["Khanh Hoa","Ninh Thuan"],customs:"Khanh Hoa",sectors:["Du lịch biển","Cảng - logistics","Năng lượng","Thủy sản"]},
+{code:"66",name:"Đắk Lắk",area:18096.40,pop2025:3346853,lat:12.6667,lon:108.0500,old:["Dak Lak","Phu Yen"],customs:"Dak Lak",sectors:["Nông nghiệp cà phê","Chế biến","Thủy sản","Năng lượng"]},
+{code:"68",name:"Lâm Đồng",area:24233.07,pop2025:3872999,lat:11.9404,lon:108.4583,old:["Lam Dong","Dac Nong","Dak Nong","Binh Thuan"],customs:"Lam Dong",sectors:["Nông nghiệp công nghệ cao","Bauxite - alumin","Năng lượng","Du lịch"]},
+{code:"75",name:"Đồng Nai",area:12737.18,pop2025:4491408,lat:10.9574,lon:106.8427,old:["Dong Nai","Binh Phuoc"],customs:"Dong Nai",sectors:["Chế biến chế tạo","Logistics","Nông nghiệp","Gỗ - cao su"]},
+{code:"79",name:"Hồ Chí Minh",area:6772.59,pop2025:14002598,lat:10.7769,lon:106.7009,old:["Ho Chi Minh city","Binh Duong","Ba Ria - Vung Tau"],customs:"Ho Chi Minh city",sectors:["Tài chính - thương mại","Công nghiệp","Cảng - logistics","Dầu khí"]},
+{code:"80",name:"Tây Ninh",area:8536.44,pop2025:3254170,lat:11.3100,lon:106.1000,old:["Tay Ninh","Long An"],customs:"Tay Ninh",sectors:["Công nghiệp","Logistics","Nông nghiệp","Thương mại biên giới"]},
+{code:"82",name:"Đồng Tháp",area:5938.64,pop2025:4370046,lat:10.4938,lon:105.6882,old:["Dong Thap","Tien Giang"],customs:"Dong Thap",sectors:["Nông nghiệp","Thủy sản","Chế biến thực phẩm","Logistics"]},
+{code:"86",name:"Vĩnh Long",area:6296.20,pop2025:4257581,lat:10.2537,lon:105.9722,old:["Vinh Long","Ben Tre","Tra Vinh"],customs:"Vinh Long",sectors:["Nông nghiệp","Dừa - trái cây","Thủy sản","Năng lượng"]},
+{code:"91",name:"An Giang",area:9888.91,pop2025:4952238,lat:10.3759,lon:105.4185,old:["An Giang","Kien Giang"],customs:"An Giang",sectors:["Lúa gạo","Thủy sản","Du lịch","Thương mại biên giới"]},
+{code:"92",name:"Cần Thơ",area:6360.83,pop2025:4199824,lat:10.0452,lon:105.7469,old:["Can Tho","Soc Trang","Hau Giang"],customs:"Can Tho",sectors:["Chế biến thực phẩm","Logistics","Nông nghiệp","Thủy sản"]},
+{code:"96",name:"Cà Mau",area:7942.39,pop2025:2606672,lat:9.1769,lon:105.1524,old:["Ca Mau","Bac Lieu"],customs:"Ca Mau",sectors:["Thủy sản","Năng lượng","Khí - điện - đạm","Nông nghiệp"]}
 ];
 
-const YEARS = ["2022","2023","2024","2025"];
-
-const METRICS = {
-  area:{label:"Diện tích",unit:"km²",dec:2},
-  population:{label:"Dân số",unit:"người",dec:0},
-  exports:{label:"Xuất khẩu",unit:"USD",dec:0},
-  imports:{label:"Nhập khẩu",unit:"USD",dec:0},
-  grdp:{label:"GRDP",unit:"tỷ đồng",dec:0},
-  totalIncome:{label:"Tổng thu nhập",unit:"tỷ đồng",dec:0},
-  rainfall:{label:"Lượng mưa",unit:"mm",dec:1},
-  temperature:{label:"Nhiệt độ TB",unit:"°C",dec:1}
+const DB={};P.forEach(p=>{DB[p.code]={};YEARS.forEach(y=>DB[p.code][y]={area:p.area,population:null,exports:null,imports:null,grdp:null,grdpPerCapita:null,totalIncome:null,incomePerCapita:null,rainfall:null,temperature:null})});
+P.forEach(p=>DB[p.code]["2025"].population=p.pop2025);
+const SOURCES={
+ area:{name:"Nghị quyết sắp xếp cấp tỉnh 2025 / số liệu hành chính 34 tỉnh",kind:"official"},
+ population:{name:"Cục Thống kê (NSO) - phụ lục 34 tỉnh",kind:"official"},
+ grdpPerCapita:{name:"Cục Thống kê (NSO) - PL.V03.02",kind:"official"},
+ grdp:{name:"Suy ra: GRDP/người × dân số",kind:"derived"},
+ incomePerCapita:{name:"Cục Thống kê (NSO) - thu nhập bình quân",kind:"official"},
+ totalIncome:{name:"Ước tính: thu nhập/người/tháng × dân số × 12",kind:"derived"},
+ exports:{name:"Cục Hải quan - thống kê XNK theo tỉnh/thành",kind:"official"},
+ imports:{name:"Cục Hải quan - thống kê XNK theo tỉnh/thành",kind:"official"},
+ rainfall:{name:"Open-Meteo Archive - tọa độ đại diện tỉnh",kind:"external"},
+ temperature:{name:"Open-Meteo Archive - tọa độ đại diện tỉnh",kind:"external"}
 };
 
-/*
-  DỮ LIỆU:
-  - Tôi để null để tránh gắn số liệu minh họa thành số liệu chính thức.
-  - Bạn chỉ cần thay null bằng số thật.
-  - Tất cả vẫn ở chung 1 file.
-*/
-const DATA = PROVINCES_34.map(([code,name])=>({
-  code,name,
-  keySectors:[],
-  sourceNote:"",
-  series:Object.fromEntries(YEARS.map(y=>[y,{
-    area:null,
-    population:null,
-    exports:null,
-    imports:null,
-    grdp:null,
-    totalIncome:null,
-    rainfall:null,
-    temperature:null
-  }]))
-}));
-
-/* Có thể khai báo nhanh dữ liệu thật tại đây.
-   Ví dụ:
-   setData("68","2025",{area:24233.07,population:3872999});
-*/
-function setData(code,year,values){
-  const p=DATA.find(x=>x.code===code);
-  if(!p||!p.series[year])return;
-  Object.assign(p.series[year],values);
-}
-
-/* Một số số liệu hành chính sau sắp xếp 2025 từ nguồn Chính phủ
-   được điền để giao diện có thể hiển thị ngay. */
-setData("15","2025",{area:13256.92,population:1778785});
-setData("19","2025",{area:8375.21,population:1799489});
-setData("25","2025",{area:9361.38,population:4022638});
-setData("24","2025",{area:4718.60,population:3619433});
-setData("33","2025",{area:2514.81,population:3567943});
-setData("31","2025",{area:3194.72,population:4664124});
-setData("37","2025",{area:3942.62,population:4412264});
-setData("44","2025",{area:12700.00,population:1870845});
-setData("48","2025",{area:11859.59,population:3065628});
-setData("51","2025",{area:14832.55,population:2161755});
-setData("52","2025",{area:21576.53,population:3583693});
-setData("56","2025",{area:8555.86,population:2243554});
-setData("68","2025",{area:24233.07,population:3872999});
-setData("66","2025",{area:18096.40,population:3346853});
-setData("79","2025",{area:6772.59,population:14002598});
-setData("75","2025",{area:12737.18,population:4491408});
-setData("80","2025",{area:8536.44,population:3254170});
-setData("92","2025",{area:6360.83,population:4199824});
-setData("86","2025",{area:6296.20,population:4257581});
-setData("82","2025",{area:5938.64,population:4370046});
-setData("96","2025",{area:7942.39,population:2606672});
-setData("91","2025",{area:9888.91,population:4952238});
-
-const SOURCE_META = {
-  admin:"Bộ Nội vụ / Chính phủ - danh mục 34 tỉnh/thành sau sắp xếp năm 2025",
-  population:"Cục Thống kê / NSO - dân số theo địa phương",
-  area:"Cục Thống kê / số liệu hành chính, đất đai; số liệu sắp xếp 2025",
-  grdp:"Cục Thống kê / NSO - tài khoản quốc gia, GRDP địa phương",
-  trade:"Cục Thống kê / Bộ Công Thương - xuất nhập khẩu",
-  climate:"Cục Thống kê / Trung tâm Dự báo KTTV Quốc gia - mưa, nhiệt độ"
+const PX={
+ population:"https://pxweb.nso.gov.vn/api/v1/vi/PLV02D%C3%A2n%20s%E1%BB%91%20v%C3%A0%20lao%20%C4%91%E1%BB%99ng/PLV02D%C3%A2n%20s%E1%BB%91%20v%C3%A0%20lao%20%C4%91%E1%BB%99ng/PL.V02.02-04.px",
+ grdpPerCapita:"https://pxweb.nso.gov.vn/api/v1/vi/PLV03T%C3%A0i%20kho%E1%BA%A3n%20qu%E1%BB%91c%20gia/PLV03T%C3%A0i%20kho%E1%BA%A3n%20qu%E1%BB%91c%20gia/PL.V03.02.px",
+ incomePerCapita:"https://pxweb.nso.gov.vn/api/v1/vi/PLV14Y%20t%E1%BA%BF%2C%20v%C4%83n%20h%C3%B3a%20v%C3%A0%20MSDC/PLV14Y%20t%E1%BA%BF%2C%20v%C4%83n%20h%C3%B3a%20v%C3%A0%20MSDC/PL.V14.09.px"
+};
+const TRADE_URLS={
+ "2022":"https://files.customs.gov.vn/CustomsCMS/TONG_CUC/2023/1/9/2022-T12-4(EN-PR).pdf",
+ "2023":"https://asemconnectvietnam.gov.vn/WebLocalfiles/NGA/Thang2Nam2024/7220241016482023_T12_4_Ta_Sb_.pdf",
+ "2024":"https://files.customs.gov.vn/CustomsCMS/TONG_CUC/2025/1/10/2024-t12-4(ta-sb).pdf",
+ "2025":"https://files.customs.gov.vn/CustomsCMS/TONG_CUC/2026/1/7/2025-t12-4(ta-sb).pdf"
 };
 
-const yearEl=document.getElementById("year");
-const provinceEl=document.getElementById("province");
-const metricEl=document.getElementById("metric");
-const searchEl=document.getElementById("search");
+const $=id=>document.getElementById(id);const cache={nso:false,trade:{},climate:{},photo:{}};
+function norm(s){return String(s??"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/[^a-z0-9]+/g," ").trim()}
+function canonProvince(s){let n=norm(s).replace(/^(tinh|thanh pho|tp)\s+/,"").trim();if(n.includes("ho chi minh"))return"ho chi minh";if(n==="thua thien hue")return"hue";return n}
+function findProvince(name){const n=canonProvince(name);return P.find(p=>canonProvince(p.name)===n||p.old.some(x=>canonProvince(x)===n))}
+function fmt(v,d=0){if(v===null||v===undefined||Number.isNaN(+v))return"-";return Number(v).toLocaleString("vi-VN",{minimumFractionDigits:d,maximumFractionDigits:d})}
+function fmtMetric(k,v){if(v===null||v===undefined||Number.isNaN(+v))return"-";const m=METRICS[k];return fmt(v,m.dec)+" "+m.unit}
+function average(a){const x=a.filter(v=>typeof v==="number"&&!Number.isNaN(v));return x.length?x.reduce((s,v)=>s+v,0)/x.length:null}
+function setStatus(id,state){const e=$(id);e.className="dot "+(state||"")}
+function loading(on,text="Đang tải dữ liệu..."){$("loader").classList.toggle("show",!!on);$("loaderText").textContent=text}
+function totalChoice(variable){const vals=variable.values||[],texts=variable.valueTexts||[];let i=texts.findIndex(t=>/^(tổng số|tong so|total|chung|tất cả|tat ca)$/i.test(String(t).trim()));if(i<0)i=0;return vals[i]}
+async function pxFetch(url){const metaRes=await fetch(url,{cache:"no-store"});if(!metaRes.ok)throw new Error("PX metadata HTTP "+metaRes.status);const meta=await metaRes.json();const query=meta.variables.map(v=>{const t=norm(v.text);if(t.includes("nam")){const values=(v.values||[]).filter(x=>YEARS.includes(String(x)));return{code:v.code,selection:{filter:"item",values:values.length?values:v.values}}}if(t.includes("tinh")||t.includes("dia phuong")||t.includes("thanh pho")){return{code:v.code,selection:{filter:"all",values:["*"]}}}return{code:v.code,selection:{filter:"item",values:[totalChoice(v)]}}});const r=await fetch(url,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({query,response:{format:"json-stat2"}})});if(!r.ok)throw new Error("PX data HTTP "+r.status);return r.json()}
+function flattenJsonStat(ds){const ids=ds.id||[];const sizes=ds.size||[];const dims=ids.map(id=>{const c=ds.dimension[id].category||{};const idx=c.index||{};let codes;if(Array.isArray(idx))codes=idx;else codes=Object.keys(idx).sort((a,b)=>idx[a]-idx[b]);return{id,codes,labels:codes.map(x=>c.label?.[x]??x)}});const out=[];for(let flat=0;flat<(ds.value?.length||0);flat++){let rem=flat,row={},coords=new Array(sizes.length);for(let j=sizes.length-1;j>=0;j--){coords[j]=rem%sizes[j];rem=Math.floor(rem/sizes[j])}ids.forEach((id,j)=>row[id]=dims[j].labels[coords[j]]);row.value=ds.value[flat];if(row.value!==null&&row.value!==undefined)out.push(row)}return out}
+function rowField(row,pattern){const k=Object.keys(row).find(x=>pattern.test(norm(x)));return k?row[k]:null}
+async function loadNSO(force=false){if(cache.nso&&!force)return;setStatus("sNSO","loading");try{const [popDs,gpcDs,incDs]=await Promise.all([pxFetch(PX.population),pxFetch(PX.grdpPerCapita),pxFetch(PX.incomePerCapita)]);for(const [ds,key,mult] of [[popDs,"population",1000],[gpcDs,"grdpPerCapita",1],[incDs,"incomePerCapita",1]]){for(const row of flattenJsonStat(ds)){const pname=rowField(row,/(tinh|dia phuong|thanh pho)/);const year=String(rowField(row,/nam/)||"");const p=findProvince(pname);if(p&&YEARS.includes(year)){DB[p.code][year][key]=Number(row.value)*mult}}}P.forEach(p=>YEARS.forEach(y=>{const d=DB[p.code][y];if(typeof d.population==="number"&&typeof d.grdpPerCapita==="number")d.grdp=d.grdpPerCapita*(d.population/1000);if(typeof d.population==="number"&&typeof d.incomePerCapita==="number")d.totalIncome=d.incomePerCapita*(d.population/1000)*12/1000}));cache.nso=true;setStatus("sNSO","ok")}catch(e){console.warn("NSO",e);setStatus("sNSO","err")}}
+function escapeRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}
+function parseTradeText(text){const allNames=[...new Set(P.flatMap(p=>[p.customs,...p.old]))].sort((a,b)=>b.length-a.length);const result={};const flat=text.replace(/\r/g,"").replace(/\u00a0/g," ");for(const name of allNames){const re=new RegExp(escapeRe(name)+"[\\s|:,-]{1,40}([0-9][0-9,]*)[\\s|]+([0-9][0-9,]*)[\\s|]+([0-9][0-9,]*)[\\s|]+([0-9][0-9,]*)","i");const m=flat.match(re);if(m)result[name]={exports:+m[2].replace(/,/g,""),imports:+m[4].replace(/,/g,"")}}return result}
+async function fetchTextWithFallback(url){try{const r=await fetch(url,{cache:"no-store"});const ct=r.headers.get("content-type")||"";if(r.ok&&ct.includes("text"))return r.text()}catch{}const jina="https://r.jina.ai/"+url;const r2=await fetch(jina,{cache:"no-store"});if(!r2.ok)throw new Error("Không đọc được báo cáo XNK");return r2.text()}
+async function loadTradeYear(year,force=false){if(cache.trade[year]&&!force)return;setStatus("sTrade","loading");try{const text=await fetchTextWithFallback(TRADE_URLS[year]);const parsed=parseTradeText(text);P.forEach(p=>{let ex=0,im=0,found=0;if(year==="2025"&&parsed[p.customs]){ex=parsed[p.customs].exports;im=parsed[p.customs].imports;found=1}else{const used=new Set();for(const n of p.old){if(used.has(n))continue;used.add(n);if(parsed[n]){ex+=parsed[n].exports;im+=parsed[n].imports;found++}}}if(found){DB[p.code][year].exports=ex;DB[p.code][year].imports=im}});cache.trade[year]=true;setStatus("sTrade","ok")}catch(e){console.warn("Trade",e);setStatus("sTrade","err")}}
+async function loadClimateYear(year,force=false){if(cache.climate[year]&&!force)return;setStatus("sClimate","loading");const tasks=P.map(async p=>{const key=`climate_${p.code}_${year}`;if(!force){try{const c=JSON.parse(localStorage.getItem(key)||"null");if(c){DB[p.code][year].rainfall=c.rainfall;DB[p.code][year].temperature=c.temperature;return}}catch{}}const u=`https://archive-api.open-meteo.com/v1/archive?latitude=${p.lat}&longitude=${p.lon}&start_date=${year}-01-01&end_date=${year}-12-31&daily=temperature_2m_mean,precipitation_sum&timezone=Asia%2FBangkok`;const r=await fetch(u);if(!r.ok)return;const j=await r.json();const temps=(j.daily?.temperature_2m_mean||[]).filter(v=>v!==null);const rain=(j.daily?.precipitation_sum||[]).filter(v=>v!==null);const temperature=temps.length?temps.reduce((a,b)=>a+b,0)/temps.length:null;const rainfall=rain.length?rain.reduce((a,b)=>a+b,0):null;DB[p.code][year].temperature=temperature;DB[p.code][year].rainfall=rainfall;try{localStorage.setItem(key,JSON.stringify({temperature,rainfall}))}catch{}});await Promise.allSettled(tasks);cache.climate[year]=true;setStatus("sClimate","ok")}
+async function loadPhoto(p,force=false){if(cache.photo[p.code]&&!force){showPhoto(cache.photo[p.code],p);return}setStatus("sPhoto","loading");try{const q=encodeURIComponent(`${p.name} Việt Nam cảnh quan`);const url=`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${q}&gsrnamespace=6&gsrlimit=12&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1000&format=json&origin=*`;const r=await fetch(url);const j=await r.json();let pages=Object.values(j.query?.pages||{});pages=pages.filter(x=>!/(map|flag|coat|logo|seal|locator|emblem|icon)/i.test(x.title||"")&&/image\//.test(x.imageinfo?.[0]?.mime||"image/jpeg"));const x=pages[0]||Object.values(j.query?.pages||{})[0];if(!x)throw new Error("Không có ảnh");const ii=x.imageinfo?.[0]||{};const item={url:ii.thumburl||ii.url,source:ii.descriptionurl||ii.url,title:(x.title||"").replace(/^File:/i,"")};cache.photo[p.code]=item;showPhoto(item,p);setStatus("sPhoto","ok")}catch(e){console.warn(e);$("photoBox").innerHTML="<span style='font-size:11px;color:#667085'>Chưa tải được ảnh</span>";$("photoTitle").textContent=p.name;$("photoSource").removeAttribute("href");setStatus("sPhoto","err")}}
+function showPhoto(item,p){$("photoBox").innerHTML=`<img src="${item.url}" alt="${p.name}" loading="lazy">`;$("photoTitle").textContent=p.name;$("photoCaption").textContent=item.title||`Ảnh ${p.name}`;$("photoSource").href=item.source||item.url}
 
-const mapChart=echarts.init(document.getElementById("map"));
-const trendChart=echarts.init(document.getElementById("trend"));
-const compareChart=echarts.init(document.getElementById("compare"));
-
-function fmt(v,d=0){
-  if(v===null||v===undefined||v==="")return"-";
-  return Number(v).toLocaleString("vi-VN",{minimumFractionDigits:d,maximumFractionDigits:d});
-}
-function fmtMetric(k,v){
-  const m=METRICS[k];
-  if(v===null||v===undefined)return"-";
-  return fmt(v,m.dec)+" "+m.unit;
-}
-function avg(a){
-  const v=a.filter(x=>typeof x==="number"&&!Number.isNaN(x));
-  return v.length?v.reduce((s,x)=>s+x,0)/v.length:null;
-}
-function val(p,y,k){return p.series?.[y]?.[k]??null}
-
-function fillSelects(){
-  yearEl.innerHTML=YEARS.map(y=>`<option>${y}</option>`).join("");
-  provinceEl.innerHTML=DATA.map(p=>`<option value="${p.code}">${p.name}</option>`).join("");
-  metricEl.innerHTML=Object.entries(METRICS).map(([k,m])=>`<option value="${k}">${m.label}</option>`).join("");
-  yearEl.value="2025";
-  provinceEl.value="68";
-  metricEl.value="population";
-}
-
-function ranking(y,k,keyword=""){
-  let rows=DATA.map(p=>({p,value:val(p,y,k)}))
-    .filter(x=>typeof x.value==="number");
-  if(keyword){
-    const q=keyword.toLowerCase();
-    rows=rows.filter(x=>x.p.name.toLowerCase().includes(q));
-  }
-  rows.sort((a,b)=>b.value-a.value);
-  rows.forEach((r,i)=>r.rank=i+1);
-  return rows;
-}
-
-function renderRank(){
-  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
-  const rows=ranking(y,k,searchEl.value.trim());
-  document.getElementById("rankBody").innerHTML=rows.length?rows.map(r=>`
-    <tr class="${r.p.code===code?"active":""}" onclick="selectProvince('${r.p.code}')">
-      <td>${r.rank}</td><td>${r.p.name}</td><td>${fmtMetric(k,r.value)}</td>
-    </tr>`).join(""):`<tr><td colspan="3">Chưa có dữ liệu cho chỉ tiêu này.</td></tr>`;
-  return rows;
-}
-
-function renderKPI(rows){
-  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
-  const p=DATA.find(x=>x.code===code);
-  const value=val(p,y,k);
-  const a=avg(rows.map(x=>x.value));
-  const r=rows.find(x=>x.p.code===code);
-  document.getElementById("kProvince").textContent=p?.name||"-";
-  document.getElementById("kRank").textContent=r?`${r.rank}/${rows.length}`:"-";
-  document.getElementById("kValue").textContent=fmtMetric(k,value);
-  document.getElementById("kValueLabel").textContent=METRICS[k].label;
-  document.getElementById("kAvg").textContent=fmtMetric(k,a);
-  if(typeof value==="number"&&typeof a==="number"){
-    const gap=value-a;
-    document.getElementById("kGap").textContent=fmtMetric(k,gap);
-    document.getElementById("kGapLabel").textContent=gap>=0?"Cao hơn trung bình":"Thấp hơn trung bình";
-  }else{
-    document.getElementById("kGap").textContent="-";
-    document.getElementById("kGapLabel").textContent="Chưa đủ dữ liệu";
-  }
-}
-
-function renderDetail(){
-  const y=yearEl.value;
-  const p=DATA.find(x=>x.code===provinceEl.value);
-  const s=p?.series?.[y]||{};
-  document.getElementById("detailBox").innerHTML=`
-    <div>Mã tỉnh</div><div>${p?.code||"-"}</div>
-    <div>Tỉnh/Thành phố</div><div>${p?.name||"-"}</div>
-    <div>Năm</div><div>${y}</div>
-    <div>Diện tích</div><div>${fmtMetric("area",s.area)}</div>
-    <div>Dân số</div><div>${fmtMetric("population",s.population)}</div>
-    <div>Xuất khẩu</div><div>${fmtMetric("exports",s.exports)}</div>
-    <div>Nhập khẩu</div><div>${fmtMetric("imports",s.imports)}</div>
-    <div>GRDP</div><div>${fmtMetric("grdp",s.grdp)}</div>
-    <div>Tổng thu nhập</div><div>${fmtMetric("totalIncome",s.totalIncome)}</div>
-    <div>Lượng mưa</div><div>${fmtMetric("rainfall",s.rainfall)}</div>
-    <div>Nhiệt độ TB</div><div>${fmtMetric("temperature",s.temperature)}</div>`;
-  document.getElementById("sectorBox").innerHTML=p?.keySectors?.length
-    ?p.keySectors.map(x=>`<span class="tag">${x}</span>`).join("")
-    :`<span class="tag">Chưa cập nhật</span>`;
-  document.getElementById("sourceBox").innerHTML=`
-    <div>Hành chính</div><div>${SOURCE_META.admin}</div>
-    <div>Diện tích</div><div>${SOURCE_META.area}</div>
-    <div>Dân số</div><div>${SOURCE_META.population}</div>
-    <div>GRDP</div><div>${SOURCE_META.grdp}</div>
-    <div>Xuất nhập khẩu</div><div>${SOURCE_META.trade}</div>
-    <div>Khí hậu</div><div>${SOURCE_META.climate}</div>`;
-}
-
-function renderTrend(){
-  const code=provinceEl.value,k=metricEl.value;
-  const p=DATA.find(x=>x.code===code);
-  trendChart.setOption({
-    tooltip:{trigger:"axis"},
-    grid:{left:70,right:30,top:35,bottom:55},
-    xAxis:{type:"category",data:YEARS},
-    yAxis:{type:"value",name:METRICS[k].unit},
-    series:[{type:"line",smooth:true,symbolSize:8,data:YEARS.map(y=>val(p,y,k)),lineStyle:{width:3},areaStyle:{opacity:.08}}]
-  });
-}
-
-function renderCompare(){
-  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
-  const rows=ranking(y,k);
-  const a=avg(rows.map(x=>x.value));
-  const rev=[...rows].reverse();
-  compareChart.setOption({
-    tooltip:{trigger:"axis",axisPointer:{type:"shadow"}},
-    grid:{left:170,right:40,top:30,bottom:40},
-    xAxis:{type:"value"},
-    yAxis:{type:"category",data:rev.map(x=>x.p.name),axisLabel:{width:145,overflow:"truncate"}},
-    series:[{
-      type:"bar",
-      data:rev.map(x=>({value:x.value,itemStyle:{color:x.p.code===code?"#155eef":"#93c5fd"}})),
-      markLine:typeof a==="number"?{
-        symbol:"none",lineStyle:{type:"dashed",width:2,color:"#f59e0b"},
-        label:{formatter:"TB cả nước: {c}"},
-        data:[{xAxis:a}]
-      }:undefined
-    }]
-  });
-}
-
-function renderMap(){
-  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
-  const rows=ranking(y,k);
-  const mapData=DATA.map(p=>({
-    name:p.name,
-    value:val(p,y,k),
-    code:p.code
-  }));
-
-  /* Bản đồ 3D dạng khối xếp theo thứ hạng, không phụ thuộc file GeoJSON ngoài.
-     Nếu bạn có GeoJSON 34 tỉnh, có thể thay phần này bằng map3D của ECharts GL
-     nhưng vẫn nhúng GeoJSON trực tiếp trong biến JS để giữ đúng yêu cầu "1 file". */
-  mapChart.setOption({
-    tooltip:{
-      formatter:(p)=>`${p.name}<br>${METRICS[k].label}: ${fmtMetric(k,p.value)}`
-    },
-    grid:{left:20,right:20,top:20,bottom:20},
-    xAxis:{type:"category",show:false,data:mapData.map(x=>x.name)},
-    yAxis:{type:"value",show:false},
-    series:[{
-      type:"bar",
-      data:mapData.map(x=>({
-        value:typeof x.value==="number"?x.value:0,
-        name:x.name,
-        itemStyle:{
-          color:x.code===code?"#155eef":"#93c5fd",
-          borderRadius:[5,5,0,0],
-          shadowBlur:8,
-          shadowOffsetY:5,
-          shadowColor:"rgba(15,23,42,.18)"
-        }
-      })),
-      barMaxWidth:24
-    }]
-  });
-}
-
-function selectProvince(code){
-  provinceEl.value=code;
-  renderAll();
-}
-window.selectProvince=selectProvince;
-
-function renderAll(){
-  const rows=renderRank();
-  renderKPI(rows);
-  renderDetail();
-  renderTrend();
-  renderCompare();
-  renderMap();
-}
-
-fillSelects();
-[yearEl,provinceEl,metricEl].forEach(x=>x.addEventListener("change",renderAll));
-searchEl.addEventListener("input",renderAll);
-window.addEventListener("resize",()=>{mapChart.resize();trendChart.resize();compareChart.resize()});
-renderAll();
+let map=L.map("map",{zoomControl:true,attributionControl:true}).setView([16.1,106.2],5.25);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);let markers=[];
+function colorScale(v,min,max){if(typeof v!=="number")return"#98a2b3";const t=max===min?.5:(v-min)/(max-min);const h=215-25*t;return`hsl(${h} 80% ${48+8*(1-t)}%)`}
+function renderMap(rows){markers.forEach(x=>x.remove());markers=[];const values=rows.map(x=>x.value).filter(v=>typeof v==="number");const min=Math.min(...values),max=Math.max(...values);const k=$("metric").value;P.forEach(p=>{const v=DB[p.code][$("year").value][k];const rank=rows.find(x=>x.p.code===p.code)?.rank;const m=L.circleMarker([p.lat,p.lon],{radius:p.code===$("province").value?12:8,color:"#fff",weight:2,fillColor:colorScale(v,min,max),fillOpacity:.92});m.bindTooltip(`<b>${p.name}</b><br>${METRICS[k].label}: ${fmtMetric(k,v)}${rank?`<br>Hạng: ${rank}/${rows.length}`:""}`);m.on("click",()=>{$("province").value=p.code;renderAll();loadPhoto(p)});m.addTo(map);markers.push(m)})}
+function rowsFor(year,k,search=""){let rows=P.map(p=>({p,value:DB[p.code][year][k]})).filter(x=>typeof x.value==="number"&&!Number.isNaN(x.value));const q=norm(search);if(q)rows=rows.filter(x=>norm(x.p.name).includes(q));rows.sort((a,b)=>b.value-a.value);rows.forEach((x,i)=>x.rank=i+1);return rows}
+function sourceBadge(k){const s=SOURCES[k]||{name:"-",kind:""};const cls=s.kind==="official"?"official":s.kind==="derived"?"derived":"external";return`<span class="badge ${cls}">${s.kind==="official"?"Chính thức":s.kind==="derived"?"Suy ra":"Nguồn ngoài"}</span>`}
+function renderRank(rows){const code=$("province").value,k=$("metric").value;$("rankBody").innerHTML=rows.length?rows.map(x=>`<tr class="${x.p.code===code?"active":""}" onclick="selectProvince('${x.p.code}')"><td class="rank-num">${x.rank}</td><td>${x.p.name}</td><td>${fmtMetric(k,x.value)}</td><td>${sourceBadge(k)}</td></tr>`).join(""):`<tr><td colspan="4">Chưa tải được dữ liệu cho chỉ tiêu/năm này.</td></tr>`;const r=rows.find(x=>x.p.code===code);$("rankBadge").textContent=r?`${r.p.name}: ${r.rank}/${rows.length}`:"Chưa có dữ liệu"}
+function renderKPI(rows){const y=$("year").value,k=$("metric").value,code=$("province").value,p=P.find(x=>x.code===code),v=DB[code][y][k],a=average(rows.map(x=>x.value)),r=rows.find(x=>x.p.code===code);$("kProvince").textContent=p.name;$("kYear").textContent=`Năm ${y}`;$("kRank").textContent=r?`${r.rank}/${rows.length}`:"-";$("kValue").textContent=fmtMetric(k,v);$("kMetric").textContent=METRICS[k].label;$("kAvg").textContent=fmtMetric(k,a);if(typeof v==="number"&&typeof a==="number"){const g=v-a;$("kGap").textContent=fmtMetric(k,g);$("kGapText").textContent=g>=0?"Cao hơn trung bình":"Thấp hơn trung bình"}else{$("kGap").textContent="-";$("kGapText").textContent="Chưa đủ dữ liệu"}}
+function renderDetail(){const y=$("year").value,p=P.find(x=>x.code===$("province").value),d=DB[p.code][y];$("detailBox").innerHTML=`<div>Mã tỉnh</div><div>${p.code}</div><div>Tỉnh/Thành phố</div><div>${p.name}</div><div>Năm</div><div>${y}</div><div>Diện tích</div><div>${fmtMetric("area",d.area)}</div><div>Dân số</div><div>${fmtMetric("population",d.population)}</div><div>Xuất khẩu</div><div>${fmtMetric("exports",d.exports)}</div><div>Nhập khẩu</div><div>${fmtMetric("imports",d.imports)}</div><div>GRDP</div><div>${fmtMetric("grdp",d.grdp)}</div><div>GRDP/người</div><div>${fmtMetric("grdpPerCapita",d.grdpPerCapita)}</div><div>Tổng thu nhập ước tính</div><div>${fmtMetric("totalIncome",d.totalIncome)}</div><div>Thu nhập BQ/người</div><div>${fmtMetric("incomePerCapita",d.incomePerCapita)}</div><div>Lượng mưa</div><div>${fmtMetric("rainfall",d.rainfall)}</div><div>Nhiệt độ TB</div><div>${fmtMetric("temperature",d.temperature)}</div>`;$("sectorBox").innerHTML=p.sectors.map(x=>`<span class="tag">${x}</span>`).join("");const k=$("metric").value,s=SOURCES[k];$("sourceBox").innerHTML=`<div>Chỉ tiêu đang xem</div><div><b>${METRICS[k].label}</b></div><div>Nguồn</div><div>${s.name}</div><div>Phân loại</div><div>${sourceBadge(k)}</div><div>Ranh giới</div><div>34 tỉnh/thành theo sắp xếp cấp tỉnh năm 2025</div><div>Ghi chú</div><div>${k==="rainfall"||k==="temperature"?"Khí hậu lấy tại tọa độ đại diện trung tâm tỉnh.":k==="grdp"||k==="totalIncome"?"Chỉ tiêu được suy ra từ các số liệu thành phần để so sánh thống nhất 34 tỉnh.":"Giá trị theo nguồn nêu trên."}</div>`}
+const trend=echarts.init($("trend")),compare=echarts.init($("compare"));
+function renderTrend(){const p=P.find(x=>x.code===$("province").value),k=$("metric").value;trend.setOption({tooltip:{trigger:"axis",formatter:ps=>{const x=ps[0];return`${p.name}<br>${x.axisValue}: <b>${fmtMetric(k,x.value)}</b>`}},grid:{left:85,right:30,top:35,bottom:50},xAxis:{type:"category",data:YEARS},yAxis:{type:"value",name:METRICS[k].unit,axisLabel:{formatter:v=>Number(v).toLocaleString("vi-VN")}},series:[{type:"line",smooth:true,symbolSize:8,data:YEARS.map(y=>DB[p.code][y][k]),lineStyle:{width:3},areaStyle:{opacity:.08},connectNulls:false}]})}
+function renderCompare(rows){const k=$("metric").value,code=$("province").value,a=average(rows.map(x=>x.value)),rev=[...rows].reverse();compare.setOption({tooltip:{trigger:"axis",axisPointer:{type:"shadow"},formatter:ps=>`${ps[0].name}<br>${METRICS[k].label}: <b>${fmtMetric(k,ps[0].value)}</b>`},grid:{left:185,right:50,top:30,bottom:40},xAxis:{type:"value",axisLabel:{formatter:v=>Number(v).toLocaleString("vi-VN")}},yAxis:{type:"category",data:rev.map(x=>x.p.name),axisLabel:{width:160,overflow:"truncate"}},series:[{type:"bar",barMaxWidth:17,data:rev.map(x=>({value:x.value,itemStyle:{color:x.p.code===code?"#155eef":"#93c5fd"}})),markLine:typeof a==="number"?{symbol:"none",lineStyle:{type:"dashed",width:2,color:"#f79009"},label:{formatter:`TB: ${fmt(a,METRICS[k].dec)}`},data:[{xAxis:a}]}:undefined}]})}
+function selectProvince(code){$("province").value=code;renderAll();loadPhoto(P.find(x=>x.code===code))}window.selectProvince=selectProvince;
+function renderAll(){const y=$("year").value,k=$("metric").value,rows=rowsFor(y,k,$("search").value);renderRank(rows);renderKPI(rows);renderDetail();renderTrend();renderCompare(rows);renderMap(rows)}
+async function ensureMetric(force=false){const y=$("year").value,k=$("metric").value;if(["population","grdp","grdpPerCapita","totalIncome","incomePerCapita"].includes(k)){loading(true,"Đang tải dữ liệu NSO...");await loadNSO(force);loading(false)}if(["exports","imports"].includes(k)){loading(true,"Đang tải số liệu Hải quan...");await loadTradeYear(y,force);loading(false)}if(["rainfall","temperature"].includes(k)){loading(true,"Đang tổng hợp khí hậu 34 tỉnh...");await loadClimateYear(y,force);loading(false)}renderAll()}
+function fill(){$("year").innerHTML=YEARS.map(y=>`<option>${y}</option>`).join("");$("province").innerHTML=P.map(p=>`<option value="${p.code}">${p.name}</option>`).join("");$("metric").innerHTML=Object.entries(METRICS).map(([k,m])=>`<option value="${k}">${m.label}</option>`).join("");$("year").value="2025";$("province").value="68";$("metric").value="population"}
+$("year").onchange=ensureMetric;$("metric").onchange=ensureMetric;$("province").onchange=()=>{renderAll();loadPhoto(P.find(x=>x.code===$("province").value))};$("search").oninput=renderAll;$("reloadBtn").onclick=()=>ensureMetric(true);window.addEventListener("resize",()=>{trend.resize();compare.resize();map.invalidateSize()});
+(async function init(){fill();renderAll();loadPhoto(P.find(x=>x.code===$("province").value));loading(true,"Đang tải bộ dữ liệu nền từ NSO...");await loadNSO(false);loading(false);renderAll()})();
 </script>
 </body>
 </html>

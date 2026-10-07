@@ -371,9 +371,12 @@
       background:var(--card) !important;
     }
 
+    .app-card:nth-child(odd){background:var(--card) !important}
+    .app-card:nth-child(even){background:rgba(15,23,42,.018) !important}
+    body.dark .app-card:nth-child(even){background:rgba(255,255,255,.018) !important}
     .app-card:last-child{border-bottom:0 !important}
     .app-card:hover{
-      background:var(--card2) !important;
+      background:var(--blue-soft) !important;
       border-color:var(--line) !important;
       box-shadow:none !important;
       transform:none !important;
@@ -394,11 +397,18 @@
 
     .app-info{
       display:grid !important;
-      grid-template-columns:minmax(180px,260px) minmax(240px,1fr) minmax(120px,210px) auto !important;
+      grid-template-columns:46px minmax(180px,260px) minmax(240px,1fr) minmax(120px,210px) auto !important;
       align-items:center !important;
       gap:14px !important;
       width:100% !important;
       min-width:0 !important;
+    }
+
+    .app-index{
+      font-size:11px !important;
+      color:var(--muted) !important;
+      text-align:center !important;
+      font-variant-numeric:tabular-nums;
     }
 
     .app-title{
@@ -408,6 +418,7 @@
       overflow:hidden !important;
       text-overflow:ellipsis !important;
       letter-spacing:0 !important;
+      font-weight:400 !important;
     }
 
     .app-desc{
@@ -444,7 +455,7 @@
     @media(max-width:1180px){
       .menu{grid-template-columns:1fr !important}
       .app-info{
-        grid-template-columns:minmax(160px,240px) minmax(180px,1fr) auto !important;
+        grid-template-columns:42px minmax(160px,240px) minmax(180px,1fr) auto !important;
       }
       .app-path{display:none !important}
     }
@@ -464,7 +475,7 @@
         padding:10px 11px !important;
       }
       .app-info{
-        grid-template-columns:minmax(0,1fr) auto !important;
+        grid-template-columns:36px minmax(0,1fr) auto !important;
         gap:8px !important;
       }
       .app-desc,.app-path{display:none !important}
@@ -942,6 +953,8 @@ function render(){
         style="--glow:${c1}22"
       >
         <div class="app-info">
+          <div class="app-index">${index+1}</div>
+
           <div class="app-title">
             ${esc(p.title||p.path)}
             ${isFav(p.path)?'★':''}

@@ -357,11 +357,11 @@
     .app-card,
     .menu.list .app-card{
       display:grid !important;
-      grid-template-columns:42px minmax(0,1fr) !important;
+      grid-template-columns:minmax(0,1fr) !important;
       align-items:center !important;
       gap:12px !important;
-      min-height:64px !important;
-      padding:10px 14px !important;
+      min-height:54px !important;
+      padding:9px 14px !important;
       margin:0 !important;
       border:0 !important;
       border-bottom:1px solid var(--line) !important;
@@ -387,6 +387,10 @@
       border-radius:9px !important;
       font-size:19px !important;
     }
+
+
+    /* Khong hien icon o danh sach trang */
+    .app-card > .app-icon{display:none !important}
 
     .app-info{
       display:grid !important;
@@ -937,13 +941,6 @@ function render(){
         data-path="${esc(p.path)}"
         style="--glow:${c1}22"
       >
-        <div
-          class="app-icon"
-          style="background:linear-gradient(135deg,${c1},${c2})"
-        >
-          ${iconMarkup(p)}
-        </div>
-
         <div class="app-info">
           <div class="app-title">
             ${esc(p.title||p.path)}

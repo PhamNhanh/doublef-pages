@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Xếp hạng 34 tỉnh/thành Việt Nam</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#667085;--line:#e4e7ec;
+  --blue:#155eef;--blue2:#0b5ed7;--soft:#f8fafc;--avg:#f59e0b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:1600px;margin:auto;padding:18px}
+.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:14px}
+.header h1{margin:0;font-size:28px}
+.header p{margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+.source{max-width:520px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.filters{display:grid;grid-template-columns:160px 260px 260px 1fr;gap:10px;padding:12px;margin-bottom:14px}
+label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+select,input{width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:#fff}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.card{padding:15px}
+.card .t{font-size:11px;color:var(--muted)}
+.card .v{font-size:24px;font-weight:700;margin-top:7px}
+.card .h{font-size:11px;color:var(--muted);margin-top:6px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-bottom:14px}
+.head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.head h2{margin:0;font-size:17px}
+.head small{color:var(--muted)}
+#map,#compare,#trend{height:510px}
+.rank{max-height:510px;overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{position:sticky;top:0;background:#f8fafc;color:var(--muted);font-size:10px;text-transform:uppercase;text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid #f1f5f9;font-size:12px}
+tr:nth-child(even){background:#fcfdff}
+tr.active{background:#eef4ff}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.detailBox{padding:15px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 12px;font-size:12px}
+.kv>div:nth-child(odd){color:var(--muted)}
+.tag{display:inline-block;margin:4px 6px 0 0;padding:5px 8px;border-radius:999px;background:#eef4ff;color:#1d4ed8;font-size:11px}
+.note{padding:14px;color:var(--muted);font-size:12px;line-height:1.6}
+.map-fallback{height:510px;display:grid;place-items:center;padding:18px}
+.province-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.province-chip{border:1px solid var(--line);background:#f8fafc;border-radius:10px;padding:10px;font-size:11px;cursor:pointer;box-shadow:0 5px 0 #dbe3ee}
+.province-chip.active{background:#155eef;color:white;border-color:#155eef;box-shadow:0 5px 0 #0b4abf}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.detail{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.header{display:block}.source{margin-top:10px}.cards,.filters{grid-template-columns:1fr}.province-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div>
+      <h1>Thông tin & xếp hạng 34 tỉnh/thành Việt Nam</h1>
+      <p>So sánh theo năm, theo tỉnh/thành, theo chỉ tiêu; xếp hạng 1–34 và đối chiếu với trung bình cả nước.</p>
+    </div>
+    <div class="source">
+      <b>Nguồn khuyến nghị:</b> Cục Thống kê/NSO, Niên giám thống kê, Bộ Nội vụ, Bộ Công Thương, Trung tâm Dự báo KTTV Quốc gia.
+      <br><br>
+      <b>Lưu ý:</b> file này là một HTML duy nhất. Dữ liệu được khai báo ngay trong biến <code>DATA</code> phía dưới.
+    </div>
+  </div>
+
+  <div class="panel filters">
+    <div>
+      <label>Năm</label>
+      <select id="year"></select>
+    </div>
+    <div>
+      <label>Tỉnh/Thành phố</label>
+      <select id="province"></select>
+    </div>
+    <div>
+      <label>Chỉ tiêu xếp hạng</label>
+      <select id="metric"></select>
+    </div>
+    <div>
+      <label>Tìm tỉnh/thành</label>
+      <input id="search" placeholder="Ví dụ: Lâm Đồng">
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="panel card"><div class="t">Tỉnh đang chọn</div><div class="v" id="kProvince">-</div><div class="h">Theo năm đang chọn</div></div>
+    <div class="panel card"><div class="t">Thứ hạng</div><div class="v" id="kRank">-</div><div class="h">Trong 34 tỉnh/thành</div></div>
+    <div class="panel card"><div class="t">Giá trị</div><div class="v" id="kValue">-</div><div class="h" id="kValueLabel">-</div></div>
+    <div class="panel card"><div class="t">Trung bình cả nước</div><div class="v" id="kAvg">-</div><div class="h">Đường tham chiếu trên biểu đồ</div></div>
+    <div class="panel card"><div class="t">So với trung bình</div><div class="v" id="kGap">-</div><div class="h" id="kGapLabel">-</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="head">
+        <div><h2>Bản đồ Việt Nam 34 tỉnh/thành</h2><small>Bản xem nhanh 3D dạng khối; có thể thay bằng GeoJSON thật ngay trong cùng file.</small></div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <div class="panel">
+      <div class="head">
+        <div><h2>Bảng xếp hạng</h2><small>So sánh tỉnh đang chọn với 33 tỉnh/thành còn lại</small></div>
+      </div>
+      <div class="rank">
+        <table>
+          <thead><tr><th>Hạng</th><th>Tỉnh/Thành</th><th>Giá trị</th></tr></thead>
+          <tbody id="rankBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail">
+    <div class="panel">
+      <div class="head"><div><h2>Thông tin chi tiết</h2><small>Thông tin tỉnh/thành đang chọn</small></div></div>
+      <div class="detailBox">
+        <div class="kv" id="detailBox"></div>
+        <div style="margin-top:14px"><b style="font-size:13px">Ngành trọng yếu</b><div id="sectorBox"></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="head"><div><h2>Nguồn dữ liệu</h2><small>Ghi chú nguồn cho từng nhóm chỉ tiêu</small></div></div>
+      <div class="detailBox"><div class="kv" id="sourceBox"></div></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="head"><div><h2>Xu hướng theo năm</h2><small>Tỉnh/thành đang chọn</small></div></div>
+    <div id="trend"></div>
+  </div>
+
+  <div class="panel">
+    <div class="head"><div><h2>So sánh với 33 tỉnh/thành còn lại</h2><small>Có đường trung bình cả nước</small></div></div>
+    <div id="compare"></div>
+    <div class="note">
+      Quy ước dữ liệu đề xuất: diện tích (km²), dân số (người), xuất/nhập khẩu (USD),
+      GRDP và tổng thu nhập (tỷ đồng), lượng mưa (mm/năm), nhiệt độ (°C bình quân năm).
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   1 FILE DUY NHẤT:
+   - HTML + CSS + JS + DATA đều nằm trong file này.
+   - Hãy thay dữ liệu null bằng số liệu chính thức.
+   ========================================================= */
+
+const PROVINCES_34 = [
+  ["01","Hà Nội"],["04","Cao Bằng"],["08","Tuyên Quang"],["11","Điện Biên"],
+  ["12","Lai Châu"],["14","Sơn La"],["15","Lào Cai"],["19","Thái Nguyên"],
+  ["20","Lạng Sơn"],["22","Quảng Ninh"],["24","Bắc Ninh"],["25","Phú Thọ"],
+  ["31","Hải Phòng"],["33","Hưng Yên"],["37","Ninh Bình"],["38","Thanh Hóa"],
+  ["40","Nghệ An"],["42","Hà Tĩnh"],["44","Quảng Trị"],["46","Huế"],
+  ["48","Đà Nẵng"],["51","Quảng Ngãi"],["52","Gia Lai"],["56","Khánh Hòa"],
+  ["66","Đắk Lắk"],["68","Lâm Đồng"],["75","Đồng Nai"],["79","Thành phố Hồ Chí Minh"],
+  ["80","Tây Ninh"],["82","Đồng Tháp"],["86","Vĩnh Long"],["91","An Giang"],
+  ["92","Cần Thơ"],["96","Cà Mau"]
+];
+
+const YEARS = ["2022","2023","2024","2025"];
+
+const METRICS = {
+  area:{label:"Diện tích",unit:"km²",dec:2},
+  population:{label:"Dân số",unit:"người",dec:0},
+  exports:{label:"Xuất khẩu",unit:"USD",dec:0},
+  imports:{label:"Nhập khẩu",unit:"USD",dec:0},
+  grdp:{label:"GRDP",unit:"tỷ đồng",dec:0},
+  totalIncome:{label:"Tổng thu nhập",unit:"tỷ đồng",dec:0},
+  rainfall:{label:"Lượng mưa",unit:"mm",dec:1},
+  temperature:{label:"Nhiệt độ TB",unit:"°C",dec:1}
+};
+
+/*
+  DỮ LIỆU:
+  - Tôi để null để tránh gắn số liệu minh họa thành số liệu chính thức.
+  - Bạn chỉ cần thay null bằng số thật.
+  - Tất cả vẫn ở chung 1 file.
+*/
+const DATA = PROVINCES_34.map(([code,name])=>({
+  code,name,
+  keySectors:[],
+  sourceNote:"",
+  series:Object.fromEntries(YEARS.map(y=>[y,{
+    area:null,
+    population:null,
+    exports:null,
+    imports:null,
+    grdp:null,
+    totalIncome:null,
+    rainfall:null,
+    temperature:null
+  }]))
+}));
+
+/* Có thể khai báo nhanh dữ liệu thật tại đây.
+   Ví dụ:
+   setData("68","2025",{area:24233.07,population:3872999});
+*/
+function setData(code,year,values){
+  const p=DATA.find(x=>x.code===code);
+  if(!p||!p.series[year])return;
+  Object.assign(p.series[year],values);
+}
+
+/* Một số số liệu hành chính sau sắp xếp 2025 từ nguồn Chính phủ
+   được điền để giao diện có thể hiển thị ngay. */
+setData("15","2025",{area:13256.92,population:1778785});
+setData("19","2025",{area:8375.21,population:1799489});
+setData("25","2025",{area:9361.38,population:4022638});
+setData("24","2025",{area:4718.60,population:3619433});
+setData("33","2025",{area:2514.81,population:3567943});
+setData("31","2025",{area:3194.72,population:4664124});
+setData("37","2025",{area:3942.62,population:4412264});
+setData("44","2025",{area:12700.00,population:1870845});
+setData("48","2025",{area:11859.59,population:3065628});
+setData("51","2025",{area:14832.55,population:2161755});
+setData("52","2025",{area:21576.53,population:3583693});
+setData("56","2025",{area:8555.86,population:2243554});
+setData("68","2025",{area:24233.07,population:3872999});
+setData("66","2025",{area:18096.40,population:3346853});
+setData("79","2025",{area:6772.59,population:14002598});
+setData("75","2025",{area:12737.18,population:4491408});
+setData("80","2025",{area:8536.44,population:3254170});
+setData("92","2025",{area:6360.83,population:4199824});
+setData("86","2025",{area:6296.20,population:4257581});
+setData("82","2025",{area:5938.64,population:4370046});
+setData("96","2025",{area:7942.39,population:2606672});
+setData("91","2025",{area:9888.91,population:4952238});
+
+const SOURCE_META = {
+  admin:"Bộ Nội vụ / Chính phủ - danh mục 34 tỉnh/thành sau sắp xếp năm 2025",
+  population:"Cục Thống kê / NSO - dân số theo địa phương",
+  area:"Cục Thống kê / số liệu hành chính, đất đai; số liệu sắp xếp 2025",
+  grdp:"Cục Thống kê / NSO - tài khoản quốc gia, GRDP địa phương",
+  trade:"Cục Thống kê / Bộ Công Thương - xuất nhập khẩu",
+  climate:"Cục Thống kê / Trung tâm Dự báo KTTV Quốc gia - mưa, nhiệt độ"
+};
+
+const yearEl=document.getElementById("year");
+const provinceEl=document.getElementById("province");
+const metricEl=document.getElementById("metric");
+const searchEl=document.getElementById("search");
+
+const mapChart=echarts.init(document.getElementById("map"));
+const trendChart=echarts.init(document.getElementById("trend"));
+const compareChart=echarts.init(document.getElementById("compare"));
+
+function fmt(v,d=0){
+  if(v===null||v===undefined||v==="")return"-";
+  return Number(v).toLocaleString("vi-VN",{minimumFractionDigits:d,maximumFractionDigits:d});
+}
+function fmtMetric(k,v){
+  const m=METRICS[k];
+  if(v===null||v===undefined)return"-";
+  return fmt(v,m.dec)+" "+m.unit;
+}
+function avg(a){
+  const v=a.filter(x=>typeof x==="number"&&!Number.isNaN(x));
+  return v.length?v.reduce((s,x)=>s+x,0)/v.length:null;
+}
+function val(p,y,k){return p.series?.[y]?.[k]??null}
+
+function fillSelects(){
+  yearEl.innerHTML=YEARS.map(y=>`<option>${y}</option>`).join("");
+  provinceEl.innerHTML=DATA.map(p=>`<option value="${p.code}">${p.name}</option>`).join("");
+  metricEl.innerHTML=Object.entries(METRICS).map(([k,m])=>`<option value="${k}">${m.label}</option>`).join("");
+  yearEl.value="2025";
+  provinceEl.value="68";
+  metricEl.value="population";
+}
+
+function ranking(y,k,keyword=""){
+  let rows=DATA.map(p=>({p,value:val(p,y,k)}))
+    .filter(x=>typeof x.value==="number");
+  if(keyword){
+    const q=keyword.toLowerCase();
+    rows=rows.filter(x=>x.p.name.toLowerCase().includes(q));
+  }
+  rows.sort((a,b)=>b.value-a.value);
+  rows.forEach((r,i)=>r.rank=i+1);
+  return rows;
+}
+
+function renderRank(){
+  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
+  const rows=ranking(y,k,searchEl.value.trim());
+  document.getElementById("rankBody").innerHTML=rows.length?rows.map(r=>`
+    <tr class="${r.p.code===code?"active":""}" onclick="selectProvince('${r.p.code}')">
+      <td>${r.rank}</td><td>${r.p.name}</td><td>${fmtMetric(k,r.value)}</td>
+    </tr>`).join(""):`<tr><td colspan="3">Chưa có dữ liệu cho chỉ tiêu này.</td></tr>`;
+  return rows;
+}
+
+function renderKPI(rows){
+  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
+  const p=DATA.find(x=>x.code===code);
+  const value=val(p,y,k);
+  const a=avg(rows.map(x=>x.value));
+  const r=rows.find(x=>x.p.code===code);
+  document.getElementById("kProvince").textContent=p?.name||"-";
+  document.getElementById("kRank").textContent=r?`${r.rank}/${rows.length}`:"-";
+  document.getElementById("kValue").textContent=fmtMetric(k,value);
+  document.getElementById("kValueLabel").textContent=METRICS[k].label;
+  document.getElementById("kAvg").textContent=fmtMetric(k,a);
+  if(typeof value==="number"&&typeof a==="number"){
+    const gap=value-a;
+    document.getElementById("kGap").textContent=fmtMetric(k,gap);
+    document.getElementById("kGapLabel").textContent=gap>=0?"Cao hơn trung bình":"Thấp hơn trung bình";
+  }else{
+    document.getElementById("kGap").textContent="-";
+    document.getElementById("kGapLabel").textContent="Chưa đủ dữ liệu";
+  }
+}
+
+function renderDetail(){
+  const y=yearEl.value;
+  const p=DATA.find(x=>x.code===provinceEl.value);
+  const s=p?.series?.[y]||{};
+  document.getElementById("detailBox").innerHTML=`
+    <div>Mã tỉnh</div><div>${p?.code||"-"}</div>
+    <div>Tỉnh/Thành phố</div><div>${p?.name||"-"}</div>
+    <div>Năm</div><div>${y}</div>
+    <div>Diện tích</div><div>${fmtMetric("area",s.area)}</div>
+    <div>Dân số</div><div>${fmtMetric("population",s.population)}</div>
+    <div>Xuất khẩu</div><div>${fmtMetric("exports",s.exports)}</div>
+    <div>Nhập khẩu</div><div>${fmtMetric("imports",s.imports)}</div>
+    <div>GRDP</div><div>${fmtMetric("grdp",s.grdp)}</div>
+    <div>Tổng thu nhập</div><div>${fmtMetric("totalIncome",s.totalIncome)}</div>
+    <div>Lượng mưa</div><div>${fmtMetric("rainfall",s.rainfall)}</div>
+    <div>Nhiệt độ TB</div><div>${fmtMetric("temperature",s.temperature)}</div>`;
+  document.getElementById("sectorBox").innerHTML=p?.keySectors?.length
+    ?p.keySectors.map(x=>`<span class="tag">${x}</span>`).join("")
+    :`<span class="tag">Chưa cập nhật</span>`;
+  document.getElementById("sourceBox").innerHTML=`
+    <div>Hành chính</div><div>${SOURCE_META.admin}</div>
+    <div>Diện tích</div><div>${SOURCE_META.area}</div>
+    <div>Dân số</div><div>${SOURCE_META.population}</div>
+    <div>GRDP</div><div>${SOURCE_META.grdp}</div>
+    <div>Xuất nhập khẩu</div><div>${SOURCE_META.trade}</div>
+    <div>Khí hậu</div><div>${SOURCE_META.climate}</div>`;
+}
+
+function renderTrend(){
+  const code=provinceEl.value,k=metricEl.value;
+  const p=DATA.find(x=>x.code===code);
+  trendChart.setOption({
+    tooltip:{trigger:"axis"},
+    grid:{left:70,right:30,top:35,bottom:55},
+    xAxis:{type:"category",data:YEARS},
+    yAxis:{type:"value",name:METRICS[k].unit},
+    series:[{type:"line",smooth:true,symbolSize:8,data:YEARS.map(y=>val(p,y,k)),lineStyle:{width:3},areaStyle:{opacity:.08}}]
+  });
+}
+
+function renderCompare(){
+  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
+  const rows=ranking(y,k);
+  const a=avg(rows.map(x=>x.value));
+  const rev=[...rows].reverse();
+  compareChart.setOption({
+    tooltip:{trigger:"axis",axisPointer:{type:"shadow"}},
+    grid:{left:170,right:40,top:30,bottom:40},
+    xAxis:{type:"value"},
+    yAxis:{type:"category",data:rev.map(x=>x.p.name),axisLabel:{width:145,overflow:"truncate"}},
+    series:[{
+      type:"bar",
+      data:rev.map(x=>({value:x.value,itemStyle:{color:x.p.code===code?"#155eef":"#93c5fd"}})),
+      markLine:typeof a==="number"?{
+        symbol:"none",lineStyle:{type:"dashed",width:2,color:"#f59e0b"},
+        label:{formatter:"TB cả nước: {c}"},
+        data:[{xAxis:a}]
+      }:undefined
+    }]
+  });
+}
+
+function renderMap(){
+  const y=yearEl.value,k=metricEl.value,code=provinceEl.value;
+  const rows=ranking(y,k);
+  const mapData=DATA.map(p=>({
+    name:p.name,
+    value:val(p,y,k),
+    code:p.code
+  }));
+
+  /* Bản đồ 3D dạng khối xếp theo thứ hạng, không phụ thuộc file GeoJSON ngoài.
+     Nếu bạn có GeoJSON 34 tỉnh, có thể thay phần này bằng map3D của ECharts GL
+     nhưng vẫn nhúng GeoJSON trực tiếp trong biến JS để giữ đúng yêu cầu "1 file". */
+  mapChart.setOption({
+    tooltip:{
+      formatter:(p)=>`${p.name}<br>${METRICS[k].label}: ${fmtMetric(k,p.value)}`
+    },
+    grid:{left:20,right:20,top:20,bottom:20},
+    xAxis:{type:"category",show:false,data:mapData.map(x=>x.name)},
+    yAxis:{type:"value",show:false},
+    series:[{
+      type:"bar",
+      data:mapData.map(x=>({
+        value:typeof x.value==="number"?x.value:0,
+        name:x.name,
+        itemStyle:{
+          color:x.code===code?"#155eef":"#93c5fd",
+          borderRadius:[5,5,0,0],
+          shadowBlur:8,
+          shadowOffsetY:5,
+          shadowColor:"rgba(15,23,42,.18)"
+        }
+      })),
+      barMaxWidth:24
+    }]
+  });
+}
+
+function selectProvince(code){
+  provinceEl.value=code;
+  renderAll();
+}
+window.selectProvince=selectProvince;
+
+function renderAll(){
+  const rows=renderRank();
+  renderKPI(rows);
+  renderDetail();
+  renderTrend();
+  renderCompare();
+  renderMap();
+}
+
+fillSelects();
+[yearEl,provinceEl,metricEl].forEach(x=>x.addEventListener("change",renderAll));
+searchEl.addEventListener("input",renderAll);
+window.addEventListener("resize",()=>{mapChart.resize();trendChart.resize();compareChart.resize()});
+renderAll();
+</script>
+</body>
+</html>

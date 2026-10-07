@@ -263,6 +263,225 @@
     }
   </style>
 
+
+
+  <style id="simple-one-line-ui">
+    /* GIAO DIEN CO BAN - MOI TRANG MOT DONG */
+    :root{
+      --bg:#f6f7f9;
+      --card:#ffffff;
+      --card2:#f9fafb;
+      --text:#101828;
+      --muted:#667085;
+      --line:#e4e7ec;
+      --line2:#d0d5dd;
+      --blue:#155eef;
+      --blue-soft:#eef4ff;
+      --shadow-sm:0 1px 2px rgba(16,24,40,.05);
+      --shadow-md:0 2px 8px rgba(16,24,40,.08);
+      --side:250px;
+    }
+
+    body{letter-spacing:0}
+    .app{grid-template-columns:var(--side) minmax(0,1fr)}
+
+    aside{
+      padding:18px 14px;
+      background:#0f1f33;
+      box-shadow:none;
+    }
+
+    .brand{padding-bottom:16px;margin-bottom:14px}
+    .side-title{margin:16px 8px 7px;letter-spacing:.11em}
+    .filter{padding:9px 10px;border-radius:7px}
+    .side-card{border-radius:9px}
+
+    main{padding:18px 22px 32px}
+    .container{max-width:1440px;gap:12px}
+
+    .topbar{
+      position:sticky;
+      top:8px;
+      min-height:58px;
+      padding:9px 12px 9px 16px;
+      border-radius:10px;
+      box-shadow:var(--shadow-sm);
+      backdrop-filter:none;
+    }
+
+    .topbar h1{font-size:16px;letter-spacing:0}
+    .topbar p{font-size:11px}
+    .btn{min-height:36px;padding:8px 11px;border-radius:7px}
+
+    /* Bo khu hero de giao dien gon hon */
+    .hero{display:none !important}
+
+    .toolbar{
+      padding:8px 10px;
+      border-radius:10px;
+      box-shadow:var(--shadow-sm);
+      margin:0;
+    }
+
+    .toolbar-left{gap:7px}
+    .select{min-height:36px;border-radius:7px}
+
+    /* Khong can chuyen Luoi/Danh sach nua */
+    .view{display:none !important}
+
+    .panel{
+      border-radius:10px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .panel-head{
+      padding:13px 15px;
+      align-items:center;
+      border-bottom:1px solid var(--line);
+    }
+
+    .panel-head h3{font-size:15px;letter-spacing:0}
+    .panel-head p{margin-top:3px}
+    .panel-body{padding:0}
+
+    /* Bat buoc danh sach chi co 1 cot */
+    .menu,
+    .menu.list{
+      display:grid !important;
+      grid-template-columns:1fr !important;
+      gap:0 !important;
+      width:100%;
+    }
+
+    /* Moi trang = 1 dong */
+    .app-card,
+    .menu.list .app-card{
+      display:grid !important;
+      grid-template-columns:42px minmax(0,1fr) !important;
+      align-items:center !important;
+      gap:12px !important;
+      min-height:64px !important;
+      padding:10px 14px !important;
+      margin:0 !important;
+      border:0 !important;
+      border-bottom:1px solid var(--line) !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      transform:none !important;
+      background:var(--card) !important;
+    }
+
+    .app-card:last-child{border-bottom:0 !important}
+    .app-card:hover{
+      background:var(--card2) !important;
+      border-color:var(--line) !important;
+      box-shadow:none !important;
+      transform:none !important;
+    }
+
+    .app-icon,
+    .menu.list .app-icon{
+      width:40px !important;
+      height:40px !important;
+      min-width:40px !important;
+      border-radius:9px !important;
+      font-size:19px !important;
+    }
+
+    .app-info{
+      display:grid !important;
+      grid-template-columns:minmax(180px,260px) minmax(240px,1fr) minmax(120px,210px) auto !important;
+      align-items:center !important;
+      gap:14px !important;
+      width:100% !important;
+      min-width:0 !important;
+    }
+
+    .app-title{
+      font-size:13px !important;
+      line-height:1.35 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+      letter-spacing:0 !important;
+    }
+
+    .app-desc{
+      margin:0 !important;
+      min-height:0 !important;
+      font-size:11px !important;
+      line-height:1.35 !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    .app-path{
+      margin:0 !important;
+      font-size:10px !important;
+      white-space:nowrap !important;
+      overflow:hidden !important;
+      text-overflow:ellipsis !important;
+    }
+
+    .card-bottom{
+      margin:0 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:flex-end !important;
+      gap:6px !important;
+      white-space:nowrap !important;
+    }
+
+    .badge{padding:3px 7px;font-size:9px}
+    .fav{width:31px;height:31px;border-radius:7px}
+    .empty{border:0;border-radius:0;background:transparent;padding:30px}
+
+    @media(max-width:1180px){
+      .menu{grid-template-columns:1fr !important}
+      .app-info{
+        grid-template-columns:minmax(160px,240px) minmax(180px,1fr) auto !important;
+      }
+      .app-path{display:none !important}
+    }
+
+    @media(max-width:980px){
+      main{padding:10px 10px calc(78px + env(safe-area-inset-bottom))}
+      .container{gap:10px}
+      .topbar{border-radius:10px}
+      .toolbar{display:block;padding:8px}
+      .toolbar-left{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+      .select{min-height:42px;font-size:14px}
+
+      .menu,.menu.list{grid-template-columns:1fr !important}
+      .app-card,.menu.list .app-card{
+        grid-template-columns:40px minmax(0,1fr) !important;
+        min-height:62px !important;
+        padding:10px 11px !important;
+      }
+      .app-info{
+        grid-template-columns:minmax(0,1fr) auto !important;
+        gap:8px !important;
+      }
+      .app-desc,.app-path{display:none !important}
+      .app-title{
+        display:block !important;
+        white-space:nowrap !important;
+        -webkit-line-clamp:unset !important;
+      }
+      .card-bottom{justify-content:flex-end !important}
+      .panel-head{padding:12px}
+      .panel-body{padding:0}
+    }
+
+    @media(max-width:520px){
+      .toolbar-left{grid-template-columns:1fr}
+      .app-info{grid-template-columns:minmax(0,1fr) 32px !important}
+      .badge{display:none}
+      .fav{width:32px;height:32px}
+    }
+  </style>
+
 </head>
 
 <body>

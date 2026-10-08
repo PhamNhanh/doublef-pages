@@ -123,6 +123,268 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
   .filters{margin-top:12px!important}.head{padding:15px}.head h2{font-size:17px}.photo-box{height:125px}.kv{grid-template-columns:145px minmax(0,1fr)}
 }
 
+
+/* =========================================================
+   FOOTER - PHONG CACH TRUNG BAY / DU LIEU DIA PHUONG
+   ========================================================= */
+.site-footer{
+  margin-top:34px;
+  background:#073f31;
+  color:#fff;
+  border-top:5px solid var(--museum-orange);
+}
+.footer-feature{
+  max-width:1600px;
+  margin:0 auto;
+  padding:22px 24px 0;
+}
+.footer-feature-inner{
+  min-height:190px;
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.16);
+  background:
+    linear-gradient(90deg,rgba(7,63,49,.98) 0%,rgba(7,63,49,.91) 48%,rgba(7,63,49,.44) 100%),
+    radial-gradient(circle at 82% 35%,rgba(244,122,42,.20),transparent 36%),
+    linear-gradient(135deg,#0b5945,#0a4939);
+}
+.footer-feature-copy{
+  padding:30px 34px;
+  align-self:center;
+}
+.footer-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+  color:#ff9b54;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.footer-eyebrow:before{
+  content:"";
+  width:34px;
+  height:2px;
+  background:var(--museum-orange);
+}
+.footer-feature h3{
+  max-width:820px;
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:30px;
+  line-height:1.18;
+  letter-spacing:-.015em;
+}
+.footer-feature p{
+  max-width:740px;
+  margin:13px 0 0;
+  color:rgba(255,255,255,.75);
+  font-size:12px;
+  line-height:1.7;
+}
+.footer-feature-actions{
+  display:flex;
+  gap:9px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.footer-btn{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 17px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:4px;
+  color:#fff;
+  text-decoration:none;
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.02em;
+}
+.footer-btn.primary{
+  background:var(--museum-orange);
+  border-color:var(--museum-orange);
+}
+.footer-btn:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.04);
+}
+.footer-feature-side{
+  min-height:190px;
+  padding:25px 28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:rgba(255,255,255,.06);
+  border-left:1px solid rgba(255,255,255,.13);
+}
+.footer-feature-side span{
+  color:#ff9b54;
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+.footer-feature-side b{
+  margin-top:8px;
+  font-size:26px;
+  font-family:Georgia,"Times New Roman",serif;
+}
+.footer-feature-side p{
+  margin:8px 0 0;
+  color:rgba(255,255,255,.68);
+  font-size:11px;
+  line-height:1.6;
+}
+
+.footer-main{
+  max-width:1600px;
+  margin:0 auto;
+  padding:28px 24px 32px;
+  display:grid;
+  grid-template-columns:minmax(260px,1.2fr) repeat(3,minmax(170px,.72fr));
+  gap:0;
+}
+.footer-brand{
+  padding-right:34px;
+}
+.footer-brand-row{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+.footer-mark{
+  width:62px;
+  height:46px;
+  border:3px solid rgba(255,255,255,.82);
+  display:grid;
+  place-items:center;
+  position:relative;
+  color:#ff8a3d;
+  font-size:21px;
+  font-weight:950;
+}
+.footer-mark:after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-9px;
+  width:25px;
+  height:3px;
+  background:var(--museum-orange);
+}
+.footer-brand-title{
+  font-size:14px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+}
+.footer-brand-sub{
+  margin-top:4px;
+  color:rgba(255,255,255,.56);
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.footer-brand-desc{
+  max-width:360px;
+  margin:22px 0 0;
+  color:rgba(255,255,255,.70);
+  font-size:11px;
+  line-height:1.7;
+}
+.footer-col{
+  padding:2px 25px 0 32px;
+  border-left:1px solid rgba(255,255,255,.15);
+}
+.footer-col h4{
+  margin:0 0 14px;
+  font-size:13px;
+  font-weight:900;
+}
+.footer-col a,
+.footer-col .footer-line{
+  display:block;
+  margin:9px 0;
+  color:rgba(255,255,255,.73);
+  font-size:11px;
+  line-height:1.5;
+  text-decoration:none;
+}
+.footer-col a:hover{
+  color:#fff;
+  padding-left:3px;
+}
+.footer-mini-dot{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  margin-right:8px;
+  border-radius:50%;
+  background:#18a66f;
+}
+.footer-mini-dot.orange{background:var(--museum-orange)}
+.footer-bottom{
+  background:#ef751f;
+  color:#fff;
+}
+.footer-bottom-inner{
+  max-width:1600px;
+  margin:auto;
+  min-height:58px;
+  padding:12px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  font-size:10px;
+  line-height:1.5;
+}
+.footer-bottom-inner b{font-size:11px}
+.to-top{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:60;
+  width:45px;
+  height:45px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:50%;
+  background:#0d513d;
+  color:#fff;
+  box-shadow:0 10px 28px rgba(7,63,49,.25);
+  text-decoration:none;
+  font-size:18px;
+  font-weight:900;
+}
+.to-top:hover{background:var(--museum-orange)}
+
+@media(max-width:1050px){
+  .footer-feature-inner{grid-template-columns:1fr}
+  .footer-feature-side{border-left:0;border-top:1px solid rgba(255,255,255,.13);min-height:auto}
+  .footer-main{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1;padding:0 0 26px}
+  .footer-col:nth-child(2){border-left:0;padding-left:0}
+}
+@media(max-width:650px){
+  .footer-feature{padding:14px 8px 0}
+  .footer-feature-copy{padding:24px 20px}
+  .footer-feature h3{font-size:24px}
+  .footer-feature-side{padding:20px}
+  .footer-main{grid-template-columns:1fr;padding:24px 16px}
+  .footer-col{border-left:0;border-top:1px solid rgba(255,255,255,.14);padding:18px 0 5px}
+  .footer-bottom-inner{display:block;text-align:center;padding:13px 16px}
+  .footer-bottom-inner span{display:block;margin-top:4px}
+  .to-top{right:14px;bottom:14px;width:42px;height:42px}
+}
+
 </style>
 </head>
 <body>
@@ -243,6 +505,86 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
     <div id="compare" class="chart" style="height:740px"></div>
     <div class="note">Diện tích dùng ranh giới 34 tỉnh hiện hành. Dữ liệu các năm trước 2025 được đối chiếu/quy đổi sang 34 tỉnh mới khi nguồn cho phép. GRDP tổng được suy ra từ GRDP bình quân đầu người × dân số; tổng thu nhập được ước tính từ thu nhập bình quân đầu người/tháng × dân số × 12. Khí hậu là giá trị tại tọa độ đại diện trung tâm tỉnh, không phải bình quân diện tích toàn tỉnh.</div>
   </div>
+
+  <footer class="site-footer" id="footerSection">
+    <div class="footer-feature">
+      <div class="footer-feature-inner">
+        <div class="footer-feature-copy">
+          <div class="footer-eyebrow">Cổng dữ liệu địa phương</div>
+          <h3>Nơi dữ liệu được tổng hợp. Nơi địa phương được đặt trong bối cảnh. Nơi quyết định bắt đầu từ dữ liệu.</h3>
+          <p>
+            Tra cứu, đối chiếu và so sánh các chỉ tiêu kinh tế - xã hội của 34 tỉnh/thành Việt Nam
+            theo cùng một không gian dữ liệu và cùng một phương pháp trình bày.
+          </p>
+          <div class="footer-feature-actions">
+            <a class="footer-btn primary" href="#filtersSection">Tra cứu dữ liệu ngay →</a>
+            <a class="footer-btn" href="#sourceSection">Xem nguồn & phương pháp</a>
+          </div>
+        </div>
+        <div class="footer-feature-side">
+          <span>Phạm vi dữ liệu</span>
+          <b>34 tỉnh/thành</b>
+          <p>
+            Theo cơ cấu đơn vị hành chính cấp tỉnh hiện hành; hỗ trợ so sánh theo năm,
+            xếp hạng, xu hướng, chỉ tiêu kinh tế - xã hội và khí hậu.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-brand-row">
+          <div class="footer-mark">VN</div>
+          <div>
+            <div class="footer-brand-title">Dữ liệu 34 tỉnh/thành Việt Nam</div>
+            <div class="footer-brand-sub">Vietnam Provincial Intelligence</div>
+          </div>
+        </div>
+        <p class="footer-brand-desc">
+          Hệ thống tổng hợp, trực quan hóa và đối chiếu dữ liệu địa phương,
+          phục vụ tra cứu, nghiên cứu và hỗ trợ phân tích ra quyết định.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Điều hướng</h4>
+        <a href="#overviewSection">Tổng quan</a>
+        <a href="#mapSection">Bản đồ hành chính</a>
+        <a href="#rankSection">Bảng xếp hạng</a>
+        <a href="#dataSection">Thông tin chi tiết</a>
+        <a href="#trendSection">Xu hướng theo năm</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Nhóm dữ liệu</h4>
+        <span class="footer-line"><span class="footer-mini-dot"></span>Dân số & diện tích</span>
+        <span class="footer-line"><span class="footer-mini-dot"></span>GRDP & tăng trưởng</span>
+        <span class="footer-line"><span class="footer-mini-dot"></span>Thu nhập</span>
+        <span class="footer-line"><span class="footer-mini-dot"></span>Xuất nhập khẩu</span>
+        <span class="footer-line"><span class="footer-mini-dot"></span>Khí hậu</span>
+      </div>
+
+      <div class="footer-col">
+        <h4>Nguồn & phương pháp</h4>
+        <span class="footer-line"><span class="footer-mini-dot orange"></span>Cục Thống kê / NSO</span>
+        <span class="footer-line"><span class="footer-mini-dot orange"></span>Cục Hải quan / Bộ Tài chính</span>
+        <span class="footer-line"><span class="footer-mini-dot orange"></span>Open-Meteo</span>
+        <span class="footer-line"><span class="footer-mini-dot orange"></span>Wikimedia Commons</span>
+        <a href="#sourceSection">Xem thuyết minh nguồn dữ liệu →</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <b>Hệ thống Dữ liệu 34 tỉnh/thành Việt Nam</b>
+        <span>© 2026 · Dữ liệu được trình bày phục vụ tra cứu và phân tích; vui lòng đối chiếu nguồn gốc khi sử dụng chính thức.</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="to-top" href="#overviewSection" title="Lên đầu trang" aria-label="Lên đầu trang">↑</a>
+
 </div>
 <script>
 const YEARS=["2022","2023","2024","2025"];

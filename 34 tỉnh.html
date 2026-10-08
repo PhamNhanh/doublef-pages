@@ -53,7 +53,9 @@ body{background:var(--museum-cream);color:var(--museum-ink)}
 .museum-nav a:hover,.museum-nav a.active{color:var(--museum-orange)}
 .museum-nav a.active:after{content:"";position:absolute;left:0;right:0;bottom:7px;height:3px;background:var(--museum-orange);border-radius:3px}
 
-.hero{position:relative;min-height:430px;background:linear-gradient(90deg,#0a3128 0%,#104d3b 52%,#16604a 100%);background-size:cover;background-position:center;overflow:hidden;color:#fff}
+.hero{position:relative;min-height:430px;background:linear-gradient(90deg,#0a3128 0%,#104d3b 52%,#16604a 100%);background-size:cover;background-position:center;overflow:hidden;color:#fff;transition:background-image .45s ease,background-position .45s ease}
+.hero.is-loading{background-image:linear-gradient(90deg,#0a3128 0%,#104d3b 52%,#16604a 100%)!important}
+.hero-photo-credit{position:absolute;right:18px;bottom:14px;z-index:3;padding:6px 9px;border-radius:999px;background:rgba(0,0,0,.42);color:rgba(255,255,255,.82);font-size:9px;backdrop-filter:blur(5px)}
 .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,35,27,.94) 0%,rgba(3,35,27,.78) 46%,rgba(3,35,27,.35) 72%,rgba(3,35,27,.18) 100%)}
 .hero:after{content:"";position:absolute;left:0;bottom:0;width:38%;height:4px;background:var(--museum-orange);box-shadow:38vw 0 0 #f0be63}
 .hero-inner{max-width:1600px;margin:auto;padding:58px 24px 42px;position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(330px,.55fr);gap:42px;align-items:end}
@@ -172,7 +174,8 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
         <div class="status-line"><span class="dot" id="sPhoto"></span><span><b>Ảnh địa phương:</b> Wikimedia Commons</span></div>
       </div>
     </div>
-  </section>
+    <div class="hero-photo-credit" id="heroPhotoCredit">Ảnh nền: đang tải...</div>
+</section>
 
   <div class="panel filters section-anchor" id="filtersSection">
     <div><label>Năm</label><select id="year"></select></div>
@@ -389,8 +392,130 @@ function parseTradeText(text){const allNames=[...new Set(P.flatMap(p=>[p.customs
 async function fetchTextWithFallback(url){try{const r=await fetch(url,{cache:"no-store"});const ct=r.headers.get("content-type")||"";if(r.ok&&ct.includes("text"))return r.text()}catch{}const jina="https://r.jina.ai/"+url;const r2=await fetch(jina,{cache:"no-store"});if(!r2.ok)throw new Error("Không đọc được báo cáo XNK");return r2.text()}
 async function loadTradeYear(year,force=false){if(cache.trade[year]&&!force)return;setStatus("sTrade","loading");try{const text=await fetchTextWithFallback(TRADE_URLS[year]);const parsed=parseTradeText(text);P.forEach(p=>{let ex=0,im=0,found=0;if(year==="2025"&&parsed[p.customs]){ex=parsed[p.customs].exports;im=parsed[p.customs].imports;found=1}else{const used=new Set();for(const n of p.old){if(used.has(n))continue;used.add(n);if(parsed[n]){ex+=parsed[n].exports;im+=parsed[n].imports;found++}}}if(found){DB[p.code][year].exports=ex;DB[p.code][year].imports=im}});cache.trade[year]=true;setStatus("sTrade","ok")}catch(e){console.warn("Trade",e);setStatus("sTrade","err")}}
 async function loadClimateYear(year,force=false){if(cache.climate[year]&&!force)return;setStatus("sClimate","loading");const tasks=P.map(async p=>{const key=`climate_${p.code}_${year}`;if(!force){try{const c=JSON.parse(localStorage.getItem(key)||"null");if(c){DB[p.code][year].rainfall=c.rainfall;DB[p.code][year].temperature=c.temperature;return}}catch{}}const u=`https://archive-api.open-meteo.com/v1/archive?latitude=${p.lat}&longitude=${p.lon}&start_date=${year}-01-01&end_date=${year}-12-31&daily=temperature_2m_mean,precipitation_sum&timezone=Asia%2FBangkok`;const r=await fetch(u);if(!r.ok)return;const j=await r.json();const temps=(j.daily?.temperature_2m_mean||[]).filter(v=>v!==null);const rain=(j.daily?.precipitation_sum||[]).filter(v=>v!==null);const temperature=temps.length?temps.reduce((a,b)=>a+b,0)/temps.length:null;const rainfall=rain.length?rain.reduce((a,b)=>a+b,0):null;DB[p.code][year].temperature=temperature;DB[p.code][year].rainfall=rainfall;try{localStorage.setItem(key,JSON.stringify({temperature,rainfall}))}catch{}});await Promise.allSettled(tasks);cache.climate[year]=true;setStatus("sClimate","ok")}
-async function loadPhoto(p,force=false){if(cache.photo[p.code]&&!force){showPhoto(cache.photo[p.code],p);return}setStatus("sPhoto","loading");try{const q=encodeURIComponent(`${p.name} Việt Nam cảnh quan`);const url=`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${q}&gsrnamespace=6&gsrlimit=12&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1000&format=json&origin=*`;const r=await fetch(url);const j=await r.json();let pages=Object.values(j.query?.pages||{});pages=pages.filter(x=>!/(map|flag|coat|logo|seal|locator|emblem|icon)/i.test(x.title||"")&&/image\//.test(x.imageinfo?.[0]?.mime||"image/jpeg"));const x=pages[0]||Object.values(j.query?.pages||{})[0];if(!x)throw new Error("Không có ảnh");const ii=x.imageinfo?.[0]||{};const item={url:ii.thumburl||ii.url,source:ii.descriptionurl||ii.url,title:(x.title||"").replace(/^File:/i,"")};cache.photo[p.code]=item;showPhoto(item,p);setStatus("sPhoto","ok")}catch(e){console.warn(e);$("photoBox").innerHTML="<span style='font-size:11px;color:#667085'>Chưa tải được ảnh</span>";$("photoTitle").textContent=p.name;$("photoSource").removeAttribute("href");setStatus("sPhoto","err")}}
-function showPhoto(item,p){$("photoBox").innerHTML=`<img src="${item.url}" alt="${p.name}" loading="lazy">`;$("photoTitle").textContent=p.name;$("photoCaption").textContent=item.title||`Ảnh ${p.name}`;$("photoSource").href=item.source||item.url;const hero=document.getElementById("overviewSection");if(hero&&item.url){hero.style.backgroundImage=`linear-gradient(90deg,rgba(3,35,27,.94) 0%,rgba(3,35,27,.78) 46%,rgba(3,35,27,.35) 72%,rgba(3,35,27,.18) 100%), url("${item.url}")`;hero.style.backgroundSize="cover";hero.style.backgroundPosition="center";}}
+const PROVINCE_IMAGE_QUERY={
+  "01":["Hoan Kiem Lake Hanoi Vietnam","Hanoi skyline Vietnam"],
+  "04":["Ban Gioc waterfall Cao Bang Vietnam","Cao Bang Vietnam landscape"],
+  "08":["Na Hang Tuyen Quang Vietnam","Tuyen Quang Vietnam landscape"],
+  "11":["Dien Bien Phu Vietnam","Dien Bien Vietnam landscape"],
+  "12":["Lai Chau Vietnam mountains","Lai Chau Vietnam landscape"],
+  "14":["Moc Chau Son La Vietnam","Son La Vietnam landscape"],
+  "15":["Sa Pa Lao Cai Vietnam","Lao Cai Vietnam mountains"],
+  "19":["Thai Nguyen Vietnam tea hills","Thai Nguyen Vietnam landscape"],
+  "20":["Lang Son Vietnam landscape","Mau Son Lang Son Vietnam"],
+  "22":["Ha Long Bay Quang Ninh Vietnam","Quang Ninh Vietnam landscape"],
+  "24":["Bac Ninh Vietnam temple","Bac Ninh Vietnam landscape"],
+  "25":["Hung Kings Temple Phu Tho Vietnam","Phu Tho Vietnam landscape"],
+  "31":["Hai Phong Vietnam city","Cat Ba Hai Phong Vietnam"],
+  "33":["Hung Yen Vietnam","Pho Hien Hung Yen Vietnam"],
+  "37":["Trang An Ninh Binh Vietnam","Ninh Binh Vietnam landscape"],
+  "38":["Sam Son Thanh Hoa Vietnam","Thanh Hoa Vietnam landscape"],
+  "40":["Cua Lo Nghe An Vietnam","Nghe An Vietnam landscape"],
+  "42":["Ha Tinh Vietnam landscape","Ke Go Ha Tinh Vietnam"],
+  "44":["Quang Tri Vietnam landscape","Phong Nha Quang Binh Vietnam"],
+  "46":["Hue Imperial City Vietnam","Hue Vietnam landscape"],
+  "48":["Da Nang Vietnam skyline","Hoi An Quang Nam Vietnam"],
+  "51":["Ly Son Quang Ngai Vietnam","Quang Ngai Vietnam landscape"],
+  "52":["Gia Lai Vietnam tea hills","Pleiku Gia Lai Vietnam"],
+  "56":["Nha Trang Khanh Hoa Vietnam","Khanh Hoa Vietnam coast"],
+  "66":["Buon Ma Thuot Dak Lak Vietnam","Dak Lak Vietnam coffee"],
+  "68":["Da Lat Lam Dong Vietnam","Lam Dong Vietnam tea hills"],
+  "75":["Dong Nai Vietnam landscape","Tri An lake Dong Nai Vietnam"],
+  "79":["Ho Chi Minh City skyline Vietnam","Saigon Vietnam skyline"],
+  "80":["Ba Den Mountain Tay Ninh Vietnam","Tay Ninh Vietnam landscape"],
+  "82":["Dong Thap lotus Vietnam","Dong Thap Vietnam landscape"],
+  "86":["Vinh Long Mekong Vietnam","Vinh Long Vietnam landscape"],
+  "91":["An Giang Vietnam rice fields","Chau Doc An Giang Vietnam"],
+  "92":["Can Tho Vietnam floating market","Can Tho Mekong Vietnam"],
+  "96":["Ca Mau Vietnam mangrove","Ca Mau Cape Vietnam"]
+};
+
+function setHeroLoading(p){
+  const hero=document.getElementById("overviewSection");
+  if(!hero)return;
+  hero.classList.add("is-loading");
+  hero.style.backgroundImage="linear-gradient(90deg,#0a3128 0%,#104d3b 52%,#16604a 100%)";
+  const credit=document.getElementById("heroPhotoCredit");
+  if(credit)credit.textContent=`Ảnh nền ${p.name}: đang tải...`;
+}
+
+async function searchCommonsImage(query){
+  const q=encodeURIComponent(query);
+  const url=`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${q}&gsrnamespace=6&gsrlimit=24&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1600&format=json&origin=*`;
+  const r=await fetch(url,{cache:"force-cache"});
+  if(!r.ok)throw new Error("Wikimedia HTTP "+r.status);
+  const j=await r.json();
+  let pages=Object.values(j.query?.pages||{});
+  pages=pages.filter(x=>{
+    const title=x.title||"";
+    const ii=x.imageinfo?.[0]||{};
+    const mime=ii.mime||"image/jpeg";
+    return !/(map|flag|coat|logo|seal|locator|emblem|icon|diagram|svg|poster|portrait|person)/i.test(title) && /^image\/(jpeg|png|webp)/i.test(mime);
+  });
+  const scored=pages.map(x=>{
+    const ii=x.imageinfo?.[0]||{};
+    const meta=ii.extmetadata||{};
+    const w=Number(ii.thumbwidth||ii.width||0),h=Number(ii.thumbheight||ii.height||0);
+    const landscape=w&&h?w/h:1;
+    let score=0;
+    if(landscape>1.25)score+=4;
+    if(landscape>1.5)score+=2;
+    if(/panorama|skyline|landscape|lake|mountain|bay|river|city|view/i.test(x.title||""))score+=2;
+    if(meta.ImageDescription?.value)score+=1;
+    return {x,score};
+  }).sort((a,b)=>b.score-a.score);
+  const x=scored[0]?.x||pages[0];
+  if(!x)return null;
+  const ii=x.imageinfo?.[0]||{};
+  return {url:ii.thumburl||ii.url,source:ii.descriptionurl||ii.url,title:(x.title||"").replace(/^File:/i,"")};
+}
+
+async function loadPhoto(p,force=false){
+  if(!p)return;
+  setHeroLoading(p);
+  if(cache.photo[p.code]&&!force){showPhoto(cache.photo[p.code],p);return}
+  setStatus("sPhoto","loading");
+  try{
+    const queries=[...(PROVINCE_IMAGE_QUERY[p.code]||[]),`${p.name} Vietnam landscape`,`${p.name} Việt Nam cảnh quan`];
+    let item=null;
+    for(const q of queries){
+      try{ item=await searchCommonsImage(q); if(item)break; }catch(e){ console.warn("Ảnh",q,e); }
+    }
+    if(!item)throw new Error("Không tìm thấy ảnh phù hợp");
+    cache.photo[p.code]=item;
+    showPhoto(item,p);
+    setStatus("sPhoto","ok");
+  }catch(e){
+    console.warn(e);
+    const hero=document.getElementById("overviewSection");
+    if(hero)hero.classList.remove("is-loading");
+    $("photoBox").innerHTML="<span style='font-size:11px;color:#667085'>Chưa tải được ảnh</span>";
+    $("photoTitle").textContent=p.name;
+    $("photoSource").removeAttribute("href");
+    const credit=document.getElementById("heroPhotoCredit");
+    if(credit)credit.textContent=`Ảnh nền ${p.name}: chưa tải được`;
+    setStatus("sPhoto","err");
+  }
+}
+function showPhoto(item,p){
+  $("photoBox").innerHTML=`<img src="${item.url}" alt="${p.name}" loading="lazy">`;
+  $("photoTitle").textContent=p.name;
+  $("photoCaption").textContent=item.title||`Ảnh ${p.name}`;
+  $("photoSource").href=item.source||item.url;
+  const hero=document.getElementById("overviewSection");
+  if(hero&&item.url){
+    const img=new Image();
+    img.onload=()=>{
+      hero.style.backgroundImage=`url("${item.url}")`;
+      hero.style.backgroundSize="cover";
+      hero.style.backgroundPosition="center";
+      hero.classList.remove("is-loading");
+    };
+    img.onerror=()=>hero.classList.remove("is-loading");
+    img.src=item.url;
+  }
+  const credit=document.getElementById("heroPhotoCredit");
+  if(credit)credit.textContent=`Ảnh nền: ${p.name} • Wikimedia Commons`;
+}
 
 const mapChart=echarts.init($("map"));
 let mapReady=false;

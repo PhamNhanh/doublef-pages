@@ -12,7 +12,7 @@ document.querySelectorAll(".museum-nav a").forEach(a=>a.addEventListener("click"
 </script>
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#667085;--line:#e4e7ec;--blue:#155eef;--blue2:#0b4fc4;--soft:#eef4ff;--green:#067647;--amber:#b54708;--red:#b42318;--shadow:0 1px 3px rgba(16,24,40,.08)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}button,input,select{font:inherit}.wrap{max-width:1720px;margin:auto;padding:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}.header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:12px}.header h1{margin:0;font-size:27px;letter-spacing:-.02em}.header p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.55}.status{min-width:350px;max-width:580px;padding:11px 13px}.status-line{display:flex;align-items:center;gap:7px;font-size:11px;margin:4px 0;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:#98a2b3;flex:none}.dot.ok{background:#12b76a}.dot.loading{background:#f79009}.dot.err{background:#f04438}.filters{display:grid;grid-template-columns:120px 245px 245px minmax(240px,1fr) auto;gap:9px;padding:11px;margin-bottom:12px;align-items:end}label{display:block;margin-bottom:5px;color:var(--muted);font-size:10px;font-weight:700}select,input{width:100%;height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);padding:0 10px;outline:none}select:focus,input:focus{border-color:#84adff;box-shadow:0 0 0 3px rgba(21,94,239,.08)}.btn{height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:0 12px;font-size:11px;font-weight:700;cursor:pointer}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}.card{padding:14px}.card .t{font-size:10px;color:var(--muted)}.card .v{margin-top:6px;font-size:22px;font-weight:750;line-height:1.2}.card .h{margin-top:5px;font-size:10px;color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(390px,.8fr);gap:12px;margin-bottom:12px}.head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.head h2{margin:0;font-size:16px}.head small{color:var(--muted);font-size:10px}.map-wrap{padding:12px}.map-3d{perspective:1200px;padding:8px 12px 22px}.map-frame{height:520px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 18px 30px rgba(15,23,42,.12);transform:rotateX(1.6deg);transform-origin:center bottom;background:#dbeafe}.leaflet-container{font-family:inherit}.map-fallback{height:100%;display:grid;place-items:center;padding:16px}.fallback-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:100%;max-height:480px;overflow:auto}.fallback-chip{border:1px solid var(--line);border-radius:8px;background:#f8fafc;padding:8px;font-size:10px;cursor:pointer}.fallback-chip.active{background:#155eef;color:#fff;border-color:#155eef}.data-note{display:none;margin:-2px 0 12px;padding:10px 13px;border:1px solid #fedf89;background:#fffaeb;color:#93370d;border-radius:9px;font-size:11px;line-height:1.5}.data-note.show{display:block}.photo-card{display:grid;grid-template-columns:180px minmax(0,1fr);gap:12px;margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.photo-box{height:132px;background:#f2f4f7;display:grid;place-items:center;overflow:hidden}.photo-box img{width:100%;height:100%;object-fit:cover}.photo-info{padding:12px 12px 12px 0;min-width:0}.photo-info h3{margin:0 0 6px;font-size:15px}.photo-info p{margin:4px 0;color:var(--muted);font-size:10px;line-height:1.5}.source-link{color:var(--blue);text-decoration:none}.rank{max-height:710px;overflow:auto}table{width:100%;border-collapse:collapse}th{position:sticky;top:0;z-index:2;background:#f8fafc;color:var(--muted);font-size:9px;text-transform:uppercase;text-align:left;padding:10px;border-bottom:1px solid var(--line)}td{padding:9px 10px;border-bottom:1px solid #f1f5f9;font-size:11px}tr:nth-child(even){background:#fcfdff}tr.active{background:#eef4ff}tbody tr{cursor:pointer}.rank-num{font-weight:800;color:#344054}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.detail-body{padding:14px}.kv{display:grid;grid-template-columns:155px minmax(0,1fr);gap:7px 12px;font-size:11px}.kv>div:nth-child(odd){color:var(--muted)}.tags{margin-top:6px}.tag{display:inline-block;padding:5px 8px;margin:3px 4px 0 0;border-radius:999px;background:#eef4ff;color:#175cd3;font-size:10px}.badge{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:700;background:#f2f4f7;color:#475467}.badge.official{background:#ecfdf3;color:#067647}.badge.derived{background:#fff7ed;color:#b54708}.badge.external{background:#eef4ff;color:#175cd3}.chart{height:480px}.chart-panel{margin-bottom:12px}.note{padding:12px 14px;color:var(--muted);font-size:10px;line-height:1.55;border-top:1px solid var(--line)}.loader{display:none;position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:9999;align-items:center;justify-content:center}.loader.show{display:flex}.loader-box{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.2);font-size:12px;font-weight:700}.spinner{display:inline-block;width:16px;height:16px;border:2px solid #d0d5dd;border-top-color:#155eef;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px}@keyframes spin{to{transform:rotate(360deg)}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}button,input,select{font:inherit}.wrap{max-width:1720px;margin:auto;padding:16px}.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}.header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:12px}.header h1{margin:0;font-size:27px;letter-spacing:-.02em}.header p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.55}.status{min-width:350px;max-width:580px;padding:11px 13px}.status-line{display:flex;align-items:center;gap:7px;font-size:11px;margin:4px 0;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:#98a2b3;flex:none}.dot.ok{background:#12b76a}.dot.loading{background:#f79009}.dot.err{background:#f04438}.filters{display:grid;grid-template-columns:120px 245px 245px minmax(240px,1fr) auto;gap:9px;padding:11px;margin-bottom:12px;align-items:end}label{display:block;margin-bottom:5px;color:var(--muted);font-size:10px;font-weight:700}select,input{width:100%;height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);padding:0 10px;outline:none}select:focus,input:focus{border-color:#84adff;box-shadow:0 0 0 3px rgba(21,94,239,.08)}.btn{height:38px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:0 12px;font-size:11px;font-weight:700;cursor:pointer}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}.card{padding:14px}.card .t{font-size:10px;color:var(--muted)}.card .v{margin-top:6px;font-size:22px;font-weight:750;line-height:1.2}.card .h{margin-top:5px;font-size:10px;color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(390px,.8fr);gap:12px;margin-bottom:12px}.head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.head h2{margin:0;font-size:16px}.head small{color:var(--muted);font-size:10px}.map-wrap{padding:12px}.map-3d{perspective:1200px;padding:8px 12px 22px}.map-frame{height:520px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 18px 30px rgba(15,23,42,.12);transform:rotateX(1.6deg);transform-origin:center bottom;background:#F7F3EA}.leaflet-container{font-family:inherit}.map-fallback{height:100%;display:grid;place-items:center;padding:16px}.fallback-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:100%;max-height:480px;overflow:auto}.fallback-chip{border:1px solid var(--line);border-radius:8px;background:#f8fafc;padding:8px;font-size:10px;cursor:pointer}.fallback-chip.active{background:#155eef;color:#fff;border-color:#155eef}.data-note{display:none;margin:-2px 0 12px;padding:10px 13px;border:1px solid #fedf89;background:#fffaeb;color:#93370d;border-radius:9px;font-size:11px;line-height:1.5}.data-note.show{display:block}.photo-card{display:grid;grid-template-columns:180px minmax(0,1fr);gap:12px;margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.photo-box{height:132px;background:#f2f4f7;display:grid;place-items:center;overflow:hidden}.photo-box img{width:100%;height:100%;object-fit:cover}.photo-info{padding:12px 12px 12px 0;min-width:0}.photo-info h3{margin:0 0 6px;font-size:15px}.photo-info p{margin:4px 0;color:var(--muted);font-size:10px;line-height:1.5}.source-link{color:var(--blue);text-decoration:none}.rank{max-height:710px;overflow:auto}table{width:100%;border-collapse:collapse}th{position:sticky;top:0;z-index:2;background:#f8fafc;color:var(--muted);font-size:9px;text-transform:uppercase;text-align:left;padding:10px;border-bottom:1px solid var(--line)}td{padding:9px 10px;border-bottom:1px solid #f1f5f9;font-size:11px}tr:nth-child(even){background:#fcfdff}tr.active{background:#eef4ff}tbody tr{cursor:pointer}.rank-num{font-weight:800;color:#344054}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.detail-body{padding:14px}.kv{display:grid;grid-template-columns:155px minmax(0,1fr);gap:7px 12px;font-size:11px}.kv>div:nth-child(odd){color:var(--muted)}.tags{margin-top:6px}.tag{display:inline-block;padding:5px 8px;margin:3px 4px 0 0;border-radius:999px;background:#eef4ff;color:#175cd3;font-size:10px}.badge{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:700;background:#f2f4f7;color:#475467}.badge.official{background:#ecfdf3;color:#067647}.badge.derived{background:#fff7ed;color:#b54708}.badge.external{background:#eef4ff;color:#175cd3}.chart{height:480px}.chart-panel{margin-bottom:12px}.note{padding:12px 14px;color:var(--muted);font-size:10px;line-height:1.55;border-top:1px solid var(--line)}.loader{display:none;position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:9999;align-items:center;justify-content:center}.loader.show{display:flex}.loader-box{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.2);font-size:12px;font-weight:700}.spinner{display:inline-block;width:16px;height:16px;border:2px solid #d0d5dd;border-top-color:#155eef;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px}@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:1180px){.cards{grid-template-columns:repeat(2,1fr)}.grid,.detail-grid{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.status{min-width:0}}
 @media(max-width:720px){.wrap{padding:8px}.header{display:block}.status{margin-top:10px}.filters,.cards{grid-template-columns:1fr}.grid{display:block}.grid>.panel{margin-bottom:10px}.map-frame{height:420px}.photo-card{grid-template-columns:120px 1fr}.photo-box{height:115px}.chart{height:430px}}
 
@@ -197,7 +197,7 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
 
   <div class="grid">
     <div class="panel section-anchor" id="mapSection">
-      <div class="head"><div><h2>Bản đồ tương tác 34 tỉnh/thành</h2><small>Không gian dữ liệu trực quan theo 34 tỉnh/thành hiện hành; chọn một địa phương trên bản đồ để mở hồ sơ chi tiết.</small></div><span class="badge external">34 tỉnh/thành</span></div>
+      <div class="head"><div><h2>Bản đồ tương tác 34 tỉnh/thành</h2><small>Bản đồ hành chính Việt Nam 34 tỉnh/thành theo phong cách atlas; màu pastel để phân biệt địa giới, tỉnh đang chọn được nhấn xanh đậm - cam.</small></div><span class="badge external">34 tỉnh/thành</span></div>
       <div class="map-wrap">
         <div class="map-3d"><div id="map" class="map-frame"></div></div>
         <div class="photo-card">
@@ -543,33 +543,81 @@ async function loadProvinceShapes(){
     renderAll();
   }catch(e){console.warn("Map shapes",e);mapReady=false;renderMapFallback()}
 }
-function colorScale(v,min,max){if(typeof v!=="number")return"#d0d5dd";const t=max===min?.5:(v-min)/(max-min);return t>.80?"#174ea6":t>.60?"#2563eb":t>.40?"#60a5fa":t>.20?"#93c5fd":"#dbeafe"}
+function adminMapColor(code){
+  const palette=["#F4E8D4","#E4EFE7","#F8E1D5","#E9E4F1","#F3EDC7","#DCEAE9","#F1E2C9"];
+  const n=parseInt(code,10)||0;
+  return palette[n%palette.length];
+}
 function renderMapFallback(){
   const y=$("year").value,k=$("metric").value,code=$("province").value;
-  const vals=P.map(p=>DB[p.code][y][k]).filter(v=>typeof v==="number");
-  const min=vals.length?Math.min(...vals):0,max=vals.length?Math.max(...vals):1;
   mapChart.setOption({
-    backgroundColor:"#eef6ff",
-    title:{text:"Đang tải ranh giới 34 tỉnh...",subtext:"Nếu nguồn ranh giới bị chặn, bản đồ điểm này vẫn dùng được",left:"center",top:10,textStyle:{fontSize:13},subtextStyle:{fontSize:10,color:"#667085"}},
-    grid:{left:20,right:20,top:55,bottom:25},
+    backgroundColor:"#F7F3EA",
+    title:{text:"Đang tải bản đồ hành chính 34 tỉnh/thành...",subtext:"Bấm một điểm để chọn tỉnh/thành",left:"center",top:12,textStyle:{fontSize:14,color:"#153C32"},subtextStyle:{fontSize:10,color:"#7A7165"}},
+    grid:{left:24,right:24,top:60,bottom:28},
     xAxis:{type:"value",min:102,max:110,show:false},
     yAxis:{type:"value",min:8,max:24,show:false},
     tooltip:{formatter:p=>{const pr=P.find(x=>x.code===p.data.code);return `<b>${pr.name}</b><br>${METRICS[k].label}: ${fmtMetric(k,DB[pr.code][y][k])}`}},
-    series:[{type:"scatter",symbolSize:p=>p[2]?Math.max(11,Math.min(26,12+10*(p[2]-min)/(max-min||1))):11,data:P.map(p=>({name:p.name,code:p.code,value:[p.lon,p.lat,typeof DB[p.code][y][k]==="number"?DB[p.code][y][k]:null],itemStyle:{color:p.code===code?"#f97316":"#2563eb",borderColor:"#fff",borderWidth:2,shadowBlur:8,shadowColor:"rgba(15,23,42,.2)"}})),label:{show:true,formatter:p=>p.data.code===code?p.name:"",position:"right",fontSize:10,color:"#101828"}}]
+    series:[{type:"scatter",symbolSize:13,data:P.map(p=>({name:p.name,code:p.code,value:[p.lon,p.lat],itemStyle:{color:p.code===code?"#E97322":"#0F5A46",borderColor:"#fff",borderWidth:2,shadowBlur:7,shadowColor:"rgba(15,90,70,.22)"}})),label:{show:true,formatter:p=>p.data.code===code?p.name:"",position:"right",fontSize:10,color:"#153C32",fontWeight:700}}]
   },true);
   mapChart.off("click");mapChart.on("click",p=>{if(p.data?.code)selectProvince(p.data.code)});
 }
 function renderMap(rows){
   if(!mapReady){renderMapFallback();return}
   const y=$("year").value,k=$("metric").value,code=$("province").value;
-  const vals=rows.map(x=>x.value).filter(v=>typeof v==="number");
-  const min=vals.length?Math.min(...vals):0,max=vals.length?Math.max(...vals):1;
   const byCode=Object.fromEntries(rows.map(x=>[x.p.code,x]));
+  const data=P.map(p=>({
+    name:p.name,
+    value:typeof DB[p.code][y][k]==="number"?DB[p.code][y][k]:null,
+    selected:p.code===code,
+    itemStyle:{
+      areaColor:p.code===code?"#0F5A46":adminMapColor(p.code),
+      borderColor:p.code===code?"#E97322":"#FFFFFF",
+      borderWidth:p.code===code?2.4:1.15,
+      shadowBlur:p.code===code?12:4,
+      shadowOffsetY:p.code===code?5:2,
+      shadowColor:p.code===code?"rgba(15,90,70,.30)":"rgba(40,50,45,.12)"
+    },
+    label:{
+      show:true,
+      color:p.code===code?"#FFFFFF":"#30453E",
+      fontSize:p.code===code?10:8,
+      fontWeight:p.code===code?800:600
+    }
+  }));
+
   mapChart.setOption({
-    backgroundColor:"#eef6ff",
-    tooltip:{formatter:p=>{const pr=P.find(x=>x.name===p.name);const r=pr?byCode[pr.code]:null;return `<b>${p.name}</b><br>${METRICS[k].label}: ${fmtMetric(k,r?.value)}${r?`<br>Hạng ${r.rank}/${rows.length}`:""}`}},
-    visualMap:vals.length?{min,max,left:10,bottom:10,calculable:true,text:["Cao","Thấp"],inRange:{color:["#dbeafe","#93c5fd","#60a5fa","#2563eb","#174ea6"]}}:undefined,
-    series:[{type:"map",map:"VN34",roam:true,selectedMode:"single",zoom:1.08,layoutCenter:["50%","50%"],layoutSize:"96%",data:P.map(p=>({name:p.name,value:typeof DB[p.code][y][k]==="number"?DB[p.code][y][k]:null,selected:p.code===code,itemStyle:{areaColor:colorScale(DB[p.code][y][k],min,max)}})),itemStyle:{borderColor:"#fff",borderWidth:1,shadowBlur:8,shadowOffsetY:5,shadowColor:"rgba(15,23,42,.18)"},emphasis:{label:{show:true,color:"#101828",fontSize:10},itemStyle:{areaColor:"#fbbf24"}},select:{label:{show:true,color:"#fff",fontWeight:"bold"},itemStyle:{areaColor:"#f97316"}}}]
+    backgroundColor:"#F7F3EA",
+    tooltip:{
+      backgroundColor:"rgba(255,255,255,.97)",
+      borderColor:"#D8D1C7",
+      textStyle:{color:"#17211E",fontSize:12},
+      formatter:p=>{const pr=P.find(x=>x.name===p.name);const r=pr?byCode[pr.code]:null;return `<b style="font-size:13px">${p.name}</b><br>${METRICS[k].label}: <b>${fmtMetric(k,r?.value)}</b>${r?`<br>Xếp hạng: ${r.rank}/${rows.length}`:""}<br><span style="color:#667085">Bấm để xem hồ sơ tỉnh/thành</span>`}
+    },
+    graphic:[
+      {type:"text",right:18,top:16,style:{text:"BẢN ĐỒ HÀNH CHÍNH VIỆT NAM",fill:"#0F5A46",font:"700 12px Arial"}},
+      {type:"text",right:18,top:34,style:{text:"34 tỉnh/thành • chọn tỉnh để xem dữ liệu",fill:"#7A7165",font:"10px Arial"}}
+    ],
+    series:[{
+      type:"map",
+      map:"VN34",
+      roam:true,
+      selectedMode:"single",
+      zoom:1.15,
+      layoutCenter:["50%","53%"],
+      layoutSize:"105%",
+      data,
+      itemStyle:{borderColor:"#fff",borderWidth:1.15},
+      label:{show:true,fontSize:8,color:"#30453E"},
+      labelLayout:{hideOverlap:true},
+      emphasis:{
+        label:{show:true,color:"#fff",fontSize:10,fontWeight:800},
+        itemStyle:{areaColor:"#E97322",borderColor:"#fff",borderWidth:1.8,shadowBlur:10,shadowColor:"rgba(233,115,34,.32)"}
+      },
+      select:{
+        label:{show:true,color:"#fff",fontSize:10,fontWeight:800},
+        itemStyle:{areaColor:"#0F5A46",borderColor:"#E97322",borderWidth:2.4,shadowBlur:12,shadowOffsetY:5,shadowColor:"rgba(15,90,70,.30)"}
+      }
+    }]
   },true);
   mapChart.off("click");mapChart.on("click",p=>{const pr=P.find(x=>x.name===p.name);if(pr)selectProvince(pr.code)});
 }

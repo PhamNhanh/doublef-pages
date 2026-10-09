@@ -453,7 +453,7 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
         </div>
       </div>
       <div class="museum-actions">
-        <span class="live">Dữ liệu tổng hợp & minh họa</span>
+        <span class="live">Dữ liệu công khai có nguồn</span>
         <button class="museum-cta" onclick="document.getElementById('filtersSection').scrollIntoView({behavior:'smooth'})">Tra cứu dữ liệu</button>
       </div>
     </div>
@@ -483,8 +483,8 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
       </div>
       <div class="hero-source" id="statusPanel">
         <div class="status-title">Trạng thái nguồn dữ liệu</div>
-        <div class="status-line"><span class="dot ok" id="sNSO"></span><span><b>Dữ liệu nhúng:</b> dân số 2022–2025, GRDP 2024, XNK 2025</span></div>
-        <div class="status-line"><span class="dot ok" id="sTrade"></span><span><b>Hải quan:</b> XNK 2025 theo 34 tỉnh/thành</span></div>
+        <div class="status-line"><span class="dot ok" id="sNSO"></span><span><b>Số liệu đã kiểm tra:</b> Hà Nội 2024; địa phương khác chưa đủ dữ liệu</span></div>
+        <div class="status-line"><span class="dot ok" id="sTrade"></span><span><b>Xuất nhập khẩu:</b> Hà Nội 2024 theo Thống kê TP Hà Nội</span></div>
         <div class="status-line"><span class="dot" id="sClimate"></span><span><b>Khí hậu:</b> tải theo năm từ Open-Meteo khi chọn chỉ tiêu</span></div>
         <div class="status-line"><span class="dot" id="sPhoto"></span><span><b>Ảnh địa phương:</b> Wikimedia Commons</span></div>
       </div>
@@ -527,7 +527,7 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
     </div>
 
     <div class="panel section-anchor" id="rankSection">
-      <div class="head"><div><h2>Bảng xếp hạng</h2><small>So sánh tỉnh đang chọn với 33 tỉnh/thành còn lại.</small></div><span class="badge" id="rankBadge">-</span></div>
+      <div class="head"><div><h2>Bảng xếp hạng</h2><small>Xếp trong các địa phương có số liệu xác minh; chưa phải xếp hạng đủ 34 tỉnh.</small></div><span class="badge" id="rankBadge">-</span></div>
       <div class="rank">
         <table><thead><tr><th>Hạng</th><th>Tỉnh/Thành</th><th>Giá trị</th><th>Nguồn</th></tr></thead><tbody id="rankBody"></tbody></table>
       </div>
@@ -536,7 +536,7 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
 
   <div class="detail-grid section-anchor" id="dataSection">
     <div class="panel">
-      <div class="head"><div><h2>Thông tin chi tiết</h2><small>Dữ liệu theo năm đang chọn.</small></div></div>
+      <div class="head"><div><h2>Thông tin chi tiết</h2><small>Dữ liệu đã đối chiếu nguồn theo năm đang chọn; chưa đủ toàn quốc.</small></div></div>
       <div class="detail-body">
         <div class="kv" id="detailBox"></div>
         <div style="margin-top:12px"><b style="font-size:11px">Ngành trọng yếu</b><div class="tags" id="sectorBox"></div></div>
@@ -556,27 +556,27 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
   <div class="panel chart-panel">
     <div class="head"><div><h2>So sánh 34 tỉnh/thành</h2><small>Đường gạch ngang là mức trung bình các tỉnh có dữ liệu.</small></div></div>
     <div id="compare" class="chart" style="height:740px"></div>
-    <div class="note">Diện tích dùng ranh giới 34 tỉnh hiện hành. Dữ liệu các năm trước 2025 được đối chiếu/quy đổi sang 34 tỉnh mới khi nguồn cho phép. GRDP tổng được suy ra từ GRDP bình quân đầu người × dân số; tổng thu nhập được ước tính từ thu nhập bình quân đầu người/tháng × dân số × 12. Khí hậu là giá trị tại tọa độ đại diện trung tâm tỉnh, không phải bình quân diện tích toàn tỉnh.</div>
+    <div class="note">Bộ số liệu thống kê đã kiểm tra hiện có Hà Nội 2024 (số ước tính công bố 03/01/2025, đã làm tròn); không đủ xếp hạng toàn quốc. Các giá trị cũ chưa xác minh đã được bỏ. Khí hậu từ Open-Meteo là giá trị tại tọa độ đại diện, không phải bình quân toàn tỉnh. Bản đồ chỉ là atlas tham khảo.</div>
   </div>
 
 
 <section class="lab" id="innovationSection" aria-labelledby="labTitle">
- <div class="lab-header"><div><div class="lab-eyebrow">KHÔNG GIAN PHÂN TÍCH & KHÁM PHÁ</div><h2 id="labTitle">Địa phương • Hạ tầng • Tương lai</h2><p class="lab-sub">Khám phá dự án, hạ tầng số, thử nghiệm kịch bản và xem lớp rủi ro trên cùng một không gian.</p></div><span class="lab-pill" id="labMode">Dữ liệu minh họa</span></div>
- <div class="lab-banner" id="labNotice">Dự án, hạ tầng và thiên tai bên dưới là <b>dữ liệu mẫu giả định</b>; vị trí chỉ để trình diễn giao diện. Đây không phải danh mục kêu gọi đầu tư, dữ liệu hạ tầng thực tế hoặc cảnh báo thiên tai đang xảy ra.</div>
+ <div class="lab-header"><div><div class="lab-eyebrow">KHÔNG GIAN PHÂN TÍCH & KHÁM PHÁ</div><h2 id="labTitle">Địa phương • Hạ tầng • Tương lai</h2><p class="lab-sub">Khám phá dự án, hạ tầng số, thử nghiệm kịch bản và xem lớp rủi ro trên cùng một không gian.</p></div><span class="lab-pill" id="labMode">Số liệu có nguồn</span></div>
+ <div class="lab-banner" id="labNotice">Số liệu công khai đã kiểm tra nguồn ngày 09/10/2026. Chưa đủ dữ liệu cho toàn bộ 34 tỉnh; bản tin thiên tai không cập nhật tự động.</div>
  <div class="lab-tabs" role="tablist" aria-label="Bốn chức năng mới"><button class="lab-tab" id="labTab0" role="tab" aria-selected="true" aria-controls="labView0" tabindex="0" data-tab="0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V7l6-4 6 4 6-4v14l-6 4-6-4-6 4zM9 3v14M15 7v14"/></svg>Dự án & cơ hội đầu tư</button><button class="lab-tab" id="labTab1" role="tab" aria-selected="false" aria-controls="labView1" tabindex="-1" data-tab="1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="7" rx="2"/><rect x="4" y="14" width="16" height="7" rx="2"/><path d="M8 6h1m-1 11h1M12 10v4"/></svg>Hạ tầng số</button><button class="lab-tab" id="labTab2" role="tab" aria-selected="false" aria-controls="labView2" tabindex="-1" data-tab="2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M6 15l5-6 5 3 5-7"/></svg>Kịch bản phát triển</button><button class="lab-tab" id="labTab3" role="tab" aria-selected="false" aria-controls="labView3" tabindex="-1" data-tab="3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 21h20L12 3zM12 9v5m0 3v1"/></svg>Rủi ro & thiên tai</button></div><div class="lab-view" id="labView0" role="tabpanel" aria-labelledby="labTab0" >
  <div class="lab-toolbar"><div class="lab-field"><label for="projectsProvince">Tỉnh/thành</label><select id="projectsProvince"></select></div><div class="lab-field"><label for="projectsType">Lĩnh vực</label><select id="projectsType"></select></div><div class="lab-field"><label for="projectsStatus">Trạng thái</label><select id="projectsStatus"></select></div><div class="lab-field wide"><label for="projectsSearch">Tìm kiếm</label><input id="projectsSearch" placeholder="Tìm tên dự án, ngành, địa điểm…"></div><button class="lab-button" data-export="projects">Xuất CSV</button></div>
  <div class="lab-stats" id="projectsStats"></div>
- <div class="lab-layout"><div class="lab-box"><div class="lab-boxhead"><div><h3>Bản đồ dự án & cơ hội</h3><small>Chọn điểm để mở hồ sơ dự án • ranh giới atlas tham khảo</small></div><button class="lab-button" data-reset-map="projects">Toàn cảnh</button></div><div class="lab-map" id="projectsMap"></div><div class="lab-legend" id="projectsLegend"></div><div class="lab-map-note" id="projectsMapNote">Đang khởi tạo bản đồ…</div></div><div class="lab-box"><div class="lab-boxhead"><h3>Danh sách dự án</h3><small id="projectsCount"></small></div><div class="lab-list" id="projectsList"></div><div class="lab-detail" id="projectsDetail"></div></div></div>
+ <div class="lab-layout"><div class="lab-box"><div class="lab-boxhead"><div><h3>Bản đồ dự án & cơ hội</h3><small>Bấm tỉnh để lọc hồ sơ • chưa có tọa độ công trình xác minh</small></div><button class="lab-button" data-reset-map="projects">Toàn cảnh</button></div><div class="lab-map" id="projectsMap"></div><div class="lab-legend" id="projectsLegend"></div><div class="lab-map-note" id="projectsMapNote">Đang khởi tạo bản đồ…</div></div><div class="lab-box"><div class="lab-boxhead"><h3>Danh sách dự án</h3><small id="projectsCount"></small></div><div class="lab-list" id="projectsList"></div><div class="lab-detail" id="projectsDetail"></div></div></div>
  </div><div class="lab-view" id="labView1" role="tabpanel" aria-labelledby="labTab1" hidden>
  <div class="lab-toolbar"><div class="lab-field"><label for="digitalProvince">Tỉnh/thành</label><select id="digitalProvince"></select></div><div class="lab-field"><label for="digitalType">Loại hạ tầng</label><select id="digitalType"></select></div><div class="lab-field"><label for="digitalStatus">Trạng thái</label><select id="digitalStatus"></select></div><div class="lab-field wide"><label for="digitalSearch">Tìm kiếm</label><input id="digitalSearch" placeholder="Tìm điểm hạ tầng, loại thiết bị…"></div><button class="lab-button" data-export="digital">Xuất CSV</button></div>
  <div class="lab-stats" id="digitalStats"></div>
- <div class="lab-layout"><div class="lab-box"><div class="lab-boxhead"><div><h3>Bản đồ hạ tầng số</h3><small>Vị trí hạ tầng minh họa • ranh giới atlas tham khảo</small></div><button class="lab-button" data-reset-map="digital">Toàn cảnh</button></div><div class="lab-map" id="digitalMap"></div><div class="lab-legend" id="digitalLegend"></div><div class="lab-map-note" id="digitalMapNote">Đang khởi tạo bản đồ…</div></div><div class="lab-box"><div class="lab-boxhead"><h3>Điểm hạ tầng</h3><small id="digitalCount"></small></div><div class="lab-list" id="digitalList"></div><div class="lab-detail" id="digitalDetail"></div></div></div>
+ <div class="lab-layout"><div class="lab-box"><div class="lab-boxhead"><div><h3>Bản đồ hạ tầng số</h3><small>Hồ sơ công khai theo tỉnh • ranh giới atlas tham khảo</small></div><button class="lab-button" data-reset-map="digital">Toàn cảnh</button></div><div class="lab-map" id="digitalMap"></div><div class="lab-legend" id="digitalLegend"></div><div class="lab-map-note" id="digitalMapNote">Đang khởi tạo bản đồ…</div></div><div class="lab-box"><div class="lab-boxhead"><h3>Điểm hạ tầng</h3><small id="digitalCount"></small></div><div class="lab-list" id="digitalList"></div><div class="lab-detail" id="digitalDetail"></div></div></div>
  </div><div class="lab-view" id="labView3" role="tabpanel" aria-labelledby="labTab3" hidden>
  <div class="lab-toolbar"><div class="lab-field"><label for="risksProvince">Tỉnh/thành</label><select id="risksProvince"></select></div><div class="lab-field"><label for="risksType">Loại rủi ro</label><select id="risksType"></select></div><div class="lab-field"><label for="risksStatus">Mức rủi ro</label><select id="risksStatus"></select></div><div class="lab-field wide"><label for="risksSearch">Tìm kiếm</label><input id="risksSearch" placeholder="Tìm loại rủi ro, địa điểm…"></div><button class="lab-button" data-export="risks">Xuất CSV</button></div>
  <div class="lab-stats" id="risksStats"></div>
- <div class="lab-layout"><div class="lab-box"><div class="lab-boxhead"><div><h3>Bản đồ khu vực rủi ro</h3><small>Điểm và bán kính giả định • ranh giới atlas tham khảo</small></div><button class="lab-button" data-reset-map="risks">Toàn cảnh</button></div><div class="lab-map" id="risksMap"></div><div class="lab-legend" id="risksLegend"></div><div class="lab-map-note" id="risksMapNote">Đang khởi tạo bản đồ…</div></div><div class="lab-box"><div class="lab-boxhead"><h3>Khu vực theo dõi</h3><small id="risksCount"></small></div><div class="lab-list" id="risksList"></div><div class="lab-detail" id="risksDetail"></div></div></div>
+ <div class="lab-layout"><div class="lab-box"><div class="lab-boxhead"><div><h3>Bản đồ khu vực rủi ro</h3><small>Bản tin có nguồn theo tỉnh • không phải vùng nguy hiểm GIS</small></div><button class="lab-button" data-reset-map="risks">Toàn cảnh</button></div><div class="lab-map" id="risksMap"></div><div class="lab-legend" id="risksLegend"></div><div class="lab-map-note" id="risksMapNote">Đang khởi tạo bản đồ…</div></div><div class="lab-box"><div class="lab-boxhead"><h3>Khu vực theo dõi</h3><small id="risksCount"></small></div><div class="lab-list" id="risksList"></div><div class="lab-detail" id="risksDetail"></div></div></div>
  </div><div class="lab-view" id="labView2" role="tabpanel" aria-labelledby="labTab2" hidden>
- <div class="lab-banner">Mô phỏng theo tốc độ tăng trưởng do người dùng nhập, không phải dự báo kinh tế. Năm gốc lấy GRDP và dân số 2024 từ bảng dữ liệu hiện có; nguồn gốc chưa được xác minh lại trong bản nâng cấp này.</div>
+ <div class="lab-banner">Mô phỏng theo tốc độ tăng trưởng do người dùng nhập, không phải dự báo kinh tế. Năm gốc Hà Nội 2024 lấy GRDP ước tính và dân số cùng nguồn Thống kê TP Hà Nội, công bố 03/01/2025. Địa phương khác chưa đủ dữ liệu gốc xác minh.</div>
  <div class="lab-sim"><div class="lab-box lab-sim-controls"><h3>Thiết lập kịch bản</h3><div class="lab-field" style="margin-top:16px"><label for="simProvince">Tỉnh/thành mô phỏng</label><select id="simProvince"></select></div>
  <div class="lab-slider"><label for="simYears">Thời gian mô phỏng <b id="simYearsVal"></b></label><input id="simYears" type="range" min="1" max="15" step="1" value="5"><small>Từ năm gốc 2024; hỗ trợ 1–15 năm.</small></div>
  <div class="lab-slider"><label for="simBase">Tăng GRDP cơ sở/năm <b id="simBaseVal"></b></label><input id="simBase" type="range" min="-10" max="20" step="0.1" value="7"><small>Tốc độ cố định, do người dùng giả định.</small></div>
@@ -585,7 +585,7 @@ tr:nth-child(even){background:#fcfaf6}tr.active{background:#eef5f1;box-shadow:in
  <div class="lab-manager-actions"><button class="lab-button solid" id="simSave">Lưu giả định</button><button class="lab-button" id="simReset">Đặt lại</button><button class="lab-button" id="simExport">Xuất CSV</button></div><p class="lab-mini">Không suy diễn vốn đầu tư hay số trạm 5G thành tăng trưởng GRDP khi chưa có mô hình được hiệu chỉnh.</p></div>
  <div class="lab-box"><div class="lab-boxhead"><h3 id="simTitle">So sánh kịch bản</h3><label class="lab-sync"><input type="checkbox" id="labSync" checked>Đồng bộ khi chọn tỉnh ở trang chính</label></div><div class="lab-feature-intro" id="simBaseline"></div><div class="lab-stats" id="simStats" style="padding:14px;margin:0"></div><div id="simChart" class="lab-sim-chart"></div><div class="lab-tablewrap"><table class="lab-table"><thead><tr><th>Năm</th><th>GRDP cơ sở (tỷ đ)</th><th>GRDP kịch bản (tỷ đ)</th><th>Dân số (người)</th><th>GRDP/người (triệu đ)</th></tr></thead><tbody id="simRows"></tbody></table></div><div class="lab-formula"><b>Công thức công khai</b><br>GRDP cơ sở(t) = GRDP gốc × (1 + g/100)<sup>t</sup><br>GRDP kịch bản(t) = GRDP gốc × [1 + (g + Δg)/100]<sup>t</sup><br>Dân số(t) = dân số gốc × (1 + p/100)<sup>t</sup><br>GRDP/người = GRDP (tỷ đồng) × 1.000 / dân số (người).<br>Tăng trưởng được nhập trên cùng cơ sở giá với số liệu gốc; mô hình chưa tách riêng lạm phát, cơ cấu ngành, di cư hoặc tác động chính sách.</div></div></div>
  </div>
- <details class="lab-manager"><summary>Quản lý dữ liệu • Nhập JSON • Tải mẫu • Khôi phục</summary><p>Dữ liệu được lưu trên trình duyệt này. Tải mẫu JSON, sửa các danh mục <b>projects</b>, <b>digital</b>, <b>risks</b> rồi nhập lại. Mỗi bản ghi cần mã tỉnh, tọa độ, nguồn và chế độ <b>demo</b> hoặc <b>user</b>. Dữ liệu do người dùng nhập không được coi là đã xác minh. Với rủi ro, bán kính chỉ là vùng tròn tham khảo, không phải ranh giới GIS. Không nhập vị trí hoặc thông tin hạ tầng nhạy cảm.</p><div class="lab-manager-actions"><button class="lab-button solid" id="labTemplate">Tải JSON mẫu</button><button class="lab-button" id="labBackup">Sao lưu JSON hiện tại</button><button class="lab-button" id="labImport">Nhập JSON</button><button class="lab-button" id="labRestore">Khôi phục dữ liệu mẫu</button><button class="lab-button" id="labClearFavorites">Xóa mục đã lưu</button><input id="labFile" type="file" accept=".json,application/json" hidden></div><p id="labStorageState" role="status"></p><p>Trường chung: id, province, name, type, status, lat, lon, description, source, updated, mode. Dự án thêm capital (tỷ đồng), area (ha), owner; hạ tầng thêm capacity, operator, availability (%); rủi ro thêm radius (km), exposed (người), guidance, validUntil (YYYY-MM-DD hoặc rỗng). Có thể thêm sourceUrl với giao thức HTTPS.</p></details>
+ <details class="lab-manager"><summary>Quản lý dữ liệu • Nhập JSON • Tải bộ có nguồn • Khôi phục</summary><p>Dữ liệu được lưu trên trình duyệt này. Tải bộ JSON có nguồn, sửa các danh mục <b>projects</b>, <b>digital</b>, <b>risks</b> rồi nhập lại. Mỗi bản ghi cần mã tỉnh, nguồn; tọa độ chưa xác minh để null, và chế độ <b>sourced</b> hoặc <b>user</b>; mọi tệp nhập sẽ được đánh dấu user. Dữ liệu do người dùng nhập không được coi là đã xác minh. Các bản đồ hiển thị hồ sơ theo tỉnh, không tạo bán kính hay polygon nguy hiểm giả định. Không nhập vị trí hoặc thông tin hạ tầng nhạy cảm.</p><div class="lab-manager-actions"><button class="lab-button solid" id="labTemplate">Tải JSON có nguồn</button><button class="lab-button" id="labBackup">Sao lưu JSON hiện tại</button><button class="lab-button" id="labImport">Nhập JSON</button><button class="lab-button" id="labRestore">Khôi phục bộ có nguồn</button><button class="lab-button" id="labClearFavorites">Xóa mục đã lưu</button><input id="labFile" type="file" accept=".json,application/json" hidden></div><p id="labStorageState" role="status"></p><p>Trường chung: id, province, name, type, status, lat, lon, description, source, updated, mode. Dự án thêm capital (tỷ đồng), area (ha), owner; hạ tầng thêm capacity, operator, availability (%); rủi ro thêm radius và exposed để null nếu chưa có nguồn, guidance, validUntil (thời điểm ISO hoặc rỗng). Có thể thêm sourceUrl với giao thức HTTPS.</p></details>
  <div class="lab-toast" id="labToast" role="status" hidden></div>
 </section>
 
@@ -724,46 +724,11 @@ const P=[
 
 const DB={};P.forEach(p=>{DB[p.code]={};YEARS.forEach(y=>DB[p.code][y]={area:p.area,population:null,exports:null,imports:null,grdp:null,grdpGrowth:null,grdpPerCapita:null,totalIncome:null,incomePerCapita:null,rainfall:null,temperature:null})});
 
-/* DÂN SỐ 34 TỈNH/THÀNH THEO ĐỊA GIỚI HIỆN HÀNH - nghìn người -> chuyển thành người.
-   Dãy năm 2022-2025 lấy/đối chiếu theo phụ lục 34 tỉnh của Niên giám thống kê 2025.
-   Lâm Đồng được cộng lại từ Lâm Đồng + Đắk Nông + Bình Thuận do bản trích công khai có lỗi dòng. */
-const POP={
-"01":[8435.7,8587.1,8717.6,8857.5],"04":[543.1,547.9,558.5,562.9],"08":[1698.5,1712.1,1731.7,1748.2],"11":[635.9,646.2,656.7,667.4],"12":[482.1,489.3,495.5,501.2],"14":[1300.1,1313.3,1330.6,1341.2],"15":[1617.8,1635.4,1656.6,1675.7],"19":[1660.3,1676.8,1694.5,1711.6],"20":[802.1,807.3,814.0,820.6],"22":[1362.9,1381.2,1396.5,1411.6],"24":[3379.2,3440.2,3509.2,3572.4],"25":[3589.9,3622.7,3663.7,3701.5],"31":[4034.8,4061.9,4102.8,4149.9],"33":[3169.4,3183.3,3208.4,3235.2],"37":[3765.7,3790.1,3818.8,3843.8],"38":[3722.1,3739.5,3764.2,3771.8],"40":[3420.0,3442.0,3472.3,3497.8],"42":[1317.3,1323.7,1329.8,1335.1],"44":[1564.8,1572.9,1584.0,1594.1],"46":[1160.2,1166.5,1178.6,1190.3],"48":[2739.6,2771.3,2819.9,2856.4],"51":[1825.6,1839.4,1861.7,1881.2],"52":[3095.3,3120.2,3153.3,3182.7],"56":[1852.7,1861.8,1882.0,1898.0],"66":[2795.1,2809.2,2831.3,2849.2],"68":[3255.2,3285.7,3324.4,3356.4],"75":[4290.5,4356.4,4427.7,4493.7],"79":[13331.5,13467.6,13608.9,13803.8],"80":[2923.0,2938.3,2959.0,2980.3],"82":[3385.4,3390.9,3397.2,3403.8],"86":[3346.1,3348.8,3367.4,3379.6],"91":[3657.3,3661.6,3679.2,3694.6],"92":[3179.6,3186.0,3207.1,3224.9],"96":[2129.4,2132.5,2140.7,2150.4]
-};
-Object.entries(POP).forEach(([code,a])=>YEARS.forEach((y,i)=>DB[code][y].population=Math.round(a[i]*1000)));
-
-/* GRDP 2024 - tỷ đồng, quy đổi theo 34 tỉnh/thành hiện hành. */
-const GRDP2024={"79":2715782,"01":1425521,"31":658381,"92":281675,"48":279926,"46":80967,"08":86247,"15":125886,"12":31025,"11":31663,"20":49736,"04":25204,"14":76626,"19":185614,"25":354580,"22":347534,"24":439776,"33":292603,"37":310282,"38":316995,"40":216994,"42":112855,"44":113687,"51":173527,"52":242008,"56":188921,"68":319887,"66":203923,"75":609176,"80":312466,"86":254480,"82":260036,"96":153160,"91":271346};
-Object.entries(GRDP2024).forEach(([c,v])=>{DB[c]["2024"].grdp=v;const pop=DB[c]["2024"].population;if(pop)DB[c]["2024"].grdpPerCapita=v*1000/pop});
-
-/* Tăng trưởng GRDP 2025 (%), đủ 34 tỉnh/thành. */
-const GROWTH2025={"22":11.89,"31":11.81,"37":10.65,"25":10.52,"24":10.27,"51":10.02,"75":9.63,"80":9.52,"48":9.18,"42":8.78,"33":8.78,"46":8.50,"40":8.44,"91":8.39,"38":8.27,"01":8.16,"15":8.14,"20":8.06,"14":8.03,"44":8.00,"79":7.53,"12":7.52,"82":7.38,"11":7.34,"92":7.23,"96":7.23,"04":7.22,"52":7.20,"56":7.11,"66":6.68,"68":6.42,"08":6.40,"19":6.33,"86":5.84};
-Object.entries(GROWTH2025).forEach(([c,v])=>DB[c]["2025"].grdpGrowth=v);
-
-/* XNK 2025 - USD. Cục Hải quan/Bộ Tài chính; Vĩnh Long và Tuyên Quang bổ sung từ nguồn địa phương. */
-const TRADE2025={
-"91":[2348655353,1217907042],"24":[93270111160,87841979370],"96":[1699134863,425876900],"92":[4155954718,1332576579],"04":[53800358,54913822],"48":[4574140294,4505664989],"66":[3119670971,1077374809],"11":[6297711,4462985],"75":[35012584208,24247393312],"82":[9395638764,4962326065],"52":[3791003178,1001330078],"01":[20889487014,48249025533],"42":[1512760301,2689482097],"31":[46547548905,40629104039],"46":[1531097803,1142836719],"33":[9547026601,8244183557],"56":[2785670537,1493461294],"12":[36736545,21059717],"68":[2288974894,1681442149],"20":[1824920740,1209812565],"15":[1352325504,880040989],"40":[3850640897,3576717383],"37":[26344598430,22858719081],"25":[36586583518,38025479029],"51":[3316582328,5578865585],"22":[6512846833,5567255528],"44":[732133163,1012700795],"14":[27184971,22708767],"80":[17850721836,13619356630],"19":[30108862650,20191839111],"38":[7155707250,9807456691],"79":[92676263291,99852292810],"86":[3660000000,2000000000],"08":[918230000,212770000]
-};
-Object.entries(TRADE2025).forEach(([c,[ex,im]])=>{DB[c]["2025"].exports=ex;DB[c]["2025"].imports=im});
-
-/* Thu nhập bình quân đầu người 2025 - nghìn đồng/người/tháng.
-   Chỉ nhúng những giá trị đã đối chiếu được từ công bố KSMS 2025; không tự bịa các tỉnh còn thiếu. */
-const INC2025={"01":8374.2,"79":8063.5,"75":7174.3,"31":7139.3,"22":6917.2,"11":2583.1,"04":2690.4,"12":2920.5,"40":4790,"46":5697,"38":5430,"44":4502,"42":4457};
-Object.entries(INC2025).forEach(([c,v])=>{DB[c]["2025"].incomePerCapita=v;const pop=DB[c]["2025"].population;if(pop)DB[c]["2025"].totalIncome=v*pop*12/1e6});
-const SOURCES={
- area:{name:"Nghị quyết sắp xếp cấp tỉnh 2025 / số liệu hành chính 34 tỉnh",kind:"official"},
- population:{name:"Cục Thống kê (NSO) - Niên giám 2025, phụ lục 34 tỉnh",kind:"official"},
- grdpPerCapita:{name:"Cục Thống kê (NSO) - GRDP bình quân đầu người theo địa phương",kind:"official"},
- grdp:{name:"Quy mô GRDP 34 tỉnh/thành năm 2024 - tổng hợp sau sắp xếp",kind:"official"},
- grdpGrowth:{name:"Tốc độ tăng trưởng GRDP 2025 theo công bố/tổng hợp địa phương",kind:"official"},
- incomePerCapita:{name:"Khảo sát mức sống dân cư (KSMS) - thu nhập dân cư bình quân đầu người/tháng",kind:"official"},
- totalIncome:{name:"Ước tính: thu nhập/người/tháng × dân số × 12",kind:"derived"},
- exports:{name:"Cục Hải quan/Bộ Tài chính - XNK theo tỉnh/thành năm 2025",kind:"official"},
- imports:{name:"Cục Hải quan/Bộ Tài chính - XNK theo tỉnh/thành năm 2025",kind:"official"},
- rainfall:{name:"Open-Meteo Archive - tọa độ đại diện tỉnh",kind:"external"},
- temperature:{name:"Open-Meteo Archive - tọa độ đại diện tỉnh",kind:"external"}
-};
-
+// Only values independently checked against the following public source are retained.
+P.forEach(p=>YEARS.forEach(y=>Object.keys(DB[p.code][y]).forEach(k=>DB[p.code][y][k]=null)));
+const HANOI_SOURCE="https://thongkehanoi.nso.gov.vn/tin-tuc/17";
+Object.assign(DB['01']['2024'],{grdp:1426000,population:8718000,grdpGrowth:6.52,grdpPerCapita:163.5,exports:19100000000,imports:41000000000,incomePerCapita:7546});
+const SOURCES=Object.fromEntries(Object.keys(METRICS).map(k=>[k,{name:['rainfall','temperature'].includes(k)?'Open-Meteo, tại tọa độ đại diện':'Thống kê TP Hà Nội — số liệu ước tính 2024, công bố 03/01/2025',kind:['rainfall','temperature'].includes(k)?'external':'official',url:['rainfall','temperature'].includes(k)?'https://open-meteo.com/':HANOI_SOURCE}]));
 const PX={
  population:"https://pxweb.nso.gov.vn/api/v1/vi/PLV02D%C3%A2n%20s%E1%BB%91%20v%C3%A0%20lao%20%C4%91%E1%BB%99ng/PLV02D%C3%A2n%20s%E1%BB%91%20v%C3%A0%20lao%20%C4%91%E1%BB%99ng/PL.V02.02-04.px",
  grdpPerCapita:"https://pxweb.nso.gov.vn/api/v1/vi/PLV03T%C3%A0i%20kho%E1%BA%A3n%20qu%E1%BB%91c%20gia/PLV03T%C3%A0i%20kho%E1%BA%A3n%20qu%E1%BB%91c%20gia/PL.V03.02.px",
@@ -781,17 +746,14 @@ function norm(s){return String(s??"").toLowerCase().normalize("NFD").replace(/[\
 function canonProvince(s){let n=norm(s).replace(/^(tinh|thanh pho|tp)\s+/,"").trim();if(n.includes("ho chi minh"))return"ho chi minh";if(n==="thua thien hue")return"hue";return n}
 function findProvince(name){const n=canonProvince(name);return P.find(p=>canonProvince(p.name)===n||p.old.some(x=>canonProvince(x)===n))}
 function fmt(v,d=0){if(v===null||v===undefined||Number.isNaN(+v))return"-";return Number(v).toLocaleString("vi-VN",{minimumFractionDigits:d,maximumFractionDigits:d})}
-function fmtMetric(k,v){if(v===null||v===undefined||Number.isNaN(+v))return"-";const m=METRICS[k];return fmt(v,m.dec)+" "+m.unit}
+function fmtMetric(k,v){if(v===null||v===undefined||Number.isNaN(+v))return"Chưa có dữ liệu";const m=METRICS[k];return fmt(v,m.dec)+" "+m.unit}
 function average(a){const x=a.filter(v=>typeof v==="number"&&!Number.isNaN(v));return x.length?x.reduce((s,v)=>s+v,0)/x.length:null}
 /* Mức tham chiếu toàn quốc chính thức/ưu tiên.
    - 2024 GDP/người: 114 triệu đồng/người/năm (NSO).
    - 2025 GDP/người: 125,5 triệu đồng/người/năm (NSO).
    - 2025 thu nhập dân cư BQ: khoảng 5,9 triệu đồng/người/tháng (kết quả sơ bộ KSMS 2025).
    Lưu ý: cấp tỉnh dùng GRDP/người; toàn quốc dùng GDP/người. */
-const NATIONAL_REFERENCE={
-  "2024":{grdpPerCapita:114},
-  "2025":{grdpPerCapita:125.5,incomePerCapita:5900}
-};
+const NATIONAL_REFERENCE={};
 function benchmarkValue(year,k,rows){
   const ref=NATIONAL_REFERENCE?.[year]?.[k];
   if(typeof ref==="number"){
@@ -1043,7 +1005,7 @@ function rowsFor(year,k,search=""){let rows=P.map(p=>({p,value:DB[p.code][year][
 function sourceBadge(k){const s=SOURCES[k]||{name:"-",kind:""};const cls=s.kind==="official"?"official":s.kind==="derived"?"derived":"external";return`<span class="badge ${cls}">${s.kind==="official"?"Chính thức":s.kind==="derived"?"Suy ra":"Nguồn ngoài"}</span>`}
 function renderRank(rows){const code=$("province").value,k=$("metric").value;$("rankBody").innerHTML=rows.length?rows.map(x=>`<tr class="${x.p.code===code?"active":""}" onclick="selectProvince('${x.p.code}')"><td class="rank-num">${x.rank}</td><td>${x.p.name}</td><td>${fmtMetric(k,x.value)}</td><td>${sourceBadge(k)}</td></tr>`).join(""):`<tr><td colspan="4">Chưa tải được dữ liệu cho chỉ tiêu/năm này.</td></tr>`;const r=rows.find(x=>x.p.code===code);$("rankBadge").textContent=r?`${r.p.name}: ${r.rank}/${rows.length}`:"Chưa có dữ liệu"}
 function renderKPI(rows){const y=$("year").value,k=$("metric").value,code=$("province").value,p=P.find(x=>x.code===code),v=DB[code][y][k],b=benchmarkValue(y,k,rows),a=b.value,r=rows.find(x=>x.p.code===code);$("kProvince").textContent=p.name;$("kYear").textContent=`Năm ${y}`;$("kRank").textContent=r?`${r.rank}/${rows.length}`:"-";$("kValue").textContent=fmtMetric(k,v);$("kMetric").textContent=METRICS[k].label;$("kAvgTitle").textContent=b.title;$("kAvg").textContent=fmtMetric(k,a);$("kAvgHint").textContent=b.hint;const ht=document.getElementById("heroTitle"),hm=document.getElementById("heroMetric"),hy=document.getElementById("heroYear"),hr=document.getElementById("heroRank"),hs=document.getElementById("heroSubtitle");if(ht)ht.textContent=`${p.name} — bức tranh kinh tế, xã hội và phát triển`;if(hm)hm.textContent=METRICS[k].label;if(hy)hy.textContent=y;if(hr)hr.textContent=r?`Hạng ${r.rank}/${rows.length}`:"Chưa đủ dữ liệu";if(hs)hs.textContent=`Theo dõi ${METRICS[k].label.toLowerCase()} của ${p.name} trong năm ${y}, đồng thời đối chiếu vị thế với các tỉnh/thành có dữ liệu trên toàn quốc.`;if(typeof v==="number"&&typeof a==="number"){const g=v-a;$("kGap").textContent=fmtMetric(k,g);$("kGapText").textContent=g>=0?"Cao hơn mức tham chiếu":"Thấp hơn mức tham chiếu"}else{$("kGap").textContent="-";$("kGapText").textContent="Chưa đủ dữ liệu"}}
-function renderDetail(){const y=$("year").value,p=P.find(x=>x.code===$("province").value),d=DB[p.code][y];$("detailBox").innerHTML=`<div>Mã tỉnh</div><div>${p.code}</div><div>Tỉnh/Thành phố</div><div>${p.name}</div><div>Năm</div><div>${y}</div><div>Diện tích</div><div>${fmtMetric("area",d.area)}</div><div>Dân số</div><div>${fmtMetric("population",d.population)}</div><div>Xuất khẩu</div><div>${fmtMetric("exports",d.exports)}</div><div>Nhập khẩu</div><div>${fmtMetric("imports",d.imports)}</div><div>GRDP</div><div>${fmtMetric("grdp",d.grdp)}</div><div>Tăng trưởng GRDP</div><div>${fmtMetric("grdpGrowth",d.grdpGrowth)}</div><div>GRDP BQ/người/năm</div><div>${fmtMetric("grdpPerCapita",d.grdpPerCapita)}</div><div>Tổng thu nhập ước tính</div><div>${fmtMetric("totalIncome",d.totalIncome)}</div><div>Thu nhập dân cư BQ/người/tháng</div><div>${fmtMetric("incomePerCapita",d.incomePerCapita)}</div><div>Lượng mưa</div><div>${fmtMetric("rainfall",d.rainfall)}</div><div>Nhiệt độ TB</div><div>${fmtMetric("temperature",d.temperature)}</div>`;$("sectorBox").innerHTML=p.sectors.map(x=>`<span class="tag">${x}</span>`).join("");const k=$("metric").value,s=SOURCES[k];$("sourceBox").innerHTML=`<div>Chỉ tiêu đang xem</div><div><b>${METRICS[k].label}</b></div><div>Nguồn</div><div>${s.name}</div><div>Phân loại</div><div>${sourceBadge(k)}</div><div>Ranh giới</div><div>34 tỉnh/thành theo sắp xếp cấp tỉnh năm 2025</div><div>Ghi chú</div><div>${k==="rainfall"||k==="temperature"?"Khí hậu lấy tại tọa độ đại diện trung tâm tỉnh.":k==="grdp"||k==="totalIncome"?"Chỉ tiêu được suy ra từ các số liệu thành phần để so sánh thống nhất 34 tỉnh.":"Giá trị theo nguồn nêu trên."}</div>`}
+function renderDetail(){const y=$("year").value,p=P.find(x=>x.code===$("province").value),d=DB[p.code][y];$("detailBox").innerHTML=`<div>Mã tỉnh</div><div>${p.code}</div><div>Tỉnh/Thành phố</div><div>${p.name}</div><div>Năm</div><div>${y}</div><div>Diện tích</div><div>${fmtMetric("area",d.area)}</div><div>Dân số</div><div>${fmtMetric("population",d.population)}</div><div>Xuất khẩu</div><div>${fmtMetric("exports",d.exports)}</div><div>Nhập khẩu</div><div>${fmtMetric("imports",d.imports)}</div><div>GRDP</div><div>${fmtMetric("grdp",d.grdp)}</div><div>Tăng trưởng GRDP</div><div>${fmtMetric("grdpGrowth",d.grdpGrowth)}</div><div>GRDP BQ/người/năm</div><div>${fmtMetric("grdpPerCapita",d.grdpPerCapita)}</div><div>Tổng thu nhập ước tính</div><div>${fmtMetric("totalIncome",d.totalIncome)}</div><div>Thu nhập dân cư BQ/người/tháng</div><div>${fmtMetric("incomePerCapita",d.incomePerCapita)}</div><div>Lượng mưa</div><div>${fmtMetric("rainfall",d.rainfall)}</div><div>Nhiệt độ TB</div><div>${fmtMetric("temperature",d.temperature)}</div>`;$("sectorBox").innerHTML=p.sectors.map(x=>`<span class="tag">${x}</span>`).join("");const k=$("metric").value,s=SOURCES[k];$("sourceBox").innerHTML=`<div>Chỉ tiêu đang xem</div><div><b>${METRICS[k].label}</b></div><div>Nguồn</div><div>${s.name} · <a target="_blank" rel="noopener" href="${s.url}">Mở nguồn</a></div><div>Phân loại</div><div>${sourceBadge(k)}</div><div>Ranh giới</div><div>34 tỉnh/thành theo sắp xếp cấp tỉnh năm 2025</div><div>Ghi chú</div><div>${k==="rainfall"||k==="temperature"?"Khí hậu lấy tại tọa độ đại diện trung tâm tỉnh.":k==="grdp"||k==="totalIncome"?"GRDP 2024 Hà Nội là số ước tính công bố theo giá hiện hành, đã làm tròn; không tự tính GRDP từ dân số.":"Giá trị theo nguồn nêu trên; địa phương khác chưa có số liệu xác minh. Xếp hạng chỉ trong tập dữ liệu hiện có."}</div>`}
 const trend=echarts.init($("trend")),compare=echarts.init($("compare"));
 function renderTrend(){const p=P.find(x=>x.code===$("province").value),k=$("metric").value;trend.setOption({tooltip:{trigger:"axis",formatter:ps=>{const x=ps[0];return`${p.name}<br>${x.axisValue}: <b>${fmtMetric(k,x.value)}</b>`}},grid:{left:85,right:30,top:35,bottom:50},xAxis:{type:"category",data:YEARS},yAxis:{type:"value",name:METRICS[k].unit,axisLabel:{formatter:v=>Number(v).toLocaleString("vi-VN")}},series:[{type:"line",smooth:true,symbolSize:8,data:YEARS.map(y=>DB[p.code][y][k]),lineStyle:{width:3},areaStyle:{opacity:.08},connectNulls:false}]})}
 function renderCompare(rows){const y=$("year").value,k=$("metric").value,code=$("province").value,b=benchmarkValue(y,k,rows),a=b.value,rev=[...rows].reverse();compare.setOption({tooltip:{trigger:"axis",axisPointer:{type:"shadow"},formatter:ps=>`${ps[0].name}<br>${METRICS[k].label}: <b>${fmtMetric(k,ps[0].value)}</b>`},grid:{left:185,right:50,top:30,bottom:40},xAxis:{type:"value",axisLabel:{formatter:v=>Number(v).toLocaleString("vi-VN")}},yAxis:{type:"category",data:rev.map(x=>x.p.name),axisLabel:{width:160,overflow:"truncate"}},series:[{type:"bar",barMaxWidth:17,data:rev.map(x=>({value:x.value,itemStyle:{color:x.p.code===code?"#155eef":"#93c5fd"}})),markLine:typeof a==="number"?{symbol:"none",lineStyle:{type:"dashed",width:2,color:"#f79009"},label:{formatter:`${b.title}: ${fmt(a,METRICS[k].dec)}`},data:[{xAxis:a}]}:undefined}]})}
@@ -1052,53 +1014,399 @@ function renderAll(){const y=$("year").value,k=$("metric").value,rows=rowsFor(y,
 function showDataNote(html=""){const e=$("dataNote");if(!e)return;e.innerHTML=html;e.classList.toggle("show",!!html)}
 async function ensureMetric(force=false){
   const k=$("metric").value;
-  const preferred={grdp:"2024",grdpPerCapita:"2024",grdpGrowth:"2025",exports:"2025",imports:"2025",incomePerCapita:"2025",totalIncome:"2025"};
+  const preferred={grdp:"2024",grdpPerCapita:"2024",grdpGrowth:"2024",exports:"2024",imports:"2024",incomePerCapita:"2024"};
   if(preferred[k] && rowsFor($("year").value,k).length===0){$("year").value=preferred[k];showDataNote(`Chỉ tiêu <b>${METRICS[k].label}</b> hiện có dữ liệu so sánh phù hợp nhất ở năm <b>${preferred[k]}</b>. Hệ thống đã tự chuyển năm.`)}else if(k==="incomePerCapita"){showDataNote(`<b>Thu nhập dân cư bình quân đầu người/tháng</b> là chỉ tiêu mức sống hộ dân cư, đơn vị nghìn đồng/người/tháng; <b>không phải GRDP bình quân đầu người</b>.`)}else if(k==="grdpPerCapita"){showDataNote(`Ở cấp tỉnh, chỉ tiêu đúng là <b>GRDP bình quân đầu người</b>, đơn vị triệu đồng/người/năm. Mức cả nước dùng <b>GDP bình quân đầu người</b>.`)}else showDataNote();
   if(["rainfall","temperature"].includes(k)){loading(true,"Đang tổng hợp khí hậu 34 tỉnh...");await loadClimateYear($("year").value,force);loading(false)}
   renderAll()
 }
-function fill(){$("year").innerHTML=YEARS.map(y=>`<option>${y}</option>`).join("");$("province").innerHTML=P.map(p=>`<option value="${p.code}">${p.name}</option>`).join("");$("metric").innerHTML=Object.entries(METRICS).map(([k,m])=>`<option value="${k}">${m.label}</option>`).join("");$("year").value="2024";$("province").value="79";$("metric").value="grdpPerCapita"}
+function fill(){$("year").innerHTML=YEARS.map(y=>`<option>${y}</option>`).join("");$("province").innerHTML=P.map(p=>`<option value="${p.code}">${p.name}</option>`).join("");$("metric").innerHTML=Object.entries(METRICS).map(([k,m])=>`<option value="${k}">${m.label}</option>`).join("");$("year").value="2024";$("province").value="01";$("metric").value="grdpPerCapita"}
 $("year").onchange=ensureMetric;$("metric").onchange=ensureMetric;$("province").onchange=()=>{renderAll();loadPhoto(P.find(x=>x.code===$("province").value))};$("search").oninput=renderAll;$("reloadBtn").onclick=()=>ensureMetric(true);window.addEventListener("resize",()=>{trend.resize();compare.resize();mapChart.resize()});
 (async function init(){
   fill();
   // Mặc định chọn dân số 2025 để trang luôn có đủ 34/34 dữ liệu ngay khi mở.
-  $("year").value="2024";$("province").value="79";$("metric").value="grdpPerCapita";
+  $("year").value="2024";$("province").value="01";$("metric").value="grdpPerCapita";
   renderAll();
   loadProvinceShapes();
   loadPhoto(P.find(x=>x.code===$("province").value));
 })();
 </script>
 <script>
-/* New modules. Replace DEMO using the JSON manager or a verified public API.
+/* New modules. Replace SOURCED using the JSON manager or a verified public API.
    No private credentials, fabricated official alerts or automatic forecasts. */
 (() => {
 'use strict';
 const el=id=>document.getElementById(id);
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const num=(v,d=0)=>Number(v).toLocaleString('vi-VN',{maximumFractionDigits:d});
+const num=(v,d=0)=>v===null||v===undefined?'Chưa công bố':Number(v).toLocaleString('vi-VN',{maximumFractionDigits:d});
 const province=code=>P.find(p=>p.code===code);
-const KEY='vn34-lab-data-v1', FAVORITES='vn34-lab-favorites-v1', SIM='vn34-lab-simulation-v1';
+const KEY='vn34-lab-sourced-v2', FAVORITES='vn34-lab-sourced-favorites-v2', SIM='vn34-lab-sourced-simulation-v2';
 let storageOK=true;
 function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}}
 function save(key,v){try{localStorage.setItem(key,JSON.stringify(v));return true}catch{storageOK=false;el('labStorageState').textContent='Trình duyệt không cho lưu dữ liệu. Các thay đổi chỉ tồn tại trong phiên này; hãy sao lưu JSON.';return false}}
 function toast(message){el('labToast').textContent=message;el('labToast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>el('labToast').hidden=true,4200)}
-const types={projects:['Công nghiệp','Logistics','Năng lượng','Du lịch','Nông nghiệp công nghệ cao'],digital:['Trung tâm dữ liệu','Trạm 5G','Điểm kết nối cáp quang','Điểm dịch vụ số công cộng'],risks:['Ngập lụt','Sạt lở','Hạn hán','Xâm nhập mặn','Bão / gió mạnh']};
-const statuses={projects:['Kêu gọi đầu tư','Chuẩn bị','Đang triển khai'],digital:['Đang hoạt động','Đang xây dựng','Đề xuất'],risks:['Thấp','Trung bình','Cao','Rất cao']};
-const colors={projects:['#0d513d','#ec8b34','#407fa4'],digital:['#0d513d','#ec8b34','#84958a'],risks:['#5c9769','#dba23b','#e36b36','#b13d3d']};
+const statuses={projects:['Kêu gọi đầu tư theo nguồn','Đã phê duyệt theo nguồn','Chưa công bố'],digital:['Đã khai trương theo nguồn','Chưa công bố'],risks:['Cấp 1','Cấp 2','Cấp 3','Cấp 4','Cấp 5','Chưa nêu cấp trong nội dung đọc được']};
+const colors={projects:['#0d513d','#407fa4','#84958a'],digital:['#0d513d','#84958a'],risks:['#5c9769','#dba23b','#e36b36','#b13d3d','#86273e','#84958a']};
 const kindTitle={projects:'Dự án',digital:'Hạ tầng',risks:'Rủi ro'};
-// Deliberately fictional records: no actual project names, operator names or active warnings.
-const DEMO={version:1,projects:[],digital:[],risks:[]};
-const demoCodes=['01','31','48','56','68','75','79','82','91','92','96','22'];
-demoCodes.forEach((code,i)=>{
- const p=province(code),suffix=p.name;
- const common={province:code,mode:'demo',source:'Bộ dữ liệu giả định phục vụ thiết kế giao diện',updated:'2026-10-09',sourceUrl:''};
- DEMO.projects.push({...common,id:'P'+(i+1),name:'Dự án mẫu '+(i+1)+' — '+suffix,type:types.projects[i%5],status:statuses.projects[i%3],lat:p.lat+0.08,lon:p.lon+0.05,capital:500+i*180,area:20+i*7,owner:'Đơn vị phụ trách giả định',description:'Hồ sơ minh họa cho chức năng tra cứu cơ hội đầu tư. Quy mô, vốn và tọa độ đều giả định; chưa có thông tin pháp lý, quỹ đất hay cam kết đầu tư.'});
- DEMO.digital.push({...common,id:'D'+(i+1),name:'Điểm hạ tầng mẫu '+(i+1)+' — '+suffix,type:types.digital[i%4],status:statuses.digital[i%3],lat:p.lat-0.06,lon:p.lon+0.08,operator:'Đơn vị vận hành giả định',capacity:['20 tủ rack (giả định)','1.000 kết nối (giả định)','10 Gbps (giả định)','50 người dùng (giả định)'][i%4],availability:i%3===0?99.9:0,description:'Điểm hạ tầng mô phỏng. Không đại diện tài sản, địa chỉ vận hành, cấu hình hay cam kết chất lượng của bất kỳ cơ quan hoặc nhà mạng nào.'});
- DEMO.risks.push({...common,id:'R'+(i+1),name:'Khu vực giả định '+(i+1)+' — '+suffix,type:types.risks[i%5],status:statuses.risks[i%4],lat:p.lat+0.15,lon:p.lon-0.10,radius:10+(i%4)*8,exposed:1000+i*350,validUntil:'',description:'Vùng ảnh hưởng hình tròn chỉ dùng để minh họa; không phải vùng nguy hiểm thực tế hoặc kết quả mô hình thiên tai.',guidance:'Đối chiếu thông tin từ cơ quan chuyên môn và thông báo chính thức tại địa phương. Hướng dẫn ứng phó cụ thể cần được cơ quan có thẩm quyền cung cấp.'});
-});
-function validate(raw){
- if(!raw||raw.version!==1)throw Error('JSON cần version: 1.');
- const out={version:1};
+const SOURCED={
+  "version": 2,
+  "projects": [
+    {
+      "id": "LT-GD1",
+      "province": "75",
+      "name": "Cảng hàng không quốc tế Long Thành — giai đoạn 1",
+      "type": "Giao thông / hàng không",
+      "status": "Đã phê duyệt theo nguồn",
+      "mode": "sourced",
+      "source": "Văn phòng Chính phủ — thông tin QĐ 1777/QĐ-TTg",
+      "sourceUrl": "https://vpcp.chinhphu.vn/thu-tuong-phe-duyet-du-an-cang-hang-khong-quoc-te-long-thanh-giai-doan-1-11525019.htm",
+      "updated": "2026-10-09",
+      "published": "2020-11-12",
+      "description": "Quy mô phê duyệt: 25 triệu hành khách và 1,2 triệu tấn hàng hóa/năm. Đây là tổng mức đầu tư phê duyệt năm 2020; chưa xác minh giá trị điều chỉnh hoặc tiến độ tại ngày truy cập.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu vực Long Thành, Đồng Nai",
+      "capital": 109111.742,
+      "area": null,
+      "owner": "ACV (dự án thành phần 3); VATM (thành phần 2); các đơn vị khác theo quyết định"
+    },
+    {
+      "id": "DN-NAMGIANG",
+      "province": "48",
+      "name": "Trung tâm logistics tại KKT cửa khẩu quốc tế Nam Giang",
+      "type": "Logistics",
+      "status": "Kêu gọi đầu tư theo nguồn",
+      "mode": "sourced",
+      "source": "Cổng TTĐT thành phố Đà Nẵng",
+      "sourceUrl": "https://cttdt.danangportal.gov.vn/vi/web/dng/w/du-an-trung-tam-logistics-tai-khu-kinh-te-cua-khau-quoc-te-nam-giang",
+      "updated": "2026-10-09",
+      "published": null,
+      "description": "Dự án công khai mời đầu tư, quy mô khoảng 5 ha, phục vụ trung chuyển hàng hóa giữa Nam Lào và các cảng miền Trung. Chưa xác minh tình trạng tiếp nhận nhà đầu tư hiện tại.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Xã La Dêê, Tiểu khu I, KKT cửa khẩu Nam Giang",
+      "capital": null,
+      "area": 5,
+      "owner": "UBND thành phố Đà Nẵng (cơ quan công bố)"
+    },
+    {
+      "id": "DN-KIMLIEN",
+      "province": "48",
+      "name": "Trung tâm Logistics ga hàng hóa Kim Liên",
+      "type": "Logistics",
+      "status": "Kêu gọi đầu tư theo nguồn",
+      "mode": "sourced",
+      "source": "Cổng TTĐT thành phố Đà Nẵng",
+      "sourceUrl": "https://cttdt.danangportal.gov.vn/vi/web/dng/w/du-an-trung-tam-logistics-ga-hang-hoa-kim-lien",
+      "updated": "2026-10-09",
+      "published": null,
+      "description": "Danh mục công khai có quy mô 5 ha đến năm 2030. Không phải thông báo trúng thầu; cần kiểm tra lại tình trạng mời đầu tư với cơ quan công bố.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu vực ga hàng hóa Kim Liên, Đà Nẵng",
+      "capital": null,
+      "area": 5,
+      "owner": "UBND thành phố Đà Nẵng (cơ quan công bố)"
+    },
+    {
+      "id": "AG-HONNGHE",
+      "province": "91",
+      "name": "Khai thác tuyến vận tải thủy Hòn Nghệ — Hòn Chông",
+      "type": "Vận tải thủy",
+      "status": "Kêu gọi đầu tư theo nguồn",
+      "mode": "sourced",
+      "source": "Trung tâm Xúc tiến Đầu tư, Thương mại và Du lịch An Giang — mục Đầu tư",
+      "sourceUrl": "https://apc.angiang.gov.vn/m/chuyenmuc.aspx?chuyenmuc=140",
+      "updated": "2026-10-09",
+      "published": "2026-08-04",
+      "description": "UBND xã Hòn Nghệ mời doanh nghiệp đầu tư khai thác tuyến phục vụ vận chuyển người, hàng hóa và du lịch. Nguồn chưa nêu vốn hay diện tích.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Tuyến Hòn Nghệ — Hòn Chông, An Giang",
+      "capital": null,
+      "area": null,
+      "owner": "UBND xã Hòn Nghệ"
+    }
+  ],
+  "digital": [
+    {
+      "id": "VNPT-HOALAC",
+      "province": "01",
+      "name": "VNPT IDC Hòa Lạc",
+      "type": "Trung tâm dữ liệu",
+      "status": "Đã khai trương theo nguồn",
+      "mode": "sourced",
+      "source": "Báo Điện tử Chính phủ / thông tin VNPT",
+      "sourceUrl": "https://baochinhphu.vn/khai-truong-trung-tam-du-lieu-lon-nhat-viet-nam-102231025110633111.htm",
+      "updated": "2026-10-09",
+      "published": "2023-10-25",
+      "description": "Công bố lúc khai trương: 23.000 m² sàn, 2.000 tủ rack. Nguồn nêu các chứng nhận Tier III về thiết kế và xây dựng. Không phải kết quả giám sát vận hành hiện tại.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu Công nghệ cao Hòa Lạc, Hà Nội",
+      "capacity": "2.000 rack; 23.000 m² sàn (công bố 2023)",
+      "operator": "VNPT",
+      "availability": null
+    },
+    {
+      "id": "VIETTEL-HOALAC",
+      "province": "01",
+      "name": "Trung tâm dữ liệu Viettel Hòa Lạc",
+      "type": "Trung tâm dữ liệu",
+      "status": "Đã khai trương theo nguồn",
+      "mode": "sourced",
+      "source": "Viettel Family — Tập đoàn Viettel",
+      "sourceUrl": "https://viettelfamily.com/news/ben-trong-data-center-hien-dai-nhat-viet-nam-vua-duoc-viettel-khai-truong",
+      "updated": "2026-10-09",
+      "published": "2024-04-10",
+      "description": "Công bố khi khai trương: 2.400 rack, 21.000 m² sàn, công suất điện 30 MW. Đây là quy mô công bố, không phải số rack còn trống hoặc điện tiêu thụ đo thời gian thực.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu Công nghệ cao Hòa Lạc, Hà Nội",
+      "capacity": "2.400 rack; 30 MW; 21.000 m² sàn (công bố 2024)",
+      "operator": "Viettel",
+      "availability": null
+    },
+    {
+      "id": "FPT-HCM02",
+      "province": "79",
+      "name": "FPT Fornix HCM02",
+      "type": "Trung tâm dữ liệu",
+      "status": "Đã khai trương theo nguồn",
+      "mode": "sourced",
+      "source": "FPT — thông cáo khai trương",
+      "sourceUrl": "https://fpt.com/vi/tin-tuc/fpt-khanh-thanh-trung-tam-du-lieu-quy-mo-lon-nhat-viet-nam",
+      "updated": "2026-10-09",
+      "published": "2025-08-20",
+      "description": "Công bố: 3.600 rack, 8 tầng, 10.000 m². FPT nêu uptime ≥99,982%; đây là thông số công bố, không phải số liệu giám sát uptime thực tế.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu Công nghệ cao TP. Hồ Chí Minh",
+      "capacity": "3.600 rack; 10.000 m²; 8 tầng",
+      "operator": "FPT",
+      "availability": 99.982
+    }
+  ],
+  "risks": [
+    {
+      "id": "FLASH-42",
+      "province": "42",
+      "name": "Lũ quét, sạt lở — Hà Tĩnh",
+      "type": "Lũ quét / sạt lở",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-canh-bao-lu-quet-sat-lo-dat-sut-lun-dat-do-mua-lu-hoac-dong-chay-tren-khu-vuc-cac-tinh-thanh-pho-tu-ha-tinh-den-quang-ngai-post54508.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin liệt kê địa phương trong nhóm có nguy cơ lũ quét, sạt lở, sụt lún trên sườn dốc và suối nhỏ. Không phải cảnh báo cho toàn bộ diện tích tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Sườn dốc, suối nhỏ trong địa phương; chi tiết tại nguồn",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-09T19:30:00+07:00",
+      "observation": "Khung dự báo 6 giờ theo bản tin công bố lúc 13:30",
+      "issuedAt": "2026-10-09T13:30:00+07:00"
+    },
+    {
+      "id": "FLASH-44",
+      "province": "44",
+      "name": "Lũ quét, sạt lở — Quảng Trị",
+      "type": "Lũ quét / sạt lở",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-canh-bao-lu-quet-sat-lo-dat-sut-lun-dat-do-mua-lu-hoac-dong-chay-tren-khu-vuc-cac-tinh-thanh-pho-tu-ha-tinh-den-quang-ngai-post54508.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin liệt kê địa phương trong nhóm có nguy cơ lũ quét, sạt lở, sụt lún trên sườn dốc và suối nhỏ. Không phải cảnh báo cho toàn bộ diện tích tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Sườn dốc, suối nhỏ trong địa phương; chi tiết tại nguồn",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-09T19:30:00+07:00",
+      "observation": "Khung dự báo 6 giờ theo bản tin công bố lúc 13:30",
+      "issuedAt": "2026-10-09T13:30:00+07:00"
+    },
+    {
+      "id": "FLASH-46",
+      "province": "46",
+      "name": "Lũ quét, sạt lở — Huế",
+      "type": "Lũ quét / sạt lở",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-canh-bao-lu-quet-sat-lo-dat-sut-lun-dat-do-mua-lu-hoac-dong-chay-tren-khu-vuc-cac-tinh-thanh-pho-tu-ha-tinh-den-quang-ngai-post54508.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin liệt kê địa phương trong nhóm có nguy cơ lũ quét, sạt lở, sụt lún trên sườn dốc và suối nhỏ. Không phải cảnh báo cho toàn bộ diện tích tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Sườn dốc, suối nhỏ trong địa phương; chi tiết tại nguồn",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-09T19:30:00+07:00",
+      "observation": "Khung dự báo 6 giờ theo bản tin công bố lúc 13:30",
+      "issuedAt": "2026-10-09T13:30:00+07:00"
+    },
+    {
+      "id": "FLASH-48",
+      "province": "48",
+      "name": "Lũ quét, sạt lở — Đà Nẵng",
+      "type": "Lũ quét / sạt lở",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-canh-bao-lu-quet-sat-lo-dat-sut-lun-dat-do-mua-lu-hoac-dong-chay-tren-khu-vuc-cac-tinh-thanh-pho-tu-ha-tinh-den-quang-ngai-post54508.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin liệt kê địa phương trong nhóm có nguy cơ lũ quét, sạt lở, sụt lún trên sườn dốc và suối nhỏ. Không phải cảnh báo cho toàn bộ diện tích tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Sườn dốc, suối nhỏ trong địa phương; chi tiết tại nguồn",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-09T19:30:00+07:00",
+      "observation": "Khung dự báo 6 giờ theo bản tin công bố lúc 13:30",
+      "issuedAt": "2026-10-09T13:30:00+07:00"
+    },
+    {
+      "id": "FLASH-51",
+      "province": "51",
+      "name": "Lũ quét, sạt lở — Quảng Ngãi",
+      "type": "Lũ quét / sạt lở",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-canh-bao-lu-quet-sat-lo-dat-sut-lun-dat-do-mua-lu-hoac-dong-chay-tren-khu-vuc-cac-tinh-thanh-pho-tu-ha-tinh-den-quang-ngai-post54508.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin liệt kê địa phương trong nhóm có nguy cơ lũ quét, sạt lở, sụt lún trên sườn dốc và suối nhỏ. Không phải cảnh báo cho toàn bộ diện tích tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Sườn dốc, suối nhỏ trong địa phương; chi tiết tại nguồn",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-09T19:30:00+07:00",
+      "observation": "Khung dự báo 6 giờ theo bản tin công bố lúc 13:30",
+      "issuedAt": "2026-10-09T13:30:00+07:00"
+    },
+    {
+      "id": "DN-LU-0530",
+      "province": "75",
+      "name": "Lũ sông Đồng Nai — bản tin 05:30",
+      "type": "Lũ sông",
+      "status": "Cấp 2",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-lu-tren-song-dong-nai-post54499.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin 05:30 ghi nhận mực nước Tà Lài lúc 05:00 là 112,50 m, ở BĐ2. Đây là bản tin lưu trữ; nguồn đã công bố thời điểm bản tin tiếp theo 09:00, không dùng làm cảnh báo hiện thời.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Sông Đồng Nai, trạm Tà Lài và vùng ven sông trong bản tin",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-09T09:00:00+07:00",
+      "observation": "112,50 m lúc 05:00 ngày 09/10/2026 (quan trắc, không phải dự báo)",
+      "issuedAt": "2026-10-09T05:30:00+07:00"
+    },
+    {
+      "id": "RAIN-40",
+      "province": "40",
+      "name": "Mưa lớn — Nghệ An",
+      "type": "Mưa lớn",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-du-bao-mua-lon-o-khu-vuc-tu-thanh-hoa-den-thanh-pho-da-nang-va-phia-dong-tinh-quang-ngai-post54290.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Dự báo cho khu vực Nghệ An và Hà Tĩnh từ 09/10 đến đêm 10/10: phổ biến 100–200 mm, cục bộ trên 300 mm. Không phải lượng mưa đã đo hoặc bình quân toàn tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu vực Nghệ An / Hà Tĩnh được nêu trong bản tin",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-11T00:00:00+07:00",
+      "observation": "100–200 mm; cục bộ >300 mm (dự báo khu vực)",
+      "issuedAt": "2026-10-09T09:02:00+07:00"
+    },
+    {
+      "id": "RAIN-42",
+      "province": "42",
+      "name": "Mưa lớn — Hà Tĩnh",
+      "type": "Mưa lớn",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-du-bao-mua-lon-o-khu-vuc-tu-thanh-hoa-den-thanh-pho-da-nang-va-phia-dong-tinh-quang-ngai-post54290.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Dự báo cho khu vực Nghệ An và Hà Tĩnh từ 09/10 đến đêm 10/10: phổ biến 100–200 mm, cục bộ trên 300 mm. Không phải lượng mưa đã đo hoặc bình quân toàn tỉnh.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Khu vực Nghệ An / Hà Tĩnh được nêu trong bản tin",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-11T00:00:00+07:00",
+      "observation": "100–200 mm; cục bộ >300 mm (dự báo khu vực)",
+      "issuedAt": "2026-10-09T09:02:00+07:00"
+    },
+    {
+      "id": "HCM-TRIEU",
+      "province": "79",
+      "name": "Triều cường ven biển Nam Bộ — trạm Vũng Tàu",
+      "type": "Triều cường",
+      "status": "Chưa nêu cấp trong nội dung đọc được",
+      "mode": "sourced",
+      "source": "Trung tâm Dự báo KTTV quốc gia",
+      "sourceUrl": "https://www.nchmf.gov.vn/kttv/vi-VN/1/tin-canh-bao-du-bao-trieu-cuong-vung-ven-bien-nam-bo-post54492.html",
+      "updated": "2026-10-09",
+      "published": "2026-10-09",
+      "description": "Bản tin ghi nhận 3,90 m lúc 00:30 ngày 09/10 tại Vũng Tàu; dự báo mức cao nhất 24–48 giờ tới 4,00–4,10 m. Mốc cao độ theo nguồn; không diễn giải là độ sâu ngập.",
+      "lat": null,
+      "lon": null,
+      "locationAccuracy": "province",
+      "location": "Trạm Vũng Tàu; khu vực trũng thấp ven biển/ven sông theo nguồn",
+      "radius": null,
+      "exposed": null,
+      "guidance": "Theo dõi bản tin mới và hướng dẫn của cơ quan chức năng tại địa phương.",
+      "validUntil": "2026-10-10T15:30:00+07:00",
+      "observation": "Quan trắc 3,90 m; dự báo 4,00–4,10 m",
+      "issuedAt": ""
+    }
+  ]
+};
+const VERIFIED_BASE={"01":{year:2024,grdp:1426000,population:8718000,source:"Thống kê TP Hà Nội — công bố 03/01/2025; số liệu ước tính, đã làm tròn",url:"https://thongkehanoi.nso.gov.vn/tin-tuc/17"}};
+function validate(raw, imported=false){
+ if(!raw||raw.version!==2)throw Error('JSON cần version: 2.');
+ const out={version:2};
  for(const kind of ['projects','digital','risks']){
   if(!Array.isArray(raw[kind])||raw[kind].length>2000)throw Error(kind+': cần danh sách, tối đa 2.000 bản ghi.');
   const ids=new Set();
@@ -1108,24 +1416,24 @@ function validate(raw){
    for(const k of ['id','province','name','type','status','description','source','updated','mode'])if(typeof r[k]!=='string'||!r[k].trim()||r[k].length>3000)fail('thiếu hoặc sai trường '+k);
    if(!province(r.province))fail('mã tỉnh không có trong danh mục');
    if(ids.has(r.id))fail('id trùng');ids.add(r.id);
-   if(!['demo','user'].includes(r.mode))fail('mode phải là demo hoặc user');
+   if(!['sourced','user'].includes(r.mode))fail('mode phải là sourced hoặc user');
    if(!statuses[kind].includes(r.status))fail('trạng thái không hợp lệ');
    const validDate=v=>/^\d{4}-\d{2}-\d{2}$/.test(v)&&!Number.isNaN(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
    if(!validDate(r.updated))fail('updated cần ngày hợp lệ YYYY-MM-DD');
-   if(typeof r.lat!=='number'||typeof r.lon!=='number'||!Number.isFinite(r.lat)||!Number.isFinite(r.lon)||r.lat<7||r.lat>25||r.lon<100||r.lon>118)fail('tọa độ không hợp lệ trong phạm vi hiển thị');
+   if(r.lat!==null||r.lon!==null){if(typeof r.lat!=='number'||typeof r.lon!=='number'||!Number.isFinite(r.lat)||!Number.isFinite(r.lon)||r.lat<7||r.lat>25||r.lon<100||r.lon>118)fail('tọa độ không hợp lệ');}
    const item={};for(const k of ['id','province','name','type','status','description','source','updated','mode','lat','lon'])item[k]=r[k];
-   item.sourceUrl='';if(r.sourceUrl){try{const u=new URL(r.sourceUrl);if(u.protocol!=='https:'||u.username||u.password)fail('sourceUrl chỉ nhận HTTPS không có thông tin đăng nhập');item.sourceUrl=u.href}catch{fail('sourceUrl không hợp lệ')}}
-   const n=(k,max=1e9)=>{if(typeof r[k]!=='number'||!Number.isFinite(r[k])||r[k]<0||r[k]>max)fail(k+' phải là số không âm <= '+max);item[k]=r[k]};
+   item.mode=imported?'user':r.mode;for(const k of ['location','locationAccuracy','published','observation','issuedAt'])item[k]=typeof r[k]==='string'?r[k].slice(0,3000):null;item.sourceUrl='';if(r.sourceUrl){try{const u=new URL(r.sourceUrl);if(u.protocol!=='https:'||u.username||u.password)fail('sourceUrl chỉ nhận HTTPS không có thông tin đăng nhập');item.sourceUrl=u.href}catch{fail('sourceUrl không hợp lệ')}}
+   const n=(k,max=1e9)=>{if(r[k]===null){item[k]=null;return}if(typeof r[k]!=='number'||!Number.isFinite(r[k])||r[k]<0||r[k]>max)fail(k+' phải là số không âm <= '+max);item[k]=r[k]};
    const str=k=>{if(typeof r[k]!=='string'||r[k].length>3000)fail('thiếu hoặc sai '+k);item[k]=r[k]};
    if(kind==='projects'){n('capital');n('area');str('owner')}
    if(kind==='digital'){str('capacity');str('operator');n('availability',100)}
-   if(kind==='risks'){n('radius',200);n('exposed');str('guidance');item.validUntil=r.validUntil||'';if(item.validUntil&&!validDate(item.validUntil))fail('validUntil cần ngày hợp lệ')}
+   if(kind==='risks'){n('radius',200);n('exposed');str('guidance');item.validUntil=r.validUntil||'';if(item.validUntil&&!validDate(item.validUntil)&&Number.isNaN(Date.parse(item.validUntil)))fail('validUntil cần ngày hoặc thời điểm ISO hợp lệ')}
    return item;
   });
  }
  return out;
 }
-let data;try{data=validate(read(KEY,DEMO))}catch{data=structuredClone(DEMO);toast('Dữ liệu lưu trước đây không hợp lệ; đã dùng dữ liệu mẫu.')}
+let data;try{data=validate(read(KEY,SOURCED))}catch{data=structuredClone(SOURCED);toast('Dữ liệu lưu trước đây không hợp lệ; đã dùng bộ dữ liệu có nguồn.')}
 let favorites=read(FAVORITES,[]);if(!Array.isArray(favorites))favorites=[];favorites=favorites.filter(s=>typeof s==='string');
 const selected={projects:null,digital:null,risks:null}, charts={}, filtered={}, mapZoom={};
 let tab=0, simRows=[], lastMain=el('province').value;
@@ -1142,62 +1450,50 @@ function fillFilters(){
  el('simProvince').innerHTML=P.map(p=>'<option value="'+p.code+'">'+safe(p.name)+'</option>').join('');el('simProvince').value=lastMain;
 }
 function updateMode(){
- const rows=[...data.projects,...data.digital,...data.risks],demo=rows.filter(r=>r.mode==='demo').length;
- el('labMode').textContent=rows.length===0?'Chưa có dữ liệu':demo===rows.length?'Dữ liệu minh họa':demo===0?'Dữ liệu người dùng':'Dữ liệu mẫu + người dùng';
- el('labNotice').innerHTML='Có <b>'+num(demo)+'</b> bản ghi giả định và <b>'+num(rows.length-demo)+'</b> bản ghi do người dùng nhập. Dữ liệu người dùng chưa được xác minh; bản ghi giả định không phải dự án, hạ tầng hoặc cảnh báo thực tế. Vùng tròn rủi ro chỉ là bán kính tham khảo.';
+ const rows=[...data.projects,...data.digital,...data.risks],sourced=rows.filter(r=>r.mode==='sourced').length;
+ el('labMode').textContent='Số liệu công khai • '+sourced+' hồ sơ có nguồn';
+ el('labNotice').innerHTML='Dữ liệu đã đối chiếu nguồn ngày <b>09/10/2026</b>: '+sourced+' hồ sơ công khai và '+(rows.length-sourced)+' bản ghi người dùng. Bộ dữ liệu còn hạn chế phạm vi địa phương, không đại diện danh mục toàn quốc. Bản tin thiên tai là <b>bản lưu theo thời điểm công bố, không cập nhật tự động</b>. Bản đồ chỉ tô tỉnh có hồ sơ, không chỉ vị trí công trình hoặc vùng nguy hiểm. Trường chưa có nguồn để trống.';
 }
 function color(kind,r){return colors[kind][statuses[kind].indexOf(r.status)]||'#748075'}
 function getRows(kind){const pc=el(kind+'Province').value,t=el(kind+'Type').value,s=el(kind+'Status').value,q=norm(el(kind+'Search').value);return data[kind].filter(r=>(!pc||r.province===pc)&&(!t||r.type===t)&&(!s||r.status===s)&&(!q||norm([r.name,r.type,r.description,province(r.province).name].join(' ')).includes(q)))}
 function stat(title,value,note){return '<div class="lab-stat"><small>'+safe(title)+'</small><strong>'+safe(value)+'</strong><span>'+safe(note)+'</span></div>'}
 function renderStats(kind,rows){
  const count=new Set(rows.map(r=>r.province)).size;
- let html=stat('Bản ghi trong bộ lọc',num(rows.length),num(rows.filter(r=>r.mode==='demo').length)+' bản ghi giả định')+stat('Địa phương có dữ liệu',num(count),'Không suy ra tỉnh khác là không có');
- if(kind==='projects')html+=stat('Vốn theo hồ sơ',num(rows.reduce((a,r)=>a+r.capital,0)),'Tỷ đồng • không phải vốn cam kết')+stat('Kêu gọi đầu tư',num(rows.filter(r=>r.status==='Kêu gọi đầu tư').length),'Theo trạng thái bản ghi');
- if(kind==='digital')html+=stat('Đang hoạt động',num(rows.filter(r=>r.status==='Đang hoạt động').length),'Theo hồ sơ • không phải kiểm tra trực tuyến')+stat('Loại hạ tầng',num(new Set(rows.map(r=>r.type)).size),'Không cộng các công suất khác đơn vị');
- if(kind==='risks')html+=stat('Mức cao / rất cao',num(rows.filter(r=>['Cao','Rất cao'].includes(r.status)).length),'Phân loại theo dữ liệu nhập')+stat('Vùng có hạn theo dõi',num(rows.filter(r=>r.validUntil).length),'Vùng có thể chồng lấn; không cộng dân số');
+ let html=stat('Hồ sơ trong bộ lọc',num(rows.length),'Theo phạm vi bộ dữ liệu đã thu thập')+stat('Địa phương có hồ sơ',num(count),'Không có bản ghi ≠ không có thực tế');
+ if(kind==='projects')html+=stat('Hồ sơ có số vốn',num(rows.filter(r=>r.capital!==null).length),'Không cộng vốn khác thời điểm/phạm vi')+stat('Mời đầu tư theo nguồn',num(rows.filter(r=>r.status==='Kêu gọi đầu tư theo nguồn').length),'Cần xác nhận tình trạng tiếp nhận hiện tại');
+ if(kind==='digital')html+=stat('Đã công bố khai trương',num(rows.filter(r=>r.status==='Đã khai trương theo nguồn').length),'Không phải kết quả giám sát trực tuyến')+stat('Loại hạ tầng',num(new Set(rows.map(r=>r.type)).size),'Chưa có dữ liệu công khai về trạm 5G/cáp');
+ if(kind==='risks')html+=stat('Bản tin nguồn khác nhau',num(new Set(rows.map(r=>r.sourceUrl)).size),'Một bản tin có thể liệt kê nhiều tỉnh')+stat('Khung thời gian đã kết thúc',num(rows.filter(r=>r.validUntil&&Date.parse(r.validUntil)<Date.now()).length),'Kiểm tra bản tin mới ở nguồn chính thức');
  el(kind+'Stats').innerHTML=html;
 }
 function isFavorite(kind,r){return favorites.includes(kind+':'+r.id)}
 function renderDetail(kind,r){
  if(!r){el(kind+'Detail').innerHTML='<div class="lab-empty">Không có hồ sơ phù hợp bộ lọc.</div>';return}
- let pairs=[['Địa phương',province(r.province).name],['Loại',r.type],['Trạng thái',r.status],['Tọa độ',num(r.lat,4)+', '+num(r.lon,4)]];
- if(kind==='projects')pairs.push(['Vốn theo hồ sơ',num(r.capital)+' tỷ đồng'],['Diện tích',num(r.area,2)+' ha'],['Đơn vị phụ trách',r.owner]);
- if(kind==='digital')pairs.push(['Công suất',r.capacity],['Đơn vị vận hành',r.operator],['Sẵn sàng theo hồ sơ',r.status==='Đang hoạt động'?num(r.availability,2)+'%':'Chưa áp dụng']);
- if(kind==='risks')pairs.push(['Bán kính',num(r.radius)+' km (vùng tròn)'],['Dân số theo hồ sơ',num(r.exposed)+' người; không cộng vùng chồng lấn'],['Hạn theo dõi',r.validUntil||'Chưa cung cấp']);
- pairs.push(['Ngày dữ liệu',r.updated]);
- let validity='';if(kind==='risks'&&r.validUntil&&r.validUntil<new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Ho_Chi_Minh'}))validity='<p class="lab-tag danger">Đã qua hạn theo dõi của bản ghi</p>';
- el(kind+'Detail').innerHTML='<h4>'+safe(r.name)+'</h4><div class="lab-tags"><span class="lab-tag '+(kind==='risks'?'danger':'')+'">'+safe(r.status)+'</span><span class="lab-tag">'+(r.mode==='demo'?'GIẢ ĐỊNH':'NGƯỜI DÙNG • CHƯA XÁC MINH')+'</span></div>'+validity+'<dl class="lab-kv">'+pairs.map(([k,v])=>'<dt>'+safe(k)+'</dt><dd>'+safe(v)+'</dd>').join('')+'</dl><p>'+safe(r.description)+'</p>'+(kind==='risks'?'<p><b>Hướng dẫn trong hồ sơ:</b> '+safe(r.guidance)+'</p>':'')+'<p class="lab-source">Nguồn: '+safe(r.source)+(r.sourceUrl?' · <a target="_blank" rel="noopener noreferrer" href="'+safe(r.sourceUrl)+'">Mở nguồn</a>':'')+'</p><button class="lab-button" data-favorite="'+kind+'" aria-pressed="'+isFavorite(kind,r)+'">'+(isFavorite(kind,r)?'★ Đã lưu':'☆ Lưu hồ sơ')+'</button>';
+ let pairs=[['Địa phương',province(r.province).name],['Loại',r.type],['Trạng thái',r.status],['Địa điểm theo nguồn',r.location||'Chưa công bố'],['Tọa độ xác minh',r.lat===null?'Chưa có; bản đồ theo tỉnh':num(r.lat,4)+', '+num(r.lon,4)]];
+ if(kind==='projects')pairs.push(['Vốn theo hồ sơ',r.capital===null?'Chưa công bố':num(r.capital,3)+' tỷ đồng'],['Diện tích',r.area===null?'Chưa công bố':num(r.area,2)+' ha (theo quy mô nguồn)'],['Đơn vị phụ trách',r.owner]);
+ if(kind==='digital')pairs.push(['Công suất',r.capacity],['Đơn vị vận hành',r.operator],['Sẵn sàng theo hồ sơ',r.availability===null?'Chưa công bố':num(r.availability,3)+'% (thông số công bố, không phải đo thực tế)']);
+ if(kind==='risks')pairs.push(['Số liệu trong bản tin',r.observation||'Chưa công bố'],['Thời điểm bản tin',r.issuedAt||r.published||'Chưa công bố giờ'],['Vùng ảnh hưởng GIS','Chưa có dữ liệu; không vẽ vùng tròn'],['Khung theo nguồn',r.validUntil||'Chưa xác định']);
+ pairs.push(['Ngày công bố',r.published||'Chưa xác minh ngày công bố'],['Ngày đối chiếu nguồn',r.updated]);
+ let validity='';if(kind==='risks')validity='<p class="lab-tag danger">'+(r.validUntil&&Date.parse(r.validUntil)<Date.now()?'Bản lưu trữ • đã qua khung bản tin':'Bản tin lưu tại ngày đối chiếu • cần xem nguồn mới nhất')+'</p>';
+ el(kind+'Detail').innerHTML='<h4>'+safe(r.name)+'</h4><div class="lab-tags"><span class="lab-tag '+(kind==='risks'?'danger':'')+'">'+safe(r.status)+'</span><span class="lab-tag">'+(r.mode==='sourced'?'ĐÃ ĐỐI CHIẾU NGUỒN':'NGƯỜI DÙNG • CHƯA XÁC MINH')+'</span></div>'+validity+'<dl class="lab-kv">'+pairs.map(([k,v])=>'<dt>'+safe(k)+'</dt><dd>'+safe(v)+'</dd>').join('')+'</dl><p>'+safe(r.description)+'</p>'+(kind==='risks'?'<p><b>Hướng dẫn trong hồ sơ:</b> '+safe(r.guidance)+'</p>':'')+'<p class="lab-source">Nguồn: '+safe(r.source)+(r.sourceUrl?' · <a target="_blank" rel="noopener noreferrer" href="'+safe(r.sourceUrl)+'">Mở nguồn</a>':'')+'</p><button class="lab-button" data-favorite="'+kind+'" aria-pressed="'+isFavorite(kind,r)+'">'+(isFavorite(kind,r)?'★ Đã lưu':'☆ Lưu hồ sơ')+'</button>';
 }
 function renderList(kind,rows){
  el(kind+'Count').textContent=num(rows.length)+' bản ghi';
- el(kind+'List').innerHTML=rows.length?rows.map(r=>'<button class="lab-record '+(selected[kind]===r.id?'selected':'')+'" data-kind="'+kind+'" data-record="'+safe(r.id)+'"><strong>'+(isFavorite(kind,r)?'★ ':'')+safe(r.name)+'</strong><small>'+safe(province(r.province).name)+' · '+safe(r.type)+'</small><small><span style="color:'+color(kind,r)+'">●</span> '+safe(r.status)+' · '+(r.mode==='demo'?'Giả định':'Người dùng')+'</small></button>').join(''):'<div class="lab-empty">Không có dữ liệu cho lựa chọn này. Thử chọn toàn quốc hoặc nhập dữ liệu.</div>';
+ el(kind+'List').innerHTML=rows.length?rows.map(r=>'<button class="lab-record '+(selected[kind]===r.id?'selected':'')+'" data-kind="'+kind+'" data-record="'+safe(r.id)+'"><strong>'+(isFavorite(kind,r)?'★ ':'')+safe(r.name)+'</strong><small>'+safe(province(r.province).name)+' · '+safe(r.type)+'</small><small><span style="color:'+color(kind,r)+'">●</span> '+safe(r.status)+' · '+(r.mode==='sourced'?'Có nguồn':'Người dùng')+'</small></button>').join(''):'<div class="lab-empty">Không có dữ liệu cho lựa chọn này. Thử chọn toàn quốc hoặc nhập dữ liệu.</div>';
  renderDetail(kind,rows.find(r=>r.id===selected[kind]));
 }
 function chartFor(kind){if(!window.echarts)return null;if(!charts[kind])charts[kind]=echarts.init(el(kind+'Map'));return charts[kind]}
 function renderMapNew(kind,rows){
- const chart=chartFor(kind);
- el(kind+'Legend').innerHTML=statuses[kind].map((s,i)=>'<span><i style="background:'+colors[kind][i]+'"></i>'+safe(s)+'</span>').join('');
- if(!chart){el(kind+'Map').innerHTML='<div class="lab-empty">Thư viện biểu đồ chưa tải được. Danh sách và hồ sơ vẫn dùng được; kiểm tra kết nối Internet rồi tải lại trang.</div>';return}
- const geo=typeof mapReady!=='undefined'&&mapReady;
- const tooltip={backgroundColor:'#fff',borderColor:'#e7e0d4',textStyle:{color:'#203f2b'},formatter:x=>{
-  const r=rows.find(r=>r.id===x.data?.id);return r?'<b>'+safe(r.name)+'</b><br>'+safe(r.type)+' · '+safe(r.status)+'<br>'+(r.mode==='demo'?'Dữ liệu giả định':'Người dùng • chưa xác minh'):safe(x.name);
- }};
- const points=rows.map(r=>({id:r.id,name:r.name,value:[r.lon,r.lat,kind==='risks'?r.radius:1],symbolSize:r.id===selected[kind]?23:kind==='risks'?17:14,itemStyle:{color:color(kind,r),borderColor:r.id===selected[kind]?'#1f392c':'white',borderWidth:r.id===selected[kind]?3:2},label:{show:r.id===selected[kind],formatter:r.name,width:180,overflow:'truncate',position:'top',fontSize:10,color:'#0d513d'}}));
- let option={backgroundColor:'#f5f6ee',tooltip,animationDuration:250};
- if(geo){
-  option.geo={map:'VN34',roam:true,zoom:mapZoom[kind]?.zoom||1.05,center:mapZoom[kind]?.center,layoutCenter:['50%','52%'],layoutSize:'95%',itemStyle:{areaColor:'#e1eade',borderColor:'#fff',borderWidth:1},emphasis:{itemStyle:{areaColor:'#c3d6bf'},label:{show:true}},label:{show:false}};
-  option.series=[{type:'scatter',coordinateSystem:'geo',data:points,z:5}];
-  if(kind==='risks')option.series.unshift({type:'custom',coordinateSystem:'geo',silent:true,z:2,data:rows.map(r=>({value:[r.lon,r.lat,r.radius],color:color(kind,r)})),renderItem:(params,api)=>{
-   const x=api.value(0),y=api.value(1),radius=api.value(2),center=api.coord([x,y]);
-   const east=api.coord([x+radius/(111.32*Math.cos(y*Math.PI/180)),y]),north=api.coord([x,y+radius/110.57]);
-   return{type:'ellipse',shape:{cx:center[0],cy:center[1],rx:Math.abs(east[0]-center[0]),ry:Math.abs(north[1]-center[1])},style:{fill:rows[params.dataIndex]?color(kind,rows[params.dataIndex]):'#e36b36',opacity:.17,stroke:rows[params.dataIndex]?color(kind,rows[params.dataIndex]):'#e36b36',lineWidth:1.5}};
-  }});
-  el(kind+'MapNote').textContent=kind==='risks'?'Kéo/phóng to bản đồ; vùng tròn là bán kính ảnh hưởng giả định hoặc do người dùng nhập, không phải vùng nguy hiểm GIS.':'Kéo để di chuyển, cuộn để phóng to; chọn điểm để xem hồ sơ. Tọa độ dữ liệu mẫu không phải vị trí thực tế.';
- }else{
-  option.grid={left:45,right:25,top:30,bottom:40};option.xAxis={type:'value',min:102,max:110,name:'Kinh độ',splitLine:{lineStyle:{color:'#e3e8dc'}}};option.yAxis={type:'value',min:8,max:24,name:'Vĩ độ',splitLine:{lineStyle:{color:'#e3e8dc'}}};option.series=[{type:'scatter',data:points}];
-  el(kind+'MapNote').textContent='Chưa tải được ranh giới hành chính: đang hiển thị các điểm theo kinh độ/vĩ độ; không phải bản đồ nền.';
- }
- chart.setOption(option,true);chart.off('click');chart.on('click',x=>{if(x.data?.id)chooseRecord(kind,x.data.id)});chart.off('georoam');chart.on('georoam',()=>{const g=chart.getOption().geo?.[0];if(g)mapZoom[kind]={zoom:g.zoom,center:g.center}});
+ const chart=chartFor(kind);if(!chart){el(kind+'Map').innerHTML='<div class="lab-empty">Không tải được biểu đồ.</div>';return}
+ const isReady=typeof mapReady!=='undefined'&&mapReady;
+ const byCode={};rows.forEach(r=>(byCode[r.province]??=[]).push(r));
+ el(kind+'Legend').innerHTML='<span><i style="background:#559477"></i>Tỉnh có hồ sơ trong bộ lọc</span><span><i style="background:#e1eade"></i>Chưa có hồ sơ trong bộ dữ liệu</span>';
+ const tooltip={backgroundColor:'#fff',formatter:x=>{const pc=P.find(p=>p.name===x.name),rr=pc?byCode[pc.code]||[]:[];return '<b>'+safe(x.name)+'</b><br>'+rr.length+' hồ sơ trong bộ lọc<br>'+rr.slice(0,4).map(r=>safe(r.name)).join('<br>')+'<br>Không phải vị trí công trình hoặc vùng nguy hiểm';}};
+ if(isReady){
+ chart.setOption({backgroundColor:'#f5f6ee',tooltip,series:[{type:'map',map:'VN34',roam:true,zoom:mapZoom[kind]?.zoom||1.05,center:mapZoom[kind]?.center,layoutCenter:['50%','52%'],layoutSize:'95%',selectedMode:'single',label:{show:false},itemStyle:{areaColor:'#e1eade',borderColor:'#fff'},select:{itemStyle:{areaColor:'#0d513d',borderColor:'#f47a2a',borderWidth:2}},data:P.map(p=>({name:p.name,value:byCode[p.code]?.length||null,selected:rows.find(r=>r.id===selected[kind])?.province===p.code,itemStyle:{areaColor:byCode[p.code]?'#559477':'#e1eade'}}))}]},true);
+ chart.off('click');chart.on('click',x=>{const pc=P.find(p=>p.name===x.name);if(pc){el(kind+'Province').value=pc.code;renderKind(kind)}});
+ chart.off('georoam');chart.on('georoam',()=>{const g=chart.getOption().series?.[0];if(g)mapZoom[kind]={zoom:g.zoom,center:g.center}});
+ }else{chart.clear();el(kind+'MapNote').textContent='Không tải được ranh giới; dùng danh sách hồ sơ bên cạnh.';return}
+ el(kind+'MapNote').textContent=kind==='risks'?'Tỉnh được nhắc trong bản tin; màu không thể hiện vùng nguy hiểm. Không có polygon hoặc bán kính xác minh nên không vẽ vùng ảnh hưởng.':'Tô tỉnh có hồ sơ; không hiển thị điểm công trình khi chưa có tọa độ được xác minh. Bấm tỉnh để lọc danh sách.';
 }
 function renderKind(kind){const rows=getRows(kind);filtered[kind]=rows;if(!rows.some(r=>r.id===selected[kind]))selected[kind]=rows[0]?.id||null;renderStats(kind,rows);renderList(kind,rows);if(!el('labView'+({projects:0,digital:1,risks:3}[kind])).hidden)renderMapNew(kind,rows)}
 function chooseRecord(kind,id){selected[kind]=id;renderList(kind,filtered[kind]||getRows(kind));renderMapNew(kind,filtered[kind]||getRows(kind))}
@@ -1205,11 +1501,11 @@ function showTab(index,focus=false){tab=index;document.querySelectorAll('.lab-ta
 let simChart=window.echarts?echarts.init(el('simChart')):null;
 function simInputs(){return{province:el('simProvince').value,years:+el('simYears').value,base:+el('simBase').value,delta:+el('simDelta').value,pop:+el('simPop').value}}
 function renderSim(){
- const v=simInputs(),p=province(v.province),base=DB[v.province]?.['2024'];
+ const v=simInputs(),p=province(v.province),base=VERIFIED_BASE[v.province];
  for(const [id,value] of [['simYears',v.years+' năm'],['simBase',num(v.base,1)+'%'],['simDelta',(v.delta>0?'+':'')+num(v.delta,1)+' điểm %'],['simPop',num(v.pop,1)+'%']])el(id+'Val').textContent=value;
- if(!p||!base||!(base.grdp>0)||!(base.population>0)){simRows=[];el('simRows').innerHTML='';el('simStats').innerHTML='';el('simBaseline').textContent='Thiếu GRDP hoặc dân số 2024 để mô phỏng.';simChart?.clear();return}
+ if(!p||!base||!(base.grdp>0)||!(base.population>0)){simRows=[];el('simRows').innerHTML='';el('simStats').innerHTML='';el('simTitle').textContent=p.name+' • chưa có đủ số liệu gốc xác minh';el('simBaseline').textContent='Chưa có cặp GRDP và dân số cùng năm, cùng địa giới đã được kiểm tra cho địa phương này. Bản hiện tại có số liệu gốc Hà Nội 2024. Hãy chọn Hà Nội; hệ thống không tự điền số liệu giả.';simChart?.clear();return}
  el('simTitle').textContent=p.name+' • kịch bản đến '+(2024+v.years);
- el('simBaseline').textContent='Năm gốc 2024: GRDP '+num(base.grdp)+' tỷ đồng; dân số '+num(base.population)+' người. Kịch bản tăng '+num(v.base+v.delta,1)+'%/năm. Các năm sau năm gốc đều là giá trị mô phỏng.';
+ el('simBaseline').textContent='Nguồn: '+base.source+'. Năm gốc 2024: GRDP '+num(base.grdp)+' tỷ đồng; dân số '+num(base.population)+' người. Kịch bản tăng '+num(v.base+v.delta,1)+'%/năm. Các năm sau năm gốc đều là giá trị mô phỏng.';
  simRows=Array.from({length:v.years+1},(_,t)=>{const b=base.grdp*(1+v.base/100)**t,s=base.grdp*(1+(v.base+v.delta)/100)**t,pop=base.population*(1+v.pop/100)**t;return{year:2024+t,base:b,scenario:s,population:pop,perCapita:s*1000/pop}});
  const end=simRows.at(-1),diff=end.scenario-end.base;
  el('simStats').innerHTML=stat('GRDP cuối kỳ',num(end.scenario),'Tỷ đồng • kịch bản')+stat('Chênh so cơ sở',(diff>0?'+':'')+num(diff),'Tỷ đồng • cùng năm')+stat('GRDP/người',num(end.perCapita,1),'Triệu đồng/người • kịch bản')+stat('Dân số cuối kỳ',num(end.population),'Người • theo giả định');
@@ -1221,7 +1517,7 @@ function download(name,text,mime){const blob=new Blob([text],{type:mime}),url=UR
 function csv(rows){const cell=x=>'"'+String(x??'').replace(/^[=+@\-]/,"'$&").replace(/"/g,'""')+'"';return '\ufeff'+rows.map(r=>r.map(cell).join(',')).join('\r\n')}
 function exportKind(kind){const rows=getRows(kind);const extra=kind==='projects'?['capital','area','owner']:kind==='digital'?['capacity','operator','availability']:['radius','exposed','guidance','validUntil'];const keys=['id','province','name','type','status','mode','lat','lon',...extra,'source','sourceUrl','updated','description'];download(kind+'-data.csv',csv([keys,...rows.map(r=>keys.map(k=>r[k]))]),'text/csv;charset=utf-8');toast('Đã xuất '+rows.length+' bản ghi theo bộ lọc.')}
 function applySim(v){if(!v||!province(v.province))return;el('simProvince').value=v.province;for(const [key,id] of [['years','simYears'],['base','simBase'],['delta','simDelta'],['pop','simPop']]){const e=el(id);if(typeof v[key]==='number'&&Number.isFinite(v[key]))e.value=Math.max(+e.min,Math.min(+e.max,v[key]))}}
-fillFilters();updateMode();applySim(read(SIM,null));
+fillFilters();updateMode();el('simProvince').value='01';applySim(read(SIM,null));
 for(const kind of ['projects','digital','risks']){for(const field of ['Province','Type','Status','Search'])el(kind+field).addEventListener(field==='Search'?'input':'change',()=>renderKind(kind));renderKind(kind)}
 renderSim();
 document.querySelectorAll('.lab-tab').forEach(b=>{b.addEventListener('click',()=>showTab(+b.dataset.tab));b.addEventListener('keydown',e=>{let i=+b.dataset.tab;if(e.key==='ArrowRight')i=(i+1)%4;else if(e.key==='ArrowLeft')i=(i+3)%4;else if(e.key==='Home')i=0;else if(e.key==='End')i=3;else return;e.preventDefault();showTab(i,true)})});
@@ -1234,16 +1530,16 @@ document.querySelector('.lab').addEventListener('click',e=>{
 for(const id of ['simProvince','simYears','simBase','simDelta','simPop'])el(id).addEventListener('input',renderSim);
 el('simSave').onclick=()=>toast(save(SIM,simInputs())?'Đã lưu giả định trên trình duyệt.':'Không lưu được; hãy xuất kết quả CSV.');
 el('simReset').onclick=()=>{applySim({province:el('simProvince').value,years:5,base:7,delta:1.5,pop:1});renderSim()};
-el('simExport').onclick=()=>{const v=simInputs();download('kich-ban-'+v.province+'.csv',csv([['MO PHONG - KHONG PHAI DU BAO',province(v.province).name],['Nam goc',2024],['Tang GRDP co so %',v.base],['Dieu chinh diem %',v.delta],['Tang dan so %',v.pop],['Nguon nam goc','Bang du lieu hien co; chua xac minh lai'],['Nam','GRDP co so (ty dong)','GRDP kich ban (ty dong)','Dan so','GRDP nguoi (trieu dong)'],...simRows.map(r=>[r.year,r.base,r.scenario,r.population,r.perCapita])]),'text/csv;charset=utf-8')};
-el('labTemplate').onclick=()=>download('du-lieu-mau-4-phan-he.json',JSON.stringify(DEMO,null,2),'application/json');
+el('simExport').onclick=()=>{const v=simInputs();download('kich-ban-'+v.province+'.csv',csv([['MO PHONG - KHONG PHAI DU BAO',province(v.province).name],['Nam goc',2024],['Tang GRDP co so %',v.base],['Dieu chinh diem %',v.delta],['Tang dan so %',v.pop],['Nguon nam goc',VERIFIED_BASE[v.province]?.url||'Chua co du lieu goc xac minh'],['Nam','GRDP co so (ty dong)','GRDP kich ban (ty dong)','Dan so','GRDP nguoi (trieu dong)'],...simRows.map(r=>[r.year,r.base,r.scenario,r.population,r.perCapita])]),'text/csv;charset=utf-8')};
+el('labTemplate').onclick=()=>download('du-lieu-co-nguon-4-phan-he.json',JSON.stringify(SOURCED,null,2),'application/json');
 el('labBackup').onclick=()=>download('du-lieu-4-phan-he.json',JSON.stringify(data,null,2),'application/json');
 el('labImport').onclick=()=>el('labFile').click();
 el('labFile').onchange=async()=>{
  const file=el('labFile').files[0];if(!file)return;
- try{if(file.size>5*1024*1024)throw Error('Tệp lớn hơn 5 MB.');const next=validate(JSON.parse(await file.text()));data=next;const ok=save(KEY,data);fillFilters();updateMode();for(const kind of ['projects','digital','risks'])renderKind(kind);renderSim();toast(ok?'Đã nhập và lưu dữ liệu.':'Đã nhập vào phiên này; không lưu được trên trình duyệt.')}
+ try{if(file.size>5*1024*1024)throw Error('Tệp lớn hơn 5 MB.');const next=validate(JSON.parse(await file.text()),true);data=next;const ok=save(KEY,data);fillFilters();updateMode();for(const kind of ['projects','digital','risks'])renderKind(kind);renderSim();toast(ok?'Đã nhập và lưu dữ liệu.':'Đã nhập vào phiên này; không lưu được trên trình duyệt.')}
  catch(e){toast('Không nhập được: '+e.message)}finally{el('labFile').value=''}
 };
-el('labRestore').onclick=()=>{if(!confirm('Khôi phục bộ dữ liệu giả định? Dữ liệu nhập hiện tại sẽ bị thay thế trên trình duyệt. Hãy sao lưu JSON trước nếu cần.'))return;data=structuredClone(DEMO);const ok=save(KEY,data);fillFilters();updateMode();for(const kind of ['projects','digital','risks']){selected[kind]=null;renderKind(kind)}renderSim();toast(ok?'Đã khôi phục dữ liệu mẫu.':'Đã khôi phục trong phiên này.')};
+el('labRestore').onclick=()=>{if(!confirm('Khôi phục bộ dữ liệu có nguồn? Dữ liệu nhập hiện tại sẽ bị thay thế trên trình duyệt. Hãy sao lưu JSON trước nếu cần.'))return;data=structuredClone(SOURCED);const ok=save(KEY,data);fillFilters();updateMode();for(const kind of ['projects','digital','risks']){selected[kind]=null;renderKind(kind)}renderSim();toast(ok?'Đã khôi phục dữ liệu có nguồn.':'Đã khôi phục trong phiên này.')};
 el('labClearFavorites').onclick=()=>{favorites=[];save(FAVORITES,favorites);for(const kind of ['projects','digital','risks'])renderList(kind,filtered[kind]);toast('Đã xóa các đánh dấu đã lưu.')};
 // Synchronize only when the main province changes; changing a local filter stays independent.
 function syncMain(){const pc=el('province').value;if(pc===lastMain)return;lastMain=pc;if(!el('labSync').checked)return;for(const kind of ['projects','digital','risks']){el(kind+'Province').value=pc;renderKind(kind)}el('simProvince').value=pc;renderSim()}

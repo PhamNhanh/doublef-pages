@@ -4,7 +4,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport">
 <meta content="#faf7f0" name="theme-color">
 <meta content="strict-origin-when-cross-origin" name="referrer">
-<meta content="default-src 'self'; script-src 'sha256-aDPLehbu7vo3mJH0MTutKQaXoxj+urn1fnFJT4QPVlE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'self' data: blob: https://www.google.com https://maps.google.com; child-src 'self';" http-equiv="Content-Security-Policy">
+<meta content="default-src 'self'; script-src 'sha256-xU8ZGLuxMIgNDXKMKp4U1QyuW9h9tCzkbGqnRT28Alc=' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://router.project-osrm.org https://nominatim.openstreetmap.org; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'self' data: blob: https://www.google.com https://maps.google.com; child-src 'self';" http-equiv="Content-Security-Policy">
 <meta content="Một chút thời gian. Một bàn tay cùng sẻ chia. Những câu chuyện tử tế bắt đầu từ chúng mình." name="description">
 <meta content="website" property="og:type">
 <meta content="vi_VN" property="og:locale">
@@ -1750,22 +1750,6 @@ body.studio-page14{background:#f3f4ef;color:#24372f;font:14px/1.65 Arial, sans-s
  .z16-header-link{font-size:10px;padding:8px 10px;min-height:36px}
 }
 @media(max-width:360px){.v9-header .brand-name{font-size:9px}.v9-header .brand-name strong{font-size:10px}.v9-header .brand{gap:7px}.z16-header-link{padding:7px 8px;gap:4px}}
-/* V19 — Trợ lý Bạn Đồng Hành: cửa sổ chat nổi, không tạo tab riêng. */
-.buddy19{position:fixed;right:clamp(12px,2.3vw,30px);bottom:calc(22px + env(safe-area-inset-bottom, 0px));z-index:180;font:14px/1.55 var(--font,'Be Vietnam Pro',Arial,sans-serif);color:#263b32;pointer-events:none}
-.buddy19>*{pointer-events:auto}.buddy19[hidden]{display:none!important}
-.buddy19-launch{margin-left:auto;display:flex;align-items:center;gap:10px;padding:10px 16px 10px 11px;min-height:59px;background:#214338;color:#fff;border:1px solid #638b777a;border-radius:100px;box-shadow:0 16px 40px #10261d50,0 3px 9px #0b241e2d;transition:transform .22s ease,box-shadow .22s ease;background-image:linear-gradient(130deg,#244a3c,#17382f);font:600 12px var(--font,Arial,sans-serif);white-space:nowrap}
-.buddy19-launch:hover{transform:translateY(-3px);box-shadow:0 19px 42px #10261d60}.buddy19-launch:focus-visible,.buddy19 button:focus-visible,.buddy19 input:focus-visible,.buddy19 a:focus-visible{outline:3px solid #d3ac6b;outline-offset:3px}.buddy19-heart{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:50%;background:#ffffff1b;color:#f8d6ae;font-size:20px}.buddy19-heart svg{width:21px;height:21px}
-.buddy19-unread{position:absolute;right:4px;bottom:54px;width:9px;height:9px;border-radius:50%;background:#f0b963;border:2px solid #fff;pointer-events:none}
-.buddy19-panel{display:flex;flex-direction:column;overflow:hidden;position:absolute;right:0;bottom:calc(72px + env(safe-area-inset-bottom, 0px));width:min(405px,calc(100vw - 22px));height:min(620px,calc(100dvh - 125px));min-height:340px;max-height:calc(100svh - 125px);background:#fdfbf6;border:1px solid #ddd7c9;border-radius:23px;box-shadow:0 30px 95px #1a281e50;transform-origin:bottom right;animation:buddy19-enter .27s cubic-bezier(.2,.9,.2,1)}.buddy19-panel[hidden]{display:none!important}
-.buddy19-head{padding:17px 17px 15px;display:flex;align-items:center;gap:11px;background:#23483c;color:#fff;position:relative;flex:none}.buddy19-avatar{height:41px;width:41px;border-radius:50%;flex:none;overflow:hidden;border:2px solid #f4dfb599;background:#fff}.buddy19-avatar img{height:100%;width:100%;object-fit:cover}.buddy19-head-copy{min-width:0;flex:1}.buddy19-head-copy strong{display:block;font-size:14px;font-weight:700}.buddy19-head-copy small{display:block;color:#d4e6d8;font-size:10px;line-height:1.55}.buddy19-head-tools{display:flex;gap:5px}.buddy19-icon-btn{width:32px;height:32px;display:grid;place-items:center;border:1px solid #ffffff30;background:#ffffff12;color:white;border-radius:50%;font-size:18px;line-height:1;flex:none;transition:background .18s}.buddy19-icon-btn:hover{background:#ffffff26}
-.buddy19-conversation{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:19px 16px 14px;background:linear-gradient(160deg,#fbf9f4,#f4f0e7);scrollbar-width:thin;scrollbar-color:#c0b8a7 transparent}.buddy19-row{display:flex;margin:0 0 14px}.buddy19-row.is-user{justify-content:flex-end}.buddy19-bubble{max-width:92%;border-radius:18px 18px 18px 5px;padding:12px 14px;background:#fff;border:1px solid #e9e3d6;box-shadow:0 2px 9px #4a33230b;font-size:12px;line-height:1.85;overflow-wrap:anywhere;animation:buddy19-bubble-in .25s ease both}.buddy19-row.is-user .buddy19-bubble{background:#264a3d;color:#fff;border-color:#264a3d;border-radius:18px 18px 5px 18px;max-width:86%}.buddy19-bubble p{margin:0}.buddy19-bubble p+p{margin-top:10px}.buddy19-bubble .buddy19-source{font-size:10px;color:#746b5c;border-top:1px solid #eee8dc;margin-top:10px;padding-top:7px}.buddy19-links{display:grid;gap:7px;margin-top:12px}.buddy19-links a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;color:#244c3c!important;background:#eff3ed;border:1px solid #dae3d7;border-radius:11px;text-decoration:none;font-size:11px;font-weight:650;line-height:1.55}.buddy19-links a:hover{background:#e1ecdf}.buddy19-links a::after{content:'↗';font-size:13px;flex:none}.buddy19-query-tips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;flex:none;padding:12px 13px;border-top:1px solid #e6dfd2;background:#f9f6f0}.buddy19-query-tips button{border-radius:100px;padding:9px 11px;font:600 10px/1.35 var(--font,Arial,sans-serif);background:#fff;color:#435347;border:1px solid #dcd9ce;flex-shrink:0;transition:background .2s,border-color .2s}.buddy19-query-tips button:hover{border-color:#c69d74;background:#fbf0e1}
-.buddy19-send-form{padding:11px 12px 6px;display:flex;align-items:center;gap:8px;border-top:1px solid #e7e0d3;background:#fff;flex:none}.buddy19-send-form input{min-width:0;width:100%;flex:1;border:1px solid #e5e1d7;background:#faf9f5;padding:12px 12px;min-height:43px;border-radius:12px;outline-offset:2px;font-size:12px;color:#263b32}.buddy19-send-form input::placeholder{color:#8b8b82}.buddy19-send{min-height:43px;width:43px;flex:none;border-radius:12px;border:0;background:#254a3c;color:#fff;font-size:19px;display:grid;place-items:center;transition:background .2s}.buddy19-send:hover{background:#356a55}.buddy19-send:disabled{opacity:.45;cursor:not-allowed}.buddy19-privacy{padding:4px 14px 12px;background:white;color:#858176;text-align:center;font-size:9px;line-height:1.45;flex:none}.buddy19-clear{background:transparent;color:#dde9e0;border:1px solid #ffffff33;border-radius:100px;font-size:10px;padding:5px 9px;white-space:nowrap}.buddy19-clear:hover{background:#ffffff15}
-@keyframes buddy19-enter{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes buddy19-bubble-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-@media(max-width:650px){.buddy19{right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.buddy19-panel{right:0;bottom:calc(66px + env(safe-area-inset-bottom,0px));width:calc(100vw - 24px);height:min(690px,calc(100dvh - 105px));max-height:calc(100dvh - 105px);border-radius:20px}.buddy19-launch{min-height:54px;padding:8px 14px 8px 8px}.buddy19-heart{width:37px;height:37px}.buddy19-head{padding:14px}.buddy19-bubble{max-width:94%;font-size:12px}.buddy19-query-tips{padding:10px 12px}}
-@media(max-width:365px){.buddy19-launch>span:last-child{display:none}.buddy19-launch{padding:8px}.buddy19-head-copy strong{font-size:12px}.buddy19-head-copy small{font-size:9px}}
-@media(prefers-reduced-motion:reduce){.buddy19 *, .buddy19-panel{animation:none!important;transition:none!important}}
-@media print{.buddy19{display:none!important}}
-
 </style><style>
 
 /* V20 — Trang chủ: lịch, đăng ký, bản đồ, nhật ký và kết nối. Giữ nguyên V19/Bạn Đồng Hành. */
@@ -2007,6 +1991,113 @@ body.studio-page14{background:#f3f4ef;color:#24372f;font:14px/1.65 Arial, sans-s
 .v21-save:hover{background:#183a30}.v21-save:disabled{opacity:.6}
 @media(max-width:700px){.v21-event-dialog{width:100vw;max-height:100dvh;height:100dvh;border-radius:0;border:0}.v21-event-dialog form{max-height:100dvh;height:100%}.v21-modal-top{padding:16px 18px}.v21-modal-top h2{font-size:25px}.v21-modal-top p{font-size:10px}.v21-modal-body{display:flex;flex-direction:column;gap:20px;padding:16px 18px;overflow-y:auto}.v21-form-secondary{padding:17px}.v21-modal-bottom{padding:12px 15px;align-items:stretch;flex-direction:column;gap:9px}.v21-modal-bottom p{max-width:none}.v21-modal-bottom>div{justify-content:flex-end}.v21-calendar-top-actions{flex-wrap:wrap;justify-content:flex-end}.v21-calendar-create{padding:8px 11px;font-size:10px}.v21-cal-action{padding:12px}.v21-fields-two{grid-template-columns:1fr 1fr}.v21-studio-calendar-link{margin-right:0}}
 @media(prefers-reduced-motion:reduce){.v21-calendar-create,.v21-edit-icon{transition:none}}
+</style>
+<link id="v22-leaflet-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+<script id="v22-leaflet-js" src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous" defer></script>
+<style id="v22-route-style">/* V22 - route coordination. Scoped UI; the public website keeps the V21 design. */
+.v22-dialog{width:min(1510px,calc(100vw - 28px));max-width:none;max-height:95dvh;border:1px solid #c9cfc5;border-radius:24px;overflow:auto;padding:0;color:#19392f;background:#f8f7f2;box-shadow:0 35px 130px #0c30254f}
+.v22-dialog::backdrop{background:#14271fbb;backdrop-filter:blur(7px)}
+.v22-app{font:13px/1.6 var(--font,'Be Vietnam Pro',Arial,sans-serif);color:#283e33;text-align:left}
+.v22-head{background:linear-gradient(105deg,#183f34,#306753);color:#fff;padding:27px 32px 25px}
+.v22-overline{font-size:10px;color:#d9e8db;letter-spacing:.13em;font-weight:700}
+.v22-head-row{display:flex;gap:25px;align-items:center;justify-content:space-between;margin-top:8px}
+.v22-head h2{font-size:clamp(27px,3vw,37px);letter-spacing:-.04em;line-height:1.25;margin:0;color:white}
+.v22-head p{font-size:12px;line-height:1.7;color:#dce6dc;margin-top:6px}
+.v22-head-buttons{display:flex;gap:10px;align-items:center;flex-shrink:0}
+.v22-app button{font:inherit;cursor:pointer}
+.v22-head button{border:1px solid #ffffff55;border-radius:11px;background:#ffffff1a;color:white;padding:10px 14px;font-weight:650}
+.v22-head .v22-close{font-size:24px;line-height:1;padding:6px 13px;min-height:39px}
+.v22-stats{padding:20px 32px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;border-bottom:1px solid #deded6;background:#fff}
+.v22-stats>div{border:1px solid #e5e5dd;border-radius:12px;padding:14px 18px;display:flex;gap:8px;flex-direction:column}
+.v22-stats strong{color:#244c3d;font-size:26px;font-variant-numeric:tabular-nums;line-height:1.2}
+.v22-stats span{color:#727c72;font-size:11px}
+.v22-body{padding:22px 29px 12px;display:flex;flex-direction:column;gap:18px}
+.v22-block{background:#fff;border:1px solid #e2e5dc;border-radius:18px;padding:21px;box-shadow:0 8px 30px #365c4210;min-width:0}
+.v22-block-head{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:0 0 17px}
+.v22-block-head h3{font-size:17px;letter-spacing:-.025em;line-height:1.4;margin:0;color:#264839}
+.v22-block-head h4{font-size:14px;letter-spacing:-.01em;margin:0}
+.v22-block-head>span{color:#768075;font-size:11px;text-align:right}
+.v22-block-head button{color:#245a44;border:1px solid #cbd9d0;background:#f4f8f3;padding:8px 12px;border-radius:9px}
+.v22-app label{display:flex;flex-direction:column;gap:7px;font-size:11px;font-weight:650;color:#485e51;line-height:1.55;min-width:0}
+.v22-app input,.v22-app select,.v22-app textarea{display:block;width:100%;min-width:0;background:#fff;border:1px solid #cfd9cf;border-radius:10px;min-height:41px;padding:9px 10px;font-size:13px;color:#243a2e;outline-offset:2px}
+.v22-app input:focus,.v22-app select:focus{border-color:#2b7152;box-shadow:0 0 0 3px #427c5b1c}
+.v22-app button:focus-visible,.v22-app a:focus-visible{outline:3px solid #b98246;outline-offset:2px}
+.v22-fields-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.v22-fields-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.v22-places{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:15px}
+.v22-places fieldset{border:1px solid #dbe3d9;border-radius:13px;padding:13px;min-width:0;display:flex;flex-direction:column;gap:11px}
+.v22-places legend{font-size:13px;font-weight:700;color:#275742;padding:0 7px}
+.v22-places small,.v22-hint{font-size:11px;color:#69796d;line-height:1.7}
+.v22-row-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px}
+.v22-row-actions button,.v22-row-actions a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #cedbd0;background:#f7faf5;color:#244938;font:600 11px/1.5 var(--font);border-radius:9px;padding:9px 11px;min-height:37px}
+.v22-row-actions button:hover,.v22-row-actions a:hover{background:#e6f0e7;color:#1b5d40}
+.v22-app .v22-solid{color:#fff!important;background:#255a43!important;border-color:#255a43!important;font-weight:750!important;padding:10px 17px!important}
+.v22-app .v22-solid:hover{background:#173d30!important}
+.v22-workgrid{display:grid;grid-template-columns:minmax(320px,.8fr) minmax(0,1.35fr);gap:18px;align-items:start}
+.v22-workgrid>div{min-width:0;display:flex;flex-direction:column;gap:18px}
+.v22-member-cards{display:flex;flex-direction:column;gap:8px;max-height:310px;overflow-y:auto;margin-bottom:16px}
+.v22-member-card{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid #e3e8df;background:#fbfcf9;border-radius:11px;padding:11px 12px}
+.v22-member-card.active{background:#eaf1e9;border-color:#6e9f7d}
+.v22-member-card i{width:9px;height:38px;border-radius:8px;flex-shrink:0}
+.v22-member-card>span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column}
+.v22-member-card b{font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+.v22-member-card small{font-size:10px;color:#7a8578;overflow-wrap:anywhere}
+.v22-member-time{font-size:12px;font-weight:750;color:#2b6249;white-space:nowrap}
+.v22-empty{border:1px dashed #bcccbd;border-radius:11px;background:#f6faf5;padding:20px;font-size:12px;color:#718074;margin-bottom:12px}
+.v22-member-form{border-top:1px solid #e5eae3;padding-top:16px}
+.v22-member-form>.v22-block-head{margin-bottom:13px}
+.v22-member-form>label{margin:12px 0}
+.v22-app .v22-danger{border:none;background:#fff0f0;color:#a53442;border-radius:7px;padding:7px 10px}
+.v22-vehicle-block{border-top:1px solid #e6e8e4;margin-top:22px;padding-top:16px}
+.v22-car{display:flex;gap:9px;align-items:center;border-bottom:1px solid #edf0ea;padding:10px 0}
+.v22-car>div{flex:1;min-width:0}
+.v22-car b{display:block;font-size:12px}.v22-car small{display:block;color:#798477;font-size:10px}
+.v22-car button{border:1px solid #d3ddd3;border-radius:7px;background:#f8faf6;color:#375b43;padding:7px 9px;font-size:11px}
+.v22-map-card{padding:18px}
+.v22-map-sub{font-size:11px;color:#708173;margin-bottom:12px}
+#v22-map{height:min(52vh,520px);min-height:365px;position:relative;background:linear-gradient(135deg,#e6eee4,#d8e6e0);border-radius:13px;overflow:hidden;z-index:0}
+#v22-map.v22-map-unavailable{min-height:120px;height:120px}
+#v22-map-fallback{padding:13px;border-radius:10px;background:#f4efe7;margin-top:10px;font-size:12px;color:#81603a}
+.v22-map-instructions{border:1px dashed #cedccc;border-radius:9px;padding:10px 13px;margin-top:11px;font-size:11px;color:#567462;background:#f8fbf7}
+.v22-route-access{margin-top:15px;border:1px solid #dbe3d8;border-radius:13px;background:#f9faf6;padding:13px}
+.v22-route-access summary{font-weight:750;color:#265f43;cursor:pointer}
+.v22-route-access p{font-size:11px;color:#687867;line-height:1.7;margin-top:10px}
+.v22-app .v22-consent{display:flex;flex-direction:row;align-items:flex-start;gap:9px;margin:14px 0 7px;font-size:11px;font-weight:500;color:#405f4b}
+.v22-consent input{width:17px;height:17px;min-height:0;flex-shrink:0;margin:2px 0 0;accent-color:#2a7152}
+.v22-geo-results{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.v22-geo-results>strong{font-size:12px}.v22-geo-results>button{width:100%;text-align:left;border:1px solid #dee6de;background:#f5f9f3;color:#244c37;border-radius:9px;padding:9px 10px;font-size:11px}
+.v22-route-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}
+.v22-route-summary>div{background:#f2f6f1;border-radius:10px;padding:13px}
+.v22-route-summary span{font-size:10px;color:#788678;display:block;margin-bottom:5px}
+.v22-route-summary strong{font-size:16px;color:#25543b;overflow-wrap:anywhere}
+.v22-warnings{border:1px solid #f1dac5;background:#fff8ee;border-radius:11px;padding:10px 14px;margin:10px 0}
+.v22-warnings p{color:#905721;font-size:12px;margin:3px 0}
+.v22-table-scroll{overflow-x:auto;max-width:100%;margin-top:10px;border:1px solid #e3e9e1;border-radius:11px}
+.v22-table{width:100%;border-collapse:collapse;min-width:720px;font:12px/1.6 var(--font)}
+.v22-table th{text-align:left;background:#f2f7f1;padding:12px;font-size:11px;color:#526653;white-space:nowrap}
+.v22-table td{border-top:1px solid #e5eae5;padding:12px;vertical-align:top}
+.v22-table td small{font-size:10px;color:#748577;display:block;margin-top:4px}
+.v22-table a{color:#21644b;text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.v22-table td b{color:#284e39;white-space:nowrap}
+.v22-table .v22-warn-text{color:#a26629}
+.v22-end{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #e3e7df;padding:17px 29px 23px;background:#fff}
+.v22-end p{color:#536e5c;font-size:12px;margin:0;line-height:1.7}
+.v22-end p.error{color:#ab3944}
+.v22-app a{word-break:break-word}
+.v22-app .leaflet-control-attribution{font-size:10px}
+.v22-open-button{background:#245e48!important;color:white!important;border-color:#245e48!important}
+.v22-studio-open{border:1px solid #aac9b4!important;color:#1f6244!important;background:#edf5ed!important}
+@media(max-width:1050px){.v22-workgrid{grid-template-columns:1fr}.v22-fields-3{grid-template-columns:repeat(2,1fr)}.v22-map-column{order:-1}#v22-map{height:440px}}
+@media(max-width:700px){.v22-dialog{width:100vw;max-height:100dvh;height:100dvh;border:0;border-radius:0}.v22-head{padding:18px}.v22-head-row{align-items:flex-start}.v22-head h2{font-size:25px}.v22-head p{font-size:11px}.v22-head-buttons{gap:6px}.v22-head .v22-ghost{font-size:10px;padding:10px}.v22-overline{font-size:9px}.v22-stats{padding:12px;grid-template-columns:repeat(2,1fr);gap:8px}.v22-stats>div{padding:11px 13px}.v22-stats strong{font-size:21px}.v22-body{padding:12px 10px;gap:12px}.v22-block{padding:13px;border-radius:13px}.v22-block-head h3{font-size:15px}.v22-fields-3,.v22-fields-2,.v22-places,.v22-route-summary{grid-template-columns:1fr;gap:10px}.v22-workgrid{gap:12px}.v22-route-summary{grid-template-columns:repeat(2,1fr)}#v22-map{min-height:340px;height:360px}.v22-member-cards{max-height:280px}.v22-end{padding:13px;align-items:stretch;flex-direction:column}.v22-member-card .v22-member-time{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.v22-app *{transition:none!important;scroll-behavior:auto!important}}
+@media print{.v22-dialog{position:static;width:100%;max-height:none;box-shadow:none}.v22-head-buttons,.v22-row-actions,#v22-map,.v22-map-instructions,.v22-route-access{display:none!important}}
+.v22-geocode-form,.v22-vehicle-form{display:flex;flex-direction:column;gap:12px;background:#eff6ec;border:1px solid #c8d9c9;border-radius:12px;padding:14px;margin:13px 0}
+.v22-geocode-form[hidden]{display:none!important}
+.v22-vehicle-form h4{font-size:14px;color:#285a41;margin:0}
+.v22-geocode-form .v22-row-actions,.v22-vehicle-form .v22-row-actions{margin:0}
+#v22-map.v22-map-unavailable{min-height:320px;height:auto;display:flex;align-items:center;justify-content:center;padding:12px;background:#e5eee9}
+.v22-map-unavailable svg{width:100%;height:auto;max-height:450px;display:block}
+.v22-no-pins{padding:45px 25px;font-size:12px;color:#668074;text-align:center}
 </style>
 </head>
 <body>
@@ -3582,7 +3673,7 @@ function renderHistory14(){
 function defaultsSite14(){
  return {name:'Vì mình và bạn là người Việt Nam',tagline:'Thấy ai khó, có chúng ta!',hero_title:'Thấy ai khó,\ncó chúng ta.',hero_lead:'Một chút thời gian. Một bàn tay cùng sẻ chia. Những câu chuyện tử tế bắt đầu từ chúng mình.',
  accent:'#9d303c',paper:'#faf7f0',ink:'#243b30',font:'Arial',reading_size:18,radius:24,
- facebook:ST14.baseFacebook,email:ST14.baseEmail,momo:MOMO12,logo:ST14.baseLogo,chatGreeting:'Chào bạn! ❤️ Mình là Bạn Đồng Hành. Mình giúp bạn tìm chuyến đi, mái ấm tại TP.HCM, bài viết và cách tham gia. Bạn muốn khám phá điều gì?',
+ facebook:ST14.baseFacebook,email:ST14.baseEmail,momo:MOMO12,logo:ST14.baseLogo,
  footer:'Một ngôi nhà nhỏ để những tấm lòng Việt gặp nhau. Kể câu chuyện tử tế, gửi một chút yêu thương.',
  gallery:[],...PUBLIC_SITE14};
 }
@@ -3596,9 +3687,9 @@ function cleanSite14(d){
  n.email=/^[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+$/.test(n.email)?n.email:EMAIL;
  for(const k of ['hero_image','about_image','logo'])n[k]=safeURL(n[k],true)||'';
  n.hero_caption=String(n.hero_caption||'').slice(0,1000);n.about_caption=String(n.about_caption||'').slice(0,1000);
- n.chatGreeting=String(n.chatGreeting||defaultsSite14().chatGreeting).slice(0,360);
  n.extraCategories=Array.isArray(n.extraCategories)?[...new Set(n.extraCategories.map(x=>String(x).trim().slice(0,80)).filter(Boolean))].slice(0,30):[];
  n.gallery=Array.isArray(n.gallery)?n.gallery.slice(0,80).filter(x=>safeURL(x.src,true)).map(x=>({src:safeURL(x.src,true),caption:String(x.caption||'').slice(0,1000),title:String(x.title||'').slice(0,180),group:String(x.group||'Ảnh của trang')})):[];
+ delete n['chat'+'Greeting'];
  return n;
 }
 function applySite14(d){
@@ -3647,10 +3738,8 @@ function renderAppearance(){
  <small>Phông hệ thống dùng ngay. Be Vietnam Pro cần Internet và có Arial dự phòng. Một số gian phòng giữ màu chủ đề riêng.</small></section>
  <section class="s14-panel"><div class="s14-panel-title"><h2>Hình ảnh trang</h2><span>03</span></div><div class="s14-site-images">${[['logo','Logo'],['hero_image','Ảnh đầu trang'],['about_image','Ảnh giới thiệu']].map(([key,l])=>`<div><img data-site-preview14="${key}" src="${esc(d[key]||DATA.logo)}" alt="${l}">${button14('site-image',l,'s14-btn small',`data-value="${key}"`)}</div>`).join('')}</div>
  ${input14('Nguồn ảnh đầu trang','hero_caption',d.hero_caption||'')}${input14('Nguồn ảnh giới thiệu','about_caption',d.about_caption||'')}
- </section><section class="s14-panel"><div class="s14-panel-title"><h2>Chat nổi · Bạn Đồng Hành</h2><span>04</span></div>
- ${field14('Lời chào khi mở chat',`<textarea name="chatGreeting" rows="4" maxlength="360">${esc(d.chatGreeting||defaultsSite14().chatGreeting)}</textarea>`)}
- <small>Chat tra cứu dữ liệu công khai ngay trong HTML, không kết nối AI hoặc lưu câu hỏi của người đọc. Thay đổi chỉ hiển thị công khai sau khi xuất lại index.html.</small></section>
- <section class="s14-panel"><div class="s14-panel-title"><h2>Kết nối</h2><span>05</span></div>${input14('Liên kết Facebook','facebook',d.facebook,'url')}${input14('Email liên hệ','email',d.email,'email')}${input14('Liên kết quỹ MoMo','momo',d.momo,'url')}
+ </section>
+ <section class="s14-panel"><div class="s14-panel-title"><h2>Kết nối</h2><span>04</span></div>${input14('Liên kết Facebook','facebook',d.facebook,'url')}${input14('Email liên hệ','email',d.email,'email')}${input14('Liên kết quỹ MoMo','momo',d.momo,'url')}
  <p id="s14-theme-error" class="s14-error" role="alert"></p><button type="submit" class="s14-btn primary wide">Lưu giao diện trên thiết bị</button></section>
  </div><aside class="s14-theme-preview"><div class="s14-preview-top"><strong>Xem trước trực tiếp</strong><span>Không ghi đè khi chưa lưu</span></div><iframe id="s14-theme-frame" title="Xem trước giao diện" sandbox="allow-same-origin"></iframe><p>Đây là bố cục xem nhanh. Sau khi lưu, bấm Xem website để kiểm tra toàn bộ các tab.</p>${button14('theme-preview-full','Lưu & xem website','s14-btn primary wide')}${button14('theme-reset','Đặt lại màu & chữ','s14-btn quiet')}</aside></form>`);
  renderThemePreview14();
@@ -3697,7 +3786,7 @@ async function exportWebsite14(){
  const description=doc.querySelector('meta[name="description"]');if(description)description.content=data.siteSettings.hero_lead||name;
  for(const [key,value] of [['og:title',name],['og:description',data.siteSettings.hero_lead||name]]){const el=doc.querySelector(`meta[property="${key}"]`);if(el)el.content=value;}
  const titleMeta=doc.querySelector('meta[property="og:site_name"]');if(titleMeta)titleMeta.content=name;
- const tag=doc.querySelector('meta[name="generator"]');if(tag)tag.content='ViMinhVaBan Studio V21 - Calendar Event Creator / Floating Chat';
+ const tag=doc.querySelector('meta[name="generator"]');if(tag)tag.content='ViMinhVaBan Studio V22 - Private Route Coordinator (No Chatbot)';
  const publicHtml='<!doctype html>\n'+doc.documentElement.outerHTML;
  download('index.html',publicHtml,'text/html;charset=utf-8');
  ST14.workspace.lastExportAt=data.publishVersion;
@@ -3983,7 +4072,7 @@ function renderActivityCalendar18(){
 }
 function renderEventDetail18(id){const e=eventById18(id);if(!e){S.view='activity';$('#main').innerHTML=activityHeader18('HOẠT ĐỘNG','Chưa tìm thấy chuyến đi.','Có thể hoạt động đang là bản nháp hoặc chưa được xuất bản.')+activitySubnav18('calendar')+`<div class="wrap section"><a class="btn" href="#/hoat-dong">Trở lại lịch</a></div>`;return;}
  S.view='activity';const loc=R.places.find(p=>p.id===e.location_id),place=loc?.name||e.location_note||'Địa điểm đang xác nhận';
- $('#main').innerHTML=`<section class="v18-event-detail"><div class="wrap"><a class="v18-back" href="#/hoat-dong">← Trở lại lịch thiện nguyện</a><div class="v18-event-detail-hero"><div><span class="v18-status v18-${esc(e.phase)}">${esc(EVENT_PHASE18[e.phase])}</span><h1>${esc(e.title)}</h1><p>${esc(e.summary)}</p><div class="v18-detail-facts"><div><span>NGÀY DỰ KIẾN</span><strong>${formattedDay18(e.date)}</strong></div><div><span>${esc(e.time_label||"GIỜ TẬP TRUNG")}</span><strong>${esc(e.time||'Chưa xác nhận')}</strong></div><div><span>ĐỊA ĐIỂM</span><strong>${esc(place)}</strong></div><div><span>TRẠNG THÁI</span><strong>${esc(EVENT_PHASE18[e.phase]||'Đang chuẩn bị')}</strong></div>${loc?`<p class="v18-venue-address">${esc(loc.address)}</p>`:''}</div></div><div class="v18-detail-image">${activityImage18(e)}</div></div></div></section><section class="section"><div class="wrap v18-detail-layout"><article class="v18-detail-story"><span class="eyebrow">Một hành trình đang được chuẩn bị</span><h2>Chuyến đi<br><em>và những điều cần biết.</em></h2><div class="v18-longcopy">${esc(e.description||e.summary).replace(/\n/g,'<br>')}</div>${e.needs?`<h3>Cần cùng chuẩn bị</h3><div class="v18-longcopy">${esc(e.needs).replace(/\n/g,'<br>')}</div>`:''}<div class="v18-detail-tip">${icon('lock')}Địa điểm, giờ tập trung và số lượng tham gia chỉ được xem là đã xác nhận khi Admin có thông tin từ cơ sở.</div>${loc?`<a href="#/hoat-dong/ban-do?place=${encodeURIComponent(loc.id)}" class="text-link">Xem địa điểm trên bản đồ ↗</a>`:''}${e.related_post_slug?`<div class="v18-related-post"><a class="btn" href="#/bai-viet/${encodeURIComponent(e.related_post_slug)}">Đọc bài giới thiệu chuyến đi ${icon('arrow')}</a></div>`:''}</article><aside class="v18-join-panel"><span class="eyebrow">CÙNG ĐI NHA!</span><h3>Gửi lời nhắn<br><em>muốn tham gia.</em></h3><p>Nhập thông tin để tạo một lời nhắn. Website <strong>không tự gửi hay lưu đăng ký</strong>.</p><form id="v18-join-form" data-event-id="${esc(e.id)}">${input14('Tên của bạn','name','','text','required maxlength="80" autocomplete="name"')}${input14('Khu vực xuất phát','area','','text','maxlength="90" placeholder="Ví dụ: Gò Vấp"')}${field14('Bạn muốn hỗ trợ việc gì?',`<select name="role"><option value="Cùng trò chuyện và thăm hỏi">Cùng trò chuyện và thăm hỏi</option><option value="Phụ hậu cần, chuẩn bị quà">Phụ hậu cần, chuẩn bị quà</option><option value="Hỗ trợ di chuyển">Hỗ trợ di chuyển</option><option value="Chụp ảnh (khi được phép)">Chụp ảnh (khi được phép)</option><option value="Việc khác theo nhu cầu">Việc khác theo nhu cầu</option></select>`)}${input14('Số người dự kiến (không bắt buộc)','people','1','number','min="1" max="30"')}<button class="btn btn-red wide-button" type="submit">Tạo lời nhắn tham gia</button></form><div id="v18-join-result" aria-live="polite"></div></aside></div></section>`;observe();
+ $('#main').innerHTML=`<section class="v18-event-detail"><div class="wrap"><a class="v18-back" href="#/hoat-dong">← Trở lại lịch thiện nguyện</a><div class="v18-event-detail-hero"><div><span class="v18-status v18-${esc(e.phase)}">${esc(EVENT_PHASE18[e.phase])}</span><h1>${esc(e.title)}</h1><p>${esc(e.summary)}</p><div class="v18-detail-facts"><div><span>NGÀY DỰ KIẾN</span><strong>${formattedDay18(e.date)}</strong></div><div><span>${esc(e.time_label||"GIỜ TẬP TRUNG")}</span><strong>${esc(e.time||'Chưa xác nhận')}</strong></div><div><span>ĐỊA ĐIỂM</span><strong>${esc(place)}</strong></div><div><span>TRẠNG THÁI</span><strong>${esc(EVENT_PHASE18[e.phase]||'Đang chuẩn bị')}</strong></div>${loc?`<p class="v18-venue-address">${esc(loc.address)}</p>`:''}</div></div><div class="v18-detail-image">${activityImage18(e)}</div></div></div></section><section class="section"><div class="wrap v18-detail-layout"><article class="v18-detail-story"><span class="eyebrow">Một hành trình đang được chuẩn bị</span><h2>Chuyến đi<br><em>và những điều cần biết.</em></h2><div class="v18-longcopy">${esc(e.description||e.summary).replace(/\n/g,'<br>')}</div>${e.needs?`<h3>Cần cùng chuẩn bị</h3><div class="v18-longcopy">${esc(e.needs).replace(/\n/g,'<br>')}</div>`:''}<div class="v18-detail-tip">${icon('lock')}Địa điểm, giờ tập trung và số lượng tham gia chỉ được xem là đã xác nhận khi Admin có thông tin từ cơ sở.</div>${loc?`<a href="#/hoat-dong/ban-do?place=${encodeURIComponent(loc.id)}" class="text-link">Xem địa điểm trên bản đồ ↗</a>`:''}${e.related_post_slug?`<div class="v18-related-post"><a class="btn" href="#/bai-viet/${encodeURIComponent(e.related_post_slug)}">Đọc bài giới thiệu chuyến đi ${icon('arrow')}</a></div>`:''}${S.isAdmin?`<button type="button" class="btn v22-open-button" data-v22="open" data-id="${esc(e.id)}">Điều phối lộ trình (Admin)</button>`:''}</article><aside class="v18-join-panel"><span class="eyebrow">CÙNG ĐI NHA!</span><h3>Gửi lời nhắn<br><em>muốn tham gia.</em></h3><p>Nhập thông tin để tạo một lời nhắn. Website <strong>không tự gửi hay lưu đăng ký</strong>.</p><form id="v18-join-form" data-event-id="${esc(e.id)}">${input14('Tên của bạn','name','','text','required maxlength="80" autocomplete="name"')}${input14('Khu vực xuất phát','area','','text','maxlength="90" placeholder="Ví dụ: Gò Vấp"')}${field14('Bạn muốn hỗ trợ việc gì?',`<select name="role"><option value="Cùng trò chuyện và thăm hỏi">Cùng trò chuyện và thăm hỏi</option><option value="Phụ hậu cần, chuẩn bị quà">Phụ hậu cần, chuẩn bị quà</option><option value="Hỗ trợ di chuyển">Hỗ trợ di chuyển</option><option value="Chụp ảnh (khi được phép)">Chụp ảnh (khi được phép)</option><option value="Việc khác theo nhu cầu">Việc khác theo nhu cầu</option></select>`)}${input14('Số người dự kiến (không bắt buộc)','people','1','number','min="1" max="30"')}<button class="btn btn-red wide-button" type="submit">Tạo lời nhắn tham gia</button></form><div id="v18-join-result" aria-live="polite"></div></aside></div></section>`;observe();
 }
 function safeMapLink18(p){return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' '+p.address+', Việt Nam')}`;}
 function mapEmbed18(p){return `https://www.google.com/maps?q=${encodeURIComponent(p.name+', '+p.address+', Việt Nam')}&output=embed`;}
@@ -4011,7 +4100,7 @@ function newJournal18(){return {id:crypto.randomUUID(),title:'',summary:'',date:
 function renderActivityAdmin18(){requireAdmin14();ST14.tab='activities';const es=activityRecords18('activities'),js=activityRecords18('journals');
  studioShell14('Những chuyến đi và điều còn lại.','Quản lý lịch, nhật ký và album trên thiết bị; xuất HTML để cập nhật cho mọi người.',`<div class="v18-admin-switch"><button data-v18="admin-view" data-value="events" class="s14-btn ${ACT18.adminView==='events'?'primary':''}">Lịch thiện nguyện (${es.length})</button><button data-v18="admin-view" data-value="journals" class="s14-btn ${ACT18.adminView==='journals'?'primary':''}">Nhật ký & album (${js.length})</button></div><div id="v18-admin-body"></div>`,'activities');renderActivityAdminBody18();}
 function renderActivityAdminBody18(){const host=$('#v18-admin-body');if(!host)return;if(ACT18.editing)return renderActivityEditor18();const type=ACT18.adminView,items=activityRecords18(type==='events'?'activities':'journals');
- host.innerHTML=`<div class="v18-admin-heading"><div><h2>${type==='events'?'Lịch & chuyến đi':'Nhật ký hành trình'}</h2><p>${type==='events'?'Trạng thái chuyến đi và trạng thái xuất bản được quản lý riêng.':'Chỉ đăng những chuyến đi và hình ảnh đã diễn ra, có quyền sử dụng.'}</p></div><a href="#/hoat-dong" class="s14-btn v21-studio-calendar-link">${icon('calendar-days')} Mở lịch</a><button class="s14-btn primary" data-v18="admin-new">${icon('plus')} ${type==='events'?'Tạo chuyến đi':'Viết nhật ký mới'}</button></div><div class="v18-admin-list">${items.map(x=>`<article class="v18-admin-item">${activityImage18(x,type==='events'?'event':'journal')}<div><span class="v18-status">${esc(EVENT_VIS18[x.visibility]||'Bản nháp')}${type==='events'?' · '+esc(EVENT_PHASE18[x.phase]||''):''}</span><h3>${esc(x.title||'(Chưa có tiêu đề)')}</h3><p>${formattedDay18(x.date)} · ${type==='journals'?`${x.photos?.length||0} ảnh`:'Cập nhật trong Studio'}</p></div><div class="v18-admin-controls"><button class="s14-btn" data-v18="admin-edit" data-id="${esc(x.id)}">Chỉnh sửa</button><button class="s14-btn quiet danger" data-v18="admin-delete" data-id="${esc(x.id)}">Xóa</button></div></article>`).join('')||'<div class="v18-empty">Chưa có dữ liệu. Bấm tạo mới để bắt đầu.</div>'}</div>`;}
+ host.innerHTML=`<div class="v18-admin-heading"><div><h2>${type==='events'?'Lịch & chuyến đi':'Nhật ký hành trình'}</h2><p>${type==='events'?'Trạng thái chuyến đi và trạng thái xuất bản được quản lý riêng.':'Chỉ đăng những chuyến đi và hình ảnh đã diễn ra, có quyền sử dụng.'}</p></div><a href="#/hoat-dong" class="s14-btn v21-studio-calendar-link">${icon('calendar-days')} Mở lịch</a><button class="s14-btn primary" data-v18="admin-new">${icon('plus')} ${type==='events'?'Tạo chuyến đi':'Viết nhật ký mới'}</button></div><div class="v18-admin-list">${items.map(x=>`<article class="v18-admin-item">${activityImage18(x,type==='events'?'event':'journal')}<div><span class="v18-status">${esc(EVENT_VIS18[x.visibility]||'Bản nháp')}${type==='events'?' · '+esc(EVENT_PHASE18[x.phase]||''):''}</span><h3>${esc(x.title||'(Chưa có tiêu đề)')}</h3><p>${formattedDay18(x.date)} · ${type==='journals'?`${x.photos?.length||0} ảnh`:'Cập nhật trong Studio'}</p></div><div class="v18-admin-controls">${type==='events'?`<button type="button" class="s14-btn v22-studio-open" data-v22="open" data-id="${esc(x.id)}">Điều phối</button>`:''}<button class="s14-btn" data-v18="admin-edit" data-id="${esc(x.id)}">Chỉnh sửa</button><button class="s14-btn quiet danger" data-v18="admin-delete" data-id="${esc(x.id)}">Xóa</button></div></article>`).join('')||'<div class="v18-empty">Chưa có dữ liệu. Bấm tạo mới để bắt đầu.</div>'}</div>`;}
 function syncActivityEditorDraft18(){
  const form=$('#v18-admin-form'),e=ACT18.editing;if(!form||!e)return;
  for(const input of form.querySelectorAll('[name]')){
@@ -4080,53 +4169,6 @@ document.addEventListener('submit',async e=>{
  }
  else if(e.target.id==='v18-admin-form'){e.preventDefault();try{await saveActivity18(e.target);}catch(err){toast(errorMessage(err),true);}}
 });
-
-/* V19 — Bạn Đồng Hành: tra cứu miễn phí ngay trong trang, không phải AI tạo sinh. */
-const BUDDY19={open:false,history:[],ready:false,limit:22,starter:['Chuyến đi 06/12','Tìm mái ấm TP.HCM','Đăng ký tham gia','Bài viết về ông bà']};
-function buddy19Markup(){return `<div id="buddy19" class="buddy19" aria-label="Trợ lý Bạn Đồng Hành">
- <section class="buddy19-panel" id="buddy19-panel" role="dialog" aria-modal="false" aria-label="Trò chuyện với Bạn Đồng Hành" hidden>
-  <header class="buddy19-head"><span class="buddy19-avatar">${img(DATA.logo,'Biểu tượng Vì mình và bạn')}</span><span class="buddy19-head-copy"><strong>🌿 Bạn Đồng Hành</strong><small>Tra cứu hoạt động, địa điểm và bài viết</small></span><button class="buddy19-clear" type="button" data-buddy19="clear" aria-label="Xóa lịch sử hội thoại">Xóa chat</button><button class="buddy19-icon-btn" type="button" data-buddy19="close" aria-label="Đóng cửa sổ chat">×</button></header>
-  <div id="buddy19-log" class="buddy19-conversation" role="log" aria-live="polite" aria-relevant="additions" aria-label="Nội dung hội thoại"></div>
-  <div id="buddy19-tips" class="buddy19-query-tips" aria-label="Câu hỏi gợi ý"></div>
-  <form id="buddy19-form" class="buddy19-send-form"><label class="sr-only" for="buddy19-question">Nhập câu hỏi</label><input id="buddy19-question" name="question" type="text" placeholder="Hỏi về chuyến đi, mái ấm…" autocomplete="off" maxlength="260" required><button class="buddy19-send" type="submit" aria-label="Gửi câu hỏi">➜</button></form>
-  <div class="buddy19-privacy">Tra cứu nội dung công khai · Không tự gửi hay lưu hồ sơ</div>
- </section>
- <button class="buddy19-launch" id="buddy19-launch" data-buddy19="toggle" type="button" aria-expanded="false" aria-controls="buddy19-panel" aria-label="Mở trò chuyện với Bạn Đồng Hành"><span class="buddy19-heart">♥</span><span>Hỏi Bạn Đồng Hành</span></button>
- </div>`;}
-function buddy19Guard(){const root=$('#buddy19');if(!root)return;const isPrivate=/^#\/(admin|dang-nhap|login)(?:\/|$|\?)/.test(location.hash);root.hidden=isPrivate;if(isPrivate&&BUDDY19.open)buddy19Toggle(false);}
-function buddy19Toggle(open){const panel=$('#buddy19-panel'),launcher=$('#buddy19-launch');if(!panel||!launcher)return;BUDDY19.open=!!open;panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));launcher.setAttribute('aria-label',open?'Thu gọn trò chuyện Bạn Đồng Hành':'Mở trò chuyện với Bạn Đồng Hành');if(open){if(!BUDDY19.ready){BUDDY19.ready=true;buddy19Welcome();}requestAnimationFrame(()=>$('#buddy19-question')?.focus());}else launcher.focus();}
-function buddy19Lines(text){return esc(String(text??'')).replace(/\n/g,'<br>');}
-function buddy19Add(who,text,links=[]){const log=$('#buddy19-log');if(!log)return;const row=document.createElement('div');row.className='buddy19-row '+(who==='user'?'is-user':'is-bot');const linkHtml=links.slice(0,4).filter(l=>l&&l.href&&l.label).map(l=>{const url=String(l.href);if(!url.startsWith('#/')&&!safeURL(url))return '';const ext=!url.startsWith('#/');return `<a href="${esc(url)}" ${ext?'target="_blank" rel="noopener noreferrer"':''}>${esc(String(l.label).slice(0,95))}</a>`;}).join('');row.innerHTML=`<div class="buddy19-bubble"><p>${buddy19Lines(text)}</p>${linkHtml?`<div class="buddy19-links">${linkHtml}</div>`:''}</div>`;log.append(row);BUDDY19.history.push({who,text});while(log.children.length>BUDDY19.limit){log.firstElementChild.remove();BUDDY19.history.shift();}log.scrollTop=log.scrollHeight;}
-function buddy19Tips(){const host=$('#buddy19-tips');if(!host)return;host.innerHTML=BUDDY19.starter.map(s=>`<button type="button" data-buddy19="ask" data-question="${esc(s)}">${esc(s)}</button>`).join('');}
-function buddy19Welcome(){buddy19Add('bot',String(S.site?.chatGreeting||'Chào bạn! ❤️ Mình là Bạn Đồng Hành. Mình có thể giúp tìm chuyến đi, địa điểm TP.HCM, câu chuyện thiện nguyện và cách kết nối với nhóm. Bạn muốn khám phá điều gì?'));buddy19Tips();}
-function buddy19PlaceLinks(places){return places.slice(0,3).map(p=>({label:p.name+' · '+p.area,href:'#/hoat-dong/ban-do?place='+encodeURIComponent(p.id)}));}
-function buddy19EventLinks(events){return events.slice(0,2).map(e=>({label:'Xem lịch: '+e.title,href:'#/hoat-dong/lich/'+encodeURIComponent(e.id)}));}
-function buddy19Search(query){const q=norm(query);const stop=new Set('la cua tren va cho co minh toi ban nhu the nao duoc khong hay o den mot cac nhung tim hoi can voi de di ve se tu xin danh sach may gio chao dang co khi tuyen'.split(' '));const tokens=[...new Set(q.split(/[^a-z0-9]+/g).filter(t=>t.length>1&&!stop.has(t)))].slice(0,12);if(!tokens.length)return {places:[],posts:[]};function rank(sources){return sources.map(x=>{const name=norm(x.name||x.title),cat=norm(x.category||x.type||''),detail=norm([x.excerpt,x.address,x.area,x.description].filter(Boolean).join(' '));let score=0;for(const t of tokens){if(name.includes(t))score+=t.length>3?8:5;if(cat.includes(t))score+=4;if(detail.includes(t))score+=2;}if(tokens.length>1&&name.includes(q))score+=15;return {...x,_buddyScore:score};}).filter(x=>x._buddyScore>0).sort((a,b)=>b._buddyScore-a._buddyScore);}
- return {places:rank((R.places||[])),posts:rank((S.posts||[]).filter(p=>p.status==='published'))};}
-function buddy19Answer(question){const raw=String(question||'').trim(),q=norm(raw),has=(...words)=>words.some(w=>q.includes(norm(w))),pubEvents=(DATA.activities||[]).filter(e=>e.visibility==='published').slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')),publicJournals=(DATA.journals||[]).filter(j=>j.visibility==='published'),placeSearch=has('địa điểm','mái ấm','địa chỉ','bản đồ','bệnh viện','người già','người cao tuổi','ông bà','trẻ em','bệnh nhi','ung thư','ngọc quang','gò vấp','dưỡng lão'),dateSearch=has('lịch','chuyến đi','sắp tới','6/12','06/12','ngày 6','ngày 06','đi thăm','thăm ngọc quang'),search=buddy19Search(raw);
- const zalo=safeURL(DATA.community?.zalo?.url)||'https://zalo.me/g/rtsfzx371',facebook=safeURL(S.site?.facebook)||FB,momo=safeURL(S.site?.momo)||MOMO12;
- if(has('bạn là ai','la ai','chatbot','ai thật','chatgpt','ai nào','trí tuệ nhân tạo'))return {text:'Mình là trợ lý tra cứu nội dung của website “Vì mình và bạn”. Phiên bản này không dùng mô hình AI tạo sinh hay API: mình tìm trong bài viết, lịch hoạt động và danh bạ đang công khai. Mình không gửi câu hỏi của bạn lên máy chủ.',links:[{label:'Khám phá bài viết',href:'#/cau-chuyen'}]};
- if(has('chào','xin chào','hello','hi bạn','hey','chao'))return {text:'Chào bạn! 🌻 Mình có thể giúp bạn tìm chuyến đi thiện nguyện, một mái ấm ở TP.HCM hoặc cách tham gia cùng mọi người. Bạn muốn bắt đầu từ đâu?',links:[{label:'Lịch hoạt động',href:'#/hoat-dong'},{label:'Địa điểm TP.HCM',href:'#/hoat-dong/ban-do'}]};
- if(has('zalo','nhóm zalo','nhom zalo'))return {text:'Bạn có thể tham gia nhóm Zalo “Vì Mình Và Bạn Là Người Việt Nam” để trao đổi địa điểm và cùng chuẩn bị hoạt động. Việc tham gia nhóm do bạn chủ động thực hiện.',links:[{label:'Mở nhóm Zalo',href:zalo},{label:'Trang tình nguyện viên',href:'#/tinh-nguyen'}]};
- if(has('momo','quỹ','quyên góp','ủng hộ tiền','đóng góp tiền','chuyển khoản'))return {text:'Bạn có thể xem liên kết quỹ MoMo mà fanpage đã chia sẻ. Đóng góp hoàn toàn tự nguyện, không phải điều kiện để tham gia thiện nguyện. Website không nhận tiền, không xác nhận giao dịch hoặc số dư quỹ.',links:[{label:'Mở liên kết MoMo',href:momo},{label:'Tham gia bằng công sức',href:'#/tinh-nguyen'}]};
- if(has('đăng ký','tham gia','tình nguyện viên','cùng đi','muốn đi','đi cùng','góp sức','gia nhập'))return {text:'Bạn có thể tìm chuyến đi đang công khai, rồi soạn lời nhắn giới thiệu mình và phần việc có thể hỗ trợ. Website chỉ giúp soạn nội dung; bạn cần tự gửi qua nhóm Zalo hoặc fanpage để được trao đổi và xác nhận. Không cần đóng quỹ mới được tham gia.',links:[{label:'Xem lịch chuyến đi',href:'#/hoat-dong'},{label:'Kết nối tình nguyện viên',href:'#/tinh-nguyen'},{label:'Nhóm Zalo',href:zalo}]};
- if(has('album','nhật ký','đã đi','đã làm','hình ảnh chuyến đi','kết quả chuyến'))return {text:publicJournals.length?`Website đang có ${publicJournals.length} nhật ký công khai. Bạn có thể xem ảnh, câu chuyện và phần tổng kết của từng chuyến đi.`:'Hiện website chưa có nhật ký chuyến đi được công khai. Những hoạt động chưa diễn ra sẽ không được trình bày như đã hoàn thành.',links:[{label:'Xem Nhật ký & album',href:'#/hoat-dong/nhat-ky'},{label:'Xem lịch hoạt động',href:'#/hoat-dong'}]};
- if(has('số liệu','thống kê','dữ liệu','bao nhiêu người','bao nhiêu trẻ'))return {text:'Phần Dữ liệu Việt Nam tổng hợp các chỉ số và nguồn công khai. Nếu bạn cần số người đang được chăm sóc tại một mái ấm, hãy xem hồ sơ địa điểm và lưu ý mốc cập nhật; không phải cơ sở nào cũng có số liệu đã xác minh.',links:[{label:'Mở Dữ liệu Việt Nam',href:'#/du-lieu'},{label:'Tra cứu địa điểm',href:'#/hoat-dong/ban-do'}]};
- if(has('bài viết','câu chuyện','đọc gì','đọc bài','truyền cảm hứng')&&!has('địa chỉ','ở đâu','chỉ đường','bản đồ')){const posts=search.posts.length?search.posts:(S.posts||[]).filter(p=>p.status==='published').slice(0,3);return {text:'Bạn có thể đọc những câu chuyện tử tế trong phòng trưng bày bài viết. Dưới đây là một số bài gợi ý từ website.',links:[...posts.slice(0,3).map(p=>({label:p.title,href:articleHref(p)})),{label:'Mở phòng trưng bày',href:'#/cau-chuyen'}]};}
- if(placeSearch&&has('địa chỉ','ở đâu','đường nào','chỉ đường','bản đồ','số điện thoại','liên hệ','địa điểm','mái ấm')){
-   let places=search.places;
-   if(has('ngọc quang'))places=(R.places||[]).filter(p=>norm(p.name).includes('ngoc quang'));
-   if(!places.length&&has('bản đồ','địa điểm','mái ấm'))places=R.places||[];
-   if(places.length){const p=places[0];return {text:places.length===1||has('ngọc quang')?`${p.name}\nĐịa chỉ theo danh bạ: ${p.address}\n${p.population||'Số người được chăm sóc: cần liên hệ xác nhận.'}\nBạn nên liên hệ trước với cơ sở để kiểm tra nhu cầu và lịch tiếp đoàn.`:`Mình tìm được ${places.length} địa điểm phù hợp trong danh bạ TP.HCM. Đây là 3 kết quả gợi ý đầu tiên; bạn có thể mở bản đồ để xem đầy đủ và kiểm tra địa chỉ mới nhất.`,links:[...buddy19PlaceLinks(places),{label:'Mở bản đồ tất cả địa điểm',href:'#/hoat-dong/ban-do'}]};}
- }
- if(dateSearch){const wanted=has('06/12','6/12','ngày 6','ngày 06');const events=wanted?pubEvents.filter(e=>e.date==='2026-12-06'):pubEvents;const e=events[0];if(!e)return {text:wanted?'Chưa tìm thấy hoạt động công khai đúng ngày 06/12 trong lịch hiện tại.':'Lịch hiện chưa có chuyến đi nào được công khai. Bạn có thể theo dõi tab Hoạt động hoặc kết nối qua Zalo.',links:[{label:'Xem lịch thiện nguyện',href:'#/hoat-dong'},{label:'Nhóm Zalo',href:zalo}]};const loc=(R.places||[]).find(p=>p.id===e.location_id);return {text:`${e.title}\nNgày: ${formattedDay18(e.date)}${e.time?' · '+e.time+' ('+(e.time_label||'giờ dự kiến')+')':''}\nĐịa điểm: ${loc?.name||e.location_note||'Cần xác nhận'}\nTrạng thái: ${EVENT_PHASE18[e.phase]||'Đang chuẩn bị'}. Đăng ký đi cùng cần trao đổi và được nhóm xác nhận.`,links:[...buddy19EventLinks([e]),...(e.related_post_slug?[{label:'Đọc bài giới thiệu chuyến đi',href:'#/bai-viet/'+encodeURIComponent(e.related_post_slug)}]:[]),{label:'Nhóm Zalo',href:zalo}]};}
- if(placeSearch){let ps=search.places;if(!ps.length){if(has('ông bà','người cao tuổi','người già'))ps=(R.places||[]).filter(p=>norm(p.type).includes('cao tuoi'));else if(has('bệnh nhi','ung thư'))ps=(R.places||[]).filter(p=>norm(p.type).includes('benh vien'));else if(has('trẻ em'))ps=(R.places||[]).filter(p=>norm(p.type).includes('tre em'));}if(ps.length)return {text:`Mình tìm thấy ${ps.length} gợi ý liên quan ở TP.HCM. Bạn có thể mở từng hồ sơ để xem địa chỉ, thông tin liên hệ và ghi chú xác minh trước khi đi.`,links:[...buddy19PlaceLinks(ps),{label:'Toàn bộ địa điểm TP.HCM',href:'#/hoat-dong/ban-do'}]};}
- if(search.places.length||search.posts.length){return {text:'Mình tìm thấy một số nội dung có thể liên quan tới điều bạn hỏi. Hãy chọn kết quả bên dưới; mình chỉ tìm trong dữ liệu công khai của website.',links:[...buddy19PlaceLinks(search.places.slice(0,2)),...search.posts.slice(0,2).map(p=>({label:p.title,href:articleHref(p)}))]};}
- return {text:'Mình chưa tìm thấy thông tin phù hợp trong website và không muốn đoán. Bạn có thể thử hỏi về “chuyến đi 06/12”, “mái ấm TP.HCM”, “đăng ký tham gia” hoặc nhắn trực tiếp fanpage để được hỗ trợ.',links:[{label:'Xem hoạt động thiện nguyện',href:'#/hoat-dong'},{label:'Liên hệ fanpage',href:facebook}]};}
-function buddy19Ask(question){const q=String(question||'').trim().slice(0,260);if(!q)return;buddy19Add('user',q);const answer=buddy19Answer(q);buddy19Add('bot',answer.text,answer.links);}
-function buddy19Reset(){BUDDY19.history.length=0;BUDDY19.ready=false;$('#buddy19-log')?.replaceChildren();buddy19Welcome();BUDDY19.ready=true;}
-function setupBuddy19(){if($('#buddy19'))return;document.body.insertAdjacentHTML('beforeend',buddy19Markup());buddy19Guard();document.addEventListener('click',e=>{const b=e.target.closest('[data-buddy19]');if(b){e.preventDefault();const what=b.dataset.buddy19;if(what==='toggle')buddy19Toggle(!BUDDY19.open);else if(what==='close')buddy19Toggle(false);else if(what==='clear')buddy19Reset();else if(what==='ask'){buddy19Ask(b.dataset.question||'');$('#buddy19-question')?.focus();}return;}const nav=e.target.closest('#buddy19-panel a[href^="#/"]');if(nav)buddy19Toggle(false);});document.addEventListener('submit',e=>{if(e.target.id!=='buddy19-form')return;e.preventDefault();const input=$('#buddy19-question');const q=input?.value||'';if(input)input.value='';buddy19Ask(q);input?.focus();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&BUDDY19.open){e.preventDefault();buddy19Toggle(false);}});window.addEventListener('hashchange',buddy19Guard);}
-setupBuddy19();
 
 boot14().catch(e=>{toast(errorMessage(e),true);});
 
@@ -4198,6 +4240,7 @@ function v21OpenEditor(id='',clickedDate=''){
    <label class="v21-field">Đường dẫn ảnh HTTPS <input name="cover_image" type="url" placeholder="https://..." value="${/^https:/.test(item.cover_image||'')?esc(item.cover_image):''}"></label>
    <label class="v21-upload">${icon('image')} Tải ảnh từ thiết bị<input id="v21-image-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
    <label class="v21-field">Chú thích / nguồn ảnh <input name="cover_caption" maxlength="500" value="${esc(item.cover_caption||'')}"></label>
+   ${old?`<button type="button" class="v21-save v22-open-button" data-v22="open" data-id="${esc(item.id)}">Điều phối lộ trình</button>`:''}
    ${old?`<button class="v21-delete" type="button" data-v21="delete">${icon('trash')} Xóa sự kiện này</button>`:''}
   </aside></div>
   <div class="v21-modal-bottom"><p id="v21-form-hint" role="status">Sự kiện chưa được lưu.</p><div><button type="button" class="v21-cancel" data-v21="close">Hủy</button><button type="submit" class="v21-save">${icon('check')} ${old?'Lưu thay đổi':'Lưu sự kiện'}</button></div></div>
@@ -4245,9 +4288,11 @@ async function v21DeleteEvent(){
  if(linked)throw new Error('Sự kiện có nhật ký liên quan. Vui lòng bỏ liên kết nhật ký trước khi xóa.');
  if(!confirm(`Xóa sự kiện "${item.title}" khỏi bản làm việc? Sau khi xuất HTML mới, sự kiện sẽ biến mất khỏi website công khai.`))return;
  const before=copy(activityRecords18('activities'));
+ const priorPlan=ST14.workspace.routePlans22?.[item.id];
+ if(ST14.workspace.routePlans22)delete ST14.workspace.routePlans22[item.id];
  ST14.workspace.activities=before.filter(x=>x.id!==item.id);
  try{await storeWorkspace14();const date=item.date;v21CloseEditor(true);v21RefreshCalendars(date);toast('Đã xóa sự kiện trong bản làm việc. Xuất HTML để cập nhật website.');}
- catch(err){ST14.workspace.activities=before;throw err;}
+ catch(err){ST14.workspace.activities=before;if(priorPlan&&ST14.workspace.routePlans22)ST14.workspace.routePlans22[item.id]=priorPlan;throw err;}
 }
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-v21]');if(!b)return;
  e.preventDefault();try{const action=b.dataset.v21;
@@ -4271,5 +4316,250 @@ document.addEventListener('change',async e=>{if(e.target.id!=='v21-image-file'||
  }catch(err){toast(errorMessage(err),true);}
 });
 window.addEventListener('hashchange',()=>{const d=document.getElementById('v21-event-dialog');if(d?.open)v21CloseEditor();});
+
+
+'use strict';
+/* V22 - coordinator module. Private data only in encrypted local Studio workspace.
+   Public HTML export intentionally excludes routePlans22 and member coordinates. */
+const V22 = {
+  eventId: '', plan: null, selected: '', pinTarget: '', geoTarget: '', geoResults: [],
+  map: null, layers: null, busy: false, running: false, cancel: false,
+  lastRouteAt: 0, lastGeocodeAt: 0, screen: 'overview', notice: '', vehicleEdit: null,
+  palette: ['#276a98','#23876c','#a95692','#ad6a33','#6548a1','#8d4b40','#5d8193']
+};
+const v22Esc = v => esc(v);
+const v22Copy = x => JSON.parse(JSON.stringify(x));
+const v22Pad = x => String(x).padStart(2, '0');
+const v22ValidCoord = (lat,lng) => Number.isFinite(Number(lat)) && Number.isFinite(Number(lng)) && lat !== '' && lng !== '' && lat != null && lng != null && Math.abs(Number(lat)) <= 90 && Math.abs(Number(lng)) <= 180;
+const v22Point = p => p && v22ValidCoord(p.lat,p.lng) ? [Number(p.lat),Number(p.lng)] : null;
+const v22Minutes = time => /^\d\d:\d\d$/.test(time||'') && Number(time.slice(0,2)) < 24 && Number(time.slice(3)) < 60 ? Number(time.slice(0,2))*60+Number(time.slice(3)) : null;
+const v22Time = min => Number.isFinite(min) ? `${v22Pad(((Math.floor(min/60)%24)+24)%24)}:${v22Pad(((min%60)+60)%60)}${min<0?' (hôm trước)':min>=1440?' (hôm sau)':''}` : 'Chưa tính';
+const v22FormatMin = x => Number.isFinite(x) ? (x>=60 ? `${Math.floor(x/60)} giờ ${Math.round(x%60)} phút` : `${Math.ceil(x)} phút`) : 'Chưa tính';
+const v22NormalNum = x => Number.isFinite(Number(x)) && x!=='' && x!==null ? Number(x) : null;
+function v22DefaultPlan(event){
+  const place=R.places.find(p=>p.id===event.location_id),address=place?.address||event.location_note||'';
+  return {version:22,eventId:event.id,arrivalTime:(event.time_label||'').includes('MÁI ẤM')?event.time||'':'',
+    meetingTime:'',groupDeparture:'',destinationBuffer:10,meetingBuffer:10,
+    destination:{name:place?.name||event.title||'Điểm đến',label:address,lat:null,lng:null},
+    meeting:{name:'Điểm tập trung',label:'',lat:null,lng:null},members:[],vehicles:[],routes:{},updatedAt:''};
+}
+function v22Plans(){requireAdmin14();if(!ST14.workspace.routePlans22||typeof ST14.workspace.routePlans22!=='object')ST14.workspace.routePlans22={};return ST14.workspace.routePlans22;}
+function v22Open(eventId){
+ requireAdmin14();const event=activityRecords18('activities').find(x=>x.id===eventId);
+ if(!event)throw new Error('Chưa tìm thấy sự kiện trong Studio. Hãy lưu sự kiện trước khi điều phối.');
+ if(document.querySelector('#v21-event-dialog')?.open)v21CloseEditor(true);
+ const plans=v22Plans();V22.eventId=eventId;V22.plan=v22Copy(plans[eventId]||v22DefaultPlan(event));
+ V22.plan.members=Array.isArray(V22.plan.members)?V22.plan.members:[];
+ V22.plan.vehicles=Array.isArray(V22.plan.vehicles)?V22.plan.vehicles:[];
+ V22.plan.routes=V22.plan.routes&&typeof V22.plan.routes==='object'?V22.plan.routes:{};
+ V22.selected=V22.plan.members[0]?.id||'';V22.pinTarget='';V22.geoTarget='';V22.geoResults=[];V22.cancel=false;V22.busy=false;V22.running=false;V22.screen='overview';V22.vehicleEdit=null;
+ let dialog=document.querySelector('#v22-dialog');if(!dialog){dialog=document.createElement('dialog');dialog.id='v22-dialog';dialog.className='v22-dialog';document.body.append(dialog);dialog.addEventListener('cancel',e=>{if(V22.running){e.preventDefault();V22.cancel=true;v22Status('Đang hủy lượt tính tuyến...');}});dialog.addEventListener('close',()=>{V22.cancel=true;v22RemoveMap();V22.plan=null;V22.eventId='';});}
+ dialog.showModal();v22Render();
+}
+function v22Close(){if(V22.running){V22.cancel=true;v22Status('Đã yêu cầu dừng tính tuyến.');return;}const dlg=document.querySelector('#v22-dialog');if(dlg?.open)dlg.close();}
+function v22Event(){return activityRecords18('activities').find(e=>e.id===V22.eventId)||null;}
+function v22Status(text,error=false){V22.notice=text;const n=document.getElementById('v22-status');if(n){n.textContent=text;n.classList.toggle('error',!!error);}}
+function v22RouteKey(a,b){const p=v22Point(a),q=v22Point(b);return p&&q?`driving:${p.map(x=>x.toFixed(5)).join(',')}>${q.map(x=>x.toFixed(5)).join(',')}`:'';}
+function v22Leg(a,b){const key=v22RouteKey(a,b);return key?V22.plan.routes[key]||null:null;}
+function v22LegMin(a,b,manual){const got=a?.vehicle==='other'?null:v22Leg(a,b);if(got&&got.durationS>0)return {min:got.durationS/60,meters:got.distanceM,source:'OSRM thử nghiệm',points:got.points||[]};const n=v22NormalNum(manual);return n!==null&&n>0?{min:n,meters:null,source:'Admin nhập từ Maps',points:[]}:null;}
+function v22TimeTable(){const plan=V22.plan,arrival=v22Minutes(plan.arrivalTime),meet=v22Minutes(plan.meetingTime),group=v22LegMin(plan.meeting,plan.destination,plan.groupManualMin),custom=v22Minutes(plan.groupDeparture);
+ const groupLeave=custom!==null?custom:arrival!==null&&group?arrival-Number(plan.destinationBuffer||0)-group.min:null;
+ const groupETA=groupLeave!==null&&group?groupLeave+group.min:null;
+ const list=plan.members.map(m=>{
+  const destination=m.group==='direct'?plan.destination:plan.meeting;
+  const leg=v22LegMin(m,destination,m.manualMin),deadline=m.group==='direct'?arrival:meet;
+  const buffer=m.group==='direct'?Number(plan.destinationBuffer||0):Number(plan.meetingBuffer||0);
+  const departure=leg&&deadline!==null?deadline-buffer-leg.min:null;
+  const eta=leg&&departure!==null?departure+leg.min:null;
+  const warnings=[];
+  if(!v22Point(m))warnings.push('Chưa ghim vị trí xuất phát');
+  if(!v22Point(destination))warnings.push(m.group==='direct'?'Chưa ghim mái ấm':'Chưa ghim điểm tập trung');
+  if(!leg)warnings.push('Chưa có thời gian di chuyển');
+  if(deadline===null)warnings.push('Chưa có giờ hẹn');
+  if(m.group==='meet'&&groupLeave!==null&&meet!==null&&groupLeave<meet)warnings.push('Đoàn rời điểm tập trung trước giờ hẹn');
+  if(m.group==='meet'&&groupLeave!==null&&meet!==null&&groupLeave<meet+Number(plan.meetingBuffer||0))warnings.push('Thời gian chờ tại điểm tập trung quá ngắn');
+  return {member:m,leg,departure,eta,warnings,destination};
+ });
+ const warnings=[];
+ if(plan.members.some(m=>m.group==='meet')&&!v22Point(plan.meeting))warnings.push('Chưa ghim điểm tập trung.');
+ if(!v22Point(plan.destination))warnings.push('Chưa ghim điểm đến.');
+ if(groupLeave!==null&&meet!==null&&groupLeave<meet)warnings.push('Giờ đoàn khởi hành trước giờ tập trung.');
+ if(arrival!==null&&groupETA!==null&&groupETA+Number(plan.destinationBuffer||0)>arrival+0.5)warnings.push('Đoàn có nguy cơ đến mái ấm muộn hơn giờ dự kiến.');
+ for(const car of plan.vehicles){const assigned=plan.members.filter(x=>x.group==='meet'&&x.vehicleId===car.id);if(Number(car.capacity)>0&&assigned.length>Number(car.capacity))warnings.push(`Xe ${car.name} vượt số chỗ: ${assigned.length}/${car.capacity}.`);}
+ return {arrival,meet,group,groupLeave,groupETA,list,warnings};
+}
+function v22MapLink(from,to,mode='driving'){
+ const a=v22Point(from),b=v22Point(to);if(!a||!b)return '';
+ return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(a.join(','))}&destination=${encodeURIComponent(b.join(','))}&travelmode=${mode}`;
+}
+function v22RouteButton(href,label){return href?`<a href="${v22Esc(href)}" target="_blank" rel="noopener noreferrer">${v22Esc(label)} ↗</a>`:'<small>Chưa đủ vị trí để mở chỉ đường</small>';}
+function v22Summary(){const p=V22.plan,t=v22TimeTable(),withCoords=p.members.filter(v22Point).length,withLeg=t.list.filter(x=>!!x.leg).length;
+ return `<div class="v22-stats"><div><strong>${p.members.length}</strong><span>Thành viên</span></div><div><strong>${p.members.filter(x=>x.group==='meet').length}</strong><span>Đến điểm tập trung</span></div><div><strong>${p.members.filter(x=>x.group==='direct').length}</strong><span>Đi thẳng mái ấm</span></div><div><strong>${withLeg}/${p.members.length}</strong><span>Có thời gian tuyến</span></div></div>`;
+}
+function v22FormSetup(){const p=V22.plan,t=v22TimeTable();const input=(name,val,extra='')=>`<input name="${name}" value="${v22Esc(val??'')}" ${extra}>`;
+ return `<div class="v22-block"><div class="v22-block-head"><h3>01. Thiết lập hành trình</h3><span>Dựa trên sự kiện đang chọn</span></div>
+  <form id="v22-setup-form" class="v22-setup-form">
+   <div class="v22-fields-3"><label>Giờ cần đến mái ấm ${input('arrivalTime',p.arrivalTime,'type="time"')}</label><label>Giờ hẹn ở điểm tập trung ${input('meetingTime',p.meetingTime,'type="time"')}</label><label>Giờ đoàn rời điểm hẹn (để trống = tự tính) ${input('groupDeparture',p.groupDeparture,'type="time"')}</label></div>
+   <div class="v22-fields-3"><label>Dự phòng tại mái ấm (phút) ${input('destinationBuffer',p.destinationBuffer,'type="number" min="0" max="180"')}</label><label>Đến sớm tại điểm hẹn (phút) ${input('meetingBuffer',p.meetingBuffer,'type="number" min="0" max="180"')}</label><label>Phút đi từ điểm hẹn đến mái ấm (nhập tay khi cần) ${input('groupManualMin',p.groupManualMin||'','type="number" min="1" max="1440" placeholder="Chưa tính"')}</label></div>
+   <div class="v22-places"><fieldset><legend>📍 Điểm tập trung</legend><label>Tên điểm hẹn ${input('meetingName',p.meeting.name,'maxlength="100"')}</label><label>Địa chỉ / mô tả ${input('meetingLabel',p.meeting.label,'maxlength="260" placeholder="Ví dụ: cổng trường / công viên"')}</label><small>${v22Point(p.meeting)?`${p.meeting.lat.toFixed(6)}, ${p.meeting.lng.toFixed(6)}`:'Chưa gắn tọa độ'}</small><div class="v22-row-actions"><button type="button" data-v22="pin" data-target="meeting">Ghim trên bản đồ</button><button type="button" data-v22="geocode" data-target="meeting">Tìm địa chỉ</button></div></fieldset>
+   <fieldset><legend>❤️ Điểm đến</legend><label>Tên nơi đến ${input('destinationName',p.destination.name,'maxlength="100"')}</label><label>Địa chỉ ${input('destinationLabel',p.destination.label,'maxlength="260"')}</label><small>${v22Point(p.destination)?`${p.destination.lat.toFixed(6)}, ${p.destination.lng.toFixed(6)}`:'Chưa gắn tọa độ; có thể tìm địa chỉ hoặc chọn trực tiếp'}</small><div class="v22-row-actions"><button type="button" data-v22="pin" data-target="destination">Ghim trên bản đồ</button><button type="button" data-v22="geocode" data-target="destination">Tìm địa chỉ</button></div></fieldset></div>
+   <div class="v22-row-actions"><button type="submit" class="v22-solid">Lưu thiết lập</button><span>Giờ xuất phát tính ngược từ giờ hẹn và thời gian tuyến đã nhận.</span></div>
+  </form></div>`;
+}
+function v22MemberList(){const p=V22.plan,t=v22TimeTable();return `<div class="v22-block"><div class="v22-block-head"><h3>02. Thành viên & phân xe</h3><button type="button" class="v22-solid small" data-v22="add-member">+ Thêm người</button></div>
+  ${p.members.length?`<div class="v22-member-cards">${t.list.map((r,i)=>{const m=r.member;return `<button type="button" class="v22-member-card ${V22.selected===m.id?'active':''}" data-v22="select" data-id="${v22Esc(m.id)}"><i style="background:${V22.palette[i%V22.palette.length]}"></i><span><b>${v22Esc(m.name||'Chưa đặt tên')}</b><small>${m.group==='meet'?'Đến điểm tập trung':'Đi thẳng'} · ${v22Esc(m.originLabel||'Chưa có vị trí')}</small></span><span class="v22-member-time">${r.departure===null?'—':v22Time(r.departure)}</span></button>`;}).join('')}</div>`:'<div class="v22-empty">Chưa có thành viên. Thêm người để lập lộ trình riêng, không dùng dữ liệu giả.</div>'}
+  ${v22MemberForm()}
+  <div class="v22-vehicle-block"><div class="v22-block-head"><h4>Phân xe / nhóm đi cùng</h4><button type="button" data-v22="add-vehicle">+ Tạo xe</button></div>
+  ${p.vehicles.length?p.vehicles.map(c=>`<div class="v22-car"><div><b>${v22Esc(c.name)}</b><small>Tài xế: ${v22Esc(c.driver||'Chưa phân công')} · ${p.members.filter(m=>m.vehicleId===c.id&&m.group==='meet').length} / ${c.capacity||'?'} chỗ</small></div><button type="button" data-v22="edit-vehicle" data-id="${v22Esc(c.id)}">Sửa</button><button type="button" data-v22="remove-vehicle" data-id="${v22Esc(c.id)}">Xóa</button></div>`).join(''):'<p class="v22-hint">Chưa phân xe. Có thể quản lý người tự đi xe máy hoặc đi theo đoàn.</p>'}${v22VehicleEditorMarkup()}</div></div>`;}
+function v22MemberForm(){const p=V22.plan,member=p.members.find(m=>m.id===V22.selected);if(!member)return '';
+ const select=(name,choices,current)=>`<select name="${name}">${choices.map(([k,v])=>`<option value="${v22Esc(k)}" ${k===current?'selected':''}>${v22Esc(v)}</option>`).join('')}</select>`;
+ const input=(name,val,extra='')=>`<input name="${name}" value="${v22Esc(val??'')}" ${extra}>`;
+ return `<form id="v22-member-form" class="v22-member-form" data-id="${v22Esc(member.id)}"><div class="v22-block-head"><h4>Thông tin thành viên</h4><button type="button" class="v22-danger" data-v22="delete-member" data-id="${v22Esc(member.id)}">Xóa</button></div>
+  <div class="v22-fields-2"><label>Tên / biệt danh ${input('name',member.name,'required maxlength="80"')}</label><label>Hình thức di chuyển ${select('group',[['meet','Đến điểm tập trung'],['direct','Đi thẳng mái ấm']],member.group)}</label></div>
+  <div class="v22-fields-2"><label>Phương tiện ${select('vehicle',[['motorbike','Xe máy (ước tính theo đường ô tô)'],['car','Ô tô'],['other','Khác (tự mở chỉ đường)']],member.vehicle)}</label><label>Tình trạng (Admin cập nhật) ${select('status',[['unconfirmed','Chưa xác nhận'],['confirmed','Đã xác nhận'],['moving','Đang di chuyển'],['arrived','Đã đến'],['absent','Không tham gia']],member.status)}</label></div>
+  <label>Khu vực / điểm xuất phát ${input('originLabel',member.originLabel,'maxlength="240" placeholder="Chỉ ghi địa chỉ đủ dùng để điều phối"')}</label>
+  <div class="v22-fields-2"><label>Vĩ độ ${input('lat',member.lat??'','type="number" step="any" min="-90" max="90" placeholder="Chọn trên bản đồ"')}</label><label>Kinh độ ${input('lng',member.lng??'','type="number" step="any" min="-180" max="180" placeholder="Chọn trên bản đồ"')}</label></div>
+  <div class="v22-row-actions"><button type="button" data-v22="pin" data-target="member:${v22Esc(member.id)}">Chọn vị trí trên bản đồ</button><button type="button" data-v22="geocode" data-target="member:${v22Esc(member.id)}">Tìm địa chỉ</button><button type="button" data-v22="my-location" data-target="member:${v22Esc(member.id)}">Dùng vị trí của tôi</button></div>
+  <div class="v22-fields-2"><label>Phân vào xe ${select('vehicleId',[['','Không phân xe'],...p.vehicles.map(c=>[c.id,c.name])],member.vehicleId||'')}</label><label>Phút di chuyển nhập tay (nếu không có tuyến) ${input('manualMin',member.manualMin||'','type="number" min="1" max="1440" placeholder="Dựa trên Maps"')}</label></div>
+  <label>Nhiệm vụ / ghi chú ngắn ${input('role',member.role||'','maxlength="180"')}</label>
+  <div class="v22-row-actions"><button type="submit" class="v22-solid">Lưu thành viên</button><button type="button" data-v22="copy-member" data-id="${v22Esc(member.id)}">Sao chép lịch trình riêng</button></div></form>`;}
+function v22RouteTable(){const p=V22.plan,t=v22TimeTable();return `<div class="v22-block"><div class="v22-block-head"><h3>03. Kết quả điều phối</h3><span>Giờ Việt Nam (UTC+7) · ước tính</span></div>
+  <div class="v22-route-summary"><div><span>Đến mái ấm</span><strong>${p.arrivalTime||'Chưa đặt'}</strong></div><div><span>Giờ hẹn tập trung</span><strong>${p.meetingTime||'Chưa đặt'}</strong></div><div><span>Đoàn nên rời điểm hẹn</span><strong>${v22Time(t.groupLeave)}</strong></div><div><span>Đoàn di chuyển</span><strong>${t.group?v22FormatMin(t.group.min):'Chưa tính'}</strong></div></div>
+  ${t.warnings.length?`<div class="v22-warnings">${t.warnings.map(w=>`<p>⚠ ${v22Esc(w)}</p>`).join('')}</div>`:''}
+  <div class="v22-table-scroll"><table class="v22-table"><thead><tr><th>Thành viên</th><th>Lộ trình</th><th>Thời gian tuyến</th><th>Nên xuất phát</th><th>Điều hướng</th></tr></thead><tbody>
+   ${t.list.map(({member:m,leg,departure,warnings,destination})=>`<tr><td><strong>${v22Esc(m.name)}</strong><small>${v22Esc(m.status==='arrived'?'Đã đến':m.status==='moving'?'Đang di chuyển':m.status==='confirmed'?'Đã xác nhận':m.status==='absent'?'Không tham gia':'Chưa xác nhận')}</small></td><td>${m.group==='meet'?'Đến điểm tập trung':'Đi thẳng mái ấm'}</td><td>${leg?v22FormatMin(leg.min)+(leg.meters?`<small>${(leg.meters/1000).toFixed(1)} km</small>`:'')+`<small>${v22Esc(leg.source)}</small>`:'Chưa tính'}</td><td><b>${v22Time(departure)}</b>${warnings.length?`<small class="v22-warn-text">${v22Esc(warnings.join('; '))}</small>`:''}</td><td>${v22RouteButton(v22MapLink(m,destination),'Mở Maps')}</td></tr>`).join('')||'<tr><td colspan="5">Chưa có thành viên để tính giờ.</td></tr>'}
+  </tbody></table></div>
+  <div class="v22-row-actions">${v22RouteButton(v22MapLink(p.meeting,p.destination),'Chỉ đường đoàn')}<button type="button" data-v22="csv">Xuất bảng điều phối CSV</button><button type="button" data-v22="copy-summary">Sao chép kế hoạch đoàn</button></div>
+  <p class="v22-hint">Thời gian OSRM không có dữ liệu kẹt xe, thời tiết hay đường cấm tạm thời. Xe máy được tính theo đường dành cho ô tô, chỉ dùng tham khảo. Không coi là thời gian thực.</p></div>`;}
+function v22Render(){if(!V22.plan)return;v22RemoveMap();const dlg=document.getElementById('v22-dialog'),ev=v22Event();if(!ev)return;
+ dlg.innerHTML=`<div class="v22-app"><div class="v22-head"><div class="v22-overline">VÌ MÌNH VÀ BẠN · STUDIO ADMIN · LỘ TRÌNH RIÊNG TƯ</div><div class="v22-head-row"><div><h2>Điều phối chuyến đi</h2><p>${v22Esc(ev.title)} · ${formattedDay18(ev.date)}</p></div><div class="v22-head-buttons"><button type="button" class="v22-ghost" data-v22="save">Lưu kế hoạch</button><button type="button" class="v22-close" data-v22="close" aria-label="Đóng điều phối">×</button></div></div></div>
+ ${v22Summary()}
+ <div class="v22-body">${v22FormSetup()}<div class="v22-workgrid"><div>${v22MemberList()}</div><div class="v22-map-column"><div class="v22-block v22-map-card"><div class="v22-block-head"><h3>Bản đồ nhiều lộ trình</h3><button type="button" data-v22="fit">Xem toàn bộ</button></div><div class="v22-map-sub">🟠 Điểm tập trung · 🔴 Mái ấm · Các màu khác: từng thành viên</div><div id="v22-map" aria-label="Bản đồ vị trí và các tuyến đi" role="region"></div><div id="v22-map-fallback" hidden>Đang tải bản đồ OpenStreetMap. Có thể mở Google Maps từ bảng lộ trình.</div><div class="v22-map-instructions" id="v22-map-instructions">${V22.pinTarget?'Đang chọn vị trí: hãy nhấp vào bản đồ.':'Chọn nút Ghim để đặt tọa độ. Tuyến liền = đường thực từ OSRM; đường đứt = nối điểm minh họa.'}</div>
+  <details class="v22-route-access"><summary>Tính tuyến thực tế (OSRM thử nghiệm)</summary><label class="v22-consent"><input type="checkbox" id="v22-external-consent"> Tôi được phép dùng các tọa độ này để tính đường và hiểu rằng dịch vụ OSRM công khai sẽ nhận tọa độ điểm đi/đến. Kết quả chỉ là thử nghiệm, không có bảo đảm thời gian.</label><div class="v22-row-actions"><button type="button" class="v22-solid" data-v22="calculate">Tính các tuyến đường</button><button type="button" data-v22="cancel-routes">Dừng</button></div><p>Giới hạn tối thiểu 1,2 giây giữa các yêu cầu. Không tự tính lại khi chỉnh bản đồ. Chỉ hỗ trợ tuyến ô tô/xe máy tham khảo.</p></details>
+  <form id="v22-geocode-form" class="v22-geocode-form" hidden><label>Tìm địa chỉ (OpenStreetMap, không tự tìm khi gõ)<input name="address" type="search" maxlength="260" placeholder="Nhập địa chỉ TP.HCM" required></label><div class="v22-row-actions"><button class="v22-solid" type="submit">Tìm địa chỉ</button><button type="button" data-v22="geo-close">Đóng</button></div><small>Tra cứu theo yêu cầu, tối đa 1 lần/giây. Dữ liệu địa chỉ © OpenStreetMap contributors; kết quả được lưu cục bộ để tránh tra lại.</small></form>
+  <div class="v22-geo-results" id="v22-geo-results"></div></div></div></div>${v22RouteTable()}
+ <div class="v22-end"><p id="v22-status" role="status">${v22Esc(V22.notice||'Kế hoạch lưu riêng trên thiết bị Admin; không xuất công khai.')}</p><button class="v22-solid" type="button" data-v22="save">Lưu trên thiết bị</button></div></div></div>`;
+ v22InitMap();}
+function v22RemoveMap(){if(V22.map){try{V22.map.remove();}catch{}V22.map=null;}}
+function v22Schematic(){const plan=V22.plan,valid=[plan.meeting,plan.destination,...plan.members].filter(x=>v22Point(x)),pts=valid.map(v22Point);
+ if(!pts.length)return '<div class="v22-no-pins">Chưa có vị trí ghim. Hãy chọn tọa độ trên bản đồ khi có Internet, tra địa chỉ hoặc nhập vĩ độ/kinh độ.</div>';
+ const lats=pts.map(p=>p[0]),lngs=pts.map(p=>p[1]),a=Math.min(...lats),b=Math.max(...lats),c=Math.min(...lngs),d=Math.max(...lngs),padLat=Math.max(.015,(b-a)*.25),padLng=Math.max(.018,(d-c)*.25);
+ const ext={a:a-padLat,b:b+padLat,c:c-padLng,d:d+padLng},project=coord=>{if(!coord)return [0,0];return [35+(coord[1]-ext.c)/(ext.d-ext.c)*630,25+(ext.b-coord[0])/(ext.b-ext.a)*350];};
+ const svgLine=(from,to,color,width=3)=>{const src=v22Point(from),dst=v22Point(to);if(!src||!dst)return '';const leg=v22Leg(from,to),shape=leg?.points?.length?leg.points:[src,dst],points=shape.map(p=>project(p).map(v=>v.toFixed(1)).join(',')).join(' ');return `<polyline points="${points}" stroke="${color}" stroke-width="${width}" stroke-dasharray="${leg?'':'6 7'}" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".88"/>`;};
+ const pin=(obj,color,label)=>{const p=v22Point(obj);if(!p)return '';const [x,y]=project(p);return `<g><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="${color}" stroke="#fff" stroke-width="3"/><text x="${(x+13).toFixed(1)}" y="${(y-8).toFixed(1)}" fill="#294c39" font-weight="650" font-size="10">${v22Esc(label)}</text></g>`;};
+ const path=plan.members.map((m,i)=>svgLine(m,m.group==='meet'?plan.meeting:plan.destination,V22.palette[i%V22.palette.length],3)).join('')+(plan.members.some(m=>m.group==='meet')?svgLine(plan.meeting,plan.destination,'#D69444',5):'');
+ return `<svg viewBox="0 0 700 400" role="img" aria-label="Sơ đồ tọa độ tương đối của các thành viên và điểm hẹn, không phải bản đồ đường phố" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="400" rx="12" fill="#e5eee9"/>${[1,2,3,4,5].map(i=>`<path d="M${i*115} 0V400M0 ${i*67}H700" stroke="#cddbd1" stroke-width="1"/>`).join('')}${path}${pin(plan.destination,'#A2353C','Mái ấm')}${pin(plan.meeting,'#D69444','Tập trung')}${plan.members.map((m,i)=>pin(m,V22.palette[i%V22.palette.length],m.name.slice(0,18))).join('')}<text x="18" y="387" font-size="11" fill="#6c806e">Sơ đồ tọa độ · Không phải nền bản đồ giao thông · Đường nét đứt chưa được định tuyến</text></svg>`;
+}
+function v22InitMap(){const host=document.getElementById('v22-map');if(!host)return;if(!window.L){const fallback=document.getElementById('v22-map-fallback');fallback.hidden=false;fallback.textContent='Nền bản đồ đường phố chưa tải được. Phía trên là sơ đồ tọa độ tương đối, không thay thế bản đồ giao thông. Dùng nút Mở Maps để xem chỉ đường thật.';host.classList.add('v22-map-unavailable');host.innerHTML=v22Schematic();return;}
+ const map=window.L.map(host,{scrollWheelZoom:false,zoomControl:true});V22.map=map;
+ window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',maxZoom:19}).addTo(map);
+ const p=V22.plan,points=[];
+ const add=(obj,color,title)=>{const at=v22Point(obj);if(!at)return;points.push(at);window.L.circleMarker(at,{radius:9,color:'#ffffff',weight:3,fillColor:color,fillOpacity:1}).addTo(map).bindPopup(v22Esc(title));};
+ add(p.meeting,'#D69444','Điểm tập trung: '+p.meeting.label);add(p.destination,'#A2353C','Mái ấm: '+p.destination.label);
+ p.members.forEach((m,i)=>add(m,V22.palette[i%V22.palette.length],m.name+' · '+(m.originLabel||'Vị trí đi')));
+ const draw=(a,b,clr,width)=>{const pa=v22Point(a),pb=v22Point(b);if(!pa||!pb)return;const leg=v22Leg(a,b);if(leg?.points?.length){window.L.polyline(leg.points,{color:clr,weight:width,opacity:.88,lineJoin:'round'}).addTo(map);}
+   else{window.L.polyline([pa,pb],{color:clr,weight:2,opacity:.55,dashArray:'3 8'}).addTo(map).bindTooltip('Đường nối tham khảo, chưa phải đường đi thực tế');}}
+ if(p.members.some(m=>m.group==='meet'))draw(p.meeting,p.destination,'#D69444',6);
+ p.members.forEach((m,i)=>draw(m,m.group==='meet'?p.meeting:p.destination,V22.palette[i%V22.palette.length],4));
+ map.setView([10.7769,106.7009],12);
+ if(points.length>1){try{map.fitBounds(points,{padding:[35,35],maxZoom:15});}catch{}}else if(points.length===1)map.setView(points[0],14);
+ map.on('click',e=>{if(!V22.pinTarget||V22.running)return;const pt=v22FindTarget(V22.pinTarget);if(!pt)return;pt.lat=Number(e.latlng.lat.toFixed(6));pt.lng=Number(e.latlng.lng.toFixed(6));V22.pinTarget='';V22.geoResults=[];V22.notice='Đã gắn vị trí trên bản đồ. Hãy bấm Lưu kế hoạch.';v22Render();});
+ setTimeout(()=>{if(V22.map===map)map.invalidateSize();},100);
+}
+function v22FindTarget(target){if(target==='meeting')return V22.plan.meeting;if(target==='destination')return V22.plan.destination;return target?.startsWith('member:')?V22.plan.members.find(x=>x.id===target.slice(7)):null;}
+function v22PickTarget(target){const p=v22FindTarget(target);if(!p)throw new Error('Chưa chọn thành viên hoặc điểm hẹn.');V22.pinTarget=target;document.getElementById('v22-map-instructions').textContent='Đang chờ ghim vị trí: hãy bấm vào điểm mong muốn trên bản đồ.';if(!V22.map)throw new Error('Bản đồ chưa tải. Bạn có thể nhập vĩ độ và kinh độ thủ công.');V22.map.getContainer().scrollIntoView({behavior:'smooth',block:'nearest'});}
+async function v22SaveSetup(form,quiet=false){const p=V22.plan,d=new FormData(form);for(const name of ['arrivalTime','meetingTime','groupDeparture']){const v=String(d.get(name)||'');if(v&&v22Minutes(v)===null)throw new Error('Giờ không hợp lệ. Hãy nhập giờ theo định dạng HH:mm.');p[name]=v;}
+ for(const name of ['destinationBuffer','meetingBuffer']){const n=Number(d.get(name));if(!Number.isFinite(n)||n<0||n>180)throw new Error('Thời gian dự phòng phải từ 0 đến 180 phút.');p[name]=n;}
+ const manual=String(d.get('groupManualMin')||'').trim();if(manual&&(!Number.isFinite(Number(manual))||Number(manual)<=0||Number(manual)>1440))throw new Error('Thời gian nhóm nhập tay phải từ 1 đến 1440 phút.');p.groupManualMin=manual?Number(manual):null;
+ p.meeting.name=String(d.get('meetingName')||'Điểm tập trung').trim().slice(0,100);p.meeting.label=String(d.get('meetingLabel')||'').trim().slice(0,260);
+ p.destination.name=String(d.get('destinationName')||'Điểm đến').trim().slice(0,100);p.destination.label=String(d.get('destinationLabel')||'').trim().slice(0,260);
+ if(!quiet){await v22Persist();v22Render();v22Status('Đã lưu thiết lập điểm hẹn và giờ.');}}
+function v22SaveMemberFromForm(){const form=document.getElementById('v22-member-form');if(!form)return;const d=new FormData(form),m=V22.plan.members.find(x=>x.id===form.dataset.id);if(!m)return;
+ const name=String(d.get('name')||'').trim();if(!name)throw new Error('Nhập tên hoặc biệt danh thành viên.');const lat=String(d.get('lat')||'').trim(),lng=String(d.get('lng')||'').trim();if((lat||lng)&&!v22ValidCoord(lat,lng))throw new Error('Cần nhập đủ vĩ độ và kinh độ hợp lệ.');
+ const manual=String(d.get('manualMin')||'').trim();if(manual&&(!Number.isFinite(Number(manual))||Number(manual)<=0||Number(manual)>1440))throw new Error('Thời gian nhập tay phải từ 1 đến 1440 phút.');
+ m.name=name.slice(0,80);m.group=d.get('group')==='direct'?'direct':'meet';m.vehicle=['car','motorbike','other'].includes(d.get('vehicle'))?d.get('vehicle'):'motorbike';m.status=['unconfirmed','confirmed','moving','arrived','absent'].includes(d.get('status'))?d.get('status'):'unconfirmed';
+ m.originLabel=String(d.get('originLabel')||'').slice(0,240);m.lat=lat?Number(lat):null;m.lng=lng?Number(lng):null;m.vehicleId=m.group==='meet'&&V22.plan.vehicles.some(v=>v.id===d.get('vehicleId'))?d.get('vehicleId'):'';m.manualMin=manual?Number(manual):null;m.role=String(d.get('role')||'').slice(0,180);
+}
+async function v22Persist(){requireAdmin14();if(!V22.plan)throw new Error('Chưa mở kế hoạch.');const plans=v22Plans(),prev=plans[V22.eventId]?v22Copy(plans[V22.eventId]):null;V22.plan.updatedAt=new Date().toISOString();plans[V22.eventId]=v22Copy(V22.plan);try{await storeWorkspace14();}catch(err){if(prev)plans[V22.eventId]=prev;else delete plans[V22.eventId];throw err;}}
+function v22AddMember(){const member={id:crypto.randomUUID(),name:'Thành viên mới',originLabel:'',lat:null,lng:null,group:'meet',vehicle:'motorbike',vehicleId:'',role:'',status:'unconfirmed',manualMin:null};V22.plan.members.push(member);V22.selected=member.id;v22Render();document.getElementById('v22-member-form')?.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function v22VehicleEditorMarkup(){if(V22.vehicleEdit===null)return '';const original=V22.plan.vehicles.find(v=>v.id===V22.vehicleEdit),car=original||{id:'',name:'',capacity:'',driver:''};
+ return `<form id="v22-vehicle-form" class="v22-vehicle-form"><h4>${original?'Sửa xe đã tạo':'Tạo xe / nhóm di chuyển'}</h4><div class="v22-fields-2"><label>Tên xe <input name="name" required maxlength="60" value="${v22Esc(car.name)}" placeholder="Xe 1 / nhóm xuất phát"></label><label>Số chỗ gồm cả tài xế <input name="capacity" type="number" required min="1" max="60" value="${v22Esc(car.capacity)}"></label></div><label>Tên tài xế / phụ trách <input name="driver" maxlength="80" value="${v22Esc(car.driver)}"></label><div class="v22-row-actions"><button class="v22-solid" type="submit">Lưu xe</button><button type="button" data-v22="close-vehicle">Hủy</button></div></form>`;
+}
+function v22SaveVehicle(form){const d=new FormData(form),name=String(d.get('name')||'').trim().slice(0,60),cap=Number(d.get('capacity')),driver=String(d.get('driver')||'').trim().slice(0,80);
+ if(!name)throw new Error('Nhập tên xe hoặc nhóm di chuyển.');if(!Number.isInteger(cap)||cap<1||cap>60)throw new Error('Số chỗ phải từ 1 đến 60.');
+ const current=V22.plan.vehicles.find(c=>c.id===V22.vehicleEdit);if(current){Object.assign(current,{name,capacity:cap,driver});}else V22.plan.vehicles.push({id:crypto.randomUUID(),name,capacity:cap,driver});V22.vehicleEdit=null;v22Render();
+}
+async function v22FindAddress(target,query){const pt=v22FindTarget(target);if(!pt)throw new Error('Chưa chọn vị trí để tìm.');if(String(query||'').trim().length<5)throw new Error('Nhập địa chỉ có ít nhất 5 ký tự.');
+ const cached=(ST14.workspace.geoCache22||{})[norm(String(query).trim())];if(cached&&Date.now()-cached.at<30*86400000){V22.geoResults=v22Copy(cached.results);V22.geoTarget=target;v22ShowGeoResults();v22Status('Đã hiển thị kết quả tìm địa chỉ đã lưu trên thiết bị.');return;}
+ const elapsed=Date.now()-V22.lastGeocodeAt;if(elapsed<1100)throw new Error('Vui lòng chờ ít nhất 1 giây giữa hai lần tìm địa chỉ.');
+ V22.lastGeocodeAt=Date.now();v22Status('Đang tìm địa chỉ trên OpenStreetMap...');const controller=new AbortController();const tm=setTimeout(()=>controller.abort(),12000);
+ try{const url='https://nominatim.openstreetmap.org/search?format=json&addressdetails=0&limit=4&countrycodes=vn&q='+encodeURIComponent(String(query).trim());const res=await fetch(url,{signal:controller.signal,headers:{Accept:'application/json'}});if(!res.ok)throw new Error('Không truy cập được dịch vụ tìm địa chỉ.');const rows=await res.json();V22.geoResults=rows.filter(r=>v22ValidCoord(r.lat,r.lon)).slice(0,4).map(x=>({name:String(x.display_name||'').slice(0,260),lat:Number(x.lat),lng:Number(x.lon)}));V22.geoTarget=target;v22ShowGeoResults();if(!ST14.workspace.geoCache22)ST14.workspace.geoCache22={};ST14.workspace.geoCache22[norm(String(query).trim())]={at:Date.now(),results:v22Copy(V22.geoResults)};await storeWorkspace14();v22Status(V22.geoResults.length?'Chọn một địa chỉ trong kết quả.':'Không tìm thấy địa chỉ phù hợp. Hãy ghim trực tiếp trên bản đồ.');}
+ finally{clearTimeout(tm);}}
+function v22OpenAddressSearch(target){V22.geoTarget=target;const pt=v22FindTarget(target);const form=document.getElementById('v22-geocode-form');if(!pt||!form)throw new Error('Chưa mở công cụ tra cứu.');form.hidden=false;form.querySelector('input').value=pt.label||pt.originLabel||'';form.querySelector('input').focus();}
+function v22ShowGeoResults(){const host=document.getElementById('v22-geo-results');if(host)host.innerHTML=V22.geoResults.length?`<strong>Kết quả tìm địa chỉ</strong>${V22.geoResults.map((r,i)=>`<button type="button" data-v22="choose-geo" data-index="${i}">${v22Esc(r.name)}</button>`).join('')}`:'';}
+async function v22LocateMe(target){if(!navigator.geolocation)throw new Error('Trình duyệt chưa hỗ trợ lấy vị trí.');if(!confirm('Chỉ sử dụng vị trí trên thiết bị bạn đang dùng (không phải GPS của người khác). Cho phép trình duyệt lấy vị trí hiện tại?'))return;
+ const pos=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:false,timeout:12000,maximumAge:120000}));const pt=v22FindTarget(target);if(!pt)return;pt.lat=Number(pos.coords.latitude.toFixed(6));pt.lng=Number(pos.coords.longitude.toFixed(6));v22Render();v22Status('Đã ghim vị trí từ thiết bị này. Hãy bấm Lưu.');}
+function v22Sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+async function v22OSRM(a,b){const key=v22RouteKey(a,b);if(!key)return false;if(V22.plan.routes[key])return true;
+ const coordsA=v22Point(a),coordsB=v22Point(b);if(!coordsA||!coordsB)return false;
+ const now=Date.now(),wait=Math.max(0,1250-(now-V22.lastRouteAt));if(wait)await v22Sleep(wait);if(V22.cancel)return false;V22.lastRouteAt=Date.now();
+ const url=`https://router.project-osrm.org/route/v1/driving/${coordsA[1]},${coordsA[0]};${coordsB[1]},${coordsB[0]}?overview=full&geometries=geojson&alternatives=false&steps=false`;
+ const control=new AbortController();const timer=setTimeout(()=>control.abort(),17000);
+ try{const resp=await fetch(url,{signal:control.signal});if(!resp.ok)throw new Error('HTTP '+resp.status);const json=await resp.json();const got=json?.routes?.[0];if(json.code!=='Ok'||!got||!Array.isArray(got.geometry?.coordinates))throw new Error('Không tìm được đường phù hợp.');
+ const coords=got.geometry.coordinates;const stride=Math.max(1,Math.ceil(coords.length/350));const sampled=coords.filter((_,i)=>i%stride===0||i===coords.length-1).map(c=>[Number(c[1]),Number(c[0])]);
+ V22.plan.routes[key]={durationS:Number(got.duration),distanceM:Number(got.distance),points:sampled,fetchedAt:new Date().toISOString(),provider:'OSRM demo'};return true;
+ }catch(err){V22.notice=`Có tuyến không lấy được: ${err.message||'dịch vụ không sẵn sàng'}. Có thể nhập phút di chuyển từ Google Maps.`;return false;}
+ finally{clearTimeout(timer);}}
+async function v22Calculate(){requireAdmin14();if(V22.running)return;const consent=document.getElementById('v22-external-consent');if(!consent?.checked)throw new Error('Cần xác nhận bạn có quyền gửi tọa độ để dùng dịch vụ tính tuyến thử nghiệm.');
+ const p=V22.plan,missing=[];if(!v22Point(p.destination))missing.push('điểm đến');if(p.members.some(m=>m.group==='meet')&&!v22Point(p.meeting))missing.push('điểm tập trung');
+ if(missing.length)throw new Error('Hãy ghim tọa độ cho '+missing.join(' và ')+'.');
+ const pairs=[];if(p.members.some(m=>m.group==='meet'))pairs.push([p.meeting,p.destination,'Đoàn']);
+ for(const m of p.members){if(m.vehicle==='other'||!v22Point(m))continue;pairs.push([m,m.group==='meet'?p.meeting:p.destination,m.name]);}
+ const uniq=new Map();for(const pair of pairs){const key=v22RouteKey(pair[0],pair[1]);if(key&&!p.routes[key])uniq.set(key,pair);}if(!uniq.size){v22Status('Tất cả các tuyến đủ dữ liệu đã được tính.');v22Render();return;}
+ V22.running=true;V22.cancel=false;let done=0,failed=0,completed=0;
+ try{for(const pair of uniq.values()){if(V22.cancel)break;const ok=await v22OSRM(pair[0],pair[1]);completed++;if(ok)done++;else failed++;v22Status(`Đã thử ${completed}/${uniq.size} tuyến · ${done} tuyến có kết quả · ${failed} tuyến chưa lấy được.`);}
+  await v22Persist();}
+ finally{V22.running=false;const canceled=V22.cancel;V22.cancel=false;v22Render();v22Status(`Đã kết thúc ${canceled?'sau khi dừng':'lượt tính tuyến'}. Thành công ${done}/${completed}. ${failed?'Một số tuyến chưa có kết quả; không tự tạo thời gian.':''}`);}}
+function v22SummaryText(memberId=''){const p=V22.plan,t=v22TimeTable(),event=v22Event();if(memberId){const row=t.list.find(x=>x.member.id===memberId);if(!row)throw new Error('Không tìm thấy thành viên.');const m=row.member,dest=row.destination;
+ return `LỘ TRÌNH THIỆN NGUYỆN (DỰ KIẾN)\n${event.title} · ${formattedDay18(event.date)}\nThành viên: ${m.name}\nCách di chuyển: ${m.group==='meet'?'Đến điểm tập trung, rồi theo đoàn':'Đi thẳng đến mái ấm'}\nĐiểm xuất phát: ${m.originLabel||'Chưa xác định'}\nĐiểm đến chặng 1: ${dest.label||dest.name}\n${row.leg?`Thời gian chặng 1: ${v22FormatMin(row.leg.min)} (${row.leg.source})`:'Chặng 1 chưa tính được thời gian'}\nGiờ nên xuất phát: ${v22Time(row.departure)}\n${m.group==='meet'?`Giờ hẹn tại điểm tập trung: ${p.meetingTime||'Chưa đặt'}\nGiờ đoàn rời điểm hẹn: ${v22Time(t.groupLeave)}`:`Giờ cần có mặt: ${p.arrivalTime||'Chưa đặt'}`}\n${v22MapLink(m,dest)?`Mở đường đi: ${v22MapLink(m,dest)}`:''}\nThời gian không tính giao thông thực tế. Vui lòng kiểm tra Maps gần giờ đi.`;}
+ return `KẾ HOẠCH ĐIỀU PHỐI (BẢN NHÁP RIÊNG)\n${event.title} · ${formattedDay18(event.date)}\nĐến mái ấm: ${p.arrivalTime||'Chưa đặt'} · Điểm tập trung: ${p.meetingTime||'Chưa đặt'}\nĐoàn rời điểm hẹn (dự kiến): ${v22Time(t.groupLeave)}\nSố người: ${p.members.length}; tập trung: ${p.members.filter(m=>m.group==='meet').length}; đi thẳng: ${p.members.filter(m=>m.group==='direct').length}\n\n`+t.list.map(({member:m,leg,departure})=>`${m.name} | ${m.group==='meet'?'Tập trung':'Đi thẳng'} | ${leg?v22FormatMin(leg.min):'Chưa có thời gian'} | Xuất phát: ${v22Time(departure)}`).join('\n')+'\n\nCác mốc giờ là dự kiến, không cập nhật GPS/ùn tắc thực tế.';}
+async function v22CopyText(txt){try{await navigator.clipboard.writeText(txt);toast('Đã sao chép để bạn chủ động chia sẻ.');}catch{const a=document.createElement('textarea');a.value=txt;document.body.append(a);a.select();document.execCommand('copy');a.remove();toast('Đã sao chép nội dung.');}}
+function v22CSV(){const plan=V22.plan,t=v22TimeTable();if(!confirm('Bảng CSV chứa tên/biệt danh và lịch trình của đoàn. Chỉ giữ riêng cho người điều phối, không đưa lên GitHub công khai. Tiếp tục tải?'))return;
+ const clean=x=>{let s=String(x??'').replace(/[\u0000-\u001f]/g,' ');if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
+ const rows=[['Thành viên','Nhóm','Xuất phát từ','Phương tiện','Xe','Trạng thái','Thời gian dự kiến (phút)','Nguồn thời gian','Giờ nên xuất phát','Ghi chú'],...t.list.map(({member:m,leg,departure})=>[m.name,m.group==='meet'?'Tập trung':'Đi thẳng',m.originLabel,m.vehicle,plan.vehicles.find(c=>c.id===m.vehicleId)?.name||'',m.status,leg?Math.ceil(leg.min):'',leg?.source||'',v22Time(departure),m.role])];
+ download('dieu-phoi-'+(v22Event()?.date||'su-kien')+'.csv','\uFEFF'+rows.map(r=>r.map(clean).join(',')).join('\r\n'),'text/csv;charset=utf-8');}
+function v22Fit(){if(!V22.map)return;const pts=[v22Point(V22.plan.meeting),v22Point(V22.plan.destination),...V22.plan.members.map(v22Point)].filter(Boolean);if(pts.length>1)V22.map.fitBounds(pts,{padding:[30,30],maxZoom:15});else if(pts.length)V22.map.setView(pts[0],14);}
+function v22CommitSetupInDOM(){const f=document.getElementById('v22-setup-form');if(f){const d=new FormData(f);for(const [key,target] of [['meetingName','meeting'],['meetingLabel','meeting'],['destinationName','destination'],['destinationLabel','destination']]){const field=key.endsWith('Name')?'name':'label';V22.plan[target][field]=String(d.get(key)||'').slice(0,260);}}}
+function v22CommitMemberInDOM(){const form=document.getElementById('v22-member-form');if(form){const m=V22.plan.members.find(x=>x.id===form.dataset.id);if(m){const d=new FormData(form);const name=String(d.get('name')||'').trim();if(name)m.name=name;m.originLabel=String(d.get('originLabel')||'').slice(0,240);}}}
+async function v22DispatchClick(b){const action=b.dataset.v22;
+ if(action==='open')return v22Open(b.dataset.id||'');if(!V22.plan)return;
+ if(action==='close')return v22Close();if(action==='cancel-routes'){V22.cancel=true;return v22Status('Đang dừng tính tuyến...');}
+ if(V22.running)throw new Error('Đang tính tuyến, vui lòng đợi hoặc nhấn Dừng.');
+ if(!['geo-close'].includes(action)){const setup=document.getElementById('v22-setup-form');if(setup)await v22SaveSetup(setup,true);if(document.getElementById('v22-member-form'))v22SaveMemberFromForm();}
+ if(action==='save'){v22SaveMemberFromForm();await v22SaveSetup(document.getElementById('v22-setup-form'),true);await v22Persist();v22Render();return v22Status('Đã lưu riêng trên thiết bị. Dữ liệu cá nhân không nằm trong bản HTML công khai.');}
+ if(action==='add-member'){v22CommitSetupInDOM();v22CommitMemberInDOM();return v22AddMember();}
+ if(action==='select'){v22SaveMemberFromForm();V22.selected=b.dataset.id;v22Render();return;}
+ if(action==='delete-member'){if(!confirm('Bỏ thành viên khỏi kế hoạch trên thiết bị?'))return;V22.plan.members=V22.plan.members.filter(x=>x.id!==b.dataset.id);V22.selected=V22.plan.members[0]?.id||'';v22Render();return;}
+ if(action==='add-vehicle'||action==='edit-vehicle'){V22.vehicleEdit=action==='add-vehicle'?'new':b.dataset.id;v22Render();return;}
+ if(action==='close-vehicle'){V22.vehicleEdit=null;v22Render();return;}
+ if(action==='remove-vehicle'){if(!confirm('Xóa xe và bỏ phân công người vào xe này?'))return;V22.plan.vehicles=V22.plan.vehicles.filter(c=>c.id!==b.dataset.id);V22.plan.members.forEach(m=>{if(m.vehicleId===b.dataset.id)m.vehicleId='';});v22Render();return;}
+ if(action==='pin'){v22CommitSetupInDOM();v22CommitMemberInDOM();return v22PickTarget(b.dataset.target);}
+ if(action==='geocode'){v22CommitSetupInDOM();v22CommitMemberInDOM();return v22OpenAddressSearch(b.dataset.target);}
+ if(action==='geo-close'){document.getElementById('v22-geocode-form').hidden=true;V22.geoResults=[];v22ShowGeoResults();return;}
+ if(action==='choose-geo'){const result=V22.geoResults[Number(b.dataset.index)],point=v22FindTarget(V22.geoTarget);if(!result||!point)return;point.lat=result.lat;point.lng=result.lng;if(V22.geoTarget.startsWith('member:'))point.originLabel=result.name;else point.label=result.name;V22.geoResults=[];v22Render();return v22Status('Đã chọn tọa độ theo kết quả tìm kiếm. Hãy lưu kế hoạch.');}
+ if(action==='my-location'){v22CommitSetupInDOM();v22CommitMemberInDOM();return await v22LocateMe(b.dataset.target);}
+ if(action==='fit')return v22Fit();
+ if(action==='calculate'){v22SaveMemberFromForm();await v22SaveSetup(document.getElementById('v22-setup-form'),true);return await v22Calculate();}
+ if(action==='copy-summary')return v22CopyText(v22SummaryText());
+ if(action==='copy-member')return v22CopyText(v22SummaryText(b.dataset.id));
+ if(action==='csv')return v22CSV();
+}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-v22]');if(!b)return;e.preventDefault();try{await v22DispatchClick(b);}catch(err){const msg=errorMessage(err);v22Status(msg,true);toast(msg,true);}});
+document.addEventListener('submit',async e=>{if(!['v22-setup-form','v22-member-form','v22-geocode-form','v22-vehicle-form'].includes(e.target.id))return;e.preventDefault();try{
+ if(e.target.id==='v22-geocode-form'){const d=new FormData(e.target);await v22FindAddress(V22.geoTarget,String(d.get('address')||''));return;}
+ if(e.target.id==='v22-vehicle-form'){v22SaveVehicle(e.target);await v22Persist();v22Status('Đã lưu phân xe trên thiết bị.');return;}
+ if(e.target.id==='v22-member-form')v22SaveMemberFromForm();else await v22SaveSetup(e.target,true);
+ await v22Persist();v22Render();v22Status('Đã lưu trong Studio trên thiết bị.');}catch(err){toast(errorMessage(err),true);v22Status(errorMessage(err),true);}});
+window.addEventListener('hashchange',()=>{if(document.querySelector('#v22-dialog')?.open&&!S.isAdmin)v22Close();});
 
 </script></body></html>

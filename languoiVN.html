@@ -4,7 +4,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport">
 <meta content="#faf7f0" name="theme-color">
 <meta content="strict-origin-when-cross-origin" name="referrer">
-<meta content="default-src 'self'; script-src 'sha256-RzTKGQCoAr8SbtcP2fsnFLEEo/eRdstWMtLXyTNnqyE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'self' data: blob: https://www.google.com https://maps.google.com; child-src 'self';" http-equiv="Content-Security-Policy">
+<meta content="default-src 'self'; script-src 'sha256-aDPLehbu7vo3mJH0MTutKQaXoxj+urn1fnFJT4QPVlE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'self' data: blob: https://www.google.com https://maps.google.com; child-src 'self';" http-equiv="Content-Security-Policy">
 <meta content="Một chút thời gian. Một bàn tay cùng sẻ chia. Những câu chuyện tử tế bắt đầu từ chúng mình." name="description">
 <meta content="website" property="og:type">
 <meta content="vi_VN" property="og:locale">
@@ -1942,7 +1942,73 @@ body.studio-page14{background:#f3f4ef;color:#24372f;font:14px/1.65 Arial, sans-s
 @media(max-width:600px){.home20-announcement .wrap{gap:10px;flex-wrap:wrap;min-height:0;padding:10px 0}.home20-ann-title{font-size:10px;order:3;flex-basis:100%}.home20-ann-kicker{flex:1;font-size:8px}.home20-shortcuts{padding-top:35px;padding-bottom:50px}.home20-shortcut-grid{gap:10px}.home20-shortcut{min-height:151px;padding:17px 13px;border-radius:15px}.home20-shortcut-icon{width:36px;height:36px;border-radius:11px}.home20-shortcut-icon svg{width:20px;height:20px}.home20-shortcut-copy strong{font-size:12px}.home20-shortcut-copy small{font-size:10px}.home20-overline{font-size:9px}.home20-section-heading{margin-bottom:24px}.home20-section-heading h2{font-size:31px}.home20-section-heading>p{font-size:12px}.home20-spotlight{padding-top:10px;padding-bottom:60px}.home20-feature{border-radius:20px;display:flex;flex-direction:column}.home20-feature-visual{height:255px;min-height:255px;order:-1}.home20-feature-art>img,.home20-feature-art>.v18-graphic{height:255px}.home20-feature-copy{padding:25px 22px 28px}.home20-feature h3{font-size:27px}.home20-feature-lead{font-size:12px}.home20-feature-facts{gap:15px}.home20-feature-facts strong{font-size:12px}.home20-feature-actions .btn{min-height:44px;padding:11px 16px;font-size:11px}.home20-feature-seal{width:66px;height:70px}.home20-feature-seal b{font-size:23px}.home20-calendar-section,.home20-map-section,.home20-journal-section,.home20-community{padding-block:64px}.home20-calendar-panel{padding:24px 17px}.home20-cal-grid{gap:3px}.home20-cal-day{height:43px;font-size:11px}.home20-cal-title h3{font-size:23px}.home20-calendar-aside{padding:26px 20px}.home20-cal-event{grid-template-columns:48px minmax(0,1fr) 15px;gap:10px}.home20-cal-event-date strong{font-size:21px}.home20-cal-event>span:nth-child(2)>strong{font-size:13px}.home20-map-choices{padding:19px 14px}.home20-map-choice{padding:17px 7px}.home20-map-choice strong{font-size:12px}.home20-map-surface{height:250px}.home20-map-details{padding:21px}.home20-map-details h3{font-size:19px}.home20-journal-blank{display:flex;flex-direction:column;padding:24px;align-items:stretch}.home20-journal-art{height:200px}.home20-journal-frame{transform-origin:center;scale:.66}.home20-journal-frame-back{transform:rotate(-12deg) translate(-38px,4px)}.home20-journal-frame-front{transform:rotate(6deg) translate(20px,-5px)}.home20-journal-blank h3{font-size:26px}.home20-journal-grid{grid-template-columns:1fr}.home20-community-card{padding:20px}.home20-community-foot{align-items:flex-start;flex-direction:column}.home20-stories{padding-block:65px}.home20-feature-caption{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.home20-shortcut,.home20-map-choice,.home20-community-card,.home20-feature img,.home20-cal-day{transition:none!important;transform:none!important}}
 
-</style></head>
+</style><style id="v21-calendar-style">
+/* V21 — Admin creates events directly on either calendar; visitors see no controls */
+.v21-calendar-top-actions,.v21-home-event-row{display:flex;align-items:center;gap:9px}
+.v21-home-event-row{margin-bottom:9px;min-width:0}
+.v21-home-event-row .home20-cal-event{flex:1;min-width:0;margin:0}
+.v21-calendar-create{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border:1px solid #a02f3d;border-radius:11px;background:#a02f3d;color:white;font-size:12px;font-weight:700;line-height:1.5;min-height:39px;transition:transform .2s,background .2s}
+.v21-calendar-create:hover{background:#7f2331;transform:translateY(-2px)}
+.v21-calendar-create .icon{width:16px;height:16px}
+.v21-cal-action{display:flex;flex-direction:column;gap:8px;margin-top:20px;padding:15px;border-radius:14px;border:1px dashed #c69e8c;background:#fbf4e9}
+.v21-cal-action span{font-size:10px;color:#6f6159}
+.v21-cal-action>.v21-calendar-create{align-self:flex-start}
+.v21-edit-icon{border:1px solid #d6caba;border-radius:11px;background:#fffdf7;color:#852834;width:38px;height:40px;flex:none;font-size:19px;transition:background .2s}
+.v21-edit-icon:hover{background:#f2e4dd}
+.v21-draft{border:1px dashed #ccab8f!important;background:#f7eee5!important}
+.v21-draft-event{border:1px dashed #d7b6a3;background:#fff9ef;padding:20px;border-radius:16px;margin-bottom:15px}
+.v21-draft-badge{display:inline-block;padding:3px 9px;background:#f4e0c8;color:#774829;font-size:10px;border-radius:5px;margin-bottom:10px}
+.v21-draft-event h3{font-size:18px;line-height:1.5;margin-bottom:7px}
+.v21-draft-event p{font-size:12px;color:#6b6054;margin:0 0 15px}
+.v21-event-wrap{margin-bottom:16px}
+.v21-event-wrap .v18-event-card{margin:0}
+.v21-event-edit{width:100%;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid #c9baaa;background:#f5eadf;color:#6e2531;border-radius:0 0 13px 13px;min-height:40px;font-size:12px}
+.v21-event-edit .icon{width:16px;height:16px}
+.v21-event-edit:hover{background:#f0dbcf}
+.v21-studio-calendar-link{margin-right:9px}
+.v21-event-dialog{position:fixed;margin:auto;inset:0;width:min(1030px,calc(100vw - 28px));max-width:none;max-height:min(93dvh,900px);padding:0;border-radius:22px;background:#faf7ef;color:#292b26;border:1px solid #e3d8cb;box-shadow:0 30px 90px #1b1e194d;overscroll-behavior:contain}
+.v21-event-dialog::backdrop{background:#0d1b18ad;backdrop-filter:blur(6px)}
+.v21-event-dialog form{display:flex;flex-direction:column;max-height:min(93dvh,900px);overflow:hidden}
+.v21-modal-top{padding:28px 32px 23px;display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:1px solid #ded4c7;background:#fffdf8}
+.v21-modal-top small{font-size:10px;font-weight:700;letter-spacing:.13em;color:#ad5360}
+.v21-modal-top h2{font-size:clamp(24px,3.4vw,33px);margin:6px 0 7px;letter-spacing:-.03em}
+.v21-modal-top p{font-size:12px;color:#746b60}
+.v21-modal-x{width:38px;height:38px;display:grid;place-items:center;border:1px solid #dcd2c6;border-radius:50%;background:#fff;color:#4f5149;font-size:24px}
+.v21-modal-x:hover{background:#f1e7dd}
+.v21-modal-body{padding:25px 32px 34px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(245px,.8fr);gap:26px;overflow:auto;flex:1;min-height:0}
+.v21-form-primary,.v21-form-secondary{display:flex;flex-direction:column;gap:15px;min-width:0}
+.v21-form-secondary{background:#f2eee5;border:1px solid #e6ded1;border-radius:17px;padding:19px;align-self:start}
+.v21-field-group-title{font-weight:800;font-size:11px;color:#9e3943;letter-spacing:.09em}
+.v21-field{display:block;font-size:12px;font-weight:650;color:#43423a;min-width:0}
+.v21-field b{color:#a52d3a}
+.v21-field input,.v21-field textarea,.v21-field select{display:block;margin-top:7px;width:100%;min-width:0;border:1px solid #d9d0c1;border-radius:10px;background:#fffdfa;padding:10px 12px;color:#292b26;font:12px/1.6 var(--font);font-weight:400;outline-offset:2px}
+.v21-field textarea{resize:vertical}
+.v21-field input:focus,.v21-field textarea:focus,.v21-field select:focus{outline:2px solid #b94c55;border-color:#b94c55}
+.v21-fields-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.v21-extra-fields{border:1px solid #e4dbce;border-radius:11px;background:#fffdf8;padding:13px 14px}
+.v21-extra-fields summary{cursor:pointer;font-size:12px;font-weight:650;display:flex;justify-content:space-between}
+.v21-extra-fields[open]{display:flex;flex-direction:column;gap:14px}
+.v21-extra-fields[open] summary{margin-bottom:3px}
+.v21-publish-help{background:#fffdfa;border:1px solid #d7caba;border-radius:11px;padding:11px 12px;font-size:11px;color:#6e6157;line-height:1.8}
+.v21-image-preview{height:142px;border-radius:12px;overflow:hidden;background:#e5d9c8;display:grid;place-items:center;border:1px dashed #d1bda4;color:#a62b39}
+.v21-image-preview img{width:100%;height:100%;object-fit:cover}
+.v21-image-preview>span{text-align:center;font-size:27px}.v21-image-preview small{display:block;color:#85786a;font-size:10px;line-height:1.6;padding:0 8px}
+.v21-upload{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;background:#fffdf8;color:#293d32;border:1px solid #c6bbaf;border-radius:9px;cursor:pointer;font-weight:700;font-size:12px}
+.v21-upload .icon{width:16px;height:16px}
+.v21-upload:hover{background:#f4eadc}
+.v21-delete{display:flex;gap:6px;align-items:center;justify-content:center;background:transparent;border:1px solid #d69fa2;color:#a72e3a;border-radius:9px;padding:10px;font-size:12px}
+.v21-delete .icon{width:16px;height:16px}
+.v21-modal-bottom{background:#fffdf9;border-top:1px solid #dfd4c8;padding:16px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.v21-modal-bottom p{font-size:11px;color:#6d695e;margin:0;max-width:48%}
+.v21-modal-bottom>div{display:flex;gap:10px}
+.v21-cancel,.v21-save{padding:11px 20px;border-radius:9px;font-size:12px;font-weight:700;white-space:nowrap}
+.v21-cancel{background:#fff;border:1px solid #d7cabd;color:#46463b}.v21-save{background:#24483c;color:#fff;border:1px solid #24483c;display:inline-flex;align-items:center;gap:8px}
+.v21-save .icon{width:16px;height:16px}
+.v21-save:hover{background:#183a30}.v21-save:disabled{opacity:.6}
+@media(max-width:700px){.v21-event-dialog{width:100vw;max-height:100dvh;height:100dvh;border-radius:0;border:0}.v21-event-dialog form{max-height:100dvh;height:100%}.v21-modal-top{padding:16px 18px}.v21-modal-top h2{font-size:25px}.v21-modal-top p{font-size:10px}.v21-modal-body{display:flex;flex-direction:column;gap:20px;padding:16px 18px;overflow-y:auto}.v21-form-secondary{padding:17px}.v21-modal-bottom{padding:12px 15px;align-items:stretch;flex-direction:column;gap:9px}.v21-modal-bottom p{max-width:none}.v21-modal-bottom>div{justify-content:flex-end}.v21-calendar-top-actions{flex-wrap:wrap;justify-content:flex-end}.v21-calendar-create{padding:8px 11px;font-size:10px}.v21-cal-action{padding:12px}.v21-fields-two{grid-template-columns:1fr 1fr}.v21-studio-calendar-link{margin-right:0}}
+@media(prefers-reduced-motion:reduce){.v21-calendar-create,.v21-edit-icon{transition:none}}
+</style>
+</head>
 <body>
 <a class="skip" href="#main">Bỏ qua điều hướng, đến nội dung</a>
 <div aria-hidden="true" class="scroll-progress" id="scroll-progress"></div>
@@ -2348,10 +2414,21 @@ function home20Spotlight(){const e=home20PrimaryEvent();if(!e)return `<section c
  const loc=home20Venue(e),isFuture=e.date>=home20CurrentDate();return `<section class="section home20-spotlight" id="home20-chuyen-di"><div class="wrap"><div class="home20-section-heading"><div><span class="eyebrow">02 / HOẠT ĐỘNG NỔI BẬT</span><h2>Một lời hẹn.<br><em>Thêm một bàn tay.</em></h2></div><a class="text-link" href="#/hoat-dong">Toàn bộ lịch thiện nguyện ↗</a></div><article class="home20-feature"><div class="home20-feature-copy"><div class="home20-feature-top"><span class="home20-feature-marker"><i></i>${isFuture?'CHUYẾN ĐI ĐANG CHUẨN BỊ':'HOẠT ĐỘNG TRONG LỊCH'}</span><span class="home20-feature-phase">${esc(EVENT_PHASE18[e.phase]||'Đang chuẩn bị')}</span></div><h3>${esc(e.title)}</h3><p class="home20-feature-lead">${esc(e.summary||'Cùng tìm hiểu hoạt động và kế hoạch kết nối với người đồng hành.')}</p><div class="home20-feature-facts"><div><small>NGÀY ${isFuture?'DỰ KIẾN':'TRONG LỊCH'}</small><strong>${formattedDay18(e.date)}</strong></div><div><small>${esc(e.time_label||'GIỜ DỰ KIẾN')}</small><strong>${esc(e.time||'Chưa xác nhận')}</strong></div><div><small>ĐỊA ĐIỂM</small><strong>${esc(loc?.name||e.location_note||'Đang cập nhật')}</strong></div></div><div class="home20-feature-actions"><a class="btn home20-btn-light" href="${home20EventRoute(e)}">Xem chuyến đi & tham gia <span aria-hidden="true">↗</span></a>${e.related_post_slug?`<a class="home20-feature-link" href="#/bai-viet/${encodeURIComponent(e.related_post_slug)}">Đọc câu chuyện liên quan ↗</a>`:''}</div><small class="home20-feature-disclaimer">${e.phase==='confirmed'?'Trạng thái được cập nhật bởi Admin.':'Thông tin theo kế hoạch đã đăng; chưa mặc định cơ sở xác nhận tiếp đoàn.'}</small></div><div class="home20-feature-visual"><div class="home20-feature-art">${activityImage18(e)}</div><span class="home20-feature-seal"><b>${e.date?.slice(8,10)||'--'}</b><small>THÁNG ${e.date?Number(e.date.slice(5,7)):'--'}</small></span><span class="home20-feature-caption">${esc(e.cover_caption||'Ảnh do người quản trị cập nhật cho chuyến đi')}</span></div></article>${home20Preparation(e)}</div></section>`;}
 const HOME20={year:null,month:null,day:'',placeId:''};
 function home20DefaultMonth(){const event=home20PrimaryEvent(),d=event?.date||home20CurrentDate();return {year:Number(d.slice(0,4)),month:Number(d.slice(5,7))-1};}
-function home20CalendarEvents(){const m=`${HOME20.year}-${String(HOME20.month+1).padStart(2,'0')}`;return publishedActivity18('activities').filter(e=>yearMonth18(e.date)===m).slice().sort((a,b)=>a.date.localeCompare(b.date));}
+function home20CalendarEvents(){const m=`${HOME20.year}-${String(HOME20.month+1).padStart(2,'0')}`;return activityRecords18('activities').filter(e=>yearMonth18(e.date)===m&&(e.visibility==='published'||S.isAdmin)).slice().sort((a,b)=>a.date.localeCompare(b.date));}
 function home20CalendarMarkup(){const ev=home20CalendarEvents(),first=new Date(HOME20.year,HOME20.month,1),pad=(first.getDay()+6)%7,count=new Date(HOME20.year,HOME20.month+1,0).getDate(),current=home20CurrentDate(),ym=`${HOME20.year}-${String(HOME20.month+1).padStart(2,'0')}`;
  return `<div class="home20-cal-title"><div><span>THEO DÕI MỖI THÁNG</span><h3>Tháng ${String(HOME20.month+1).padStart(2,'0')}<span> / ${HOME20.year}</span></h3></div><div class="home20-cal-nav"><button type="button" data-home20="month-prev" aria-label="Tháng trước">←</button><button type="button" data-home20="month-next" aria-label="Tháng sau">→</button></div></div><div class="home20-cal-grid" role="group" aria-label="Các ngày trong tháng">${['T2','T3','T4','T5','T6','T7','CN'].map(d=>`<span class="home20-cal-dayname">${d}</span>`).join('')}${Array.from({length:pad},()=>'<span class="home20-cal-blank"></span>').join('')}${Array.from({length:count},(_,i)=>{const day=`${ym}-${String(i+1).padStart(2,'0')}`,n=ev.filter(e=>e.date===day).length;return `<button type="button" class="home20-cal-day ${n?'has-event':''} ${HOME20.day===day?'selected':''} ${day===current?'today':''}" data-home20="select-day" data-date="${day}" aria-pressed="${HOME20.day===day}" aria-label="Ngày ${i+1}, ${n} hoạt động"><span>${i+1}</span>${n?'<i aria-hidden="true"></i>':''}</button>`;}).join('')}</div>`;}
-function home20CalendarListMarkup(){const events=home20CalendarEvents(),shown=HOME20.day?events.filter(e=>e.date===HOME20.day):events;return `<div class="home20-cal-list-title"><strong>${HOME20.day?'Ngày '+formattedDay18(HOME20.day):'Hoạt động trong tháng'}</strong>${HOME20.day?'<button type="button" data-home20="clear-day">Xem cả tháng</button>':''}</div>${shown.length?shown.map(e=>{const loc=home20Venue(e);return `<a class="home20-cal-event" href="${home20EventRoute(e)}"><span class="home20-cal-event-date"><strong>${e.date.slice(8,10)}</strong><small>TH ${Number(e.date.slice(5,7))}</small></span><span><small>${esc(EVENT_PHASE18[e.phase]||'Đang chuẩn bị')}</small><strong>${esc(e.title)}</strong><em>${esc(loc?.name||e.location_note||'Địa điểm đang cập nhật')}</em></span><span aria-hidden="true">↗</span></a>`;}).join(''):`<div class="home20-cal-empty"><span>♡</span><strong>Chưa có chuyến đi công khai ${HOME20.day?'trong ngày này':'trong tháng này'}.</strong><p>Bạn có thể xem những tháng khác hoặc vào lịch đầy đủ.</p></div>`}`;}
+function home20CalendarListMarkup(){
+ const events=home20CalendarEvents(),shown=HOME20.day?events.filter(e=>e.date===HOME20.day):events;
+ const header=`<div class="home20-cal-list-title"><strong>${HOME20.day?'Ngày '+formattedDay18(HOME20.day):'Hoạt động trong tháng'}</strong>${HOME20.day?'<button type="button" data-home20="clear-day">Xem cả tháng</button>':''}</div>`;
+ const cards=shown.map(e=>{
+  const loc=home20Venue(e),draft=e.visibility!=='published';
+  const content=`<span class="home20-cal-event-date"><strong>${esc(e.date.slice(8,10))}</strong><small>TH ${Number(e.date.slice(5,7))}</small></span><span><small>${draft?'BẢN NHÁP · CHỈ ADMIN':esc(EVENT_PHASE18[e.phase]||'Đang chuẩn bị')}</small><strong>${esc(e.title)}</strong><em>${esc(loc?.name||e.location_note||'Địa điểm đang cập nhật')}</em></span><span aria-hidden="true">↗</span>`;
+  return `<div class="v21-home-event-row">${draft?`<div class="home20-cal-event v21-draft">${content}</div>`:`<a class="home20-cal-event" href="${home20EventRoute(e)}">${content}</a>`}${S.isAdmin?`<button type="button" class="v21-edit-icon" data-v21="edit" data-id="${esc(e.id)}" title="Chỉnh sửa sự kiện" aria-label="Sửa ${esc(e.title)}">✎</button>`:''}</div>`;
+ }).join('');
+ const empty=`<div class="home20-cal-empty"><span>♡</span><strong>Chưa có chuyến đi ${S.isAdmin?'được lưu':'công khai'} ${HOME20.day?'trong ngày này':'trong tháng này'}.</strong><p>${S.isAdmin?'Chọn ngày rồi thêm sự kiện, hoặc tạo một sự kiện mới.':'Bạn có thể xem những tháng khác hoặc vào lịch đầy đủ.'}</p></div>`;
+ const admin=S.isAdmin?`<div class="v21-cal-action"><button type="button" class="v21-calendar-create" data-v21="new" data-date="${HOME20.day||`${HOME20.year}-${String(HOME20.month+1).padStart(2,'0')}-01`}">${icon('plus')} ${HOME20.day?'Tạo sự kiện ngày '+formattedDay18(HOME20.day):'Tạo sự kiện trên lịch'}</button><span>Chỉ Admin · lưu trên máy, cần xuất HTML để công khai.</span></div>`:'';
+ return header+(cards||empty)+admin;
+}
 function home20Calendar(){if(HOME20.year===null){Object.assign(HOME20,home20DefaultMonth());}return `<section class="section home20-calendar-section" id="home20-lich"><div class="wrap"><div class="home20-section-heading"><div><span class="eyebrow">03 / CÙNG XẾP LỊCH</span><h2>Những ngày<br><em>đáng mong chờ.</em></h2></div><p>Chọn ngày có dấu chấm để xem chuyến đi. Những thông tin đã công khai được cập nhật từ Studio.</p></div><div class="home20-calendar-layout"><div class="home20-calendar-panel" id="home20-calendar-panel">${home20CalendarMarkup()}</div><div class="home20-calendar-aside"><span class="home20-calendar-overline">LỊCH HOẠT ĐỘNG</span><div id="home20-calendar-list" aria-live="polite">${home20CalendarListMarkup()}</div><div class="home20-cal-bottom"><a class="btn btn-red" href="#/hoat-dong">Xem lịch đầy đủ ${icon('arrow')}</a><a class="text-link" href="#/tinh-nguyen">Tình nguyện viên ↗</a></div><p class="home20-cal-note">Đăng ký chuyến đi hiện là lời nhắn do bạn tự gửi cho nhóm; website chưa tiếp nhận hồ sơ trực tuyến.</p></div></div></div></section>`;}
 function home20MapChoices(){const picks=[],ids=new Set();function add(p){if(p&&!ids.has(p.id)){picks.push(p);ids.add(p.id);}}
  const e=home20PrimaryEvent();add(e&&home20Venue(e));for(const type of ['Người cao tuổi','Trẻ em','Bệnh viện'])add(R.places.find(p=>p.type===type&&!ids.has(p.id)));return picks.slice(0,4);}
@@ -3620,7 +3697,7 @@ async function exportWebsite14(){
  const description=doc.querySelector('meta[name="description"]');if(description)description.content=data.siteSettings.hero_lead||name;
  for(const [key,value] of [['og:title',name],['og:description',data.siteSettings.hero_lead||name]]){const el=doc.querySelector(`meta[property="${key}"]`);if(el)el.content=value;}
  const titleMeta=doc.querySelector('meta[property="og:site_name"]');if(titleMeta)titleMeta.content=name;
- const tag=doc.querySelector('meta[name="generator"]');if(tag)tag.content='ViMinhVaBan Studio V20 - Homepage / Activities / Floating Chat';
+ const tag=doc.querySelector('meta[name="generator"]');if(tag)tag.content='ViMinhVaBan Studio V21 - Calendar Event Creator / Floating Chat';
  const publicHtml='<!doctype html>\n'+doc.documentElement.outerHTML;
  download('index.html',publicHtml,'text/html;charset=utf-8');
  ST14.workspace.lastExportAt=data.publishVersion;
@@ -3892,12 +3969,12 @@ function activityImage18(x,kind='event'){
 function activityHeader18(kicker,title,description){return `<header class="v18-top"><div class="wrap v18-top-inner"><div><span class="eyebrow">${kicker}</span><h1>${title}</h1><p>${description}</p></div><div class="v18-mark">THẤY AI KHÓ,<br><strong>CÓ CHÚNG TA!</strong></div></div></header>`;}
 function activitySubnav18(active){return `<div class="v18-subnav-wrap"><nav class="wrap v18-subnav" aria-label="Các mục trong Hoạt động">${[['calendar','hoat-dong','Lịch thiện nguyện','clock'],['map','hoat-dong/ban-do','Bản đồ TP.HCM','pin'],['journal','hoat-dong/nhat-ky','Nhật ký & album','book']].map(([k,path,label,i])=>`<a href="#/${path}" class="${active===k?'active':''}" ${active===k?'aria-current="page"':''}>${icon(i)}${label}<span aria-hidden="true">↗</span></a>`).join('')}</nav></div>`;}
 function eventCard18(x){const loc=R.places.find(p=>p.id===x.location_id),label=loc?.name||x.location_note||'Địa điểm đang xác nhận';return `<article class="v18-event-card"><a href="#/hoat-dong/lich/${encodeURIComponent(x.id)}" class="v18-event-image">${activityImage18(x)}<span class="v18-date-mark"><b>${x.date?.slice(8,10)||'--'}</b><small>TH ${x.date?Number(x.date.slice(5,7)):'--'}</small></span></a><div class="v18-event-body"><span class="v18-status v18-${esc(x.phase||'planned')}">${esc(EVENT_PHASE18[x.phase]||EVENT_PHASE18.planned)}</span><h3><a href="#/hoat-dong/lich/${encodeURIComponent(x.id)}">${esc(x.title)}</a></h3><p>${esc(x.summary)}</p><div class="v18-meta">${icon('clock')} ${datetimeText18(x)}</div><div class="v18-meta">${icon('pin')} ${esc(label)}</div><div class="v18-event-bottom"><a href="#/hoat-dong/lich/${encodeURIComponent(x.id)}">Xem chuyến đi ${icon('arrow')}</a></div></div></article>`;}
-function monthEvents18(){const month=`${ACT18.year}-${String(ACT18.month+1).padStart(2,'0')}`;return publishedActivity18('activities').filter(x=>yearMonth18(x.date)===month).sort((a,b)=>(a.date||'').localeCompare(b.date||''));}
+function monthEvents18(){const month=`${ACT18.year}-${String(ACT18.month+1).padStart(2,'0')}`;return activityRecords18('activities').filter(x=>yearMonth18(x.date)===month&&(x.visibility==='published'||S.isAdmin)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));}
 function renderCalendarGrid18(){
  const host=$('#v18-calendar');if(!host)return;const first=new Date(ACT18.year,ACT18.month,1),pad=(first.getDay()+6)%7,days=new Date(ACT18.year,ACT18.month+1,0).getDate();
  const monthStr=`${ACT18.year}-${String(ACT18.month+1).padStart(2,'0')}`,events=monthEvents18();
- host.innerHTML=`<div class="v18-calendar-heading"><div><small>CHUYẾN ĐI DỰ KIẾN & ĐÃ XÁC NHẬN</small><h2>Tháng ${ACT18.month+1} / ${ACT18.year}</h2></div><div><button class="icon-btn" data-v18="month-prev" aria-label="Tháng trước">←</button><button class="icon-btn" data-v18="month-next" aria-label="Tháng sau">→</button></div></div><div class="v18-calendar-grid">${['T2','T3','T4','T5','T6','T7','CN'].map(w=>`<span class="v18-weekday">${w}</span>`).join('')}${Array.from({length:pad},()=>'<span class="v18-calendar-blank"></span>').join('')}${Array.from({length:days},(_,i)=>{const d=`${monthStr}-${String(i+1).padStart(2,'0')}`,today=new Date(),current=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,has=events.filter(x=>x.date===d);return `<button class="v18-day ${has.length?'has-event':''} ${ACT18.day===d?'selected':''} ${d===current?'today':''}" data-v18="calendar-day" data-date="${d}" aria-pressed="${ACT18.day===d}" aria-label="Ngày ${i+1}, ${has.length} chuyến đi"><strong>${i+1}</strong>${has.length?`<small>${has.length} hoạt động</small>`:''}</button>`;}).join('')}</div>`;
- const list=$('#v18-month-events');if(list){const shown=ACT18.day?events.filter(x=>x.date===ACT18.day):events;list.innerHTML=`<div class="v18-results-top"><h3>${ACT18.day?'Ngày '+formattedDay18(ACT18.day):'Trong tháng này'}</h3>${ACT18.day?'<button class="v18-plain" data-v18="calendar-clear">Xem cả tháng</button>':''}</div><div class="v18-list-cards">${shown.map(eventCard18).join('')||`<div class="v18-empty"><strong>Chưa có chuyến đi được công khai cho ${ACT18.day?'ngày này':'tháng này'}.</strong><p>Admin có thể bổ sung lịch trong Studio khi đã có thông tin.</p></div>`}</div>`;}
+ host.innerHTML=`<div class="v18-calendar-heading"><div><small>CHUYẾN ĐI DỰ KIẾN & ĐÃ XÁC NHẬN</small><h2>Tháng ${ACT18.month+1} / ${ACT18.year}</h2></div><div class="v21-calendar-top-actions">${S.isAdmin?`<button type="button" class="v21-calendar-create" data-v21="new" data-date="${ACT18.day||`${ACT18.year}-${String(ACT18.month+1).padStart(2,'0')}-01`}">${icon('plus')} Tạo sự kiện</button>`:''}<button class="icon-btn" data-v18="month-prev" aria-label="Tháng trước">←</button><button class="icon-btn" data-v18="month-next" aria-label="Tháng sau">→</button></div></div><div class="v18-calendar-grid">${['T2','T3','T4','T5','T6','T7','CN'].map(w=>`<span class="v18-weekday">${w}</span>`).join('')}${Array.from({length:pad},()=>'<span class="v18-calendar-blank"></span>').join('')}${Array.from({length:days},(_,i)=>{const d=`${monthStr}-${String(i+1).padStart(2,'0')}`,today=new Date(),current=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`,has=events.filter(x=>x.date===d);return `<button class="v18-day ${has.length?'has-event':''} ${ACT18.day===d?'selected':''} ${d===current?'today':''}" data-v18="calendar-day" data-date="${d}" aria-pressed="${ACT18.day===d}" aria-label="Ngày ${i+1}, ${has.length} chuyến đi"><strong>${i+1}</strong>${has.length?`<small>${has.length} hoạt động</small>`:''}</button>`;}).join('')}</div>`;
+ const list=$('#v18-month-events');if(list){const shown=ACT18.day?events.filter(x=>x.date===ACT18.day):events;list.innerHTML=`<div class="v18-results-top"><h3>${ACT18.day?'Ngày '+formattedDay18(ACT18.day):'Trong tháng này'}</h3>${ACT18.day?'<button class="v18-plain" data-v18="calendar-clear">Xem cả tháng</button>':''}</div><div class="v18-list-cards">${shown.map(v21EventCard).join('')||`<div class="v18-empty"><strong>Chưa có chuyến đi được công khai cho ${ACT18.day?'ngày này':'tháng này'}.</strong><p>Admin có thể bổ sung lịch trong Studio khi đã có thông tin.</p></div>`}</div>`;}
 }
 function renderActivityCalendar18(){
  S.view='activity';S.article=null;ACT18.view='calendar';
@@ -3934,7 +4011,7 @@ function newJournal18(){return {id:crypto.randomUUID(),title:'',summary:'',date:
 function renderActivityAdmin18(){requireAdmin14();ST14.tab='activities';const es=activityRecords18('activities'),js=activityRecords18('journals');
  studioShell14('Những chuyến đi và điều còn lại.','Quản lý lịch, nhật ký và album trên thiết bị; xuất HTML để cập nhật cho mọi người.',`<div class="v18-admin-switch"><button data-v18="admin-view" data-value="events" class="s14-btn ${ACT18.adminView==='events'?'primary':''}">Lịch thiện nguyện (${es.length})</button><button data-v18="admin-view" data-value="journals" class="s14-btn ${ACT18.adminView==='journals'?'primary':''}">Nhật ký & album (${js.length})</button></div><div id="v18-admin-body"></div>`,'activities');renderActivityAdminBody18();}
 function renderActivityAdminBody18(){const host=$('#v18-admin-body');if(!host)return;if(ACT18.editing)return renderActivityEditor18();const type=ACT18.adminView,items=activityRecords18(type==='events'?'activities':'journals');
- host.innerHTML=`<div class="v18-admin-heading"><div><h2>${type==='events'?'Lịch & chuyến đi':'Nhật ký hành trình'}</h2><p>${type==='events'?'Trạng thái chuyến đi và trạng thái xuất bản được quản lý riêng.':'Chỉ đăng những chuyến đi và hình ảnh đã diễn ra, có quyền sử dụng.'}</p></div><button class="s14-btn primary" data-v18="admin-new">${icon('plus')} ${type==='events'?'Tạo chuyến đi':'Viết nhật ký mới'}</button></div><div class="v18-admin-list">${items.map(x=>`<article class="v18-admin-item">${activityImage18(x,type==='events'?'event':'journal')}<div><span class="v18-status">${esc(EVENT_VIS18[x.visibility]||'Bản nháp')}${type==='events'?' · '+esc(EVENT_PHASE18[x.phase]||''):''}</span><h3>${esc(x.title||'(Chưa có tiêu đề)')}</h3><p>${formattedDay18(x.date)} · ${type==='journals'?`${x.photos?.length||0} ảnh`:'Cập nhật trong Studio'}</p></div><div class="v18-admin-controls"><button class="s14-btn" data-v18="admin-edit" data-id="${esc(x.id)}">Chỉnh sửa</button><button class="s14-btn quiet danger" data-v18="admin-delete" data-id="${esc(x.id)}">Xóa</button></div></article>`).join('')||'<div class="v18-empty">Chưa có dữ liệu. Bấm tạo mới để bắt đầu.</div>'}</div>`;}
+ host.innerHTML=`<div class="v18-admin-heading"><div><h2>${type==='events'?'Lịch & chuyến đi':'Nhật ký hành trình'}</h2><p>${type==='events'?'Trạng thái chuyến đi và trạng thái xuất bản được quản lý riêng.':'Chỉ đăng những chuyến đi và hình ảnh đã diễn ra, có quyền sử dụng.'}</p></div><a href="#/hoat-dong" class="s14-btn v21-studio-calendar-link">${icon('calendar-days')} Mở lịch</a><button class="s14-btn primary" data-v18="admin-new">${icon('plus')} ${type==='events'?'Tạo chuyến đi':'Viết nhật ký mới'}</button></div><div class="v18-admin-list">${items.map(x=>`<article class="v18-admin-item">${activityImage18(x,type==='events'?'event':'journal')}<div><span class="v18-status">${esc(EVENT_VIS18[x.visibility]||'Bản nháp')}${type==='events'?' · '+esc(EVENT_PHASE18[x.phase]||''):''}</span><h3>${esc(x.title||'(Chưa có tiêu đề)')}</h3><p>${formattedDay18(x.date)} · ${type==='journals'?`${x.photos?.length||0} ảnh`:'Cập nhật trong Studio'}</p></div><div class="v18-admin-controls"><button class="s14-btn" data-v18="admin-edit" data-id="${esc(x.id)}">Chỉnh sửa</button><button class="s14-btn quiet danger" data-v18="admin-delete" data-id="${esc(x.id)}">Xóa</button></div></article>`).join('')||'<div class="v18-empty">Chưa có dữ liệu. Bấm tạo mới để bắt đầu.</div>'}</div>`;}
 function syncActivityEditorDraft18(){
  const form=$('#v18-admin-form'),e=ACT18.editing;if(!form||!e)return;
  for(const input of form.querySelectorAll('[name]')){
@@ -3944,7 +4021,7 @@ function syncActivityEditorDraft18(){
  }
 }
 function renderActivityEditor18(){const type=ACT18.adminView,e=ACT18.editing,data=type==='events'?eventForm18(e):journalForm18(e);$('#v18-admin-body').innerHTML=`<div class="v18-admin-editor"><div class="v18-admin-editor-top"><h2>${e.updated_at?'Chỉnh sửa':'Tạo mới'} ${type==='events'?'chuyến đi':'nhật ký'}</h2><button class="s14-btn quiet" data-v18="admin-cancel">← Quay lại</button></div><form id="v18-admin-form"><div class="v18-editor-grid">${data}</div><div class="v18-admin-end"><button type="submit" class="s14-btn primary">Lưu trên thiết bị</button><p>Muốn người xem thấy thay đổi, chọn trạng thái công khai, lưu rồi bấm “Xuất website” trong Studio.</p></div></form></div>`;}
-function eventForm18(e){return `<div class="s14-panel"><h3>01 / Nội dung chuyến đi</h3>${input14('Tên chuyến đi','title',e.title,'text','required maxlength="160"')}${field14('Giới thiệu ngắn',`<textarea name="summary" rows="3" maxlength="500">${esc(e.summary)}</textarea>`)}<div class="s14-grid2">${input14('Ngày diễn ra','date',e.date,'date','required')}${input14('Giờ dự kiến (tập trung / có mặt)','time',e.time,'time')}${field14("Loại thời gian",`<select name="time_label">${["GIỜ TẬP TRUNG","GIỜ CÓ MẶT TẠI MÁI ẤM"].map(t=>`<option value="${esc(t)}" ${(e.time_label||"GIỜ TẬP TRUNG")===t?'selected':''}>${esc(t)}</option>`).join('')}</select>`)}</div>${field14('Địa điểm trong danh bạ',`<select name="location_id"><option value="">Chưa chọn / chưa xác nhận</option>${R.places.map(p=>`<option value="${esc(p.id)}" ${p.id===e.location_id?'selected':''}>${esc(p.name)}</option>`).join('')}</select>`)}${input14('Ghi chú điểm hẹn / địa điểm (nếu có)','location_note',e.location_note,'text','maxlength="240"')}${field14("Bài viết liên quan",`<select name="related_post_slug"><option value="">Chưa liên kết</option>${S.posts.filter(p=>p.status==='published').map(p=>`<option value="${esc(p.slug)}" ${e.related_post_slug===p.slug?'selected':''}>${esc(p.title)}</option>`).join('')}</select>`)}${field14('Mô tả chi tiết',`<textarea name="description" rows="7" maxlength="6500">${esc(e.description)}</textarea>`)}${field14('Những việc cần chuẩn bị',`<textarea name="needs" rows="5" maxlength="3000">${esc(e.needs)}</textarea>`)}</div><aside><section class="s14-panel"><h3>02 / Trạng thái và xuất bản</h3>${field14('Trạng thái chuyến đi',`<select name="phase">${Object.entries(EVENT_PHASE18).map(([k,v])=>`<option value="${k}" ${e.phase===k?'selected':''}>${v}</option>`).join('')}</select>`)}${field14('Hiển thị trên website',`<select name="visibility"><option value="draft" ${e.visibility==='draft'?'selected':''}>Bản nháp – chỉ Admin thấy</option><option value="published" ${e.visibility==='published'?'selected':''}>Công khai khi xuất HTML</option></select>`)}<small>“Đã xác nhận” chỉ chọn sau khi cơ sở tiếp nhận đồng ý. Không điền số người tham gia nếu chưa có dữ liệu.</small></section><section class="s14-panel"><h3>03 / Ảnh bìa</h3><div class="v18-cover-preview" id="v18-cover-preview">${activityImage18(e)}</div>${input14('Link ảnh HTTPS (hoặc tải từ máy)','cover_image',/^https:/.test(e.cover_image)?e.cover_image:'','url','placeholder="https://..."')}<label class="s14-btn">Tải ảnh từ máy<input type="file" accept="image/jpeg,image/png,image/webp" data-v18-file="event-cover" hidden></label>${input14('Chú thích nguồn ảnh','cover_caption',e.cover_caption,'text','maxlength="500"')}</section></aside>`;}
+function eventForm18(e){return `<div class="s14-panel"><h3>01 / Nội dung chuyến đi</h3>${input14('Tên chuyến đi','title',e.title,'text','required maxlength="160"')}${field14('Giới thiệu ngắn',`<textarea name="summary" rows="3" maxlength="500">${esc(e.summary)}</textarea>`)}<div class="s14-grid2">${input14('Ngày diễn ra','date',e.date,'date','required')}${input14('Giờ dự kiến (tập trung / có mặt)','time',e.time,'time')}${field14("Loại thời gian",`<select name="time_label">${["GIỜ TẬP TRUNG","GIỜ CÓ MẶT TẠI MÁI ẤM","GIỜ BẮT ĐẦU HOẠT ĐỘNG"].map(t=>`<option value="${esc(t)}" ${(e.time_label||"GIỜ TẬP TRUNG")===t?'selected':''}>${esc(t)}</option>`).join('')}</select>`)}</div>${field14('Địa điểm trong danh bạ',`<select name="location_id"><option value="">Chưa chọn / chưa xác nhận</option>${R.places.map(p=>`<option value="${esc(p.id)}" ${p.id===e.location_id?'selected':''}>${esc(p.name)}</option>`).join('')}</select>`)}${input14('Ghi chú điểm hẹn / địa điểm (nếu có)','location_note',e.location_note,'text','maxlength="240"')}${field14("Bài viết liên quan",`<select name="related_post_slug"><option value="">Chưa liên kết</option>${S.posts.filter(p=>p.status==='published').map(p=>`<option value="${esc(p.slug)}" ${e.related_post_slug===p.slug?'selected':''}>${esc(p.title)}</option>`).join('')}</select>`)}${field14('Mô tả chi tiết',`<textarea name="description" rows="7" maxlength="6500">${esc(e.description)}</textarea>`)}${field14('Những việc cần chuẩn bị',`<textarea name="needs" rows="5" maxlength="3000">${esc(e.needs)}</textarea>`)}</div><aside><section class="s14-panel"><h3>02 / Trạng thái và xuất bản</h3>${field14('Trạng thái chuyến đi',`<select name="phase">${Object.entries(EVENT_PHASE18).map(([k,v])=>`<option value="${k}" ${e.phase===k?'selected':''}>${v}</option>`).join('')}</select>`)}${field14('Hiển thị trên website',`<select name="visibility"><option value="draft" ${e.visibility==='draft'?'selected':''}>Bản nháp – chỉ Admin thấy</option><option value="published" ${e.visibility==='published'?'selected':''}>Công khai khi xuất HTML</option></select>`)}<small>“Đã xác nhận” chỉ chọn sau khi cơ sở tiếp nhận đồng ý. Không điền số người tham gia nếu chưa có dữ liệu.</small></section><section class="s14-panel"><h3>03 / Ảnh bìa</h3><div class="v18-cover-preview" id="v18-cover-preview">${activityImage18(e)}</div>${input14('Link ảnh HTTPS (hoặc tải từ máy)','cover_image',/^https:/.test(e.cover_image)?e.cover_image:'','url','placeholder="https://..."')}<label class="s14-btn">Tải ảnh từ máy<input type="file" accept="image/jpeg,image/png,image/webp" data-v18-file="event-cover" hidden></label>${input14('Chú thích nguồn ảnh','cover_caption',e.cover_caption,'text','maxlength="500"')}</section></aside>`;}
 function journalForm18(j){return `<div class="s14-panel"><h3>01 / Nội dung nhật ký</h3>${input14('Tiêu đề','title',j.title,'text','required maxlength="180"')}${input14('Ngày hoạt động','date',j.date,'date','required')}${field14('Liên kết với chuyến đi (nếu có)',`<select name="event_id"><option value="">Không liên kết</option>${activityRecords18('activities').map(e=>`<option value="${esc(e.id)}" ${e.id===j.event_id?'selected':''}>${esc(e.title||'Chưa đặt tên')}</option>`).join('')}</select>`)}${field14('Lời dẫn ngắn',`<textarea name="summary" rows="3" maxlength="500">${esc(j.summary)}</textarea>`)}${field14('Câu chuyện thật của chuyến đi',`<textarea name="story" rows="10" maxlength="15000">${esc(j.story)}</textarea>`)}${field14('Kết quả thực tế đã xác nhận',`<textarea name="results" rows="5" maxlength="5000" placeholder="Đã làm gì, cơ sở tiếp nhận thế nào? Không điền số ước đoán.">${esc(j.results)}</textarea>`)}</div><aside><section class="s14-panel"><h3>02 / Công khai</h3>${field14('Trạng thái',`<select name="visibility"><option value="draft" ${j.visibility==='draft'?'selected':''}>Bản nháp</option><option value="published" ${j.visibility==='published'?'selected':''}>Công khai khi xuất HTML</option></select>`)}<label class="check-label"><input type="checkbox" name="rights" ${j.rights_confirmed?'checked':''}><span>Tôi xác nhận nội dung và ảnh công khai đã có sự đồng ý/quyền sử dụng phù hợp.</span></label></section><section class="s14-panel"><h3>03 / Album ảnh (${(j.photos||[]).length}/12)</h3><div class="v18-cover-preview" id="v18-cover-preview">${activityImage18(j,'journal')}</div><label class="s14-btn">Tải ảnh cho album<input type="file" accept="image/jpeg,image/png,image/webp" data-v18-file="journal-photos" multiple hidden></label><div id="v18-admin-photos" class="v18-admin-photos">${(j.photos||[]).map((p,i)=>`<figure>${img(p.src,p.caption||'Ảnh '+(i+1))}<input data-v18-caption="${i}" value="${esc(p.caption||'')}" aria-label="Chú thích ảnh ${i+1}" maxlength="700" placeholder="Chú thích, tác giả, nguồn"><button type="button" data-v18="photo-remove" data-index="${i}">Bỏ ảnh</button></figure>`).join('')}</div></section></aside>`;}
 function validateActivity18(raw,type){
  const value=String(raw||'').trim();return value;
@@ -3953,7 +4030,7 @@ async function saveActivity18(form){requireAdmin14();if(!ACT18.editing)return;co
  const title=validateActivity18(d.get('title')),dateStr=String(d.get('date')||'');if(!title)throw new Error('Hãy nhập tiêu đề.');if(!/^\d{4}-\d{2}-\d{2}$/.test(dateStr))throw new Error('Hãy chọn ngày hợp lệ.');
  obj.title=title;obj.date=dateStr;obj.visibility=d.get('visibility')==='published'?'published':'draft';obj.updated_at=new Date().toISOString();
  if(type==='events'){
-  obj.summary=String(d.get('summary')||'').slice(0,500);obj.time=String(d.get('time')||'');obj.time_label=["GIỜ TẬP TRUNG","GIỜ CÓ MẶT TẠI MÁI ẤM"].includes(d.get('time_label'))?String(d.get('time_label')):'';obj.related_post_slug=String(d.get('related_post_slug')||'').slice(0,180);obj.location_id=String(d.get('location_id')||'');obj.location_note=String(d.get('location_note')||'').slice(0,240);obj.description=String(d.get('description')||'').slice(0,6500);obj.needs=String(d.get('needs')||'').slice(0,3000);obj.phase=EVENT_PHASE18[d.get('phase')]?d.get('phase'):'planned';const url=String(d.get('cover_image')||'').trim();if(url){const checked=safeURL(url,true);if(!checked)throw new Error('Liên kết ảnh phải dùng HTTPS.');obj.cover_image=checked;}obj.cover_caption=String(d.get('cover_caption')||'').slice(0,500);
+  obj.summary=String(d.get('summary')||'').slice(0,500);obj.time=String(d.get('time')||'');obj.time_label=["GIỜ TẬP TRUNG","GIỜ CÓ MẶT TẠI MÁI ẤM","GIỜ BẮT ĐẦU HOẠT ĐỘNG"].includes(d.get('time_label'))?String(d.get('time_label')):'';obj.related_post_slug=String(d.get('related_post_slug')||'').slice(0,180);obj.location_id=String(d.get('location_id')||'');obj.location_note=String(d.get('location_note')||'').slice(0,240);obj.description=String(d.get('description')||'').slice(0,6500);obj.needs=String(d.get('needs')||'').slice(0,3000);obj.phase=EVENT_PHASE18[d.get('phase')]?d.get('phase'):'planned';const url=String(d.get('cover_image')||'').trim();if(url){const checked=safeURL(url,true);if(!checked)throw new Error('Liên kết ảnh phải dùng HTTPS.');obj.cover_image=checked;}obj.cover_caption=String(d.get('cover_caption')||'').slice(0,500);
  }else{
   obj.summary=String(d.get('summary')||'').slice(0,500);obj.story=String(d.get('story')||'').slice(0,15000);obj.results=String(d.get('results')||'').slice(0,5000);obj.event_id=String(d.get('event_id')||'');obj.rights_confirmed=d.has('rights');if(obj.visibility==='published'&&!obj.rights_confirmed)throw new Error('Cần xác nhận quyền đăng nội dung/ảnh trước khi công khai.');if(obj.visibility==='published'&&!obj.story)throw new Error('Nhật ký công khai cần có nội dung thật.');obj.cover_image=obj.photos?.[0]?.src||'';obj.cover_caption=obj.photos?.[0]?.caption||'';
  }
@@ -4052,4 +4129,147 @@ function setupBuddy19(){if($('#buddy19'))return;document.body.insertAdjacentHTML
 setupBuddy19();
 
 boot14().catch(e=>{toast(errorMessage(e),true);});
+
+
+/* V21 — Click a calendar date to create/edit events, entirely on the current page.
+ * Only administrators can see controls; event data stays local until HTML export.
+ */
+const V21={editing:null,origin:'',initialSnapshot:'',imageDirty:false,loading:false};
+function v21EventCard(e){
+ if(e.visibility==='published')return `<div class="v21-event-wrap">${eventCard18(e)}${S.isAdmin?`<button type="button" class="v21-event-edit" data-v21="edit" data-id="${esc(e.id)}">${icon('edit')} Sửa sự kiện</button>`:''}</div>`;
+ if(!S.isAdmin)return '';
+ const venue=R.places.find(p=>p.id===e.location_id);
+ return `<article class="v21-draft-event"><div class="v21-draft-badge">Bản nháp · Chỉ Admin</div><h3>${esc(e.title)}</h3><p>${formattedDay18(e.date)}${e.time?' · '+esc(e.time):''} · ${esc(venue?.name||e.location_note||'Địa điểm chưa chọn')}</p><button type="button" class="v21-calendar-create" data-v21="edit" data-id="${esc(e.id)}">${icon('edit')} Chỉnh sửa bản nháp</button></article>`;
+}
+function v21EventDate(value){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+ const [y,m,d]=value.split('-').map(Number),t=new Date(y,m-1,d);
+ return t.getFullYear()===y&&t.getMonth()===m-1&&t.getDate()===d;
+}
+function v21Dialog(){let d=document.getElementById('v21-event-dialog');if(d)return d;
+ d=document.createElement('dialog');d.id='v21-event-dialog';d.className='v21-event-dialog';document.body.append(d);
+ d.addEventListener('cancel',e=>{if(!v21MayClose()){e.preventDefault();}});
+ d.addEventListener('close',()=>{V21.editing=null;V21.initialSnapshot='';V21.imageDirty=false;V21.loading=false;});
+ return d;
+}
+function v21MayClose(){
+ if(V21.loading)return false;
+ const form=document.getElementById('v21-event-form');if(!form)return true;
+ const changed=JSON.stringify([...new FormData(form).entries()])!==V21.initialSnapshot;
+ return (!changed&&!V21.imageDirty)||confirm('Các thay đổi chưa lưu sẽ bị bỏ. Đóng cửa sổ tạo sự kiện?');
+}
+function v21CloseEditor(force=false){const d=document.getElementById('v21-event-dialog');if(!d?.open)return;
+ if(force||v21MayClose())d.close();
+}
+function v21DateForAction(clickedDate){
+ if(v21EventDate(clickedDate))return clickedDate;
+ const guessed=(document.getElementById('home20-calendar-panel')?(HOME20.day||`${HOME20.year}-${String(HOME20.month+1).padStart(2,'0')}-01`):ACT18.day||`${ACT18.year}-${String(ACT18.month+1).padStart(2,'0')}-01`);
+ return v21EventDate(guessed)?guessed:home20CurrentDate();
+}
+function v21OpenEditor(id='',clickedDate=''){
+ requireAdmin14();
+ const old=id?activityRecords18('activities').find(x=>x.id===id):null;
+ if(id&&!old)throw new Error('Sự kiện không còn trong bản làm việc. Hãy làm mới lịch.');
+ const item=old?copy(old):{...newEvent18(),date:v21DateForAction(clickedDate)};
+ V21.editing=item;V21.origin=location.hash;V21.imageDirty=false;
+ const places=R.places.map(p=>`<option value="${esc(p.id)}" ${p.id===item.location_id?'selected':''}>${esc(p.name)} · ${esc(p.area||'TP.HCM')}</option>`).join('');
+ const posts=S.posts.filter(p=>p.status==='published').map(p=>`<option value="${esc(p.slug)}" ${item.related_post_slug===p.slug?'selected':''}>${esc(p.title)}</option>`).join('');
+ const imgsrc=safeURL(item.cover_image,true);
+ const d=v21Dialog();
+ d.innerHTML=`<form id="v21-event-form" novalidate>
+  <div class="v21-modal-top"><div><small>VÌ MÌNH VÀ BẠN · ADMIN STUDIO</small><h2 id="v21-event-title">${old?'Chỉnh sửa sự kiện':'Tạo sự kiện mới'}</h2><p>Thông tin lưu trên thiết bị. Xuất website khi muốn cập nhật cho mọi người.</p></div><button type="button" class="v21-modal-x" data-v21="close" aria-label="Đóng cửa sổ">×</button></div>
+  <div class="v21-modal-body"><div class="v21-form-primary"><span class="v21-field-group-title">01 / Thông tin sự kiện</span>
+   <label class="v21-field">Tên sự kiện <b>*</b><input name="title" required maxlength="160" placeholder="Ví dụ: Thăm ông bà tại mái ấm" value="${esc(item.title||'')}"></label>
+   <label class="v21-field">Giới thiệu ngắn <textarea name="summary" maxlength="500" rows="3" placeholder="Sự kiện nhằm mang đến điều gì?">${esc(item.summary||'')}</textarea></label>
+   <div class="v21-fields-two"><label class="v21-field">Ngày tổ chức <b>*</b><input name="date" type="date" required value="${esc(item.date||'')}"></label><label class="v21-field">Giờ dự kiến <input name="time" type="time" value="${esc(item.time||'')}"></label></div>
+   <label class="v21-field">Loại thời gian <select name="time_label">${['GIỜ TẬP TRUNG','GIỜ CÓ MẶT TẠI MÁI ẤM','GIỜ BẮT ĐẦU HOẠT ĐỘNG'].map(x=>`<option value="${esc(x)}" ${(item.time_label||'GIỜ TẬP TRUNG')===x?'selected':''}>${esc(x)}</option>`).join('')}</select></label>
+   <label class="v21-field">Địa điểm tại TP.HCM <select name="location_id"><option value="">Chưa xác định địa điểm</option>${places}</select></label>
+   <label class="v21-field">Thông tin địa điểm / điểm hẹn <input name="location_note" maxlength="240" placeholder="Ghi chú nếu chưa có trong danh bạ" value="${esc(item.location_note||'')}"></label>
+   <details class="v21-extra-fields" ${item.description||item.needs?'open':''}><summary>Mô tả chi tiết và công việc chuẩn bị <span>⌄</span></summary>
+   <label class="v21-field">Nội dung sự kiện <textarea name="description" rows="5" maxlength="6500" placeholder="Mục đích, thời gian, kế hoạch dự kiến...">${esc(item.description||'')}</textarea></label>
+   <label class="v21-field">Công việc cần chuẩn bị <textarea name="needs" rows="4" maxlength="3000" placeholder="Mỗi việc một dòng. Chỉ ghi nhu cầu đã tìm hiểu rõ.">${esc(item.needs||'')}</textarea></label></details>
+   <label class="v21-field">Bài viết liên quan <select name="related_post_slug"><option value="">Chưa liên kết bài viết</option>${posts}</select></label>
+  </div><aside class="v21-form-secondary"><span class="v21-field-group-title">02 / Phát hành</span>
+   <label class="v21-field">Trạng thái chuyến đi <select name="phase">${Object.entries(EVENT_PHASE18).map(([k,v])=>`<option value="${k}" ${item.phase===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+   <label class="v21-field">Hiển thị <select name="visibility"><option value="draft" ${item.visibility!=='published'?'selected':''}>Bản nháp · Chỉ Admin</option><option value="published" ${item.visibility==='published'?'selected':''}>Công khai sau khi xuất HTML</option></select></label>
+   <div class="v21-publish-help">Lưu sự kiện không tự đăng lên GitHub. Chọn Công khai và xuất <strong>index.html</strong> sau khi rà soát.</div>
+   <span class="v21-field-group-title" style="margin-top:22px">03 / Ảnh đại diện</span>
+   <div class="v21-image-preview" id="v21-image-preview">${imgsrc?img(imgsrc,item.cover_caption||item.title):'<span>♥<small>Chưa có ảnh · Sẽ dùng ảnh đồ họa mặc định</small></span>'}</div>
+   <label class="v21-field">Đường dẫn ảnh HTTPS <input name="cover_image" type="url" placeholder="https://..." value="${/^https:/.test(item.cover_image||'')?esc(item.cover_image):''}"></label>
+   <label class="v21-upload">${icon('image')} Tải ảnh từ thiết bị<input id="v21-image-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+   <label class="v21-field">Chú thích / nguồn ảnh <input name="cover_caption" maxlength="500" value="${esc(item.cover_caption||'')}"></label>
+   ${old?`<button class="v21-delete" type="button" data-v21="delete">${icon('trash')} Xóa sự kiện này</button>`:''}
+  </aside></div>
+  <div class="v21-modal-bottom"><p id="v21-form-hint" role="status">Sự kiện chưa được lưu.</p><div><button type="button" class="v21-cancel" data-v21="close">Hủy</button><button type="submit" class="v21-save">${icon('check')} ${old?'Lưu thay đổi':'Lưu sự kiện'}</button></div></div>
+ </form>`;
+ if(!d.open)d.showModal();
+ V21.initialSnapshot=JSON.stringify([...new FormData(d.querySelector('form')).entries()]);
+ d.querySelector('[name="title"]').focus();
+}
+function v21RefreshCalendars(date){
+ if(v21EventDate(date)){
+  if(document.getElementById('v18-calendar')){ACT18.year=Number(date.slice(0,4));ACT18.month=Number(date.slice(5,7))-1;ACT18.day=date;}
+  if(document.getElementById('home20-calendar-panel')){HOME20.year=Number(date.slice(0,4));HOME20.month=Number(date.slice(5,7))-1;HOME20.day=date;}
+ }
+ if(document.getElementById('v18-calendar'))renderCalendarGrid18();
+ if(document.getElementById('home20-calendar-panel'))home20RefreshCalendar();
+ if(document.getElementById('v18-admin-body'))renderActivityAdminBody18();
+}
+async function v21SaveEvent(form){
+ requireAdmin14();if(V21.loading||!V21.editing)return;
+ const d=new FormData(form),title=String(d.get('title')||'').trim().slice(0,160),when=String(d.get('date')||'');
+ if(!title)throw new Error('Vui lòng nhập tên sự kiện.');
+ if(!v21EventDate(when))throw new Error('Ngày tổ chức không hợp lệ.');
+ const loc=String(d.get('location_id')||''),article=String(d.get('related_post_slug')||'');
+ if(loc&&!R.places.some(p=>p.id===loc))throw new Error('Địa điểm đã chọn không còn trong danh bạ.');
+ if(article&&!S.posts.some(p=>p.slug===article&&p.status==='published'))throw new Error('Bài viết liên kết không còn công khai.');
+ const rawUrl=String(d.get('cover_image')||'').trim(),coverUrl=rawUrl?safeURL(rawUrl,true):'';
+ if(rawUrl&&(!coverUrl||!/^https:/.test(coverUrl)))throw new Error('Đường dẫn ảnh phải dùng HTTPS hợp lệ.');
+ const image=coverUrl||(V21.editing.cover_image&&safeURL(V21.editing.cover_image,true))||'';
+ const item={...V21.editing,title,date:when,time:String(d.get('time')||''),time_label:String(d.get('time_label')||'GIỜ TẬP TRUNG'),
+  summary:String(d.get('summary')||'').trim().slice(0,500),location_id:loc,location_note:String(d.get('location_note')||'').trim().slice(0,240),related_post_slug:article,
+  description:String(d.get('description')||'').trim().slice(0,6500),needs:String(d.get('needs')||'').trim().slice(0,3000),
+  phase:EVENT_PHASE18[d.get('phase')]?String(d.get('phase')):'planned',visibility:d.get('visibility')==='published'?'published':'draft',
+  cover_image:image,cover_caption:String(d.get('cover_caption')||'').trim().slice(0,500),updated_at:new Date().toISOString()};
+ const rows=activityRecords18('activities'),backup=copy(rows),index=rows.findIndex(x=>x.id===item.id);
+ if(index<0)rows.unshift(item);else rows[index]=item;
+ V21.loading=true;form.querySelector('[type="submit"]').disabled=true;
+ try{await storeWorkspace14();v21CloseEditor(true);v21RefreshCalendars(item.date);
+  toast(`Đã lưu ${item.visibility==='draft'?'bản nháp':'sự kiện công khai trong bản làm việc'}. Xuất index.html để cập nhật GitHub.`);
+ }catch(err){ST14.workspace.activities=backup;throw err;}
+ finally{V21.loading=false;form.querySelector('[type="submit"]')&&(form.querySelector('[type="submit"]').disabled=false);}
+}
+async function v21DeleteEvent(){
+ requireAdmin14();const item=V21.editing;if(!item||!activityRecords18('activities').some(x=>x.id===item.id))return;
+ const linked=activityRecords18('journals').some(x=>x.event_id===item.id);
+ if(linked)throw new Error('Sự kiện có nhật ký liên quan. Vui lòng bỏ liên kết nhật ký trước khi xóa.');
+ if(!confirm(`Xóa sự kiện "${item.title}" khỏi bản làm việc? Sau khi xuất HTML mới, sự kiện sẽ biến mất khỏi website công khai.`))return;
+ const before=copy(activityRecords18('activities'));
+ ST14.workspace.activities=before.filter(x=>x.id!==item.id);
+ try{await storeWorkspace14();const date=item.date;v21CloseEditor(true);v21RefreshCalendars(date);toast('Đã xóa sự kiện trong bản làm việc. Xuất HTML để cập nhật website.');}
+ catch(err){ST14.workspace.activities=before;throw err;}
+}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-v21]');if(!b)return;
+ e.preventDefault();try{const action=b.dataset.v21;
+  if(action==='new')v21OpenEditor('',b.dataset.date||'');
+  else if(action==='edit')v21OpenEditor(b.dataset.id||'');
+  else if(action==='close')v21CloseEditor();
+  else if(action==='delete')await v21DeleteEvent();
+ }catch(err){toast(errorMessage(err),true);}
+});
+document.addEventListener('submit',async e=>{if(e.target.id!=='v21-event-form')return;
+ e.preventDefault();const form=e.target;
+ try{await v21SaveEvent(form);}catch(err){const hint=form.querySelector('#v21-form-hint');if(hint)hint.textContent=errorMessage(err);toast(errorMessage(err),true);form.querySelector('[type="submit"]').disabled=false;V21.loading=false;}
+});
+document.addEventListener('change',async e=>{if(e.target.id!=='v21-image-file'||!e.target.files?.length)return;
+ try{requireAdmin14();const input=e.target,file=input.files[0];
+  const image=await optimizeImage14(file);if(!V21.editing)return;V21.editing.cover_image=image.src;V21.imageDirty=true;
+  const host=document.getElementById('v21-image-preview');if(host)host.innerHTML=img(image.src,'Ảnh bìa sự kiện');
+  const url=document.querySelector('#v21-event-form [name="cover_image"]');if(url)url.value='';
+  const hint=document.getElementById('v21-form-hint');if(hint)hint.textContent='Đã chọn ảnh từ thiết bị. Nhấn Lưu để giữ ảnh trong Studio.';
+  input.value='';
+ }catch(err){toast(errorMessage(err),true);}
+});
+window.addEventListener('hashchange',()=>{const d=document.getElementById('v21-event-dialog');if(d?.open)v21CloseEditor();});
+
 </script></body></html>
